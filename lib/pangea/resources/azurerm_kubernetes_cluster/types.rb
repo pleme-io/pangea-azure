@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-require 'dry-struct'
 require 'pangea/resources/types'
 
 module Pangea
   module Resources
     module Azure
       module Types
-        class AksDefaultNodePool < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class AksDefaultNodePool < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :vm_size, Dry::Types['strict.string']
           attribute :node_count, Dry::Types['coercible.integer']
@@ -19,15 +16,11 @@ module Pangea
           attribute :os_disk_size_gb, Dry::Types['coercible.integer'].optional.default(nil)
         end
 
-        class AksIdentity < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class AksIdentity < Pangea::Resources::BaseAttributes
           attribute :type, ::Pangea::Resources::Types::AzureIdentityType
         end
 
-        class KubernetesClusterAttributes < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class KubernetesClusterAttributes < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :resource_group_name, Dry::Types['strict.string']
           attribute :location, ::Pangea::Resources::Types::AzureLocation

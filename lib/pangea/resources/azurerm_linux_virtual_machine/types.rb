@@ -1,32 +1,25 @@
 # frozen_string_literal: true
 
-require 'dry-struct'
 require 'pangea/resources/types'
 
 module Pangea
   module Resources
     module Azure
       module Types
-        class LinuxVmOsDisk < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class LinuxVmOsDisk < Pangea::Resources::BaseAttributes
           attribute :caching, ::Pangea::Resources::Types::AzureOsDiskCaching
           attribute :storage_account_type, ::Pangea::Resources::Types::AzureManagedDiskType
           attribute :disk_size_gb, Dry::Types['coercible.integer'].optional.default(nil)
         end
 
-        class LinuxVmSourceImageReference < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class LinuxVmSourceImageReference < Pangea::Resources::BaseAttributes
           attribute :publisher, Dry::Types['strict.string']
           attribute :offer, Dry::Types['strict.string']
           attribute :sku, Dry::Types['strict.string']
           attribute :version, Dry::Types['strict.string']
         end
 
-        class LinuxVirtualMachineAttributes < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class LinuxVirtualMachineAttributes < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :resource_group_name, Dry::Types['strict.string']
           attribute :location, ::Pangea::Resources::Types::AzureLocation

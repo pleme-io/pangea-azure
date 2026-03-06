@@ -5,69 +5,52 @@ require 'pangea/resources/reference'
 require 'pangea/resources/azurerm_application_gateway/types'
 require 'pangea/resource_registry'
 
-module Pangea
-  module Resources
-    module AzurermApplicationGateway
-      def azurerm_application_gateway(name, attributes = {})
-        attrs = Azure::Types::ApplicationGatewayAttributes.new(attributes)
+module Pangea::Resources
+  module AzurermApplicationGateway
+    include Pangea::Resources::ResourceBuilder
 
-        resource(:azurerm_application_gateway, name) do
-          self.name attrs.name
-          resource_group_name attrs.resource_group_name
-          location attrs.location
-
-          sku do
-            self.name attrs.sku.name
-            tier attrs.sku.tier
-            capacity attrs.sku.capacity
-          end
-
-          gateway_ip_configuration do
-            attrs.gateway_ip_configuration.each { |k, v| public_send(k, v) }
-          end
-
-          frontend_ip_configuration do
-            attrs.frontend_ip_configuration.each { |k, v| public_send(k, v) }
-          end
-
-          frontend_port do
-            attrs.frontend_port.each { |k, v| public_send(k, v) }
-          end
-
-          backend_address_pool do
-            attrs.backend_address_pool.each { |k, v| public_send(k, v) }
-          end
-
-          backend_http_settings do
-            attrs.backend_http_settings.each { |k, v| public_send(k, v) }
-          end
-
-          http_listener do
-            attrs.http_listener.each { |k, v| public_send(k, v) }
-          end
-
-          request_routing_rule do
-            attrs.request_routing_rule.each { |k, v| public_send(k, v) }
-          end
-
-          tags attrs.tags if attrs.tags.any?
+    define_resource :azurerm_application_gateway,
+      attributes_class: Azure::Types::ApplicationGatewayAttributes,
+      outputs: { id: :id },
+      map: [:name, :resource_group_name, :location],
+      tags: :tags do |r, attrs|
+        r.sku do
+          r.__send__(:name, attrs.sku.name)
+          r.tier attrs.sku.tier
+          r.capacity attrs.sku.capacity
         end
 
-        ResourceReference.new(
-          type: 'azurerm_application_gateway',
-          name: name,
-          resource_attributes: attrs.to_h,
-          outputs: {
-            id: "${azurerm_application_gateway.#{name}.id}"
-          }
-        )
-      end
-    end
+        r.gateway_ip_configuration do
+          attrs.gateway_ip_configuration.each { |k, v| r.public_send(k, v) }
+        end
 
-    module Azure
-      include AzurermApplicationGateway
-    end
+        r.frontend_ip_configuration do
+          attrs.frontend_ip_configuration.each { |k, v| r.public_send(k, v) }
+        end
+
+        r.frontend_port do
+          attrs.frontend_port.each { |k, v| r.public_send(k, v) }
+        end
+
+        r.backend_address_pool do
+          attrs.backend_address_pool.each { |k, v| r.public_send(k, v) }
+        end
+
+        r.backend_http_settings do
+          attrs.backend_http_settings.each { |k, v| r.public_send(k, v) }
+        end
+
+        r.http_listener do
+          attrs.http_listener.each { |k, v| r.public_send(k, v) }
+        end
+
+        r.request_routing_rule do
+          attrs.request_routing_rule.each { |k, v| r.public_send(k, v) }
+        end
+      end
+  end
+  module Azure
+    include AzurermApplicationGateway
   end
 end
-
 Pangea::ResourceRegistry.register_module(Pangea::Resources::Azure)

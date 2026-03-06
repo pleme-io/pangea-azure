@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-require 'dry-struct'
 require 'pangea/resources/types'
 
 module Pangea
   module Resources
     module Azure
       module Types
-        class MonitorDiagnosticSettingAttributes < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class MonitorDiagnosticSettingAttributes < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :target_resource_id, Dry::Types['strict.string']
           attribute :log_analytics_workspace_id, Dry::Types['strict.string'].optional.default(nil)

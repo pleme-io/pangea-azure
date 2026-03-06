@@ -5,38 +5,19 @@ require 'pangea/resources/reference'
 require 'pangea/resources/azurerm_public_ip/types'
 require 'pangea/resource_registry'
 
-module Pangea
-  module Resources
-    module AzurermPublicIp
-      def azurerm_public_ip(name, attributes = {})
-        attrs = Azure::Types::PublicIpAttributes.new(attributes)
+module Pangea::Resources
+  module AzurermPublicIp
+    include Pangea::Resources::ResourceBuilder
 
-        resource(:azurerm_public_ip, name) do
-          self.name attrs.name
-          resource_group_name attrs.resource_group_name
-          location attrs.location
-          allocation_method attrs.allocation_method
-          sku attrs.sku if attrs.sku
-          tags attrs.tags if attrs.tags.any?
-        end
-
-        ResourceReference.new(
-          type: 'azurerm_public_ip',
-          name: name,
-          resource_attributes: attrs.to_h,
-          outputs: {
-            id: "${azurerm_public_ip.#{name}.id}",
-            ip_address: "${azurerm_public_ip.#{name}.ip_address}",
-            fqdn: "${azurerm_public_ip.#{name}.fqdn}"
-          }
-        )
-      end
-    end
-
-    module Azure
-      include AzurermPublicIp
-    end
+    define_resource :azurerm_public_ip,
+      attributes_class: Azure::Types::PublicIpAttributes,
+      outputs: { id: :id, ip_address: :ip_address, fqdn: :fqdn },
+      map: [:name, :resource_group_name, :location, :allocation_method],
+      map_present: [:sku],
+      tags: :tags
+  end
+  module Azure
+    include AzurermPublicIp
   end
 end
-
 Pangea::ResourceRegistry.register_module(Pangea::Resources::Azure)

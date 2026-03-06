@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-require 'dry-struct'
 require 'pangea/resources/types'
 
 module Pangea
   module Resources
     module Azure
       module Types
-        class PostgresqlFlexibleServerDatabaseAttributes < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class PostgresqlFlexibleServerDatabaseAttributes < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :server_id, Dry::Types['strict.string']
           attribute :charset, Dry::Types['strict.string'].optional.default(nil)

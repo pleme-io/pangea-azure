@@ -1,31 +1,24 @@
 # frozen_string_literal: true
 
-require 'dry-struct'
 require 'pangea/resources/types'
 
 module Pangea
   module Resources
     module Azure
       module Types
-        class CosmosDbConsistencyPolicy < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class CosmosDbConsistencyPolicy < Pangea::Resources::BaseAttributes
           attribute :consistency_level, ::Pangea::Resources::Types::AzureCosmosDbConsistencyLevel
           attribute :max_interval_in_seconds, Dry::Types['coercible.integer'].optional.default(nil)
           attribute :max_staleness_prefix, Dry::Types['coercible.integer'].optional.default(nil)
         end
 
-        class CosmosDbGeoLocation < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class CosmosDbGeoLocation < Pangea::Resources::BaseAttributes
           attribute :location, Dry::Types['strict.string']
           attribute :failover_priority, Dry::Types['coercible.integer']
           attribute :zone_redundant, Dry::Types['strict.bool'].optional.default(nil)
         end
 
-        class CosmosdbAccountAttributes < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class CosmosdbAccountAttributes < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :resource_group_name, Dry::Types['strict.string']
           attribute :location, ::Pangea::Resources::Types::AzureLocation

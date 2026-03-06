@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-require 'dry-struct'
 require 'pangea/resources/types'
 
 module Pangea
   module Resources
     module Azure
       module Types
-        class NetworkSecurityGroupAttributes < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class NetworkSecurityGroupAttributes < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :resource_group_name, Dry::Types['strict.string']
           attribute :location, ::Pangea::Resources::Types::AzureLocation

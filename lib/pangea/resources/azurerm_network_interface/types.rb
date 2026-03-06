@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-require 'dry-struct'
 require 'pangea/resources/types'
 
 module Pangea
   module Resources
     module Azure
       module Types
-        class NetworkInterfaceIpConfiguration < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class NetworkInterfaceIpConfiguration < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :subnet_id, Dry::Types['strict.string']
           attribute :private_ip_address_allocation, ::Pangea::Resources::Types::AzureAllocationMethod
@@ -17,9 +14,7 @@ module Pangea
           attribute :public_ip_address_id, Dry::Types['strict.string'].optional.default(nil)
         end
 
-        class NetworkInterfaceAttributes < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class NetworkInterfaceAttributes < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :resource_group_name, Dry::Types['strict.string']
           attribute :location, ::Pangea::Resources::Types::AzureLocation

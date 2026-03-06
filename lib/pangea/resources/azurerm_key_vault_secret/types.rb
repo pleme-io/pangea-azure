@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
-require 'dry-struct'
 require 'pangea/resources/types'
 
 module Pangea
   module Resources
     module Azure
       module Types
-        class KeyVaultSecretAttributes < Dry::Struct
-          transform_keys(&:to_sym)
-
+        class KeyVaultSecretAttributes < Pangea::Resources::BaseAttributes
           attribute :name, Dry::Types['strict.string']
           attribute :value, Dry::Types['strict.string']
           attribute :key_vault_id, Dry::Types['strict.string']

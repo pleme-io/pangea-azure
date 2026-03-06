@@ -5,43 +5,20 @@ require 'pangea/resources/reference'
 require 'pangea/resources/azurerm_key_vault/types'
 require 'pangea/resource_registry'
 
-module Pangea
-  module Resources
-    module AzurermKeyVault
-      def azurerm_key_vault(name, attributes = {})
-        attrs = Azure::Types::KeyVaultAttributes.new(attributes)
+module Pangea::Resources
+  module AzurermKeyVault
+    include Pangea::Resources::ResourceBuilder
 
-        resource(:azurerm_key_vault, name) do
-          self.name attrs.name
-          resource_group_name attrs.resource_group_name
-          location attrs.location
-          sku_name attrs.sku_name
-          tenant_id attrs.tenant_id
-          soft_delete_retention_days attrs.soft_delete_retention_days if attrs.soft_delete_retention_days
-          purge_protection_enabled attrs.purge_protection_enabled unless attrs.purge_protection_enabled.nil?
-          enabled_for_deployment attrs.enabled_for_deployment unless attrs.enabled_for_deployment.nil?
-          enabled_for_disk_encryption attrs.enabled_for_disk_encryption unless attrs.enabled_for_disk_encryption.nil?
-          enabled_for_template_deployment attrs.enabled_for_template_deployment unless attrs.enabled_for_template_deployment.nil?
-          tags attrs.tags if attrs.tags.any?
-        end
-
-        ResourceReference.new(
-          type: 'azurerm_key_vault',
-          name: name,
-          resource_attributes: attrs.to_h,
-          outputs: {
-            id: "${azurerm_key_vault.#{name}.id}",
-            vault_uri: "${azurerm_key_vault.#{name}.vault_uri}",
-            name: "${azurerm_key_vault.#{name}.name}"
-          }
-        )
-      end
-    end
-
-    module Azure
-      include AzurermKeyVault
-    end
+    define_resource :azurerm_key_vault,
+      attributes_class: Azure::Types::KeyVaultAttributes,
+      outputs: { id: :id, vault_uri: :vault_uri, name: :name },
+      map: [:name, :resource_group_name, :location, :sku_name, :tenant_id],
+      map_present: [:soft_delete_retention_days],
+      map_bool: [:purge_protection_enabled, :enabled_for_deployment, :enabled_for_disk_encryption, :enabled_for_template_deployment],
+      tags: :tags
+  end
+  module Azure
+    include AzurermKeyVault
   end
 end
-
 Pangea::ResourceRegistry.register_module(Pangea::Resources::Azure)
