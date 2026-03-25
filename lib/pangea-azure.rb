@@ -4,6 +4,8 @@
 require 'pangea-core'
 require 'terraform-synthesizer'
 
+module Pangea; module Resources; module Azure; module Types; end; end; end; end
+
 # Azure resources
 require_relative 'pangea/resources/azurerm_aadb2c_directory/resource'
 require_relative 'pangea/resources/azurerm_active_directory_domain_service/resource'
@@ -1131,4 +1133,4 @@ require_relative 'pangea/resources/azurerm_workloads_sap_single_node_virtual_ins
 require_relative 'pangea/resources/azurerm_workloads_sap_three_tier_virtual_instance/resource'
 
 # Azure module aggregator
-require_relative 'pangea/resources/azure'
+require_relative 'pangea/resources/azurerm'
