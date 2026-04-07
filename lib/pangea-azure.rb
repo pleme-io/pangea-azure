@@ -1133,4 +1133,4 @@ require_relative 'pangea/resources/azurerm_workloads_sap_single_node_virtual_ins
 require_relative 'pangea/resources/azurerm_workloads_sap_three_tier_virtual_instance/resource'
 
 # Azure module aggregator
-require_relative 'pangea/resources/azurerm'
+require_relative 'pangea/resources/azure'
