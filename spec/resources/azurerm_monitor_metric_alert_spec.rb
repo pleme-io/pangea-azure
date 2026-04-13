@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureMonitorMetricAlert do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ action: [{ 'key1' => 'val1' }], application_insights_web_test_location_availability_criteria: [{ 'key1' => 'val1' }], auto_mitigate: true, criteria: [{ 'key1' => 'val1' }], description: 'test-value', dynamic_criteria: [{ 'key1' => 'val1' }], enabled: true, frequency: 'test-value', severity: 3.14, tags: { 'key1' => 'val1' }, window_size: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ action: [{ 'key1' => 'val1' }], application_insights_web_test_location_availability_criteria: { 'key1' => 'val1' }, auto_mitigate: true, criteria: [{ 'key1' => 'val1' }], description: 'test-value', dynamic_criteria: { 'key1' => 'val1' }, enabled: true, frequency: 'test-value', severity: 3.14, tags: { 'key1' => 'val1' }, target_resource_location: 'test-value', target_resource_type: 'test-value', window_size: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -76,6 +76,8 @@ RSpec.describe Pangea::Resources::AzureMonitorMetricAlert do
         expect(config).to have_key('frequency')
         expect(config).to have_key('severity')
         expect(config).to have_key('tags')
+        expect(config).to have_key('target_resource_location')
+        expect(config).to have_key('target_resource_type')
         expect(config).to have_key('window_size')
       end
     end
@@ -101,7 +103,7 @@ RSpec.describe Pangea::Resources::AzureMonitorMetricAlert do
       it 'includes application_insights_web_test_location_availability_criteria when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_metric_alert('opt', required_attrs.merge(application_insights_web_test_location_availability_criteria: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_metric_alert('opt', required_attrs.merge(application_insights_web_test_location_availability_criteria: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_metric_alert', 'opt')
         expect(config).to have_key('application_insights_web_test_location_availability_criteria')
@@ -169,7 +171,7 @@ RSpec.describe Pangea::Resources::AzureMonitorMetricAlert do
       it 'includes dynamic_criteria when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_metric_alert('opt', required_attrs.merge(dynamic_criteria: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_metric_alert('opt', required_attrs.merge(dynamic_criteria: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_metric_alert', 'opt')
         expect(config).to have_key('dynamic_criteria')
@@ -250,6 +252,40 @@ RSpec.describe Pangea::Resources::AzureMonitorMetricAlert do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_metric_alert', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes target_resource_location when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_monitor_metric_alert('opt', required_attrs.merge(target_resource_location: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_monitor_metric_alert', 'opt')
+        expect(config).to have_key('target_resource_location')
+      end
+
+      it 'omits target_resource_location when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_monitor_metric_alert('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_monitor_metric_alert', 'minimal')
+        expect(config).not_to have_key('target_resource_location')
+      end
+      it 'includes target_resource_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_monitor_metric_alert('opt', required_attrs.merge(target_resource_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_monitor_metric_alert', 'opt')
+        expect(config).to have_key('target_resource_type')
+      end
+
+      it 'omits target_resource_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_monitor_metric_alert('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_monitor_metric_alert', 'minimal')
+        expect(config).not_to have_key('target_resource_type')
       end
       it 'includes window_size when provided' do
         synth = create_synthesizer

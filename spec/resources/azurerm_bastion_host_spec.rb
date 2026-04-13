@@ -39,6 +39,7 @@ RSpec.describe Pangea::Resources::AzureBastionHost do
 
         expect(ref.id).to eq("${azurerm_bastion_host.test.id}")
         expect(ref.dns_name).to eq("${azurerm_bastion_host.test.dns_name}")
+        expect(ref.private_only_enabled).to eq("${azurerm_bastion_host.test.private_only_enabled}")
       end
     end
 
@@ -51,11 +52,12 @@ RSpec.describe Pangea::Resources::AzureBastionHost do
 
         config = validate_resource_structure(result, 'azurerm_bastion_host', 'test')
         expect(config).not_to have_key('dns_name')
+        expect(config).not_to have_key('private_only_enabled')
       end
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ copy_paste_enabled: true, file_copy_enabled: true, ip_configuration: [{ 'key1' => 'val1' }], ip_connect_enabled: true, kerberos_enabled: true, scale_units: 3.14, session_recording_enabled: true, shareable_link_enabled: true, sku: 'test-value', tags: { 'key1' => 'val1' }, tunneling_enabled: true, virtual_network_id: 'test-value', zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ copy_paste_enabled: true, file_copy_enabled: true, ip_configuration: { 'key1' => 'val1' }, ip_connect_enabled: true, kerberos_enabled: true, scale_units: 3.14, session_recording_enabled: true, shareable_link_enabled: true, sku: 'test-value', tags: { 'key1' => 'val1' }, tunneling_enabled: true, virtual_network_id: 'test-value', zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -118,7 +120,7 @@ RSpec.describe Pangea::Resources::AzureBastionHost do
       it 'includes ip_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_bastion_host('opt', required_attrs.merge(ip_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_bastion_host('opt', required_attrs.merge(ip_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_bastion_host', 'opt')
         expect(config).to have_key('ip_configuration')
@@ -428,7 +430,7 @@ RSpec.describe Pangea::Resources::AzureBastionHost do
     resource_type: :azurerm_bastion_host,
     method: :azurerm_bastion_host,
     required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
-    expected_outputs: [:id, :dns_name],
+    expected_outputs: [:id, :dns_name, :private_only_enabled],
     sensitive_fields: [],
     immutable_fields: [],
     boolean_fields: [:copy_paste_enabled, :file_copy_enabled, :ip_connect_enabled, :kerberos_enabled, :session_recording_enabled, :shareable_link_enabled, :tunneling_enabled]

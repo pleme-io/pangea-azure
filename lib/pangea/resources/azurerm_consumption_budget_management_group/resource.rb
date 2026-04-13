@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ConsumptionBudgetManagementGroupAttributes,
       outputs: { id: :id },
       map: [:amount, :management_group_id, :name, :notification, :time_period],
-      map_present: [:filter, :time_grain]
+      map_present: [:etag, :filter, :time_grain]
   end
   module Azure
     include AzureConsumptionBudgetManagementGroup

@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::VirtualNetworkGatewayAttributes,
       outputs: { id: :id },
       map: [:ip_configuration, :location, :name, :resource_group_name, :sku, :type],
-      map_present: [:bgp_settings, :custom_route, :default_local_network_gateway_id, :edge_zone, :policy_group, :tags, :vpn_client_configuration, :vpn_type],
-      map_bool: [:bgp_route_translation_for_nat_enabled, :dns_forwarding_enabled, :ip_sec_replay_protection_enabled, :private_ip_address_enabled, :remote_vnet_traffic_enabled, :virtual_wan_traffic_enabled]
+      map_present: [:bgp_settings, :custom_route, :default_local_network_gateway_id, :edge_zone, :generation, :policy_group, :tags, :vpn_client_configuration, :vpn_type],
+      map_bool: [:active_active, :bgp_enabled, :bgp_route_translation_for_nat_enabled, :dns_forwarding_enabled, :enable_bgp, :ip_sec_replay_protection_enabled, :private_ip_address_enabled, :remote_vnet_traffic_enabled, :virtual_wan_traffic_enabled]
   end
   module Azure
     include AzureVirtualNetworkGateway

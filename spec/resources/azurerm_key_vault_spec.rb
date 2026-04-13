@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureKeyVault do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ contact: [{ 'key1' => 'val1' }], enabled_for_deployment: true, enabled_for_disk_encryption: true, enabled_for_template_deployment: true, network_acls: [{ 'key1' => 'val1' }], public_network_access_enabled: true, purge_protection_enabled: true, soft_delete_retention_days: 3.14, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ access_policy: [{ 'key1' => 'val1' }], contact: [{ 'key1' => 'val1' }], enable_rbac_authorization: true, enabled_for_deployment: true, enabled_for_disk_encryption: true, enabled_for_template_deployment: true, network_acls: { 'key1' => 'val1' }, public_network_access_enabled: true, purge_protection_enabled: true, rbac_authorization_enabled: true, soft_delete_retention_days: 3.14, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,19 +70,39 @@ RSpec.describe Pangea::Resources::AzureKeyVault do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_key_vault', 'full')
+        expect(config).to have_key('access_policy')
         expect(config).to have_key('contact')
+        expect(config).to have_key('enable_rbac_authorization')
         expect(config).to have_key('enabled_for_deployment')
         expect(config).to have_key('enabled_for_disk_encryption')
         expect(config).to have_key('enabled_for_template_deployment')
         expect(config).to have_key('network_acls')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('purge_protection_enabled')
+        expect(config).to have_key('rbac_authorization_enabled')
         expect(config).to have_key('soft_delete_retention_days')
         expect(config).to have_key('tags')
       end
     end
 
     context 'optional attributes' do
+      it 'includes access_policy when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_key_vault('opt', required_attrs.merge(access_policy: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_key_vault', 'opt')
+        expect(config).to have_key('access_policy')
+      end
+
+      it 'omits access_policy when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_key_vault('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_key_vault', 'minimal')
+        expect(config).not_to have_key('access_policy')
+      end
       it 'includes contact when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -99,6 +119,23 @@ RSpec.describe Pangea::Resources::AzureKeyVault do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_key_vault', 'minimal')
         expect(config).not_to have_key('contact')
+      end
+      it 'includes enable_rbac_authorization when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_key_vault('opt', required_attrs.merge(enable_rbac_authorization: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_key_vault', 'opt')
+        expect(config).to have_key('enable_rbac_authorization')
+      end
+
+      it 'omits enable_rbac_authorization when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_key_vault('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_key_vault', 'minimal')
+        expect(config).not_to have_key('enable_rbac_authorization')
       end
       it 'includes enabled_for_deployment when provided' do
         synth = create_synthesizer
@@ -154,7 +191,7 @@ RSpec.describe Pangea::Resources::AzureKeyVault do
       it 'includes network_acls when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_key_vault('opt', required_attrs.merge(network_acls: [{ 'key1' => 'val1' }]))
+        synth.azurerm_key_vault('opt', required_attrs.merge(network_acls: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_key_vault', 'opt')
         expect(config).to have_key('network_acls')
@@ -202,6 +239,23 @@ RSpec.describe Pangea::Resources::AzureKeyVault do
         config = validate_resource_structure(result, 'azurerm_key_vault', 'minimal')
         expect(config).not_to have_key('purge_protection_enabled')
       end
+      it 'includes rbac_authorization_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_key_vault('opt', required_attrs.merge(rbac_authorization_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_key_vault', 'opt')
+        expect(config).to have_key('rbac_authorization_enabled')
+      end
+
+      it 'omits rbac_authorization_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_key_vault('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_key_vault', 'minimal')
+        expect(config).not_to have_key('rbac_authorization_enabled')
+      end
       it 'includes soft_delete_retention_days when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -239,6 +293,17 @@ RSpec.describe Pangea::Resources::AzureKeyVault do
     end
 
     context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts enable_rbac_authorization=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enable_rbac_authorization: val)
+          synth.azurerm_key_vault("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_key_vault', "bool_#{val}")
+          expect(config['enable_rbac_authorization']).to eq(val)
+        end
+      end
       [true, false].each do |val|
         it "accepts enabled_for_deployment=#{val}" do
           synth = create_synthesizer
@@ -294,6 +359,17 @@ RSpec.describe Pangea::Resources::AzureKeyVault do
           expect(config['purge_protection_enabled']).to eq(val)
         end
       end
+      [true, false].each do |val|
+        it "accepts rbac_authorization_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(rbac_authorization_enabled: val)
+          synth.azurerm_key_vault("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_key_vault', "bool_#{val}")
+          expect(config['rbac_authorization_enabled']).to eq(val)
+        end
+      end
     end
 
     context 'attribute types' do
@@ -345,5 +421,5 @@ RSpec.describe Pangea::Resources::AzureKeyVault do
     expected_outputs: [:id, :access_policy, :enable_rbac_authorization, :rbac_authorization_enabled, :vault_uri],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: [:enabled_for_deployment, :enabled_for_disk_encryption, :enabled_for_template_deployment, :public_network_access_enabled, :purge_protection_enabled]
+    boolean_fields: [:enable_rbac_authorization, :enabled_for_deployment, :enabled_for_disk_encryption, :enabled_for_template_deployment, :public_network_access_enabled, :purge_protection_enabled, :rbac_authorization_enabled]
 end

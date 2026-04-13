@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureApplicationGateway do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { backend_address_pool: [{ 'key1' => 'val1' }], backend_http_settings: [{ 'key1' => 'val1' }], frontend_ip_configuration: [{ 'key1' => 'val1' }], frontend_port: [{ 'key1' => 'val1' }], gateway_ip_configuration: [{ 'key1' => 'val1' }], http_listener: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', request_routing_rule: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { backend_address_pool: [{ 'key1' => 'val1' }], frontend_ip_configuration: [{ 'key1' => 'val1' }], frontend_port: [{ 'key1' => 'val1' }], gateway_ip_configuration: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } } }
 
   describe ':azurerm_application_gateway' do
     context 'with required attributes only' do
@@ -20,7 +20,7 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
 
         validate_terraform_structure(result, :resource)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'test')
-        validate_required_attributes(config, [:backend_address_pool, :backend_http_settings, :frontend_ip_configuration, :frontend_port, :gateway_ip_configuration, :http_listener, :location, :name, :request_routing_rule, :resource_group_name, :sku])
+        validate_required_attributes(config, [:backend_address_pool, :frontend_ip_configuration, :frontend_port, :gateway_ip_configuration, :location, :name, :resource_group_name, :sku])
       end
 
       it 'returns a ResourceReference' do
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ authentication_certificate: [{ 'key1' => 'val1' }], autoscale_configuration: [{ 'key1' => 'val1' }], custom_error_configuration: [{ 'key1' => 'val1' }], fips_enabled: true, firewall_policy_id: 'test-value', force_firewall_policy_association: true, global: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], private_link_configuration: [{ 'key1' => 'val1' }], probe: [{ 'key1' => 'val1' }], redirect_configuration: [{ 'key1' => 'val1' }], rewrite_rule_set: [{ 'key1' => 'val1' }], ssl_certificate: [{ 'key1' => 'val1' }], ssl_policy: [{ 'key1' => 'val1' }], ssl_profile: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, trusted_client_certificate: [{ 'key1' => 'val1' }], trusted_root_certificate: [{ 'key1' => 'val1' }], url_path_map: [{ 'key1' => 'val1' }], waf_configuration: [{ 'key1' => 'val1' }], zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ authentication_certificate: [{ 'key1' => 'val1' }], autoscale_configuration: { 'key1' => 'val1' }, backend: [{ 'key1' => 'val1' }], backend_http_settings: [{ 'key1' => 'val1' }], custom_error_configuration: [{ 'key1' => 'val1' }], enable_http2: true, fips_enabled: true, firewall_policy_id: 'test-value', force_firewall_policy_association: true, global: { 'key1' => 'val1' }, http2_enabled: true, http_listener: [{ 'key1' => 'val1' }], identity: { 'key1' => 'val1' }, listener: [{ 'key1' => 'val1' }], private_link_configuration: [{ 'key1' => 'val1' }], probe: [{ 'key1' => 'val1' }], redirect_configuration: [{ 'key1' => 'val1' }], request_routing_rule: [{ 'key1' => 'val1' }], rewrite_rule_set: [{ 'key1' => 'val1' }], routing_rule: [{ 'key1' => 'val1' }], ssl_certificate: [{ 'key1' => 'val1' }], ssl_policy: { 'key1' => 'val1' }, ssl_profile: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, trusted_client_certificate: [{ 'key1' => 'val1' }], trusted_root_certificate: [{ 'key1' => 'val1' }], url_path_map: [{ 'key1' => 'val1' }], waf_configuration: { 'key1' => 'val1' }, zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,16 +70,24 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'full')
         expect(config).to have_key('authentication_certificate')
         expect(config).to have_key('autoscale_configuration')
+        expect(config).to have_key('backend')
+        expect(config).to have_key('backend_http_settings')
         expect(config).to have_key('custom_error_configuration')
+        expect(config).to have_key('enable_http2')
         expect(config).to have_key('fips_enabled')
         expect(config).to have_key('firewall_policy_id')
         expect(config).to have_key('force_firewall_policy_association')
         expect(config).to have_key('global')
+        expect(config).to have_key('http2_enabled')
+        expect(config).to have_key('http_listener')
         expect(config).to have_key('identity')
+        expect(config).to have_key('listener')
         expect(config).to have_key('private_link_configuration')
         expect(config).to have_key('probe')
         expect(config).to have_key('redirect_configuration')
+        expect(config).to have_key('request_routing_rule')
         expect(config).to have_key('rewrite_rule_set')
+        expect(config).to have_key('routing_rule')
         expect(config).to have_key('ssl_certificate')
         expect(config).to have_key('ssl_policy')
         expect(config).to have_key('ssl_profile')
@@ -113,7 +121,7 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
       it 'includes autoscale_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_application_gateway('opt', required_attrs.merge(autoscale_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_application_gateway('opt', required_attrs.merge(autoscale_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
         expect(config).to have_key('autoscale_configuration')
@@ -126,6 +134,40 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
         expect(config).not_to have_key('autoscale_configuration')
+      end
+      it 'includes backend when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('opt', required_attrs.merge(backend: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
+        expect(config).to have_key('backend')
+      end
+
+      it 'omits backend when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
+        expect(config).not_to have_key('backend')
+      end
+      it 'includes backend_http_settings when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('opt', required_attrs.merge(backend_http_settings: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
+        expect(config).to have_key('backend_http_settings')
+      end
+
+      it 'omits backend_http_settings when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
+        expect(config).not_to have_key('backend_http_settings')
       end
       it 'includes custom_error_configuration when provided' do
         synth = create_synthesizer
@@ -143,6 +185,23 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
         expect(config).not_to have_key('custom_error_configuration')
+      end
+      it 'includes enable_http2 when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('opt', required_attrs.merge(enable_http2: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
+        expect(config).to have_key('enable_http2')
+      end
+
+      it 'omits enable_http2 when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
+        expect(config).not_to have_key('enable_http2')
       end
       it 'includes fips_enabled when provided' do
         synth = create_synthesizer
@@ -198,7 +257,7 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
       it 'includes global when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_application_gateway('opt', required_attrs.merge(global: [{ 'key1' => 'val1' }]))
+        synth.azurerm_application_gateway('opt', required_attrs.merge(global: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
         expect(config).to have_key('global')
@@ -212,10 +271,44 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
         expect(config).not_to have_key('global')
       end
+      it 'includes http2_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('opt', required_attrs.merge(http2_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
+        expect(config).to have_key('http2_enabled')
+      end
+
+      it 'omits http2_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
+        expect(config).not_to have_key('http2_enabled')
+      end
+      it 'includes http_listener when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('opt', required_attrs.merge(http_listener: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
+        expect(config).to have_key('http_listener')
+      end
+
+      it 'omits http_listener when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
+        expect(config).not_to have_key('http_listener')
+      end
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_application_gateway('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_application_gateway('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
         expect(config).to have_key('identity')
@@ -228,6 +321,23 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
         expect(config).not_to have_key('identity')
+      end
+      it 'includes listener when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('opt', required_attrs.merge(listener: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
+        expect(config).to have_key('listener')
+      end
+
+      it 'omits listener when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
+        expect(config).not_to have_key('listener')
       end
       it 'includes private_link_configuration when provided' do
         synth = create_synthesizer
@@ -280,6 +390,23 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
         expect(config).not_to have_key('redirect_configuration')
       end
+      it 'includes request_routing_rule when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('opt', required_attrs.merge(request_routing_rule: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
+        expect(config).to have_key('request_routing_rule')
+      end
+
+      it 'omits request_routing_rule when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
+        expect(config).not_to have_key('request_routing_rule')
+      end
       it 'includes rewrite_rule_set when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -296,6 +423,23 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
         expect(config).not_to have_key('rewrite_rule_set')
+      end
+      it 'includes routing_rule when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('opt', required_attrs.merge(routing_rule: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
+        expect(config).to have_key('routing_rule')
+      end
+
+      it 'omits routing_rule when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_gateway', 'minimal')
+        expect(config).not_to have_key('routing_rule')
       end
       it 'includes ssl_certificate when provided' do
         synth = create_synthesizer
@@ -317,7 +461,7 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
       it 'includes ssl_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_application_gateway('opt', required_attrs.merge(ssl_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_application_gateway('opt', required_attrs.merge(ssl_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
         expect(config).to have_key('ssl_policy')
@@ -419,7 +563,7 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
       it 'includes waf_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_application_gateway('opt', required_attrs.merge(waf_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_application_gateway('opt', required_attrs.merge(waf_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'opt')
         expect(config).to have_key('waf_configuration')
@@ -454,6 +598,17 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
 
     context 'boolean fields' do
       [true, false].each do |val|
+        it "accepts enable_http2=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enable_http2: val)
+          synth.azurerm_application_gateway("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_application_gateway', "bool_#{val}")
+          expect(config['enable_http2']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
         it "accepts fips_enabled=#{val}" do
           synth = create_synthesizer
           synth.extend(described_class)
@@ -475,6 +630,17 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
           expect(config['force_firewall_policy_association']).to eq(val)
         end
       end
+      [true, false].each do |val|
+        it "accepts http2_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(http2_enabled: val)
+          synth.azurerm_application_gateway("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_application_gateway', "bool_#{val}")
+          expect(config['http2_enabled']).to eq(val)
+        end
+      end
     end
 
     context 'attribute types' do
@@ -486,16 +652,13 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
 
         config = validate_resource_structure(result, 'azurerm_application_gateway', 'typed')
         expect(config['backend_address_pool']).to be_a(Array)
-        expect(config['backend_http_settings']).to be_a(Array)
         expect(config['frontend_ip_configuration']).to be_a(Array)
         expect(config['frontend_port']).to be_a(Array)
         expect(config['gateway_ip_configuration']).to be_a(Array)
-        expect(config['http_listener']).to be_a(Array)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['request_routing_rule']).to be_a(Array)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
       end
     end
 
@@ -528,9 +691,9 @@ RSpec.describe Pangea::Resources::AzureApplicationGateway do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_application_gateway,
     method: :azurerm_application_gateway,
-    required_attrs: { backend_address_pool: [{ 'key1' => 'val1' }], backend_http_settings: [{ 'key1' => 'val1' }], frontend_ip_configuration: [{ 'key1' => 'val1' }], frontend_port: [{ 'key1' => 'val1' }], gateway_ip_configuration: [{ 'key1' => 'val1' }], http_listener: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', request_routing_rule: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] },
+    required_attrs: { backend_address_pool: [{ 'key1' => 'val1' }], frontend_ip_configuration: [{ 'key1' => 'val1' }], frontend_port: [{ 'key1' => 'val1' }], gateway_ip_configuration: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } },
     expected_outputs: [:id, :enable_http2, :http2_enabled, :private_endpoint_connection],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: [:fips_enabled, :force_firewall_policy_association]
+    boolean_fields: [:enable_http2, :fips_enabled, :force_firewall_policy_association, :http2_enabled]
 end

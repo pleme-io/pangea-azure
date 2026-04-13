@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::NewRelicMonitorAttributes,
       outputs: { id: :id },
       map: [:location, :name, :plan, :resource_group_name, :user],
-      map_present: [:account_creation_source, :identity, :ingestion_key, :org_creation_source, :user_id]
+      map_present: [:account_creation_source, :account_id, :identity, :ingestion_key, :org_creation_source, :organization_id, :user_id]
   end
   module Azure
     include AzureNewRelicMonitor

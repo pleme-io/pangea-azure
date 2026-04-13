@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::KustoClusterAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku],
-      map_present: [:allowed_fqdns, :allowed_ip_ranges, :identity, :language_extension, :language_extensions, :optimized_auto_scale, :public_ip_type, :tags, :virtual_network_configuration, :zones],
+      map_present: [:allowed_fqdns, :allowed_ip_ranges, :identity, :language_extension, :language_extensions, :optimized_auto_scale, :public_ip_type, :tags, :trusted_external_tenants, :virtual_network_configuration, :zones],
       map_bool: [:auto_stop_enabled, :disk_encryption_enabled, :double_encryption_enabled, :outbound_network_access_restricted, :public_network_access_enabled, :purge_enabled, :streaming_ingestion_enabled]
   end
   module Azure

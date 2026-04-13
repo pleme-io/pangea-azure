@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StorageBlobAttributes,
       outputs: { id: :id },
       map: [:name, :storage_account_name, :storage_container_name, :type],
-      map_present: [:cache_control, :content_md5, :content_type, :encryption_scope, :parallelism, :size, :source, :source_content, :source_uri]
+      map_present: [:access_tier, :cache_control, :content_md5, :content_type, :encryption_scope, :metadata, :parallelism, :size, :source, :source_content, :source_uri]
   end
   module Azure
     include AzureStorageBlob

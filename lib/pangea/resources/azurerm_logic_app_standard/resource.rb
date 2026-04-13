@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::LogicAppStandardAttributes,
       outputs: { id: :id },
       map: [:app_service_plan_id, :location, :name, :resource_group_name, :storage_account_access_key, :storage_account_name],
-      map_present: [:bundle_version, :client_certificate_mode, :connection_string, :identity, :site_config, :tags, :version, :virtual_network_subnet_id],
-      map_bool: [:enabled, :ftp_publish_basic_authentication_enabled, :https_only, :scm_publish_basic_authentication_enabled, :use_extension_bundle, :vnet_content_share_enabled]
+      map_present: [:app_settings, :bundle_version, :client_certificate_mode, :connection_string, :identity, :public_network_access, :site_config, :storage_account_share_name, :tags, :version, :virtual_network_subnet_id],
+      map_bool: [:client_affinity_enabled, :enabled, :ftp_publish_basic_authentication_enabled, :https_only, :scm_publish_basic_authentication_enabled, :use_extension_bundle, :vnet_content_share_enabled]
   end
   module Azure
     include AzureLogicAppStandard

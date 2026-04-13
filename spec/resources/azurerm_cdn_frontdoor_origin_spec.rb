@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorOrigin do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ enabled: true, http_port: 3.14, https_port: 3.14, origin_host_header: 'test-value', priority: 3.14, private_link: [{ 'key1' => 'val1' }], weight: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ enabled: true, http_port: 3.14, https_port: 3.14, origin_host_header: 'test-value', priority: 3.14, private_link: { 'key1' => 'val1' }, weight: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -150,7 +150,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorOrigin do
       it 'includes private_link when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cdn_frontdoor_origin('opt', required_attrs.merge(private_link: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cdn_frontdoor_origin('opt', required_attrs.merge(private_link: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_origin', 'opt')
         expect(config).to have_key('private_link')

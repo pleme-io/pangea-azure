@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDiskEncryptionSet do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_disk_encryption_set' do
     context 'with required attributes only' do
@@ -200,7 +200,7 @@ RSpec.describe Pangea::Resources::AzureDiskEncryptionSet do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_disk_encryption_set', 'typed')
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -236,7 +236,7 @@ RSpec.describe Pangea::Resources::AzureDiskEncryptionSet do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_disk_encryption_set,
     method: :azurerm_disk_encryption_set,
-    required_attrs: { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id, :key_vault_key_url],
     sensitive_fields: [],
     immutable_fields: [],

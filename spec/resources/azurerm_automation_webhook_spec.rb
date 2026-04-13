@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureAutomationWebhook do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ enabled: true, parameters: { 'key1' => 'val1' }, run_on_worker_group: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ enabled: true, parameters: { 'key1' => 'val1' }, run_on_worker_group: 'test-value', uri: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureAutomationWebhook do
         expect(config).to have_key('enabled')
         expect(config).to have_key('parameters')
         expect(config).to have_key('run_on_worker_group')
+        expect(config).to have_key('uri')
       end
     end
 
@@ -121,6 +122,23 @@ RSpec.describe Pangea::Resources::AzureAutomationWebhook do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_webhook', 'minimal')
         expect(config).not_to have_key('run_on_worker_group')
+      end
+      it 'includes uri when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_webhook('opt', required_attrs.merge(uri: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_webhook', 'opt')
+        expect(config).to have_key('uri')
+      end
+
+      it 'omits uri when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_webhook('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_webhook', 'minimal')
+        expect(config).not_to have_key('uri')
       end
     end
 

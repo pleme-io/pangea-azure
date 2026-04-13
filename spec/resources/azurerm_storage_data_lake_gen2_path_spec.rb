@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureStorageDataLakeGen2Path do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ ace: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ ace: [{ 'key1' => 'val1' }], group: 'test-value', owner: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,8 @@ RSpec.describe Pangea::Resources::AzureStorageDataLakeGen2Path do
 
         config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_path', 'full')
         expect(config).to have_key('ace')
+        expect(config).to have_key('group')
+        expect(config).to have_key('owner')
       end
     end
 
@@ -87,6 +89,40 @@ RSpec.describe Pangea::Resources::AzureStorageDataLakeGen2Path do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_path', 'minimal')
         expect(config).not_to have_key('ace')
+      end
+      it 'includes group when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_path('opt', required_attrs.merge(group: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_path', 'opt')
+        expect(config).to have_key('group')
+      end
+
+      it 'omits group when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_path('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_path', 'minimal')
+        expect(config).not_to have_key('group')
+      end
+      it 'includes owner when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_path('opt', required_attrs.merge(owner: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_path', 'opt')
+        expect(config).to have_key('owner')
+      end
+
+      it 'omits owner when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_path('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_path', 'minimal')
+        expect(config).not_to have_key('owner')
       end
     end
 

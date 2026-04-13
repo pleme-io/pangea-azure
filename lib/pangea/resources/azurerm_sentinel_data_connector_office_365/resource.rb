@@ -14,6 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SentinelDataConnectorOffice365Attributes,
       outputs: { id: :id },
       map: [:log_analytics_workspace_id, :name],
+      map_present: [:tenant_id],
       map_bool: [:exchange_enabled, :sharepoint_enabled, :teams_enabled]
   end
   module Azure

@@ -67,7 +67,7 @@ RSpec.describe Pangea::Resources::AzureDatabricksWorkspace do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ access_connector_id: 'test-value', custom_parameters: [{ 'key1' => 'val1' }], customer_managed_key_enabled: true, default_storage_firewall_enabled: true, enhanced_security_compliance: [{ 'key1' => 'val1' }], infrastructure_encryption_enabled: true, load_balancer_backend_address_pool_id: 'test-value', managed_disk_cmk_key_vault_id: 'test-value', managed_disk_cmk_key_vault_key_id: 'test-value', managed_disk_cmk_rotation_to_latest_version_enabled: true, managed_services_cmk_key_vault_id: 'test-value', managed_services_cmk_key_vault_key_id: 'test-value', network_security_group_rules_required: 'test-value', public_network_access_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ access_connector_id: 'test-value', custom_parameters: { 'key1' => 'val1' }, customer_managed_key_enabled: true, default_storage_firewall_enabled: true, enhanced_security_compliance: { 'key1' => 'val1' }, infrastructure_encryption_enabled: true, load_balancer_backend_address_pool_id: 'test-value', managed_disk_cmk_key_vault_id: 'test-value', managed_disk_cmk_key_vault_key_id: 'test-value', managed_disk_cmk_rotation_to_latest_version_enabled: true, managed_resource_group_name: 'test-value', managed_services_cmk_key_vault_id: 'test-value', managed_services_cmk_key_vault_key_id: 'test-value', network_security_group_rules_required: 'test-value', public_network_access_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -86,6 +86,7 @@ RSpec.describe Pangea::Resources::AzureDatabricksWorkspace do
         expect(config).to have_key('managed_disk_cmk_key_vault_id')
         expect(config).to have_key('managed_disk_cmk_key_vault_key_id')
         expect(config).to have_key('managed_disk_cmk_rotation_to_latest_version_enabled')
+        expect(config).to have_key('managed_resource_group_name')
         expect(config).to have_key('managed_services_cmk_key_vault_id')
         expect(config).to have_key('managed_services_cmk_key_vault_key_id')
         expect(config).to have_key('network_security_group_rules_required')
@@ -115,7 +116,7 @@ RSpec.describe Pangea::Resources::AzureDatabricksWorkspace do
       it 'includes custom_parameters when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_databricks_workspace('opt', required_attrs.merge(custom_parameters: [{ 'key1' => 'val1' }]))
+        synth.azurerm_databricks_workspace('opt', required_attrs.merge(custom_parameters: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_databricks_workspace', 'opt')
         expect(config).to have_key('custom_parameters')
@@ -166,7 +167,7 @@ RSpec.describe Pangea::Resources::AzureDatabricksWorkspace do
       it 'includes enhanced_security_compliance when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_databricks_workspace('opt', required_attrs.merge(enhanced_security_compliance: [{ 'key1' => 'val1' }]))
+        synth.azurerm_databricks_workspace('opt', required_attrs.merge(enhanced_security_compliance: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_databricks_workspace', 'opt')
         expect(config).to have_key('enhanced_security_compliance')
@@ -264,6 +265,23 @@ RSpec.describe Pangea::Resources::AzureDatabricksWorkspace do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_databricks_workspace', 'minimal')
         expect(config).not_to have_key('managed_disk_cmk_rotation_to_latest_version_enabled')
+      end
+      it 'includes managed_resource_group_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_databricks_workspace('opt', required_attrs.merge(managed_resource_group_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_databricks_workspace', 'opt')
+        expect(config).to have_key('managed_resource_group_name')
+      end
+
+      it 'omits managed_resource_group_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_databricks_workspace('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_databricks_workspace', 'minimal')
+        expect(config).not_to have_key('managed_resource_group_name')
       end
       it 'includes managed_services_cmk_key_vault_id when provided' do
         synth = create_synthesizer

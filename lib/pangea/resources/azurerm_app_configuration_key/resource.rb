@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AppConfigurationKeyAttributes,
       outputs: { id: :id },
       map: [:configuration_store_id, :key],
-      map_present: [:label, :tags, :type, :value, :vault_key_reference],
+      map_present: [:content_type, :etag, :label, :tags, :type, :value, :vault_key_reference],
       map_bool: [:locked]
   end
   module Azure

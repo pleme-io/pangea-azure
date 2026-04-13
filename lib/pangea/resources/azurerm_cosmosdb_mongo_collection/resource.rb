@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::CosmosdbMongoCollectionAttributes,
       outputs: { id: :id },
       map: [:account_name, :database_name, :name, :resource_group_name],
-      map_present: [:analytical_storage_ttl, :autoscale_settings, :default_ttl_seconds, :index, :shard_key]
+      map_present: [:analytical_storage_ttl, :autoscale_settings, :default_ttl_seconds, :index, :shard_key, :throughput]
   end
   module Azure
     include AzureCosmosdbMongoCollection

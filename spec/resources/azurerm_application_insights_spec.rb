@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureApplicationInsights do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ daily_data_cap_in_gb: 3.14, daily_data_cap_notifications_disabled: true, disable_ip_masking: true, force_customer_storage_for_profiler: true, internet_ingestion_enabled: true, internet_query_enabled: true, local_authentication_disabled: true, retention_in_days: 3.14, sampling_percentage: 3.14, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ daily_data_cap_in_gb: 3.14, daily_data_cap_notifications_disabled: true, disable_ip_masking: true, force_customer_storage_for_profiler: true, internet_ingestion_enabled: true, internet_query_enabled: true, local_authentication_disabled: true, retention_in_days: 3.14, sampling_percentage: 3.14, tags: { 'key1' => 'val1' }, workspace_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -80,6 +80,7 @@ RSpec.describe Pangea::Resources::AzureApplicationInsights do
         expect(config).to have_key('retention_in_days')
         expect(config).to have_key('sampling_percentage')
         expect(config).to have_key('tags')
+        expect(config).to have_key('workspace_id')
       end
     end
 
@@ -253,6 +254,23 @@ RSpec.describe Pangea::Resources::AzureApplicationInsights do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_insights', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes workspace_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_insights('opt', required_attrs.merge(workspace_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_insights', 'opt')
+        expect(config).to have_key('workspace_id')
+      end
+
+      it 'omits workspace_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_application_insights('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_application_insights', 'minimal')
+        expect(config).not_to have_key('workspace_id')
       end
     end
 

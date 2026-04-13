@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_lighthouse_assignment,
       attributes_class: Azure::Types::LighthouseAssignmentAttributes,
       outputs: { id: :id },
-      map: [:lighthouse_definition_id, :scope]
+      map: [:lighthouse_definition_id, :scope],
+      map_present: [:name]
   end
   module Azure
     include AzureLighthouseAssignment

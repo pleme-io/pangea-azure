@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::DataFactoryManagedPrivateEndpointAttributes,
       outputs: { id: :id },
       map: [:data_factory_id, :name, :target_resource_id],
-      map_present: [:subresource_name]
+      map_present: [:fqdns, :subresource_name]
   end
   module Azure
     include AzureDataFactoryManagedPrivateEndpoint

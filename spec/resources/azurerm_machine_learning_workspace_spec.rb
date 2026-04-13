@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMachineLearningWorkspace do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { application_insights_id: 'test-value', identity: [{ 'key1' => 'val1' }], key_vault_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage_account_id: 'test-value' } }
+  let(:required_attrs) { { application_insights_id: 'test-value', identity: { 'key1' => 'val1' }, key_vault_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage_account_id: 'test-value' } }
 
   describe ':azurerm_machine_learning_workspace' do
     context 'with required attributes only' do
@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningWorkspace do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ container_registry_id: 'test-value', description: 'test-value', encryption: [{ 'key1' => 'val1' }], feature_store: [{ 'key1' => 'val1' }], friendly_name: 'test-value', high_business_impact: true, image_build_compute_name: 'test-value', kind: 'test-value', managed_network: [{ 'key1' => 'val1' }], primary_user_assigned_identity: 'test-value', public_network_access_enabled: true, serverless_compute: [{ 'key1' => 'val1' }], service_side_encryption_enabled: true, sku_name: 'test-value', tags: { 'key1' => 'val1' }, v1_legacy_mode_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ container_registry_id: 'test-value', description: 'test-value', encryption: { 'key1' => 'val1' }, feature_store: { 'key1' => 'val1' }, friendly_name: 'test-value', high_business_impact: true, image_build_compute_name: 'test-value', kind: 'test-value', managed_network: { 'key1' => 'val1' }, primary_user_assigned_identity: 'test-value', public_network_access_enabled: true, serverless_compute: { 'key1' => 'val1' }, service_side_encryption_enabled: true, sku_name: 'test-value', tags: { 'key1' => 'val1' }, v1_legacy_mode_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -123,7 +123,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningWorkspace do
       it 'includes encryption when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_machine_learning_workspace('opt', required_attrs.merge(encryption: [{ 'key1' => 'val1' }]))
+        synth.azurerm_machine_learning_workspace('opt', required_attrs.merge(encryption: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_workspace', 'opt')
         expect(config).to have_key('encryption')
@@ -140,7 +140,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningWorkspace do
       it 'includes feature_store when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_machine_learning_workspace('opt', required_attrs.merge(feature_store: [{ 'key1' => 'val1' }]))
+        synth.azurerm_machine_learning_workspace('opt', required_attrs.merge(feature_store: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_workspace', 'opt')
         expect(config).to have_key('feature_store')
@@ -225,7 +225,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningWorkspace do
       it 'includes managed_network when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_machine_learning_workspace('opt', required_attrs.merge(managed_network: [{ 'key1' => 'val1' }]))
+        synth.azurerm_machine_learning_workspace('opt', required_attrs.merge(managed_network: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_workspace', 'opt')
         expect(config).to have_key('managed_network')
@@ -276,7 +276,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningWorkspace do
       it 'includes serverless_compute when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_machine_learning_workspace('opt', required_attrs.merge(serverless_compute: [{ 'key1' => 'val1' }]))
+        synth.azurerm_machine_learning_workspace('opt', required_attrs.merge(serverless_compute: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_workspace', 'opt')
         expect(config).to have_key('serverless_compute')
@@ -416,7 +416,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningWorkspace do
 
         config = validate_resource_structure(result, 'azurerm_machine_learning_workspace', 'typed')
         expect(config['application_insights_id']).to be_a(String)
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['key_vault_id']).to be_a(String)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
@@ -454,7 +454,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningWorkspace do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_machine_learning_workspace,
     method: :azurerm_machine_learning_workspace,
-    required_attrs: { application_insights_id: 'test-value', identity: [{ 'key1' => 'val1' }], key_vault_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage_account_id: 'test-value' },
+    required_attrs: { application_insights_id: 'test-value', identity: { 'key1' => 'val1' }, key_vault_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage_account_id: 'test-value' },
     expected_outputs: [:id, :discovery_url, :workspace_id],
     sensitive_fields: [],
     immutable_fields: [],

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::PolicySetDefinitionAttributes,
       outputs: { id: :id },
       map: [:display_name, :name, :policy_definition_reference, :policy_type],
-      map_present: [:description, :management_group_id, :parameters, :policy_definition_group]
+      map_present: [:description, :management_group_id, :metadata, :parameters, :policy_definition_group]
   end
   module Azure
     include AzurePolicySetDefinition

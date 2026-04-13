@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMonitorDataCollectionRule do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { data_flow: [{ 'key1' => 'val1' }], destinations: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { data_flow: [{ 'key1' => 'val1' }], destinations: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_monitor_data_collection_rule' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureMonitorDataCollectionRule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ data_collection_endpoint_id: 'test-value', data_sources: [{ 'key1' => 'val1' }], description: 'test-value', identity: [{ 'key1' => 'val1' }], kind: 'test-value', stream_declaration: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ data_collection_endpoint_id: 'test-value', data_sources: { 'key1' => 'val1' }, description: 'test-value', identity: { 'key1' => 'val1' }, kind: 'test-value', stream_declaration: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -95,7 +95,7 @@ RSpec.describe Pangea::Resources::AzureMonitorDataCollectionRule do
       it 'includes data_sources when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_data_collection_rule('opt', required_attrs.merge(data_sources: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_data_collection_rule('opt', required_attrs.merge(data_sources: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_data_collection_rule', 'opt')
         expect(config).to have_key('data_sources')
@@ -129,7 +129,7 @@ RSpec.describe Pangea::Resources::AzureMonitorDataCollectionRule do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_data_collection_rule('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_data_collection_rule('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_data_collection_rule', 'opt')
         expect(config).to have_key('identity')
@@ -205,7 +205,7 @@ RSpec.describe Pangea::Resources::AzureMonitorDataCollectionRule do
 
         config = validate_resource_structure(result, 'azurerm_monitor_data_collection_rule', 'typed')
         expect(config['data_flow']).to be_a(Array)
-        expect(config['destinations']).to be_a(Array)
+        expect(config['destinations']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -241,7 +241,7 @@ RSpec.describe Pangea::Resources::AzureMonitorDataCollectionRule do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_monitor_data_collection_rule,
     method: :azurerm_monitor_data_collection_rule,
-    required_attrs: { data_flow: [{ 'key1' => 'val1' }], destinations: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { data_flow: [{ 'key1' => 'val1' }], destinations: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id, :immutable_id],
     sensitive_fields: [],
     immutable_fields: [],

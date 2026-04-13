@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::MongoClusterAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:administrator_password, :administrator_username, :compute_tier, :create_mode, :customer_managed_key, :high_availability_mode, :identity, :preview_features, :public_network_access, :restore, :shard_count, :source_location, :source_server_id, :storage_size_in_gb, :storage_type, :tags, :version],
+      map_present: [:administrator_password, :administrator_username, :authentication_methods, :compute_tier, :create_mode, :customer_managed_key, :high_availability_mode, :identity, :preview_features, :public_network_access, :restore, :shard_count, :source_location, :source_server_id, :storage_size_in_gb, :storage_type, :tags, :version],
       map_bool: [:data_api_mode_enabled]
   end
   module Azure

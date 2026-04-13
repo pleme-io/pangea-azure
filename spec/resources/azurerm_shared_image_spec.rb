@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureSharedImage do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { gallery_name: 'test-value', identifier: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', os_type: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { gallery_name: 'test-value', identifier: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', os_type: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_shared_image' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureSharedImage do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ accelerated_network_support_enabled: true, architecture: 'test-value', confidential_vm_enabled: true, confidential_vm_supported: true, description: 'test-value', disk_controller_type_nvme_enabled: true, disk_types_not_allowed: ['test-value'], end_of_life_date: 'test-value', eula: 'test-value', hibernation_enabled: true, hyper_v_generation: 'test-value', max_recommended_memory_in_gb: 3.14, max_recommended_vcpu_count: 3.14, min_recommended_memory_in_gb: 3.14, min_recommended_vcpu_count: 3.14, privacy_statement_uri: 'test-value', purchase_plan: [{ 'key1' => 'val1' }], release_note_uri: 'test-value', specialized: true, tags: { 'key1' => 'val1' }, trusted_launch_enabled: true, trusted_launch_supported: true }) }
+      let(:all_attrs) { required_attrs.merge({ accelerated_network_support_enabled: true, architecture: 'test-value', confidential_vm_enabled: true, confidential_vm_supported: true, description: 'test-value', disk_controller_type_nvme_enabled: true, disk_types_not_allowed: ['test-value'], end_of_life_date: 'test-value', eula: 'test-value', hibernation_enabled: true, hyper_v_generation: 'test-value', max_recommended_memory_in_gb: 3.14, max_recommended_vcpu_count: 3.14, min_recommended_memory_in_gb: 3.14, min_recommended_vcpu_count: 3.14, privacy_statement_uri: 'test-value', purchase_plan: { 'key1' => 'val1' }, release_note_uri: 'test-value', specialized: true, tags: { 'key1' => 'val1' }, trusted_launch_enabled: true, trusted_launch_supported: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -352,7 +352,7 @@ RSpec.describe Pangea::Resources::AzureSharedImage do
       it 'includes purchase_plan when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_shared_image('opt', required_attrs.merge(purchase_plan: [{ 'key1' => 'val1' }]))
+        synth.azurerm_shared_image('opt', required_attrs.merge(purchase_plan: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_shared_image', 'opt')
         expect(config).to have_key('purchase_plan')
@@ -553,7 +553,7 @@ RSpec.describe Pangea::Resources::AzureSharedImage do
 
         config = validate_resource_structure(result, 'azurerm_shared_image', 'typed')
         expect(config['gallery_name']).to be_a(String)
-        expect(config['identifier']).to be_a(Array)
+        expect(config['identifier']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['os_type']).to be_a(String)
@@ -590,7 +590,7 @@ RSpec.describe Pangea::Resources::AzureSharedImage do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_shared_image,
     method: :azurerm_shared_image,
-    required_attrs: { gallery_name: 'test-value', identifier: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', os_type: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { gallery_name: 'test-value', identifier: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', os_type: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

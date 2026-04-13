@@ -65,7 +65,7 @@ RSpec.describe Pangea::Resources::AzureRoleAssignment do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ condition: 'test-value', delegated_managed_identity_resource_id: 'test-value', description: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ condition: 'test-value', condition_version: 'test-value', delegated_managed_identity_resource_id: 'test-value', description: 'test-value', name: 'test-value', principal_type: 'test-value', role_definition_id: 'test-value', role_definition_name: 'test-value', skip_service_principal_aad_check: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -75,8 +75,14 @@ RSpec.describe Pangea::Resources::AzureRoleAssignment do
 
         config = validate_resource_structure(result, 'azurerm_role_assignment', 'full')
         expect(config).to have_key('condition')
+        expect(config).to have_key('condition_version')
         expect(config).to have_key('delegated_managed_identity_resource_id')
         expect(config).to have_key('description')
+        expect(config).to have_key('name')
+        expect(config).to have_key('principal_type')
+        expect(config).to have_key('role_definition_id')
+        expect(config).to have_key('role_definition_name')
+        expect(config).to have_key('skip_service_principal_aad_check')
       end
     end
 
@@ -97,6 +103,23 @@ RSpec.describe Pangea::Resources::AzureRoleAssignment do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_role_assignment', 'minimal')
         expect(config).not_to have_key('condition')
+      end
+      it 'includes condition_version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('opt', required_attrs.merge(condition_version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'opt')
+        expect(config).to have_key('condition_version')
+      end
+
+      it 'omits condition_version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'minimal')
+        expect(config).not_to have_key('condition_version')
       end
       it 'includes delegated_managed_identity_resource_id when provided' do
         synth = create_synthesizer
@@ -131,6 +154,105 @@ RSpec.describe Pangea::Resources::AzureRoleAssignment do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_role_assignment', 'minimal')
         expect(config).not_to have_key('description')
+      end
+      it 'includes name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('opt', required_attrs.merge(name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'opt')
+        expect(config).to have_key('name')
+      end
+
+      it 'omits name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'minimal')
+        expect(config).not_to have_key('name')
+      end
+      it 'includes principal_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('opt', required_attrs.merge(principal_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'opt')
+        expect(config).to have_key('principal_type')
+      end
+
+      it 'omits principal_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'minimal')
+        expect(config).not_to have_key('principal_type')
+      end
+      it 'includes role_definition_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('opt', required_attrs.merge(role_definition_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'opt')
+        expect(config).to have_key('role_definition_id')
+      end
+
+      it 'omits role_definition_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'minimal')
+        expect(config).not_to have_key('role_definition_id')
+      end
+      it 'includes role_definition_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('opt', required_attrs.merge(role_definition_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'opt')
+        expect(config).to have_key('role_definition_name')
+      end
+
+      it 'omits role_definition_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'minimal')
+        expect(config).not_to have_key('role_definition_name')
+      end
+      it 'includes skip_service_principal_aad_check when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('opt', required_attrs.merge(skip_service_principal_aad_check: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'opt')
+        expect(config).to have_key('skip_service_principal_aad_check')
+      end
+
+      it 'omits skip_service_principal_aad_check when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_assignment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_assignment', 'minimal')
+        expect(config).not_to have_key('skip_service_principal_aad_check')
+      end
+    end
+
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts skip_service_principal_aad_check=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(skip_service_principal_aad_check: val)
+          synth.azurerm_role_assignment("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_role_assignment', "bool_#{val}")
+          expect(config['skip_service_principal_aad_check']).to eq(val)
+        end
       end
     end
 
@@ -180,5 +302,5 @@ RSpec.describe Pangea::Resources::AzureRoleAssignment do
     expected_outputs: [:id, :condition_version, :name, :principal_type, :role_definition_id, :role_definition_name, :skip_service_principal_aad_check],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:skip_service_principal_aad_check]
 end

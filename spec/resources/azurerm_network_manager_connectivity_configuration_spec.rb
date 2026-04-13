@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureNetworkManagerConnectivityConfiguration d
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ delete_existing_peering_enabled: true, description: 'test-value', global_mesh_enabled: true, hub: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ delete_existing_peering_enabled: true, description: 'test-value', global_mesh_enabled: true, hub: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -113,7 +113,7 @@ RSpec.describe Pangea::Resources::AzureNetworkManagerConnectivityConfiguration d
       it 'includes hub when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_network_manager_connectivity_configuration('opt', required_attrs.merge(hub: [{ 'key1' => 'val1' }]))
+        synth.azurerm_network_manager_connectivity_configuration('opt', required_attrs.merge(hub: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_network_manager_connectivity_configuration', 'opt')
         expect(config).to have_key('hub')

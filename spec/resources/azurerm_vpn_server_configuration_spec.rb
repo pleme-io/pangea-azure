@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureVpnServerConfiguration do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ azure_active_directory_authentication: [{ 'key1' => 'val1' }], client_revoked_certificate: [{ 'key1' => 'val1' }], client_root_certificate: [{ 'key1' => 'val1' }], ipsec_policy: [{ 'key1' => 'val1' }], radius: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ azure_active_directory_authentication: [{ 'key1' => 'val1' }], client_revoked_certificate: [{ 'key1' => 'val1' }], client_root_certificate: [{ 'key1' => 'val1' }], ipsec_policy: { 'key1' => 'val1' }, radius: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, vpn_protocols: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,6 +70,7 @@ RSpec.describe Pangea::Resources::AzureVpnServerConfiguration do
         expect(config).to have_key('ipsec_policy')
         expect(config).to have_key('radius')
         expect(config).to have_key('tags')
+        expect(config).to have_key('vpn_protocols')
       end
     end
 
@@ -128,7 +129,7 @@ RSpec.describe Pangea::Resources::AzureVpnServerConfiguration do
       it 'includes ipsec_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_vpn_server_configuration('opt', required_attrs.merge(ipsec_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_vpn_server_configuration('opt', required_attrs.merge(ipsec_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_vpn_server_configuration', 'opt')
         expect(config).to have_key('ipsec_policy')
@@ -145,7 +146,7 @@ RSpec.describe Pangea::Resources::AzureVpnServerConfiguration do
       it 'includes radius when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_vpn_server_configuration('opt', required_attrs.merge(radius: [{ 'key1' => 'val1' }]))
+        synth.azurerm_vpn_server_configuration('opt', required_attrs.merge(radius: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_vpn_server_configuration', 'opt')
         expect(config).to have_key('radius')
@@ -175,6 +176,23 @@ RSpec.describe Pangea::Resources::AzureVpnServerConfiguration do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_vpn_server_configuration', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes vpn_protocols when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_vpn_server_configuration('opt', required_attrs.merge(vpn_protocols: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_vpn_server_configuration', 'opt')
+        expect(config).to have_key('vpn_protocols')
+      end
+
+      it 'omits vpn_protocols when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_vpn_server_configuration('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_vpn_server_configuration', 'minimal')
+        expect(config).not_to have_key('vpn_protocols')
       end
     end
 

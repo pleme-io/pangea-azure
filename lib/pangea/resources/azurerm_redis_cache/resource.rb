@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::RedisCacheAttributes,
       outputs: { id: :id },
       map: [:capacity, :family, :location, :name, :resource_group_name, :sku_name],
-      map_present: [:identity, :minimum_tls_version, :patch_schedule, :redis_configuration, :redis_version, :shard_count, :subnet_id, :tags, :tenant_settings, :zones],
+      map_present: [:identity, :minimum_tls_version, :patch_schedule, :private_static_ip_address, :redis_configuration, :redis_version, :replicas_per_master, :replicas_per_primary, :shard_count, :subnet_id, :tags, :tenant_settings, :zones],
       map_bool: [:access_keys_authentication_enabled, :non_ssl_port_enabled, :public_network_access_enabled]
   end
   module Azure

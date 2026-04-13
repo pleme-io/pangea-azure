@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::PurviewAccountAttributes,
       outputs: { id: :id },
       map: [:identity, :location, :name, :resource_group_name],
-      map_present: [:tags],
+      map_present: [:managed_resource_group_name, :tags],
       map_bool: [:managed_event_hub_enabled, :public_network_enabled]
   end
   module Azure

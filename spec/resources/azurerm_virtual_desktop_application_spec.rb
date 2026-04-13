@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureVirtualDesktopApplication do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ command_line_arguments: 'test-value', description: 'test-value', icon_index: 3.14, show_in_portal: true }) }
+      let(:all_attrs) { required_attrs.merge({ command_line_arguments: 'test-value', description: 'test-value', friendly_name: 'test-value', icon_index: 3.14, icon_path: 'test-value', show_in_portal: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,7 +68,9 @@ RSpec.describe Pangea::Resources::AzureVirtualDesktopApplication do
         config = validate_resource_structure(result, 'azurerm_virtual_desktop_application', 'full')
         expect(config).to have_key('command_line_arguments')
         expect(config).to have_key('description')
+        expect(config).to have_key('friendly_name')
         expect(config).to have_key('icon_index')
+        expect(config).to have_key('icon_path')
         expect(config).to have_key('show_in_portal')
       end
     end
@@ -108,6 +110,23 @@ RSpec.describe Pangea::Resources::AzureVirtualDesktopApplication do
         config = validate_resource_structure(result, 'azurerm_virtual_desktop_application', 'minimal')
         expect(config).not_to have_key('description')
       end
+      it 'includes friendly_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_desktop_application('opt', required_attrs.merge(friendly_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_desktop_application', 'opt')
+        expect(config).to have_key('friendly_name')
+      end
+
+      it 'omits friendly_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_desktop_application('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_desktop_application', 'minimal')
+        expect(config).not_to have_key('friendly_name')
+      end
       it 'includes icon_index when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -124,6 +143,23 @@ RSpec.describe Pangea::Resources::AzureVirtualDesktopApplication do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_desktop_application', 'minimal')
         expect(config).not_to have_key('icon_index')
+      end
+      it 'includes icon_path when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_desktop_application('opt', required_attrs.merge(icon_path: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_desktop_application', 'opt')
+        expect(config).to have_key('icon_path')
+      end
+
+      it 'omits icon_path when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_desktop_application('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_desktop_application', 'minimal')
+        expect(config).not_to have_key('icon_path')
       end
       it 'includes show_in_portal when provided' do
         synth = create_synthesizer

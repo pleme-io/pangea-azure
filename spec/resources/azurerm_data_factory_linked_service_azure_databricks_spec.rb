@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceAzureDatabricks d
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ access_token: 'test-value', additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], description: 'test-value', existing_cluster_id: 'test-value', instance_pool: [{ 'key1' => 'val1' }], integration_runtime_name: 'test-value', key_vault_password: [{ 'key1' => 'val1' }], new_cluster_config: [{ 'key1' => 'val1' }], parameters: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ access_token: 'test-value', additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], description: 'test-value', existing_cluster_id: 'test-value', instance_pool: { 'key1' => 'val1' }, integration_runtime_name: 'test-value', key_vault_password: { 'key1' => 'val1' }, msi_work_space_resource_id: 'test-value', msi_workspace_id: 'test-value', new_cluster_config: { 'key1' => 'val1' }, parameters: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,6 +74,8 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceAzureDatabricks d
         expect(config).to have_key('instance_pool')
         expect(config).to have_key('integration_runtime_name')
         expect(config).to have_key('key_vault_password')
+        expect(config).to have_key('msi_work_space_resource_id')
+        expect(config).to have_key('msi_workspace_id')
         expect(config).to have_key('new_cluster_config')
         expect(config).to have_key('parameters')
       end
@@ -168,7 +170,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceAzureDatabricks d
       it 'includes instance_pool when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_azure_databricks('opt', required_attrs.merge(instance_pool: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_azure_databricks('opt', required_attrs.merge(instance_pool: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_databricks', 'opt')
         expect(config).to have_key('instance_pool')
@@ -202,7 +204,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceAzureDatabricks d
       it 'includes key_vault_password when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_azure_databricks('opt', required_attrs.merge(key_vault_password: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_azure_databricks('opt', required_attrs.merge(key_vault_password: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_databricks', 'opt')
         expect(config).to have_key('key_vault_password')
@@ -216,10 +218,44 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceAzureDatabricks d
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_databricks', 'minimal')
         expect(config).not_to have_key('key_vault_password')
       end
+      it 'includes msi_work_space_resource_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_linked_service_azure_databricks('opt', required_attrs.merge(msi_work_space_resource_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_databricks', 'opt')
+        expect(config).to have_key('msi_work_space_resource_id')
+      end
+
+      it 'omits msi_work_space_resource_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_linked_service_azure_databricks('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_databricks', 'minimal')
+        expect(config).not_to have_key('msi_work_space_resource_id')
+      end
+      it 'includes msi_workspace_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_linked_service_azure_databricks('opt', required_attrs.merge(msi_workspace_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_databricks', 'opt')
+        expect(config).to have_key('msi_workspace_id')
+      end
+
+      it 'omits msi_workspace_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_linked_service_azure_databricks('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_databricks', 'minimal')
+        expect(config).not_to have_key('msi_workspace_id')
+      end
       it 'includes new_cluster_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_azure_databricks('opt', required_attrs.merge(new_cluster_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_azure_databricks('opt', required_attrs.merge(new_cluster_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_databricks', 'opt')
         expect(config).to have_key('new_cluster_config')

@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureVpnGateway do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ bgp_route_translation_for_nat_enabled: true, bgp_settings: [{ 'key1' => 'val1' }], routing_preference: 'test-value', scale_unit: 3.14, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ bgp_route_translation_for_nat_enabled: true, bgp_settings: { 'key1' => 'val1' }, routing_preference: 'test-value', scale_unit: 3.14, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -93,7 +93,7 @@ RSpec.describe Pangea::Resources::AzureVpnGateway do
       it 'includes bgp_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_vpn_gateway('opt', required_attrs.merge(bgp_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_vpn_gateway('opt', required_attrs.merge(bgp_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_vpn_gateway', 'opt')
         expect(config).to have_key('bgp_settings')

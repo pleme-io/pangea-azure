@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureBatchPool do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { account_name: 'test-value', name: 'test-value', node_agent_sku_id: 'test-value', resource_group_name: 'test-value', storage_image_reference: [{ 'key1' => 'val1' }], vm_size: 'test-value' } }
+  let(:required_attrs) { { account_name: 'test-value', name: 'test-value', node_agent_sku_id: 'test-value', resource_group_name: 'test-value', storage_image_reference: { 'key1' => 'val1' }, vm_size: 'test-value' } }
 
   describe ':azurerm_batch_pool' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_scale: [{ 'key1' => 'val1' }], certificate: [{ 'key1' => 'val1' }], container_configuration: [{ 'key1' => 'val1' }], data_disks: [{ 'key1' => 'val1' }], disk_encryption: [{ 'key1' => 'val1' }], display_name: 'test-value', extensions: [{ 'key1' => 'val1' }], fixed_scale: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], inter_node_communication: 'test-value', license_type: 'test-value', max_tasks_per_node: 3.14, metadata: { 'key1' => 'val1' }, mount: [{ 'key1' => 'val1' }], network_configuration: [{ 'key1' => 'val1' }], node_placement: [{ 'key1' => 'val1' }], os_disk_placement: 'test-value', security_profile: [{ 'key1' => 'val1' }], start_task: [{ 'key1' => 'val1' }], stop_pending_resize_operation: true, target_node_communication_mode: 'test-value', task_scheduling_policy: [{ 'key1' => 'val1' }], user_accounts: [{ 'key1' => 'val1' }], windows: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ auto_scale: { 'key1' => 'val1' }, certificate: [{ 'key1' => 'val1' }], container_configuration: { 'key1' => 'val1' }, data_disks: [{ 'key1' => 'val1' }], disk_encryption: [{ 'key1' => 'val1' }], display_name: 'test-value', extensions: [{ 'key1' => 'val1' }], fixed_scale: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, inter_node_communication: 'test-value', license_type: 'test-value', max_tasks_per_node: 3.14, metadata: { 'key1' => 'val1' }, mount: [{ 'key1' => 'val1' }], network_configuration: { 'key1' => 'val1' }, node_placement: [{ 'key1' => 'val1' }], os_disk_placement: 'test-value', security_profile: { 'key1' => 'val1' }, start_task: { 'key1' => 'val1' }, stop_pending_resize_operation: true, target_node_communication_mode: 'test-value', task_scheduling_policy: [{ 'key1' => 'val1' }], user_accounts: [{ 'key1' => 'val1' }], windows: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -82,7 +82,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
       it 'includes auto_scale when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_pool('opt', required_attrs.merge(auto_scale: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_pool('opt', required_attrs.merge(auto_scale: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_pool', 'opt')
         expect(config).to have_key('auto_scale')
@@ -116,7 +116,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
       it 'includes container_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_pool('opt', required_attrs.merge(container_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_pool('opt', required_attrs.merge(container_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_pool', 'opt')
         expect(config).to have_key('container_configuration')
@@ -201,7 +201,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
       it 'includes fixed_scale when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_pool('opt', required_attrs.merge(fixed_scale: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_pool('opt', required_attrs.merge(fixed_scale: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_pool', 'opt')
         expect(config).to have_key('fixed_scale')
@@ -218,7 +218,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_pool('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_pool('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_pool', 'opt')
         expect(config).to have_key('identity')
@@ -320,7 +320,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
       it 'includes network_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_pool('opt', required_attrs.merge(network_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_pool('opt', required_attrs.merge(network_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_pool', 'opt')
         expect(config).to have_key('network_configuration')
@@ -371,7 +371,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
       it 'includes security_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_pool('opt', required_attrs.merge(security_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_pool('opt', required_attrs.merge(security_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_pool', 'opt')
         expect(config).to have_key('security_profile')
@@ -388,7 +388,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
       it 'includes start_task when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_pool('opt', required_attrs.merge(start_task: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_pool('opt', required_attrs.merge(start_task: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_pool', 'opt')
         expect(config).to have_key('start_task')
@@ -515,7 +515,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
         expect(config['name']).to be_a(String)
         expect(config['node_agent_sku_id']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['storage_image_reference']).to be_a(Array)
+        expect(config['storage_image_reference']).to be_a(Hash)
         expect(config['vm_size']).to be_a(String)
       end
     end
@@ -549,7 +549,7 @@ RSpec.describe Pangea::Resources::AzureBatchPool do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_batch_pool,
     method: :azurerm_batch_pool,
-    required_attrs: { account_name: 'test-value', name: 'test-value', node_agent_sku_id: 'test-value', resource_group_name: 'test-value', storage_image_reference: [{ 'key1' => 'val1' }], vm_size: 'test-value' },
+    required_attrs: { account_name: 'test-value', name: 'test-value', node_agent_sku_id: 'test-value', resource_group_name: 'test-value', storage_image_reference: { 'key1' => 'val1' }, vm_size: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

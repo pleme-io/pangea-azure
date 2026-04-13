@@ -1,0 +1,8 @@
+name: azurerm_key_vault_managed_storage_account_sas_token_definition
+title: Manages a azurerm_key_vault_managed_storage_account_sas_token_definition resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

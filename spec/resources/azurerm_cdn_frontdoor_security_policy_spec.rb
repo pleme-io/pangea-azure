@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureCdnFrontdoorSecurityPolicy do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { cdn_frontdoor_profile_id: 'test-value', name: 'test-value', security_policies: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { cdn_frontdoor_profile_id: 'test-value', name: 'test-value', security_policies: { 'key1' => 'val1' } } }
 
   describe ':azurerm_cdn_frontdoor_security_policy' do
     context 'with required attributes only' do
@@ -51,7 +51,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorSecurityPolicy do
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_security_policy', 'typed')
         expect(config['cdn_frontdoor_profile_id']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['security_policies']).to be_a(Array)
+        expect(config['security_policies']).to be_a(Hash)
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorSecurityPolicy do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_cdn_frontdoor_security_policy,
     method: :azurerm_cdn_frontdoor_security_policy,
-    required_attrs: { cdn_frontdoor_profile_id: 'test-value', name: 'test-value', security_policies: [{ 'key1' => 'val1' }] },
+    required_attrs: { cdn_frontdoor_profile_id: 'test-value', name: 'test-value', security_policies: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

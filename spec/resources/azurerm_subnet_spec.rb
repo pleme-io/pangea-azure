@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureSubnet do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ address_prefixes: ['test-value'], default_outbound_access_enabled: true, delegation: [{ 'key1' => 'val1' }], ip_address_pool: [{ 'key1' => 'val1' }], private_endpoint_network_policies: 'test-value', private_link_service_network_policies_enabled: true, service_endpoint_policy_ids: ['test-value'], service_endpoints: ['test-value'], sharing_scope: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ address_prefixes: ['test-value'], default_outbound_access_enabled: true, delegation: [{ 'key1' => 'val1' }], ip_address_pool: { 'key1' => 'val1' }, private_endpoint_network_policies: 'test-value', private_link_service_network_policies_enabled: true, service_endpoint_policy_ids: ['test-value'], service_endpoints: ['test-value'], sharing_scope: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -118,7 +118,7 @@ RSpec.describe Pangea::Resources::AzureSubnet do
       it 'includes ip_address_pool when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_subnet('opt', required_attrs.merge(ip_address_pool: [{ 'key1' => 'val1' }]))
+        synth.azurerm_subnet('opt', required_attrs.merge(ip_address_pool: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_subnet', 'opt')
         expect(config).to have_key('ip_address_pool')

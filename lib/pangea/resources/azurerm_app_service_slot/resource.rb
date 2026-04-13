@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::AppServiceSlotAttributes,
       outputs: { id: :id },
       map: [:app_service_name, :app_service_plan_id, :location, :name, :resource_group_name],
-      map_present: [:auth_settings, :connection_string, :identity, :logs, :site_config, :storage_account, :tags],
-      map_bool: [:enabled, :https_only]
+      map_present: [:app_settings, :auth_settings, :connection_string, :identity, :key_vault_reference_identity_id, :logs, :site_config, :storage_account, :tags],
+      map_bool: [:client_affinity_enabled, :enabled, :https_only]
   end
   module Azure
     include AzureAppServiceSlot

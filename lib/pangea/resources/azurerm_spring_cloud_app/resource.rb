@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SpringCloudAppAttributes,
       outputs: { id: :id },
       map: [:name, :resource_group_name, :service_name],
-      map_present: [:custom_persistent_disk, :identity, :ingress_settings, :persistent_disk],
+      map_present: [:addon_json, :custom_persistent_disk, :identity, :ingress_settings, :persistent_disk],
       map_bool: [:https_only, :is_public, :public_endpoint_enabled, :tls_enabled]
   end
   module Azure

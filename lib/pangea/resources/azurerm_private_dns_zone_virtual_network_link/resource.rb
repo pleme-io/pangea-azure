@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::PrivateDnsZoneVirtualNetworkLinkAttributes,
       outputs: { id: :id },
       map: [:name, :private_dns_zone_name, :resource_group_name, :virtual_network_id],
-      map_present: [:tags],
+      map_present: [:resolution_policy, :tags],
       map_bool: [:registration_enabled]
   end
   module Azure

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ContainerAppEnvironmentAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:dapr_application_insights_connection_string, :identity, :infrastructure_resource_group_name, :infrastructure_subnet_id, :log_analytics_workspace_id, :tags, :workload_profile],
+      map_present: [:dapr_application_insights_connection_string, :identity, :infrastructure_resource_group_name, :infrastructure_subnet_id, :log_analytics_workspace_id, :logs_destination, :public_network_access, :tags, :workload_profile],
       map_bool: [:internal_load_balancer_enabled, :mutual_tls_enabled, :zone_redundancy_enabled]
   end
   module Azure

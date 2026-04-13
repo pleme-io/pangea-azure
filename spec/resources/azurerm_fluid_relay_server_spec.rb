@@ -67,7 +67,7 @@ RSpec.describe Pangea::Resources::AzureFluidRelayServer do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ customer_managed_key: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ customer_managed_key: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, storage_sku: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -78,6 +78,7 @@ RSpec.describe Pangea::Resources::AzureFluidRelayServer do
         config = validate_resource_structure(result, 'azurerm_fluid_relay_server', 'full')
         expect(config).to have_key('customer_managed_key')
         expect(config).to have_key('identity')
+        expect(config).to have_key('storage_sku')
         expect(config).to have_key('tags')
       end
     end
@@ -86,7 +87,7 @@ RSpec.describe Pangea::Resources::AzureFluidRelayServer do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_fluid_relay_server('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_fluid_relay_server('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_fluid_relay_server', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -103,7 +104,7 @@ RSpec.describe Pangea::Resources::AzureFluidRelayServer do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_fluid_relay_server('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_fluid_relay_server('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_fluid_relay_server', 'opt')
         expect(config).to have_key('identity')
@@ -116,6 +117,23 @@ RSpec.describe Pangea::Resources::AzureFluidRelayServer do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_fluid_relay_server', 'minimal')
         expect(config).not_to have_key('identity')
+      end
+      it 'includes storage_sku when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_fluid_relay_server('opt', required_attrs.merge(storage_sku: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_fluid_relay_server', 'opt')
+        expect(config).to have_key('storage_sku')
+      end
+
+      it 'omits storage_sku when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_fluid_relay_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_fluid_relay_server', 'minimal')
+        expect(config).not_to have_key('storage_sku')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer

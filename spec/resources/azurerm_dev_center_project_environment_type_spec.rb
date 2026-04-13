@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDevCenterProjectEnvironmentType do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { deployment_target_id: 'test-value', dev_center_project_id: 'test-value', identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value' } }
+  let(:required_attrs) { { deployment_target_id: 'test-value', dev_center_project_id: 'test-value', identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value' } }
 
   describe ':azurerm_dev_center_project_environment_type' do
     context 'with required attributes only' do
@@ -121,7 +121,7 @@ RSpec.describe Pangea::Resources::AzureDevCenterProjectEnvironmentType do
         config = validate_resource_structure(result, 'azurerm_dev_center_project_environment_type', 'typed')
         expect(config['deployment_target_id']).to be_a(String)
         expect(config['dev_center_project_id']).to be_a(String)
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
       end
@@ -156,7 +156,7 @@ RSpec.describe Pangea::Resources::AzureDevCenterProjectEnvironmentType do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_dev_center_project_environment_type,
     method: :azurerm_dev_center_project_environment_type,
-    required_attrs: { deployment_target_id: 'test-value', dev_center_project_id: 'test-value', identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value' },
+    required_attrs: { deployment_target_id: 'test-value', dev_center_project_id: 'test-value', identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

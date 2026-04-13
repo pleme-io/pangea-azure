@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureGalleryApplicationVersion do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { gallery_application_id: 'test-value', location: 'test-value', manage_action: [{ 'key1' => 'val1' }], name: 'test-value', source: [{ 'key1' => 'val1' }], target_region: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { gallery_application_id: 'test-value', location: 'test-value', manage_action: { 'key1' => 'val1' }, name: 'test-value', source: { 'key1' => 'val1' }, target_region: [{ 'key1' => 'val1' }] } }
 
   describe ':azurerm_gallery_application_version' do
     context 'with required attributes only' do
@@ -200,9 +200,9 @@ RSpec.describe Pangea::Resources::AzureGalleryApplicationVersion do
         config = validate_resource_structure(result, 'azurerm_gallery_application_version', 'typed')
         expect(config['gallery_application_id']).to be_a(String)
         expect(config['location']).to be_a(String)
-        expect(config['manage_action']).to be_a(Array)
+        expect(config['manage_action']).to be_a(Hash)
         expect(config['name']).to be_a(String)
-        expect(config['source']).to be_a(Array)
+        expect(config['source']).to be_a(Hash)
         expect(config['target_region']).to be_a(Array)
       end
     end
@@ -236,7 +236,7 @@ RSpec.describe Pangea::Resources::AzureGalleryApplicationVersion do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_gallery_application_version,
     method: :azurerm_gallery_application_version,
-    required_attrs: { gallery_application_id: 'test-value', location: 'test-value', manage_action: [{ 'key1' => 'val1' }], name: 'test-value', source: [{ 'key1' => 'val1' }], target_region: [{ 'key1' => 'val1' }] },
+    required_attrs: { gallery_application_id: 'test-value', location: 'test-value', manage_action: { 'key1' => 'val1' }, name: 'test-value', source: { 'key1' => 'val1' }, target_region: [{ 'key1' => 'val1' }] },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

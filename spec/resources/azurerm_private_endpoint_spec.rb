@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzurePrivateEndpoint do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', private_service_connection: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', subnet_id: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', private_service_connection: { 'key1' => 'val1' }, resource_group_name: 'test-value', subnet_id: 'test-value' } }
 
   describe ':azurerm_private_endpoint' do
     context 'with required attributes only' do
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzurePrivateEndpoint do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ custom_network_interface_name: 'test-value', ip_configuration: [{ 'key1' => 'val1' }], private_dns_zone_group: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ custom_network_interface_name: 'test-value', ip_configuration: [{ 'key1' => 'val1' }], private_dns_zone_group: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -113,7 +113,7 @@ RSpec.describe Pangea::Resources::AzurePrivateEndpoint do
       it 'includes private_dns_zone_group when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_private_endpoint('opt', required_attrs.merge(private_dns_zone_group: [{ 'key1' => 'val1' }]))
+        synth.azurerm_private_endpoint('opt', required_attrs.merge(private_dns_zone_group: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_private_endpoint', 'opt')
         expect(config).to have_key('private_dns_zone_group')
@@ -156,7 +156,7 @@ RSpec.describe Pangea::Resources::AzurePrivateEndpoint do
         config = validate_resource_structure(result, 'azurerm_private_endpoint', 'typed')
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['private_service_connection']).to be_a(Array)
+        expect(config['private_service_connection']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['subnet_id']).to be_a(String)
       end
@@ -191,7 +191,7 @@ RSpec.describe Pangea::Resources::AzurePrivateEndpoint do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_private_endpoint,
     method: :azurerm_private_endpoint,
-    required_attrs: { location: 'test-value', name: 'test-value', private_service_connection: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', subnet_id: 'test-value' },
+    required_attrs: { location: 'test-value', name: 'test-value', private_service_connection: { 'key1' => 'val1' }, resource_group_name: 'test-value', subnet_id: 'test-value' },
     expected_outputs: [:id, :custom_dns_configs, :network_interface, :private_dns_zone_configs],
     sensitive_fields: [],
     immutable_fields: [],

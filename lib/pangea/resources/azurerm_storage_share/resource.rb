@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StorageShareAttributes,
       outputs: { id: :id },
       map: [:name, :quota],
-      map_present: [:acl, :enabled_protocol, :storage_account_id, :storage_account_name]
+      map_present: [:access_tier, :acl, :enabled_protocol, :metadata, :storage_account_id, :storage_account_name]
   end
   module Azure
     include AzureStorageShare

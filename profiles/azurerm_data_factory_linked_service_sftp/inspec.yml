@@ -1,0 +1,8 @@
+name: azurerm_data_factory_linked_service_sftp
+title: Manages a azurerm_data_factory_linked_service_sftp resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

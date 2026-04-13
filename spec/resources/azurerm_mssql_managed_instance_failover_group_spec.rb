@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMssqlManagedInstanceFailoverGroup do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', managed_instance_id: 'test-value', name: 'test-value', partner_managed_instance_id: 'test-value', read_write_endpoint_failover_policy: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', managed_instance_id: 'test-value', name: 'test-value', partner_managed_instance_id: 'test-value', read_write_endpoint_failover_policy: { 'key1' => 'val1' } } }
 
   describe ':azurerm_mssql_managed_instance_failover_group' do
     context 'with required attributes only' do
@@ -134,7 +134,7 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstanceFailoverGroup do
         expect(config['managed_instance_id']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['partner_managed_instance_id']).to be_a(String)
-        expect(config['read_write_endpoint_failover_policy']).to be_a(Array)
+        expect(config['read_write_endpoint_failover_policy']).to be_a(Hash)
       end
     end
 
@@ -167,7 +167,7 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstanceFailoverGroup do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_mssql_managed_instance_failover_group,
     method: :azurerm_mssql_managed_instance_failover_group,
-    required_attrs: { location: 'test-value', managed_instance_id: 'test-value', name: 'test-value', partner_managed_instance_id: 'test-value', read_write_endpoint_failover_policy: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', managed_instance_id: 'test-value', name: 'test-value', partner_managed_instance_id: 'test-value', read_write_endpoint_failover_policy: { 'key1' => 'val1' } },
     expected_outputs: [:id, :partner_region, :role],
     sensitive_fields: [],
     immutable_fields: [],

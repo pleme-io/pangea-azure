@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::CosmosdbSqlContainerAttributes,
       outputs: { id: :id },
       map: [:account_name, :database_name, :name, :partition_key_paths, :resource_group_name],
-      map_present: [:analytical_storage_ttl, :autoscale_settings, :conflict_resolution_policy, :default_ttl, :indexing_policy, :partition_key_kind, :partition_key_version, :unique_key]
+      map_present: [:analytical_storage_ttl, :autoscale_settings, :conflict_resolution_policy, :default_ttl, :indexing_policy, :partition_key_kind, :partition_key_version, :throughput, :unique_key]
   end
   module Azure
     include AzureCosmosdbSqlContainer

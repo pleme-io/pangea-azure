@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureSentinelAlertRuleScheduled do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ alert_details_override: [{ 'key1' => 'val1' }], alert_rule_template_guid: 'test-value', alert_rule_template_version: 'test-value', custom_details: { 'key1' => 'val1' }, description: 'test-value', enabled: true, entity_mapping: [{ 'key1' => 'val1' }], event_grouping: [{ 'key1' => 'val1' }], incident: [{ 'key1' => 'val1' }], query_frequency: 'test-value', query_period: 'test-value', sentinel_entity_mapping: [{ 'key1' => 'val1' }], suppression_duration: 'test-value', suppression_enabled: true, tactics: ['test-value'], techniques: ['test-value'], trigger_operator: 'test-value', trigger_threshold: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ alert_details_override: [{ 'key1' => 'val1' }], alert_rule_template_guid: 'test-value', alert_rule_template_version: 'test-value', custom_details: { 'key1' => 'val1' }, description: 'test-value', enabled: true, entity_mapping: [{ 'key1' => 'val1' }], event_grouping: { 'key1' => 'val1' }, incident: { 'key1' => 'val1' }, query_frequency: 'test-value', query_period: 'test-value', sentinel_entity_mapping: [{ 'key1' => 'val1' }], suppression_duration: 'test-value', suppression_enabled: true, tactics: ['test-value'], techniques: ['test-value'], trigger_operator: 'test-value', trigger_threshold: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -195,7 +195,7 @@ RSpec.describe Pangea::Resources::AzureSentinelAlertRuleScheduled do
       it 'includes event_grouping when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_sentinel_alert_rule_scheduled('opt', required_attrs.merge(event_grouping: [{ 'key1' => 'val1' }]))
+        synth.azurerm_sentinel_alert_rule_scheduled('opt', required_attrs.merge(event_grouping: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_alert_rule_scheduled', 'opt')
         expect(config).to have_key('event_grouping')
@@ -212,7 +212,7 @@ RSpec.describe Pangea::Resources::AzureSentinelAlertRuleScheduled do
       it 'includes incident when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_sentinel_alert_rule_scheduled('opt', required_attrs.merge(incident: [{ 'key1' => 'val1' }]))
+        synth.azurerm_sentinel_alert_rule_scheduled('opt', required_attrs.merge(incident: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_alert_rule_scheduled', 'opt')
         expect(config).to have_key('incident')

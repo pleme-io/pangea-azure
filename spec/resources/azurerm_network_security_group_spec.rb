@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureNetworkSecurityGroup do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ security_rule: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,11 +64,29 @@ RSpec.describe Pangea::Resources::AzureNetworkSecurityGroup do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_network_security_group', 'full')
+        expect(config).to have_key('security_rule')
         expect(config).to have_key('tags')
       end
     end
 
     context 'optional attributes' do
+      it 'includes security_rule when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_network_security_group('opt', required_attrs.merge(security_rule: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_network_security_group', 'opt')
+        expect(config).to have_key('security_rule')
+      end
+
+      it 'omits security_rule when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_network_security_group('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_network_security_group', 'minimal')
+        expect(config).not_to have_key('security_rule')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

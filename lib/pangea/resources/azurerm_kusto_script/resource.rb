@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::KustoScriptAttributes,
       outputs: { id: :id },
       map: [:database_id, :name],
-      map_present: [:principal_permissions_action, :sas_token, :script_content, :script_level, :url],
+      map_present: [:force_an_update_when_value_changed, :principal_permissions_action, :sas_token, :script_content, :script_level, :url],
       map_bool: [:continue_on_errors_enabled]
   end
   module Azure

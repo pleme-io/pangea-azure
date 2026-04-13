@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureManagedApplication do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ application_definition_id: 'test-value', plan: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ application_definition_id: 'test-value', parameter_values: 'test-value', plan: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureManagedApplication do
 
         config = validate_resource_structure(result, 'azurerm_managed_application', 'full')
         expect(config).to have_key('application_definition_id')
+        expect(config).to have_key('parameter_values')
         expect(config).to have_key('plan')
         expect(config).to have_key('tags')
       end
@@ -90,10 +91,27 @@ RSpec.describe Pangea::Resources::AzureManagedApplication do
         config = validate_resource_structure(result, 'azurerm_managed_application', 'minimal')
         expect(config).not_to have_key('application_definition_id')
       end
+      it 'includes parameter_values when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_application('opt', required_attrs.merge(parameter_values: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_application', 'opt')
+        expect(config).to have_key('parameter_values')
+      end
+
+      it 'omits parameter_values when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_application('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_application', 'minimal')
+        expect(config).not_to have_key('parameter_values')
+      end
       it 'includes plan when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_managed_application('opt', required_attrs.merge(plan: [{ 'key1' => 'val1' }]))
+        synth.azurerm_managed_application('opt', required_attrs.merge(plan: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_application', 'opt')
         expect(config).to have_key('plan')

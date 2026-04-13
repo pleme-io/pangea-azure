@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::VirtualNetworkGatewayConnectionAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :type, :virtual_network_gateway_id],
-      map_present: [:authorization_key, :connection_mode, :custom_bgp_addresses, :dpd_timeout_seconds, :egress_nat_rule_ids, :express_route_circuit_id, :ingress_nat_rule_ids, :ipsec_policy, :local_network_gateway_id, :peer_virtual_network_gateway_id, :tags, :traffic_selector_policy],
-      map_bool: [:local_azure_ip_address_enabled, :private_link_fast_path_enabled]
+      map_present: [:authorization_key, :connection_mode, :connection_protocol, :custom_bgp_addresses, :dpd_timeout_seconds, :egress_nat_rule_ids, :express_route_circuit_id, :ingress_nat_rule_ids, :ipsec_policy, :local_network_gateway_id, :peer_virtual_network_gateway_id, :routing_weight, :shared_key, :tags, :traffic_selector_policy],
+      map_bool: [:bgp_enabled, :enable_bgp, :express_route_gateway_bypass, :local_azure_ip_address_enabled, :private_link_fast_path_enabled, :use_policy_based_traffic_selectors]
   end
   module Azure
     include AzureVirtualNetworkGatewayConnection

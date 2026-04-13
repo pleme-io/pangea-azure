@@ -1,0 +1,8 @@
+name: azurerm_sentinel_alert_rule_machine_learning_behavior_analytics
+title: Manages a azurerm_sentinel_alert_rule_machine_learning_behavior_analytics resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

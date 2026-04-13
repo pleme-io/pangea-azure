@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceSnowflake do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], description: 'test-value', integration_runtime_name: 'test-value', key_vault_password: [{ 'key1' => 'val1' }], parameters: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], description: 'test-value', integration_runtime_name: 'test-value', key_vault_password: { 'key1' => 'val1' }, parameters: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -132,7 +132,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceSnowflake do
       it 'includes key_vault_password when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_snowflake('opt', required_attrs.merge(key_vault_password: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_snowflake('opt', required_attrs.merge(key_vault_password: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_snowflake', 'opt')
         expect(config).to have_key('key_vault_password')

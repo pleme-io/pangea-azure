@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureConsumptionBudgetManagementGroup do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { amount: 3.14, management_group_id: 'test-value', name: 'test-value', notification: [{ 'key1' => 'val1' }], time_period: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { amount: 3.14, management_group_id: 'test-value', name: 'test-value', notification: [{ 'key1' => 'val1' }], time_period: { 'key1' => 'val1' } } }
 
   describe ':azurerm_consumption_budget_management_group' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureConsumptionBudgetManagementGroup do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ filter: [{ 'key1' => 'val1' }], time_grain: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ etag: 'test-value', filter: { 'key1' => 'val1' }, time_grain: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,16 +64,34 @@ RSpec.describe Pangea::Resources::AzureConsumptionBudgetManagementGroup do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_consumption_budget_management_group', 'full')
+        expect(config).to have_key('etag')
         expect(config).to have_key('filter')
         expect(config).to have_key('time_grain')
       end
     end
 
     context 'optional attributes' do
+      it 'includes etag when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_consumption_budget_management_group('opt', required_attrs.merge(etag: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_consumption_budget_management_group', 'opt')
+        expect(config).to have_key('etag')
+      end
+
+      it 'omits etag when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_consumption_budget_management_group('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_consumption_budget_management_group', 'minimal')
+        expect(config).not_to have_key('etag')
+      end
       it 'includes filter when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_consumption_budget_management_group('opt', required_attrs.merge(filter: [{ 'key1' => 'val1' }]))
+        synth.azurerm_consumption_budget_management_group('opt', required_attrs.merge(filter: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_consumption_budget_management_group', 'opt')
         expect(config).to have_key('filter')
@@ -118,7 +136,7 @@ RSpec.describe Pangea::Resources::AzureConsumptionBudgetManagementGroup do
         expect(config['management_group_id']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['notification']).to be_a(Array)
-        expect(config['time_period']).to be_a(Array)
+        expect(config['time_period']).to be_a(Hash)
       end
     end
 
@@ -151,7 +169,7 @@ RSpec.describe Pangea::Resources::AzureConsumptionBudgetManagementGroup do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_consumption_budget_management_group,
     method: :azurerm_consumption_budget_management_group,
-    required_attrs: { amount: 3.14, management_group_id: 'test-value', name: 'test-value', notification: [{ 'key1' => 'val1' }], time_period: [{ 'key1' => 'val1' }] },
+    required_attrs: { amount: 3.14, management_group_id: 'test-value', name: 'test-value', notification: [{ 'key1' => 'val1' }], time_period: { 'key1' => 'val1' } },
     expected_outputs: [:id, :etag],
     sensitive_fields: [],
     immutable_fields: [],

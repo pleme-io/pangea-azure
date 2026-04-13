@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGateway do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ api_metadata: [{ 'key1' => 'val1' }], application_performance_monitoring_ids: ['test-value'], application_performance_monitoring_types: ['test-value'], client_authorization: [{ 'key1' => 'val1' }], cors: [{ 'key1' => 'val1' }], environment_variables: { 'key1' => 'val1' }, https_only: true, instance_count: 3.14, local_response_cache_per_instance: [{ 'key1' => 'val1' }], local_response_cache_per_route: [{ 'key1' => 'val1' }], public_network_access_enabled: true, quota: [{ 'key1' => 'val1' }], sensitive_environment_variables: { 'key1' => 'val1' }, sso: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ api_metadata: { 'key1' => 'val1' }, application_performance_monitoring_ids: ['test-value'], application_performance_monitoring_types: ['test-value'], client_authorization: { 'key1' => 'val1' }, cors: { 'key1' => 'val1' }, environment_variables: { 'key1' => 'val1' }, https_only: true, instance_count: 3.14, local_response_cache_per_instance: { 'key1' => 'val1' }, local_response_cache_per_route: { 'key1' => 'val1' }, public_network_access_enabled: true, quota: { 'key1' => 'val1' }, sensitive_environment_variables: { 'key1' => 'val1' }, sso: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -85,7 +85,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGateway do
       it 'includes api_metadata when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(api_metadata: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(api_metadata: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_gateway', 'opt')
         expect(config).to have_key('api_metadata')
@@ -136,7 +136,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGateway do
       it 'includes client_authorization when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(client_authorization: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(client_authorization: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_gateway', 'opt')
         expect(config).to have_key('client_authorization')
@@ -153,7 +153,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGateway do
       it 'includes cors when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(cors: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(cors: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_gateway', 'opt')
         expect(config).to have_key('cors')
@@ -221,7 +221,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGateway do
       it 'includes local_response_cache_per_instance when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(local_response_cache_per_instance: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(local_response_cache_per_instance: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_gateway', 'opt')
         expect(config).to have_key('local_response_cache_per_instance')
@@ -238,7 +238,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGateway do
       it 'includes local_response_cache_per_route when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(local_response_cache_per_route: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(local_response_cache_per_route: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_gateway', 'opt')
         expect(config).to have_key('local_response_cache_per_route')
@@ -272,7 +272,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGateway do
       it 'includes quota when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(quota: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(quota: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_gateway', 'opt')
         expect(config).to have_key('quota')
@@ -306,7 +306,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGateway do
       it 'includes sso when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(sso: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_gateway('opt', required_attrs.merge(sso: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_gateway', 'opt')
         expect(config).to have_key('sso')

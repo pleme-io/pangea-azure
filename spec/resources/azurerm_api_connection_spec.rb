@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureApiConnection do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ parameter_values: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ display_name: 'test-value', parameter_values: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,12 +64,30 @@ RSpec.describe Pangea::Resources::AzureApiConnection do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_api_connection', 'full')
+        expect(config).to have_key('display_name')
         expect(config).to have_key('parameter_values')
         expect(config).to have_key('tags')
       end
     end
 
     context 'optional attributes' do
+      it 'includes display_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_connection('opt', required_attrs.merge(display_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_connection', 'opt')
+        expect(config).to have_key('display_name')
+      end
+
+      it 'omits display_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_connection', 'minimal')
+        expect(config).not_to have_key('display_name')
+      end
       it 'includes parameter_values when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

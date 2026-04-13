@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureTrafficManagerAzureEndpoint do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ always_serve_enabled: true, custom_header: [{ 'key1' => 'val1' }], enabled: true, geo_mappings: ['test-value'], subnet: [{ 'key1' => 'val1' }], weight: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ always_serve_enabled: true, custom_header: [{ 'key1' => 'val1' }], enabled: true, geo_mappings: ['test-value'], priority: 3.14, subnet: [{ 'key1' => 'val1' }], weight: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,6 +68,7 @@ RSpec.describe Pangea::Resources::AzureTrafficManagerAzureEndpoint do
         expect(config).to have_key('custom_header')
         expect(config).to have_key('enabled')
         expect(config).to have_key('geo_mappings')
+        expect(config).to have_key('priority')
         expect(config).to have_key('subnet')
         expect(config).to have_key('weight')
       end
@@ -141,6 +142,23 @@ RSpec.describe Pangea::Resources::AzureTrafficManagerAzureEndpoint do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_traffic_manager_azure_endpoint', 'minimal')
         expect(config).not_to have_key('geo_mappings')
+      end
+      it 'includes priority when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_traffic_manager_azure_endpoint('opt', required_attrs.merge(priority: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_traffic_manager_azure_endpoint', 'opt')
+        expect(config).to have_key('priority')
+      end
+
+      it 'omits priority when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_traffic_manager_azure_endpoint('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_traffic_manager_azure_endpoint', 'minimal')
+        expect(config).not_to have_key('priority')
       end
       it 'includes subnet when provided' do
         synth = create_synthesizer

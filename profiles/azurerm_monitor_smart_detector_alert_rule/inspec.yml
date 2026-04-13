@@ -1,0 +1,8 @@
+name: azurerm_monitor_smart_detector_alert_rule
+title: Manages a azurerm_monitor_smart_detector_alert_rule resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

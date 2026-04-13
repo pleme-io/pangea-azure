@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachine do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ assessment: [{ 'key1' => 'val1' }], auto_backup: [{ 'key1' => 'val1' }], auto_patching: [{ 'key1' => 'val1' }], key_vault_credential: [{ 'key1' => 'val1' }], r_services_enabled: true, sql_connectivity_port: 3.14, sql_connectivity_type: 'test-value', sql_connectivity_update_password: 'test-value', sql_connectivity_update_username: 'test-value', sql_instance: [{ 'key1' => 'val1' }], sql_license_type: 'test-value', sql_virtual_machine_group_id: 'test-value', storage_configuration: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, wsfc_domain_credential: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ assessment: { 'key1' => 'val1' }, auto_backup: { 'key1' => 'val1' }, auto_patching: { 'key1' => 'val1' }, key_vault_credential: { 'key1' => 'val1' }, r_services_enabled: true, sql_connectivity_port: 3.14, sql_connectivity_type: 'test-value', sql_connectivity_update_password: 'test-value', sql_connectivity_update_username: 'test-value', sql_instance: { 'key1' => 'val1' }, sql_license_type: 'test-value', sql_virtual_machine_group_id: 'test-value', storage_configuration: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, wsfc_domain_credential: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -73,7 +73,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachine do
       it 'includes assessment when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(assessment: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(assessment: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_virtual_machine', 'opt')
         expect(config).to have_key('assessment')
@@ -90,7 +90,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachine do
       it 'includes auto_backup when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(auto_backup: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(auto_backup: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_virtual_machine', 'opt')
         expect(config).to have_key('auto_backup')
@@ -107,7 +107,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachine do
       it 'includes auto_patching when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(auto_patching: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(auto_patching: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_virtual_machine', 'opt')
         expect(config).to have_key('auto_patching')
@@ -124,7 +124,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachine do
       it 'includes key_vault_credential when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(key_vault_credential: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(key_vault_credential: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_virtual_machine', 'opt')
         expect(config).to have_key('key_vault_credential')
@@ -226,7 +226,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachine do
       it 'includes sql_instance when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(sql_instance: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(sql_instance: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_virtual_machine', 'opt')
         expect(config).to have_key('sql_instance')
@@ -277,7 +277,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachine do
       it 'includes storage_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(storage_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(storage_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_virtual_machine', 'opt')
         expect(config).to have_key('storage_configuration')
@@ -311,7 +311,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachine do
       it 'includes wsfc_domain_credential when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(wsfc_domain_credential: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_virtual_machine('opt', required_attrs.merge(wsfc_domain_credential: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_virtual_machine', 'opt')
         expect(config).to have_key('wsfc_domain_credential')

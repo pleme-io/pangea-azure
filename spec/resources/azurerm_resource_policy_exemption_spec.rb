@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureResourcePolicyExemption do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', display_name: 'test-value', expires_on: 'test-value', policy_definition_reference_ids: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', display_name: 'test-value', expires_on: 'test-value', metadata: 'test-value', policy_definition_reference_ids: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureResourcePolicyExemption do
         expect(config).to have_key('description')
         expect(config).to have_key('display_name')
         expect(config).to have_key('expires_on')
+        expect(config).to have_key('metadata')
         expect(config).to have_key('policy_definition_reference_ids')
       end
     end
@@ -122,6 +123,23 @@ RSpec.describe Pangea::Resources::AzureResourcePolicyExemption do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_resource_policy_exemption', 'minimal')
         expect(config).not_to have_key('expires_on')
+      end
+      it 'includes metadata when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_resource_policy_exemption('opt', required_attrs.merge(metadata: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_resource_policy_exemption', 'opt')
+        expect(config).to have_key('metadata')
+      end
+
+      it 'omits metadata when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_resource_policy_exemption('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_resource_policy_exemption', 'minimal')
+        expect(config).not_to have_key('metadata')
       end
       it 'includes policy_definition_reference_ids when provided' do
         synth = create_synthesizer

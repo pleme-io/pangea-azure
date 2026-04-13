@@ -73,7 +73,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ bundle_version: 'test-value', client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], enabled: true, ftp_publish_basic_authentication_enabled: true, https_only: true, identity: [{ 'key1' => 'val1' }], scm_publish_basic_authentication_enabled: true, site_config: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, use_extension_bundle: true, version: 'test-value', virtual_network_subnet_id: 'test-value', vnet_content_share_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, bundle_version: 'test-value', client_affinity_enabled: true, client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], enabled: true, ftp_publish_basic_authentication_enabled: true, https_only: true, identity: { 'key1' => 'val1' }, public_network_access: 'test-value', scm_publish_basic_authentication_enabled: true, site_config: { 'key1' => 'val1' }, storage_account_share_name: 'test-value', tags: { 'key1' => 'val1' }, use_extension_bundle: true, version: 'test-value', virtual_network_subnet_id: 'test-value', vnet_content_share_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -82,15 +82,19 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'full')
+        expect(config).to have_key('app_settings')
         expect(config).to have_key('bundle_version')
+        expect(config).to have_key('client_affinity_enabled')
         expect(config).to have_key('client_certificate_mode')
         expect(config).to have_key('connection_string')
         expect(config).to have_key('enabled')
         expect(config).to have_key('ftp_publish_basic_authentication_enabled')
         expect(config).to have_key('https_only')
         expect(config).to have_key('identity')
+        expect(config).to have_key('public_network_access')
         expect(config).to have_key('scm_publish_basic_authentication_enabled')
         expect(config).to have_key('site_config')
+        expect(config).to have_key('storage_account_share_name')
         expect(config).to have_key('tags')
         expect(config).to have_key('use_extension_bundle')
         expect(config).to have_key('version')
@@ -100,6 +104,23 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
     end
 
     context 'optional attributes' do
+      it 'includes app_settings when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_standard('opt', required_attrs.merge(app_settings: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'opt')
+        expect(config).to have_key('app_settings')
+      end
+
+      it 'omits app_settings when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_standard('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'minimal')
+        expect(config).not_to have_key('app_settings')
+      end
       it 'includes bundle_version when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -116,6 +137,23 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'minimal')
         expect(config).not_to have_key('bundle_version')
+      end
+      it 'includes client_affinity_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_standard('opt', required_attrs.merge(client_affinity_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'opt')
+        expect(config).to have_key('client_affinity_enabled')
+      end
+
+      it 'omits client_affinity_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_standard('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'minimal')
+        expect(config).not_to have_key('client_affinity_enabled')
       end
       it 'includes client_certificate_mode when provided' do
         synth = create_synthesizer
@@ -205,7 +243,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_logic_app_standard('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_logic_app_standard('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'opt')
         expect(config).to have_key('identity')
@@ -218,6 +256,23 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'minimal')
         expect(config).not_to have_key('identity')
+      end
+      it 'includes public_network_access when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_standard('opt', required_attrs.merge(public_network_access: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'opt')
+        expect(config).to have_key('public_network_access')
+      end
+
+      it 'omits public_network_access when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_standard('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'minimal')
+        expect(config).not_to have_key('public_network_access')
       end
       it 'includes scm_publish_basic_authentication_enabled when provided' do
         synth = create_synthesizer
@@ -239,7 +294,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
       it 'includes site_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_logic_app_standard('opt', required_attrs.merge(site_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_logic_app_standard('opt', required_attrs.merge(site_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'opt')
         expect(config).to have_key('site_config')
@@ -252,6 +307,23 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'minimal')
         expect(config).not_to have_key('site_config')
+      end
+      it 'includes storage_account_share_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_standard('opt', required_attrs.merge(storage_account_share_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'opt')
+        expect(config).to have_key('storage_account_share_name')
+      end
+
+      it 'omits storage_account_share_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_standard('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_standard', 'minimal')
+        expect(config).not_to have_key('storage_account_share_name')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer
@@ -348,6 +420,17 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
     end
 
     context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts client_affinity_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(client_affinity_enabled: val)
+          synth.azurerm_logic_app_standard("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_logic_app_standard', "bool_#{val}")
+          expect(config['client_affinity_enabled']).to eq(val)
+        end
+      end
       [true, false].each do |val|
         it "accepts enabled=#{val}" do
           synth = create_synthesizer
@@ -466,5 +549,5 @@ RSpec.describe Pangea::Resources::AzureLogicAppStandard do
     expected_outputs: [:id, :app_settings, :client_affinity_enabled, :custom_domain_verification_id, :default_hostname, :kind, :outbound_ip_addresses, :possible_outbound_ip_addresses, :public_network_access, :site_credential, :storage_account_share_name],
     sensitive_fields: [:storage_account_access_key],
     immutable_fields: [],
-    boolean_fields: [:enabled, :ftp_publish_basic_authentication_enabled, :https_only, :scm_publish_basic_authentication_enabled, :use_extension_bundle, :vnet_content_share_enabled]
+    boolean_fields: [:client_affinity_enabled, :enabled, :ftp_publish_basic_authentication_enabled, :https_only, :scm_publish_basic_authentication_enabled, :use_extension_bundle, :vnet_content_share_enabled]
 end

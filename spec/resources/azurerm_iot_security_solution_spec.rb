@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureIotSecuritySolution do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_workspace: [{ 'key1' => 'val1' }], disabled_data_sources: ['test-value'], enabled: true, events_to_export: ['test-value'], log_analytics_workspace_id: 'test-value', log_unmasked_ips_enabled: true, recommendations_enabled: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ additional_workspace: [{ 'key1' => 'val1' }], disabled_data_sources: ['test-value'], enabled: true, events_to_export: ['test-value'], log_analytics_workspace_id: 'test-value', log_unmasked_ips_enabled: true, query_for_resources: 'test-value', query_subscription_ids: ['test-value'], recommendations_enabled: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -72,6 +72,8 @@ RSpec.describe Pangea::Resources::AzureIotSecuritySolution do
         expect(config).to have_key('events_to_export')
         expect(config).to have_key('log_analytics_workspace_id')
         expect(config).to have_key('log_unmasked_ips_enabled')
+        expect(config).to have_key('query_for_resources')
+        expect(config).to have_key('query_subscription_ids')
         expect(config).to have_key('recommendations_enabled')
         expect(config).to have_key('tags')
       end
@@ -180,10 +182,44 @@ RSpec.describe Pangea::Resources::AzureIotSecuritySolution do
         config = validate_resource_structure(result, 'azurerm_iot_security_solution', 'minimal')
         expect(config).not_to have_key('log_unmasked_ips_enabled')
       end
+      it 'includes query_for_resources when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iot_security_solution('opt', required_attrs.merge(query_for_resources: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iot_security_solution', 'opt')
+        expect(config).to have_key('query_for_resources')
+      end
+
+      it 'omits query_for_resources when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iot_security_solution('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iot_security_solution', 'minimal')
+        expect(config).not_to have_key('query_for_resources')
+      end
+      it 'includes query_subscription_ids when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iot_security_solution('opt', required_attrs.merge(query_subscription_ids: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iot_security_solution', 'opt')
+        expect(config).to have_key('query_subscription_ids')
+      end
+
+      it 'omits query_subscription_ids when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iot_security_solution('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iot_security_solution', 'minimal')
+        expect(config).not_to have_key('query_subscription_ids')
+      end
       it 'includes recommendations_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_iot_security_solution('opt', required_attrs.merge(recommendations_enabled: [{ 'key1' => 'val1' }]))
+        synth.azurerm_iot_security_solution('opt', required_attrs.merge(recommendations_enabled: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iot_security_solution', 'opt')
         expect(config).to have_key('recommendations_enabled')

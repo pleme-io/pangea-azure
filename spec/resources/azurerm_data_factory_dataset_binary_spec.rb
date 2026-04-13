@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryDatasetBinary do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], azure_blob_storage_location: [{ 'key1' => 'val1' }], compression: [{ 'key1' => 'val1' }], description: 'test-value', folder: 'test-value', http_server_location: [{ 'key1' => 'val1' }], parameters: { 'key1' => 'val1' }, sftp_server_location: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], azure_blob_storage_location: { 'key1' => 'val1' }, compression: { 'key1' => 'val1' }, description: 'test-value', folder: 'test-value', http_server_location: { 'key1' => 'val1' }, parameters: { 'key1' => 'val1' }, sftp_server_location: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -101,7 +101,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryDatasetBinary do
       it 'includes azure_blob_storage_location when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_dataset_binary('opt', required_attrs.merge(azure_blob_storage_location: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_dataset_binary('opt', required_attrs.merge(azure_blob_storage_location: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_dataset_binary', 'opt')
         expect(config).to have_key('azure_blob_storage_location')
@@ -118,7 +118,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryDatasetBinary do
       it 'includes compression when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_dataset_binary('opt', required_attrs.merge(compression: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_dataset_binary('opt', required_attrs.merge(compression: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_dataset_binary', 'opt')
         expect(config).to have_key('compression')
@@ -169,7 +169,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryDatasetBinary do
       it 'includes http_server_location when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_dataset_binary('opt', required_attrs.merge(http_server_location: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_dataset_binary('opt', required_attrs.merge(http_server_location: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_dataset_binary', 'opt')
         expect(config).to have_key('http_server_location')
@@ -203,7 +203,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryDatasetBinary do
       it 'includes sftp_server_location when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_dataset_binary('opt', required_attrs.merge(sftp_server_location: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_dataset_binary('opt', required_attrs.merge(sftp_server_location: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_dataset_binary', 'opt')
         expect(config).to have_key('sftp_server_location')

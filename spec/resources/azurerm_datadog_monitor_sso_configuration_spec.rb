@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureDatadogMonitorSsoConfiguration do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ name: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ name: 'test-value', single_sign_on: 'test-value', single_sign_on_enabled: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,6 +69,8 @@ RSpec.describe Pangea::Resources::AzureDatadogMonitorSsoConfiguration do
 
         config = validate_resource_structure(result, 'azurerm_datadog_monitor_sso_configuration', 'full')
         expect(config).to have_key('name')
+        expect(config).to have_key('single_sign_on')
+        expect(config).to have_key('single_sign_on_enabled')
       end
     end
 
@@ -89,6 +91,40 @@ RSpec.describe Pangea::Resources::AzureDatadogMonitorSsoConfiguration do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_datadog_monitor_sso_configuration', 'minimal')
         expect(config).not_to have_key('name')
+      end
+      it 'includes single_sign_on when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_datadog_monitor_sso_configuration('opt', required_attrs.merge(single_sign_on: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_datadog_monitor_sso_configuration', 'opt')
+        expect(config).to have_key('single_sign_on')
+      end
+
+      it 'omits single_sign_on when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_datadog_monitor_sso_configuration('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_datadog_monitor_sso_configuration', 'minimal')
+        expect(config).not_to have_key('single_sign_on')
+      end
+      it 'includes single_sign_on_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_datadog_monitor_sso_configuration('opt', required_attrs.merge(single_sign_on_enabled: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_datadog_monitor_sso_configuration', 'opt')
+        expect(config).to have_key('single_sign_on_enabled')
+      end
+
+      it 'omits single_sign_on_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_datadog_monitor_sso_configuration('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_datadog_monitor_sso_configuration', 'minimal')
+        expect(config).not_to have_key('single_sign_on_enabled')
       end
     end
 

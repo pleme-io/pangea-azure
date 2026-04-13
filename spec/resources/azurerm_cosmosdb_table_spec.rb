@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbTable do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ autoscale_settings: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ autoscale_settings: { 'key1' => 'val1' }, throughput: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -65,6 +65,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbTable do
 
         config = validate_resource_structure(result, 'azurerm_cosmosdb_table', 'full')
         expect(config).to have_key('autoscale_settings')
+        expect(config).to have_key('throughput')
       end
     end
 
@@ -72,7 +73,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbTable do
       it 'includes autoscale_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_table('opt', required_attrs.merge(autoscale_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_table('opt', required_attrs.merge(autoscale_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_table', 'opt')
         expect(config).to have_key('autoscale_settings')
@@ -85,6 +86,23 @@ RSpec.describe Pangea::Resources::AzureCosmosdbTable do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_table', 'minimal')
         expect(config).not_to have_key('autoscale_settings')
+      end
+      it 'includes throughput when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_table('opt', required_attrs.merge(throughput: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_table', 'opt')
+        expect(config).to have_key('throughput')
+      end
+
+      it 'omits throughput when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_table('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_table', 'minimal')
+        expect(config).not_to have_key('throughput')
       end
     end
 

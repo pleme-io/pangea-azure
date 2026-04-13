@@ -1,0 +1,8 @@
+name: azurerm_dev_center_project
+title: Manages a azurerm_dev_center_project resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

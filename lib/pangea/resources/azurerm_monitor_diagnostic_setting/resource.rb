@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::MonitorDiagnosticSettingAttributes,
       outputs: { id: :id },
       map: [:name, :target_resource_id],
-      map_present: [:enabled_log, :enabled_metric, :eventhub_authorization_rule_id, :eventhub_name, :log_analytics_workspace_id, :metric, :partner_solution_id, :storage_account_id]
+      map_present: [:enabled_log, :enabled_metric, :eventhub_authorization_rule_id, :eventhub_name, :log_analytics_destination_type, :log_analytics_workspace_id, :metric, :partner_solution_id, :storage_account_id]
   end
   module Azure
     include AzureMonitorDiagnosticSetting

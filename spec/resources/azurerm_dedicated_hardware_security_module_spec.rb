@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDedicatedHardwareSecurityModule do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', network_profile: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', sku_name: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', network_profile: { 'key1' => 'val1' }, resource_group_name: 'test-value', sku_name: 'test-value' } }
 
   describe ':azurerm_dedicated_hardware_security_module' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDedicatedHardwareSecurityModule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ management_network_profile: [{ 'key1' => 'val1' }], stamp_id: 'test-value', tags: { 'key1' => 'val1' }, zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ management_network_profile: { 'key1' => 'val1' }, stamp_id: 'test-value', tags: { 'key1' => 'val1' }, zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -62,7 +62,7 @@ RSpec.describe Pangea::Resources::AzureDedicatedHardwareSecurityModule do
       it 'includes management_network_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dedicated_hardware_security_module('opt', required_attrs.merge(management_network_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dedicated_hardware_security_module('opt', required_attrs.merge(management_network_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dedicated_hardware_security_module', 'opt')
         expect(config).to have_key('management_network_profile')
@@ -139,7 +139,7 @@ RSpec.describe Pangea::Resources::AzureDedicatedHardwareSecurityModule do
         config = validate_resource_structure(result, 'azurerm_dedicated_hardware_security_module', 'typed')
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['network_profile']).to be_a(Array)
+        expect(config['network_profile']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['sku_name']).to be_a(String)
       end
@@ -174,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureDedicatedHardwareSecurityModule do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_dedicated_hardware_security_module,
     method: :azurerm_dedicated_hardware_security_module,
-    required_attrs: { location: 'test-value', name: 'test-value', network_profile: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', sku_name: 'test-value' },
+    required_attrs: { location: 'test-value', name: 'test-value', network_profile: { 'key1' => 'val1' }, resource_group_name: 'test-value', sku_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

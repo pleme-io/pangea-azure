@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceSqlManagedInstanc
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ annotations: ['test-value'], connection_string: 'test-value', description: 'test-value', integration_runtime_name: 'test-value', key_vault_connection_string: [{ 'key1' => 'val1' }], key_vault_password: [{ 'key1' => 'val1' }], parameters: { 'key1' => 'val1' }, service_principal_id: 'test-value', service_principal_key: 'test-value', tenant: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ annotations: ['test-value'], connection_string: 'test-value', description: 'test-value', integration_runtime_name: 'test-value', key_vault_connection_string: { 'key1' => 'val1' }, key_vault_password: { 'key1' => 'val1' }, parameters: { 'key1' => 'val1' }, service_principal_id: 'test-value', service_principal_key: 'test-value', tenant: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -136,7 +136,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceSqlManagedInstanc
       it 'includes key_vault_connection_string when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_sql_managed_instance('opt', required_attrs.merge(key_vault_connection_string: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_sql_managed_instance('opt', required_attrs.merge(key_vault_connection_string: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_sql_managed_instance', 'opt')
         expect(config).to have_key('key_vault_connection_string')
@@ -153,7 +153,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceSqlManagedInstanc
       it 'includes key_vault_password when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_sql_managed_instance('opt', required_attrs.merge(key_vault_password: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_sql_managed_instance('opt', required_attrs.merge(key_vault_password: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_sql_managed_instance', 'opt')
         expect(config).to have_key('key_vault_password')

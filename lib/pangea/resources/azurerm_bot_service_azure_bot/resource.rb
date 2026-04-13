@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::BotServiceAzureBotAttributes,
       outputs: { id: :id },
       map: [:location, :microsoft_app_id, :name, :resource_group_name, :sku],
-      map_present: [:cmk_key_vault_key_url, :developer_app_insights_api_key, :developer_app_insights_application_id, :developer_app_insights_key, :endpoint, :icon_url, :luis_app_ids, :luis_key, :microsoft_app_msi_id, :microsoft_app_tenant_id, :microsoft_app_type, :tags],
+      map_present: [:cmk_key_vault_key_url, :developer_app_insights_api_key, :developer_app_insights_application_id, :developer_app_insights_key, :display_name, :endpoint, :icon_url, :luis_app_ids, :luis_key, :microsoft_app_msi_id, :microsoft_app_tenant_id, :microsoft_app_type, :tags],
       map_bool: [:local_authentication_enabled, :public_network_access_enabled, :streaming_endpoint_enabled]
   end
   module Azure

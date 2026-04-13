@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureContainerRegistryTokenPassword do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { container_registry_token_id: 'test-value', password1: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { container_registry_token_id: 'test-value', password1: { 'key1' => 'val1' } } }
 
   describe ':azurerm_container_registry_token_password' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTokenPassword do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ password2: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ password2: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTokenPassword do
       it 'includes password2 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry_token_password('opt', required_attrs.merge(password2: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry_token_password('opt', required_attrs.merge(password2: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry_token_password', 'opt')
         expect(config).to have_key('password2')
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTokenPassword do
 
         config = validate_resource_structure(result, 'azurerm_container_registry_token_password', 'typed')
         expect(config['container_registry_token_id']).to be_a(String)
-        expect(config['password1']).to be_a(Array)
+        expect(config['password1']).to be_a(Hash)
       end
     end
 
@@ -117,7 +117,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTokenPassword do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_container_registry_token_password,
     method: :azurerm_container_registry_token_password,
-    required_attrs: { container_registry_token_id: 'test-value', password1: [{ 'key1' => 'val1' }] },
+    required_attrs: { container_registry_token_id: 'test-value', password1: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

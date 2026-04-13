@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureMonitorDiagnosticSetting do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ enabled_log: [{ 'key1' => 'val1' }], enabled_metric: [{ 'key1' => 'val1' }], eventhub_authorization_rule_id: 'test-value', eventhub_name: 'test-value', log_analytics_workspace_id: 'test-value', metric: [{ 'key1' => 'val1' }], partner_solution_id: 'test-value', storage_account_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ enabled_log: [{ 'key1' => 'val1' }], enabled_metric: [{ 'key1' => 'val1' }], eventhub_authorization_rule_id: 'test-value', eventhub_name: 'test-value', log_analytics_destination_type: 'test-value', log_analytics_workspace_id: 'test-value', metric: [{ 'key1' => 'val1' }], partner_solution_id: 'test-value', storage_account_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,6 +68,7 @@ RSpec.describe Pangea::Resources::AzureMonitorDiagnosticSetting do
         expect(config).to have_key('enabled_metric')
         expect(config).to have_key('eventhub_authorization_rule_id')
         expect(config).to have_key('eventhub_name')
+        expect(config).to have_key('log_analytics_destination_type')
         expect(config).to have_key('log_analytics_workspace_id')
         expect(config).to have_key('metric')
         expect(config).to have_key('partner_solution_id')
@@ -143,6 +144,23 @@ RSpec.describe Pangea::Resources::AzureMonitorDiagnosticSetting do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_diagnostic_setting', 'minimal')
         expect(config).not_to have_key('eventhub_name')
+      end
+      it 'includes log_analytics_destination_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_monitor_diagnostic_setting('opt', required_attrs.merge(log_analytics_destination_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_monitor_diagnostic_setting', 'opt')
+        expect(config).to have_key('log_analytics_destination_type')
+      end
+
+      it 'omits log_analytics_destination_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_monitor_diagnostic_setting('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_monitor_diagnostic_setting', 'minimal')
+        expect(config).not_to have_key('log_analytics_destination_type')
       end
       it 'includes log_analytics_workspace_id when provided' do
         synth = create_synthesizer

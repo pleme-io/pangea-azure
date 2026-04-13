@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureVirtualDesktopHostPool do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ custom_rdp_properties: 'test-value', description: 'test-value', friendly_name: 'test-value', maximum_sessions_allowed: 3.14, personal_desktop_assignment_type: 'test-value', preferred_app_group_type: 'test-value', public_network_access: 'test-value', scheduled_agent_updates: [{ 'key1' => 'val1' }], start_vm_on_connect: true, tags: { 'key1' => 'val1' }, validate_environment: true, vm_template: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ custom_rdp_properties: 'test-value', description: 'test-value', friendly_name: 'test-value', maximum_sessions_allowed: 3.14, personal_desktop_assignment_type: 'test-value', preferred_app_group_type: 'test-value', public_network_access: 'test-value', scheduled_agent_updates: { 'key1' => 'val1' }, start_vm_on_connect: true, tags: { 'key1' => 'val1' }, validate_environment: true, vm_template: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -189,7 +189,7 @@ RSpec.describe Pangea::Resources::AzureVirtualDesktopHostPool do
       it 'includes scheduled_agent_updates when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_desktop_host_pool('opt', required_attrs.merge(scheduled_agent_updates: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_desktop_host_pool('opt', required_attrs.merge(scheduled_agent_updates: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_desktop_host_pool', 'opt')
         expect(config).to have_key('scheduled_agent_updates')

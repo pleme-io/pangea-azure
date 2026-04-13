@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureContainerAppJob do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { container_app_environment_id: 'test-value', location: 'test-value', name: 'test-value', replica_timeout_in_seconds: 3.14, resource_group_name: 'test-value', template: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { container_app_environment_id: 'test-value', location: 'test-value', name: 'test-value', replica_timeout_in_seconds: 3.14, resource_group_name: 'test-value', template: { 'key1' => 'val1' } } }
 
   describe ':azurerm_container_app_job' do
     context 'with required attributes only' do
@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppJob do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ event_trigger_config: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], manual_trigger_config: [{ 'key1' => 'val1' }], registry: [{ 'key1' => 'val1' }], replica_retry_limit: 3.14, schedule_trigger_config: [{ 'key1' => 'val1' }], secret: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, workload_profile_name: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ event_trigger_config: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, manual_trigger_config: { 'key1' => 'val1' }, registry: [{ 'key1' => 'val1' }], replica_retry_limit: 3.14, schedule_trigger_config: { 'key1' => 'val1' }, secret: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, workload_profile_name: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -82,7 +82,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppJob do
       it 'includes event_trigger_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_app_job('opt', required_attrs.merge(event_trigger_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_app_job('opt', required_attrs.merge(event_trigger_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app_job', 'opt')
         expect(config).to have_key('event_trigger_config')
@@ -99,7 +99,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppJob do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_app_job('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_app_job('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app_job', 'opt')
         expect(config).to have_key('identity')
@@ -116,7 +116,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppJob do
       it 'includes manual_trigger_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_app_job('opt', required_attrs.merge(manual_trigger_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_app_job('opt', required_attrs.merge(manual_trigger_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app_job', 'opt')
         expect(config).to have_key('manual_trigger_config')
@@ -167,7 +167,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppJob do
       it 'includes schedule_trigger_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_app_job('opt', required_attrs.merge(schedule_trigger_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_app_job('opt', required_attrs.merge(schedule_trigger_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app_job', 'opt')
         expect(config).to have_key('schedule_trigger_config')
@@ -247,7 +247,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppJob do
         expect(config['name']).to be_a(String)
         expect(config['replica_timeout_in_seconds']).to be_a(Float)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['template']).to be_a(Array)
+        expect(config['template']).to be_a(Hash)
       end
     end
 
@@ -280,7 +280,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppJob do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_container_app_job,
     method: :azurerm_container_app_job,
-    required_attrs: { container_app_environment_id: 'test-value', location: 'test-value', name: 'test-value', replica_timeout_in_seconds: 3.14, resource_group_name: 'test-value', template: [{ 'key1' => 'val1' }] },
+    required_attrs: { container_app_environment_id: 'test-value', location: 'test-value', name: 'test-value', replica_timeout_in_seconds: 3.14, resource_group_name: 'test-value', template: { 'key1' => 'val1' } },
     expected_outputs: [:id, :event_stream_endpoint, :outbound_ip_addresses],
     sensitive_fields: [],
     immutable_fields: [],

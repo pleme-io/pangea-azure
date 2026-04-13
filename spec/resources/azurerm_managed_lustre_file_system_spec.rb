@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureManagedLustreFileSystem do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', maintenance_window: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value', sku_name: 'test-value', storage_capacity_in_tb: 3.14, subnet_id: 'test-value', zones: ['test-value'] } }
+  let(:required_attrs) { { location: 'test-value', maintenance_window: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value', sku_name: 'test-value', storage_capacity_in_tb: 3.14, subnet_id: 'test-value', zones: ['test-value'] } }
 
   describe ':azurerm_managed_lustre_file_system' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureManagedLustreFileSystem do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ encryption_key: [{ 'key1' => 'val1' }], hsm_setting: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], root_squash: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ encryption_key: { 'key1' => 'val1' }, hsm_setting: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, root_squash: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -76,7 +76,7 @@ RSpec.describe Pangea::Resources::AzureManagedLustreFileSystem do
       it 'includes encryption_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_managed_lustre_file_system('opt', required_attrs.merge(encryption_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_managed_lustre_file_system('opt', required_attrs.merge(encryption_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_lustre_file_system', 'opt')
         expect(config).to have_key('encryption_key')
@@ -93,7 +93,7 @@ RSpec.describe Pangea::Resources::AzureManagedLustreFileSystem do
       it 'includes hsm_setting when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_managed_lustre_file_system('opt', required_attrs.merge(hsm_setting: [{ 'key1' => 'val1' }]))
+        synth.azurerm_managed_lustre_file_system('opt', required_attrs.merge(hsm_setting: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_lustre_file_system', 'opt')
         expect(config).to have_key('hsm_setting')
@@ -110,7 +110,7 @@ RSpec.describe Pangea::Resources::AzureManagedLustreFileSystem do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_managed_lustre_file_system('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_managed_lustre_file_system('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_lustre_file_system', 'opt')
         expect(config).to have_key('identity')
@@ -127,7 +127,7 @@ RSpec.describe Pangea::Resources::AzureManagedLustreFileSystem do
       it 'includes root_squash when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_managed_lustre_file_system('opt', required_attrs.merge(root_squash: [{ 'key1' => 'val1' }]))
+        synth.azurerm_managed_lustre_file_system('opt', required_attrs.merge(root_squash: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_lustre_file_system', 'opt')
         expect(config).to have_key('root_squash')
@@ -169,7 +169,7 @@ RSpec.describe Pangea::Resources::AzureManagedLustreFileSystem do
 
         config = validate_resource_structure(result, 'azurerm_managed_lustre_file_system', 'typed')
         expect(config['location']).to be_a(String)
-        expect(config['maintenance_window']).to be_a(Array)
+        expect(config['maintenance_window']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['sku_name']).to be_a(String)
@@ -208,7 +208,7 @@ RSpec.describe Pangea::Resources::AzureManagedLustreFileSystem do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_managed_lustre_file_system,
     method: :azurerm_managed_lustre_file_system,
-    required_attrs: { location: 'test-value', maintenance_window: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value', sku_name: 'test-value', storage_capacity_in_tb: 3.14, subnet_id: 'test-value', zones: ['test-value'] },
+    required_attrs: { location: 'test-value', maintenance_window: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value', sku_name: 'test-value', storage_capacity_in_tb: 3.14, subnet_id: 'test-value', zones: ['test-value'] },
     expected_outputs: [:id, :mgs_address],
     sensitive_fields: [],
     immutable_fields: [],

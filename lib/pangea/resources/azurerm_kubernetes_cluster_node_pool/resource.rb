@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::KubernetesClusterNodePoolAttributes,
       outputs: { id: :id },
       map: [:kubernetes_cluster_id, :name],
-      map_present: [:capacity_reservation_group_id, :eviction_policy, :gpu_driver, :gpu_instance, :host_group_id, :kubelet_config, :linux_os_config, :max_count, :min_count, :mode, :node_network_profile, :node_public_ip_prefix_id, :node_taints, :os_disk_type, :os_type, :pod_subnet_id, :priority, :proximity_placement_group_id, :scale_down_mode, :snapshot_id, :spot_max_price, :tags, :temporary_name_for_rotation, :upgrade_settings, :vnet_subnet_id, :windows_profile, :workload_runtime, :zones],
+      map_present: [:capacity_reservation_group_id, :eviction_policy, :gpu_driver, :gpu_instance, :host_group_id, :kubelet_config, :kubelet_disk_type, :linux_os_config, :max_count, :max_pods, :min_count, :mode, :node_count, :node_labels, :node_network_profile, :node_public_ip_prefix_id, :node_taints, :orchestrator_version, :os_disk_size_gb, :os_disk_type, :os_sku, :os_type, :pod_subnet_id, :priority, :proximity_placement_group_id, :scale_down_mode, :snapshot_id, :spot_max_price, :tags, :temporary_name_for_rotation, :upgrade_settings, :vm_size, :vnet_subnet_id, :windows_profile, :workload_runtime, :zones],
       map_bool: [:auto_scaling_enabled, :fips_enabled, :host_encryption_enabled, :node_public_ip_enabled, :ultra_ssd_enabled]
   end
   module Azure

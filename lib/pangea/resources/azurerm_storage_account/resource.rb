@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::StorageAccountAttributes,
       outputs: { id: :id },
       map: [:account_replication_type, :account_tier, :location, :name, :resource_group_name],
-      map_present: [:account_kind, :allowed_copy_scope, :azure_files_authentication, :blob_properties, :custom_domain, :customer_managed_key, :dns_endpoint_type, :edge_zone, :identity, :immutability_policy, :min_tls_version, :network_rules, :provisioned_billing_model_version, :queue_encryption_key_type, :queue_properties, :routing, :sas_policy, :share_properties, :static_website, :table_encryption_key_type, :tags],
-      map_bool: [:allow_nested_items_to_be_public, :cross_tenant_replication_enabled, :default_to_oauth_authentication, :https_traffic_only_enabled, :infrastructure_encryption_enabled, :is_hns_enabled, :local_user_enabled, :nfsv3_enabled, :public_network_access_enabled, :sftp_enabled, :shared_access_key_enabled]
+      map_present: [:access_tier, :account_kind, :allowed_copy_scope, :azure_files_authentication, :blob_properties, :custom_domain, :customer_managed_key, :dns_endpoint_type, :edge_zone, :identity, :immutability_policy, :min_tls_version, :network_rules, :provisioned_billing_model_version, :queue_encryption_key_type, :queue_properties, :routing, :sas_policy, :share_properties, :static_website, :table_encryption_key_type, :tags],
+      map_bool: [:allow_nested_items_to_be_public, :cross_tenant_replication_enabled, :default_to_oauth_authentication, :https_traffic_only_enabled, :infrastructure_encryption_enabled, :is_hns_enabled, :large_file_share_enabled, :local_user_enabled, :nfsv3_enabled, :public_network_access_enabled, :sftp_enabled, :shared_access_key_enabled]
   end
   module Azure
     include AzureStorageAccount

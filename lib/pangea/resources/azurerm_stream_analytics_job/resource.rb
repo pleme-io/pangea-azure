@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StreamAnalyticsJobAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :transformation_query],
-      map_present: [:content_storage_policy, :data_locale, :events_late_arrival_max_delay_in_seconds, :events_out_of_order_max_delay_in_seconds, :events_out_of_order_policy, :identity, :job_storage_account, :output_error_policy, :sku_name, :stream_analytics_cluster_id, :streaming_units, :tags, :type]
+      map_present: [:compatibility_level, :content_storage_policy, :data_locale, :events_late_arrival_max_delay_in_seconds, :events_out_of_order_max_delay_in_seconds, :events_out_of_order_policy, :identity, :job_storage_account, :output_error_policy, :sku_name, :stream_analytics_cluster_id, :streaming_units, :tags, :type]
   end
   module Azure
     include AzureStreamAnalyticsJob

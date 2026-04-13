@@ -1,0 +1,8 @@
+name: azurerm_postgresql_flexible_server_backup
+title: Manages a azurerm_postgresql_flexible_server_backup resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

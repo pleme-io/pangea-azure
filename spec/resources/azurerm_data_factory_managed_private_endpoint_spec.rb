@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryManagedPrivateEndpoint do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ subresource_name: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ fqdns: ['test-value'], subresource_name: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,11 +64,29 @@ RSpec.describe Pangea::Resources::AzureDataFactoryManagedPrivateEndpoint do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_data_factory_managed_private_endpoint', 'full')
+        expect(config).to have_key('fqdns')
         expect(config).to have_key('subresource_name')
       end
     end
 
     context 'optional attributes' do
+      it 'includes fqdns when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_managed_private_endpoint('opt', required_attrs.merge(fqdns: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_managed_private_endpoint', 'opt')
+        expect(config).to have_key('fqdns')
+      end
+
+      it 'omits fqdns when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_managed_private_endpoint('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_managed_private_endpoint', 'minimal')
+        expect(config).not_to have_key('fqdns')
+      end
       it 'includes subresource_name when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

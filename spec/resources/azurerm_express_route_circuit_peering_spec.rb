@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureExpressRouteCircuitPeering do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ ipv4_enabled: true, ipv6: [{ 'key1' => 'val1' }], microsoft_peering_config: [{ 'key1' => 'val1' }], primary_peer_address_prefix: 'test-value', route_filter_id: 'test-value', secondary_peer_address_prefix: 'test-value', shared_key: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ ipv4_enabled: true, ipv6: { 'key1' => 'val1' }, microsoft_peering_config: { 'key1' => 'val1' }, peer_asn: 3.14, primary_peer_address_prefix: 'test-value', route_filter_id: 'test-value', secondary_peer_address_prefix: 'test-value', shared_key: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -75,6 +75,7 @@ RSpec.describe Pangea::Resources::AzureExpressRouteCircuitPeering do
         expect(config).to have_key('ipv4_enabled')
         expect(config).to have_key('ipv6')
         expect(config).to have_key('microsoft_peering_config')
+        expect(config).to have_key('peer_asn')
         expect(config).to have_key('primary_peer_address_prefix')
         expect(config).to have_key('route_filter_id')
         expect(config).to have_key('secondary_peer_address_prefix')
@@ -103,7 +104,7 @@ RSpec.describe Pangea::Resources::AzureExpressRouteCircuitPeering do
       it 'includes ipv6 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_express_route_circuit_peering('opt', required_attrs.merge(ipv6: [{ 'key1' => 'val1' }]))
+        synth.azurerm_express_route_circuit_peering('opt', required_attrs.merge(ipv6: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_express_route_circuit_peering', 'opt')
         expect(config).to have_key('ipv6')
@@ -120,7 +121,7 @@ RSpec.describe Pangea::Resources::AzureExpressRouteCircuitPeering do
       it 'includes microsoft_peering_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_express_route_circuit_peering('opt', required_attrs.merge(microsoft_peering_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_express_route_circuit_peering('opt', required_attrs.merge(microsoft_peering_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_express_route_circuit_peering', 'opt')
         expect(config).to have_key('microsoft_peering_config')
@@ -133,6 +134,23 @@ RSpec.describe Pangea::Resources::AzureExpressRouteCircuitPeering do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_express_route_circuit_peering', 'minimal')
         expect(config).not_to have_key('microsoft_peering_config')
+      end
+      it 'includes peer_asn when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_express_route_circuit_peering('opt', required_attrs.merge(peer_asn: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_express_route_circuit_peering', 'opt')
+        expect(config).to have_key('peer_asn')
+      end
+
+      it 'omits peer_asn when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_express_route_circuit_peering('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_express_route_circuit_peering', 'minimal')
+        expect(config).not_to have_key('peer_asn')
       end
       it 'includes primary_peer_address_prefix when provided' do
         synth = create_synthesizer

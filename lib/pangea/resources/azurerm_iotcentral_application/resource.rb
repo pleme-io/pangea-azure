@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::IotcentralApplicationAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sub_domain],
-      map_present: [:identity, :sku, :tags, :template],
+      map_present: [:display_name, :identity, :sku, :tags, :template],
       map_bool: [:public_network_access_enabled]
   end
   module Azure

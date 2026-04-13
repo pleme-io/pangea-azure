@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::OracleCloudVmClusterAttributes,
       outputs: { id: :id },
       map: [:cloud_exadata_infrastructure_id, :cpu_core_count, :db_servers, :display_name, :gi_version, :hostname, :license_model, :location, :name, :resource_group_name, :ssh_public_keys, :subnet_id, :virtual_network_id],
-      map_present: [:backup_subnet_cidr, :data_collection_options, :file_system_configuration, :scan_listener_port_tcp, :scan_listener_port_tcp_ssl, :tags]
+      map_present: [:backup_subnet_cidr, :cluster_name, :data_collection_options, :data_storage_percentage, :data_storage_size_in_tbs, :db_node_storage_size_in_gbs, :domain, :file_system_configuration, :memory_size_in_gbs, :scan_listener_port_tcp, :scan_listener_port_tcp_ssl, :system_version, :tags, :time_zone, :zone_id],
+      map_bool: [:local_backup_enabled, :sparse_diskgroup_enabled]
   end
   module Azure
     include AzureOracleCloudVmCluster

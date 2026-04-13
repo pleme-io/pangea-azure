@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureIothubEndpointCosmosdbAccount do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ authentication_type: 'test-value', identity_id: 'test-value', partition_key_name: 'test-value', partition_key_template: 'test-value', primary_key: 'test-value', secondary_key: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ authentication_type: 'test-value', identity_id: 'test-value', partition_key_name: 'test-value', partition_key_template: 'test-value', primary_key: 'test-value', secondary_key: 'test-value', subscription_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,6 +70,7 @@ RSpec.describe Pangea::Resources::AzureIothubEndpointCosmosdbAccount do
         expect(config).to have_key('partition_key_template')
         expect(config).to have_key('primary_key')
         expect(config).to have_key('secondary_key')
+        expect(config).to have_key('subscription_id')
       end
     end
 
@@ -175,6 +176,23 @@ RSpec.describe Pangea::Resources::AzureIothubEndpointCosmosdbAccount do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iothub_endpoint_cosmosdb_account', 'minimal')
         expect(config).not_to have_key('secondary_key')
+      end
+      it 'includes subscription_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub_endpoint_cosmosdb_account('opt', required_attrs.merge(subscription_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub_endpoint_cosmosdb_account', 'opt')
+        expect(config).to have_key('subscription_id')
+      end
+
+      it 'omits subscription_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub_endpoint_cosmosdb_account('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub_endpoint_cosmosdb_account', 'minimal')
+        expect(config).not_to have_key('subscription_id')
       end
     end
 

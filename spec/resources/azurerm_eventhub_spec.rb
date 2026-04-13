@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureEventhub do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ capture_description: [{ 'key1' => 'val1' }], retention_description: [{ 'key1' => 'val1' }], status: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ capture_description: { 'key1' => 'val1' }, message_retention: 3.14, namespace_id: 'test-value', namespace_name: 'test-value', resource_group_name: 'test-value', retention_description: { 'key1' => 'val1' }, status: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -73,6 +73,10 @@ RSpec.describe Pangea::Resources::AzureEventhub do
 
         config = validate_resource_structure(result, 'azurerm_eventhub', 'full')
         expect(config).to have_key('capture_description')
+        expect(config).to have_key('message_retention')
+        expect(config).to have_key('namespace_id')
+        expect(config).to have_key('namespace_name')
+        expect(config).to have_key('resource_group_name')
         expect(config).to have_key('retention_description')
         expect(config).to have_key('status')
       end
@@ -82,7 +86,7 @@ RSpec.describe Pangea::Resources::AzureEventhub do
       it 'includes capture_description when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventhub('opt', required_attrs.merge(capture_description: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventhub('opt', required_attrs.merge(capture_description: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventhub', 'opt')
         expect(config).to have_key('capture_description')
@@ -96,10 +100,78 @@ RSpec.describe Pangea::Resources::AzureEventhub do
         config = validate_resource_structure(result, 'azurerm_eventhub', 'minimal')
         expect(config).not_to have_key('capture_description')
       end
+      it 'includes message_retention when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub('opt', required_attrs.merge(message_retention: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub', 'opt')
+        expect(config).to have_key('message_retention')
+      end
+
+      it 'omits message_retention when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub', 'minimal')
+        expect(config).not_to have_key('message_retention')
+      end
+      it 'includes namespace_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub('opt', required_attrs.merge(namespace_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub', 'opt')
+        expect(config).to have_key('namespace_id')
+      end
+
+      it 'omits namespace_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub', 'minimal')
+        expect(config).not_to have_key('namespace_id')
+      end
+      it 'includes namespace_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub('opt', required_attrs.merge(namespace_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub', 'opt')
+        expect(config).to have_key('namespace_name')
+      end
+
+      it 'omits namespace_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub', 'minimal')
+        expect(config).not_to have_key('namespace_name')
+      end
+      it 'includes resource_group_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub('opt', required_attrs.merge(resource_group_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub', 'opt')
+        expect(config).to have_key('resource_group_name')
+      end
+
+      it 'omits resource_group_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub', 'minimal')
+        expect(config).not_to have_key('resource_group_name')
+      end
       it 'includes retention_description when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventhub('opt', required_attrs.merge(retention_description: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventhub('opt', required_attrs.merge(retention_description: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventhub', 'opt')
         expect(config).to have_key('retention_description')

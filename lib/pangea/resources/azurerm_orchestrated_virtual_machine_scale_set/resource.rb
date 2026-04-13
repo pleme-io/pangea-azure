@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::OrchestratedVirtualMachineScaleSetAttributes,
       outputs: { id: :id },
       map: [:location, :name, :platform_fault_domain_count, :resource_group_name],
-      map_present: [:additional_capabilities, :automatic_instance_repair, :boot_diagnostics, :capacity_reservation_group_id, :data_disk, :eviction_policy, :extension, :extensions_time_budget, :identity, :license_type, :max_bid_price, :network_api_version, :network_interface, :os_disk, :os_profile, :plan, :priority, :priority_mix, :proximity_placement_group_id, :rolling_upgrade_policy, :sku_name, :sku_profile, :source_image_id, :source_image_reference, :tags, :termination_notification, :upgrade_mode, :user_data_base64, :zones],
-      map_bool: [:encryption_at_host_enabled, :extension_operations_enabled, :zone_balance]
+      map_present: [:additional_capabilities, :automatic_instance_repair, :boot_diagnostics, :capacity_reservation_group_id, :data_disk, :eviction_policy, :extension, :extensions_time_budget, :identity, :instances, :license_type, :max_bid_price, :network_api_version, :network_interface, :os_disk, :os_profile, :plan, :priority, :priority_mix, :proximity_placement_group_id, :rolling_upgrade_policy, :sku_name, :sku_profile, :source_image_id, :source_image_reference, :tags, :termination_notification, :upgrade_mode, :user_data_base64, :zones],
+      map_bool: [:encryption_at_host_enabled, :extension_operations_enabled, :single_placement_group, :zone_balance]
   end
   module Azure
     include AzureOrchestratedVirtualMachineScaleSet

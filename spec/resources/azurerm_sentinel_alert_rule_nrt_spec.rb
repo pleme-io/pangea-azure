@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureSentinelAlertRuleNrt do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { display_name: 'test-value', event_grouping: [{ 'key1' => 'val1' }], log_analytics_workspace_id: 'test-value', name: 'test-value', query: 'test-value', severity: 'test-value' } }
+  let(:required_attrs) { { display_name: 'test-value', event_grouping: { 'key1' => 'val1' }, log_analytics_workspace_id: 'test-value', name: 'test-value', query: 'test-value', severity: 'test-value' } }
 
   describe ':azurerm_sentinel_alert_rule_nrt' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureSentinelAlertRuleNrt do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ alert_details_override: [{ 'key1' => 'val1' }], alert_rule_template_guid: 'test-value', alert_rule_template_version: 'test-value', custom_details: { 'key1' => 'val1' }, description: 'test-value', enabled: true, entity_mapping: [{ 'key1' => 'val1' }], incident: [{ 'key1' => 'val1' }], sentinel_entity_mapping: [{ 'key1' => 'val1' }], suppression_duration: 'test-value', suppression_enabled: true, tactics: ['test-value'], techniques: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ alert_details_override: [{ 'key1' => 'val1' }], alert_rule_template_guid: 'test-value', alert_rule_template_version: 'test-value', custom_details: { 'key1' => 'val1' }, description: 'test-value', enabled: true, entity_mapping: [{ 'key1' => 'val1' }], incident: { 'key1' => 'val1' }, sentinel_entity_mapping: [{ 'key1' => 'val1' }], suppression_duration: 'test-value', suppression_enabled: true, tactics: ['test-value'], techniques: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -190,7 +190,7 @@ RSpec.describe Pangea::Resources::AzureSentinelAlertRuleNrt do
       it 'includes incident when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_sentinel_alert_rule_nrt('opt', required_attrs.merge(incident: [{ 'key1' => 'val1' }]))
+        synth.azurerm_sentinel_alert_rule_nrt('opt', required_attrs.merge(incident: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_alert_rule_nrt', 'opt')
         expect(config).to have_key('incident')
@@ -325,7 +325,7 @@ RSpec.describe Pangea::Resources::AzureSentinelAlertRuleNrt do
 
         config = validate_resource_structure(result, 'azurerm_sentinel_alert_rule_nrt', 'typed')
         expect(config['display_name']).to be_a(String)
-        expect(config['event_grouping']).to be_a(Array)
+        expect(config['event_grouping']).to be_a(Hash)
         expect(config['log_analytics_workspace_id']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['query']).to be_a(String)
@@ -362,7 +362,7 @@ RSpec.describe Pangea::Resources::AzureSentinelAlertRuleNrt do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_sentinel_alert_rule_nrt,
     method: :azurerm_sentinel_alert_rule_nrt,
-    required_attrs: { display_name: 'test-value', event_grouping: [{ 'key1' => 'val1' }], log_analytics_workspace_id: 'test-value', name: 'test-value', query: 'test-value', severity: 'test-value' },
+    required_attrs: { display_name: 'test-value', event_grouping: { 'key1' => 'val1' }, log_analytics_workspace_id: 'test-value', name: 'test-value', query: 'test-value', severity: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

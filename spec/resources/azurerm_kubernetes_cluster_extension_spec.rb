@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterExtension do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ configuration_protected_settings: { 'key1' => 'val1' }, configuration_settings: { 'key1' => 'val1' }, plan: [{ 'key1' => 'val1' }], version: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ configuration_protected_settings: { 'key1' => 'val1' }, configuration_settings: { 'key1' => 'val1' }, plan: { 'key1' => 'val1' }, release_namespace: 'test-value', release_train: 'test-value', target_namespace: 'test-value', version: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -75,6 +75,9 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterExtension do
         expect(config).to have_key('configuration_protected_settings')
         expect(config).to have_key('configuration_settings')
         expect(config).to have_key('plan')
+        expect(config).to have_key('release_namespace')
+        expect(config).to have_key('release_train')
+        expect(config).to have_key('target_namespace')
         expect(config).to have_key('version')
       end
     end
@@ -117,7 +120,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterExtension do
       it 'includes plan when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster_extension('opt', required_attrs.merge(plan: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster_extension('opt', required_attrs.merge(plan: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_extension', 'opt')
         expect(config).to have_key('plan')
@@ -130,6 +133,57 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterExtension do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_extension', 'minimal')
         expect(config).not_to have_key('plan')
+      end
+      it 'includes release_namespace when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_extension('opt', required_attrs.merge(release_namespace: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_extension', 'opt')
+        expect(config).to have_key('release_namespace')
+      end
+
+      it 'omits release_namespace when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_extension('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_extension', 'minimal')
+        expect(config).not_to have_key('release_namespace')
+      end
+      it 'includes release_train when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_extension('opt', required_attrs.merge(release_train: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_extension', 'opt')
+        expect(config).to have_key('release_train')
+      end
+
+      it 'omits release_train when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_extension('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_extension', 'minimal')
+        expect(config).not_to have_key('release_train')
+      end
+      it 'includes target_namespace when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_extension('opt', required_attrs.merge(target_namespace: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_extension', 'opt')
+        expect(config).to have_key('target_namespace')
+      end
+
+      it 'omits target_namespace when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_extension('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_extension', 'minimal')
+        expect(config).not_to have_key('target_namespace')
       end
       it 'includes version when provided' do
         synth = create_synthesizer

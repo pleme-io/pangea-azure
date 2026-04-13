@@ -1,0 +1,8 @@
+name: azurerm_vpn_server_configuration_policy_group
+title: Manages a azurerm_vpn_server_configuration_policy_group resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

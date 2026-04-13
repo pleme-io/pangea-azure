@@ -71,7 +71,7 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ administrator_password: 'test-value', administrator_password_wo: 'test-value', administrator_password_wo_version: 3.14, backup_retention_days: 3.14, create_mode: 'test-value', customer_managed_key: [{ 'key1' => 'val1' }], delegated_subnet_id: 'test-value', geo_redundant_backup_enabled: true, high_availability: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], maintenance_window: [{ 'key1' => 'val1' }], point_in_time_restore_time_in_utc: 'test-value', private_dns_zone_id: 'test-value', source_server_id: 'test-value', storage: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ administrator_login: 'test-value', administrator_password: 'test-value', administrator_password_wo: 'test-value', administrator_password_wo_version: 3.14, backup_retention_days: 3.14, create_mode: 'test-value', customer_managed_key: { 'key1' => 'val1' }, delegated_subnet_id: 'test-value', geo_redundant_backup_enabled: true, high_availability: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, maintenance_window: { 'key1' => 'val1' }, point_in_time_restore_time_in_utc: 'test-value', private_dns_zone_id: 'test-value', public_network_access: 'test-value', replication_role: 'test-value', sku_name: 'test-value', source_server_id: 'test-value', storage: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, version: 'test-value', zone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -80,6 +80,7 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'full')
+        expect(config).to have_key('administrator_login')
         expect(config).to have_key('administrator_password')
         expect(config).to have_key('administrator_password_wo')
         expect(config).to have_key('administrator_password_wo_version')
@@ -93,13 +94,35 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
         expect(config).to have_key('maintenance_window')
         expect(config).to have_key('point_in_time_restore_time_in_utc')
         expect(config).to have_key('private_dns_zone_id')
+        expect(config).to have_key('public_network_access')
+        expect(config).to have_key('replication_role')
+        expect(config).to have_key('sku_name')
         expect(config).to have_key('source_server_id')
         expect(config).to have_key('storage')
         expect(config).to have_key('tags')
+        expect(config).to have_key('version')
+        expect(config).to have_key('zone')
       end
     end
 
     context 'optional attributes' do
+      it 'includes administrator_login when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(administrator_login: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
+        expect(config).to have_key('administrator_login')
+      end
+
+      it 'omits administrator_login when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'minimal')
+        expect(config).not_to have_key('administrator_login')
+      end
       it 'includes administrator_password when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -188,7 +211,7 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -239,7 +262,7 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
       it 'includes high_availability when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(high_availability: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(high_availability: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
         expect(config).to have_key('high_availability')
@@ -256,7 +279,7 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
         expect(config).to have_key('identity')
@@ -273,7 +296,7 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
       it 'includes maintenance_window when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(maintenance_window: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(maintenance_window: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
         expect(config).to have_key('maintenance_window')
@@ -321,6 +344,57 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
         config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'minimal')
         expect(config).not_to have_key('private_dns_zone_id')
       end
+      it 'includes public_network_access when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(public_network_access: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
+        expect(config).to have_key('public_network_access')
+      end
+
+      it 'omits public_network_access when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'minimal')
+        expect(config).not_to have_key('public_network_access')
+      end
+      it 'includes replication_role when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(replication_role: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
+        expect(config).to have_key('replication_role')
+      end
+
+      it 'omits replication_role when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'minimal')
+        expect(config).not_to have_key('replication_role')
+      end
+      it 'includes sku_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(sku_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
+        expect(config).to have_key('sku_name')
+      end
+
+      it 'omits sku_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'minimal')
+        expect(config).not_to have_key('sku_name')
+      end
       it 'includes source_server_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -341,7 +415,7 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
       it 'includes storage when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(storage: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(storage: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
         expect(config).to have_key('storage')
@@ -371,6 +445,40 @@ RSpec.describe Pangea::Resources::AzureMysqlFlexibleServer do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
+        expect(config).to have_key('version')
+      end
+
+      it 'omits version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'minimal')
+        expect(config).not_to have_key('version')
+      end
+      it 'includes zone when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('opt', required_attrs.merge(zone: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'opt')
+        expect(config).to have_key('zone')
+      end
+
+      it 'omits zone when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mysql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mysql_flexible_server', 'minimal')
+        expect(config).not_to have_key('zone')
       end
     end
 

@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureFrontdoorCustomHttpsConfiguration do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ custom_https_configuration: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ custom_https_configuration: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureFrontdoorCustomHttpsConfiguration do
       it 'includes custom_https_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_frontdoor_custom_https_configuration('opt', required_attrs.merge(custom_https_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_frontdoor_custom_https_configuration('opt', required_attrs.merge(custom_https_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_frontdoor_custom_https_configuration', 'opt')
         expect(config).to have_key('custom_https_configuration')

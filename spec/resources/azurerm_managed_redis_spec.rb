@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureManagedRedis do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ customer_managed_key: [{ 'key1' => 'val1' }], default_database: [{ 'key1' => 'val1' }], high_availability_enabled: true, identity: [{ 'key1' => 'val1' }], public_network_access: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ customer_managed_key: { 'key1' => 'val1' }, default_database: { 'key1' => 'val1' }, high_availability_enabled: true, identity: { 'key1' => 'val1' }, public_network_access: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -77,7 +77,7 @@ RSpec.describe Pangea::Resources::AzureManagedRedis do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_managed_redis('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_managed_redis('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_redis', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -94,7 +94,7 @@ RSpec.describe Pangea::Resources::AzureManagedRedis do
       it 'includes default_database when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_managed_redis('opt', required_attrs.merge(default_database: [{ 'key1' => 'val1' }]))
+        synth.azurerm_managed_redis('opt', required_attrs.merge(default_database: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_redis', 'opt')
         expect(config).to have_key('default_database')
@@ -128,7 +128,7 @@ RSpec.describe Pangea::Resources::AzureManagedRedis do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_managed_redis('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_managed_redis('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_redis', 'opt')
         expect(config).to have_key('identity')

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ServiceFabricManagedClusterAttributes,
       outputs: { id: :id },
       map: [:client_connection_port, :http_gateway_port, :lb_rule, :location, :name, :resource_group_name],
-      map_present: [:authentication, :custom_fabric_setting, :node_type, :password, :sku, :subnet_id, :tags, :upgrade_wave, :username],
+      map_present: [:authentication, :custom_fabric_setting, :dns_name, :node_type, :password, :sku, :subnet_id, :tags, :upgrade_wave, :username],
       map_bool: [:backup_service_enabled, :dns_service_enabled]
   end
   module Azure

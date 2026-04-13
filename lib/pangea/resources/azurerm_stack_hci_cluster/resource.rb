@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StackHciClusterAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:automanage_configuration_id, :client_id, :identity, :tags]
+      map_present: [:automanage_configuration_id, :client_id, :identity, :tags, :tenant_id]
   end
   module Azure
     include AzureStackHciCluster

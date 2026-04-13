@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AutomationJobScheduleAttributes,
       outputs: { id: :id },
       map: [:automation_account_name, :resource_group_name, :runbook_name, :schedule_name],
-      map_present: [:parameters, :run_on]
+      map_present: [:job_schedule_id, :parameters, :run_on]
   end
   module Azure
     include AzureAutomationJobSchedule

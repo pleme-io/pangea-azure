@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesFluxConfiguration do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ blob_storage: [{ 'key1' => 'val1' }], bucket: [{ 'key1' => 'val1' }], continuous_reconciliation_enabled: true, git_repository: [{ 'key1' => 'val1' }], scope: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ blob_storage: { 'key1' => 'val1' }, bucket: { 'key1' => 'val1' }, continuous_reconciliation_enabled: true, git_repository: { 'key1' => 'val1' }, scope: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesFluxConfiguration do
       it 'includes blob_storage when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_arc_kubernetes_flux_configuration('opt', required_attrs.merge(blob_storage: [{ 'key1' => 'val1' }]))
+        synth.azurerm_arc_kubernetes_flux_configuration('opt', required_attrs.merge(blob_storage: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_arc_kubernetes_flux_configuration', 'opt')
         expect(config).to have_key('blob_storage')
@@ -80,7 +80,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesFluxConfiguration do
       it 'includes bucket when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_arc_kubernetes_flux_configuration('opt', required_attrs.merge(bucket: [{ 'key1' => 'val1' }]))
+        synth.azurerm_arc_kubernetes_flux_configuration('opt', required_attrs.merge(bucket: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_arc_kubernetes_flux_configuration', 'opt')
         expect(config).to have_key('bucket')
@@ -114,7 +114,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesFluxConfiguration do
       it 'includes git_repository when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_arc_kubernetes_flux_configuration('opt', required_attrs.merge(git_repository: [{ 'key1' => 'val1' }]))
+        synth.azurerm_arc_kubernetes_flux_configuration('opt', required_attrs.merge(git_repository: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_arc_kubernetes_flux_configuration', 'opt')
         expect(config).to have_key('git_repository')

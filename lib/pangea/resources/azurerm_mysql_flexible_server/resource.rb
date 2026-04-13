@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::MysqlFlexibleServerAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:administrator_password, :administrator_password_wo, :administrator_password_wo_version, :backup_retention_days, :create_mode, :customer_managed_key, :delegated_subnet_id, :high_availability, :identity, :maintenance_window, :point_in_time_restore_time_in_utc, :private_dns_zone_id, :source_server_id, :storage, :tags],
+      map_present: [:administrator_login, :administrator_password, :administrator_password_wo, :administrator_password_wo_version, :backup_retention_days, :create_mode, :customer_managed_key, :delegated_subnet_id, :high_availability, :identity, :maintenance_window, :point_in_time_restore_time_in_utc, :private_dns_zone_id, :public_network_access, :replication_role, :sku_name, :source_server_id, :storage, :tags, :version, :zone],
       map_bool: [:geo_redundant_backup_enabled]
   end
   module Azure

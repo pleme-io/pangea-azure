@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureAiServices do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ custom_subdomain_name: 'test-value', customer_managed_key: [{ 'key1' => 'val1' }], fqdns: ['test-value'], identity: [{ 'key1' => 'val1' }], local_authentication_enabled: true, network_acls: [{ 'key1' => 'val1' }], outbound_network_access_restricted: true, public_network_access: 'test-value', storage: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ custom_subdomain_name: 'test-value', customer_managed_key: { 'key1' => 'val1' }, fqdns: ['test-value'], identity: { 'key1' => 'val1' }, local_authentication_enabled: true, network_acls: { 'key1' => 'val1' }, outbound_network_access_restricted: true, public_network_access: 'test-value', storage: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -102,7 +102,7 @@ RSpec.describe Pangea::Resources::AzureAiServices do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_ai_services('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_ai_services('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_ai_services', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -136,7 +136,7 @@ RSpec.describe Pangea::Resources::AzureAiServices do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_ai_services('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_ai_services('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_ai_services', 'opt')
         expect(config).to have_key('identity')
@@ -170,7 +170,7 @@ RSpec.describe Pangea::Resources::AzureAiServices do
       it 'includes network_acls when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_ai_services('opt', required_attrs.merge(network_acls: [{ 'key1' => 'val1' }]))
+        synth.azurerm_ai_services('opt', required_attrs.merge(network_acls: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_ai_services', 'opt')
         expect(config).to have_key('network_acls')

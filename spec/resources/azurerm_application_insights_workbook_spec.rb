@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureApplicationInsightsWorkbook do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ category: 'test-value', description: 'test-value', identity: [{ 'key1' => 'val1' }], source_id: 'test-value', storage_container_id: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ category: 'test-value', description: 'test-value', identity: { 'key1' => 'val1' }, source_id: 'test-value', storage_container_id: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -98,7 +98,7 @@ RSpec.describe Pangea::Resources::AzureApplicationInsightsWorkbook do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_application_insights_workbook('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_application_insights_workbook('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_insights_workbook', 'opt')
         expect(config).to have_key('identity')

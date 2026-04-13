@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::NetworkWatcherFlowLogAttributes,
       outputs: { id: :id },
       map: [:name, :network_watcher_name, :resource_group_name, :retention_policy, :storage_account_id],
-      map_present: [:tags, :traffic_analytics, :version],
+      map_present: [:location, :network_security_group_id, :tags, :target_resource_id, :traffic_analytics, :version],
       map_bool: [:enabled]
   end
   module Azure

@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataShare do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', snapshot_schedule: [{ 'key1' => 'val1' }], terms: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', snapshot_schedule: { 'key1' => 'val1' }, terms: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -78,7 +78,7 @@ RSpec.describe Pangea::Resources::AzureDataShare do
       it 'includes snapshot_schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_share('opt', required_attrs.merge(snapshot_schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_share('opt', required_attrs.merge(snapshot_schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_share', 'opt')
         expect(config).to have_key('snapshot_schedule')

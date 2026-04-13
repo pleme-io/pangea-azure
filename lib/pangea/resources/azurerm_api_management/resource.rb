@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ApiManagementAttributes,
       outputs: { id: :id },
       map: [:location, :name, :publisher_email, :publisher_name, :resource_group_name, :sku_name],
-      map_present: [:additional_location, :certificate, :delegation, :hostname_configuration, :identity, :min_api_version, :protocols, :public_ip_address_id, :security, :sign_in, :sign_up, :tags, :tenant_access, :virtual_network_configuration, :virtual_network_type, :zones],
+      map_present: [:additional_location, :certificate, :delegation, :hostname_configuration, :identity, :min_api_version, :notification_sender_email, :protocols, :public_ip_address_id, :security, :sign_in, :sign_up, :tags, :tenant_access, :virtual_network_configuration, :virtual_network_type, :zones],
       map_bool: [:client_certificate_enabled, :gateway_disabled, :public_network_access_enabled]
   end
   module Azure

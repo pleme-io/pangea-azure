@@ -69,7 +69,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppEnvironment do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ dapr_application_insights_connection_string: 'test-value', identity: [{ 'key1' => 'val1' }], infrastructure_resource_group_name: 'test-value', infrastructure_subnet_id: 'test-value', internal_load_balancer_enabled: true, log_analytics_workspace_id: 'test-value', mutual_tls_enabled: true, tags: { 'key1' => 'val1' }, workload_profile: [{ 'key1' => 'val1' }], zone_redundancy_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ dapr_application_insights_connection_string: 'test-value', identity: { 'key1' => 'val1' }, infrastructure_resource_group_name: 'test-value', infrastructure_subnet_id: 'test-value', internal_load_balancer_enabled: true, log_analytics_workspace_id: 'test-value', logs_destination: 'test-value', mutual_tls_enabled: true, public_network_access: 'test-value', tags: { 'key1' => 'val1' }, workload_profile: [{ 'key1' => 'val1' }], zone_redundancy_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -84,7 +84,9 @@ RSpec.describe Pangea::Resources::AzureContainerAppEnvironment do
         expect(config).to have_key('infrastructure_subnet_id')
         expect(config).to have_key('internal_load_balancer_enabled')
         expect(config).to have_key('log_analytics_workspace_id')
+        expect(config).to have_key('logs_destination')
         expect(config).to have_key('mutual_tls_enabled')
+        expect(config).to have_key('public_network_access')
         expect(config).to have_key('tags')
         expect(config).to have_key('workload_profile')
         expect(config).to have_key('zone_redundancy_enabled')
@@ -112,7 +114,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppEnvironment do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_app_environment('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_app_environment('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app_environment', 'opt')
         expect(config).to have_key('identity')
@@ -194,6 +196,23 @@ RSpec.describe Pangea::Resources::AzureContainerAppEnvironment do
         config = validate_resource_structure(result, 'azurerm_container_app_environment', 'minimal')
         expect(config).not_to have_key('log_analytics_workspace_id')
       end
+      it 'includes logs_destination when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_app_environment('opt', required_attrs.merge(logs_destination: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_app_environment', 'opt')
+        expect(config).to have_key('logs_destination')
+      end
+
+      it 'omits logs_destination when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_app_environment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_app_environment', 'minimal')
+        expect(config).not_to have_key('logs_destination')
+      end
       it 'includes mutual_tls_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -210,6 +229,23 @@ RSpec.describe Pangea::Resources::AzureContainerAppEnvironment do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app_environment', 'minimal')
         expect(config).not_to have_key('mutual_tls_enabled')
+      end
+      it 'includes public_network_access when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_app_environment('opt', required_attrs.merge(public_network_access: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_app_environment', 'opt')
+        expect(config).to have_key('public_network_access')
+      end
+
+      it 'omits public_network_access when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_app_environment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_app_environment', 'minimal')
+        expect(config).not_to have_key('public_network_access')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer

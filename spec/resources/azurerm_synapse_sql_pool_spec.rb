@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSynapseSqlPool do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ create_mode: 'test-value', data_encrypted: true, geo_backup_policy_enabled: true, recovery_database_id: 'test-value', restore: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ collation: 'test-value', create_mode: 'test-value', data_encrypted: true, geo_backup_policy_enabled: true, recovery_database_id: 'test-value', restore: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,6 +64,7 @@ RSpec.describe Pangea::Resources::AzureSynapseSqlPool do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_synapse_sql_pool', 'full')
+        expect(config).to have_key('collation')
         expect(config).to have_key('create_mode')
         expect(config).to have_key('data_encrypted')
         expect(config).to have_key('geo_backup_policy_enabled')
@@ -74,6 +75,23 @@ RSpec.describe Pangea::Resources::AzureSynapseSqlPool do
     end
 
     context 'optional attributes' do
+      it 'includes collation when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_synapse_sql_pool('opt', required_attrs.merge(collation: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_synapse_sql_pool', 'opt')
+        expect(config).to have_key('collation')
+      end
+
+      it 'omits collation when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_synapse_sql_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_synapse_sql_pool', 'minimal')
+        expect(config).not_to have_key('collation')
+      end
       it 'includes create_mode when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -145,7 +163,7 @@ RSpec.describe Pangea::Resources::AzureSynapseSqlPool do
       it 'includes restore when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_synapse_sql_pool('opt', required_attrs.merge(restore: [{ 'key1' => 'val1' }]))
+        synth.azurerm_synapse_sql_pool('opt', required_attrs.merge(restore: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_sql_pool', 'opt')
         expect(config).to have_key('restore')

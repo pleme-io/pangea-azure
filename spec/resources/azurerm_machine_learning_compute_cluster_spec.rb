@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMachineLearningComputeCluster do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', machine_learning_workspace_id: 'test-value', name: 'test-value', scale_settings: [{ 'key1' => 'val1' }], vm_priority: 'test-value', vm_size: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', machine_learning_workspace_id: 'test-value', name: 'test-value', scale_settings: { 'key1' => 'val1' }, vm_priority: 'test-value', vm_size: 'test-value' } }
 
   describe ':azurerm_machine_learning_compute_cluster' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', identity: [{ 'key1' => 'val1' }], local_auth_enabled: true, node_public_ip_enabled: true, ssh: [{ 'key1' => 'val1' }], ssh_public_access_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', identity: { 'key1' => 'val1' }, local_auth_enabled: true, node_public_ip_enabled: true, ssh: { 'key1' => 'val1' }, ssh_public_access_enabled: true, subnet_resource_id: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,6 +70,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeCluster do
         expect(config).to have_key('node_public_ip_enabled')
         expect(config).to have_key('ssh')
         expect(config).to have_key('ssh_public_access_enabled')
+        expect(config).to have_key('subnet_resource_id')
         expect(config).to have_key('tags')
       end
     end
@@ -95,7 +96,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeCluster do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_machine_learning_compute_cluster('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_machine_learning_compute_cluster('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_compute_cluster', 'opt')
         expect(config).to have_key('identity')
@@ -146,7 +147,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeCluster do
       it 'includes ssh when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_machine_learning_compute_cluster('opt', required_attrs.merge(ssh: [{ 'key1' => 'val1' }]))
+        synth.azurerm_machine_learning_compute_cluster('opt', required_attrs.merge(ssh: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_compute_cluster', 'opt')
         expect(config).to have_key('ssh')
@@ -176,6 +177,23 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeCluster do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_compute_cluster', 'minimal')
         expect(config).not_to have_key('ssh_public_access_enabled')
+      end
+      it 'includes subnet_resource_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_machine_learning_compute_cluster('opt', required_attrs.merge(subnet_resource_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_machine_learning_compute_cluster', 'opt')
+        expect(config).to have_key('subnet_resource_id')
+      end
+
+      it 'omits subnet_resource_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_machine_learning_compute_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_machine_learning_compute_cluster', 'minimal')
+        expect(config).not_to have_key('subnet_resource_id')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer
@@ -243,7 +261,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeCluster do
         expect(config['location']).to be_a(String)
         expect(config['machine_learning_workspace_id']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['scale_settings']).to be_a(Array)
+        expect(config['scale_settings']).to be_a(Hash)
         expect(config['vm_priority']).to be_a(String)
         expect(config['vm_size']).to be_a(String)
       end
@@ -278,7 +296,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeCluster do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_machine_learning_compute_cluster,
     method: :azurerm_machine_learning_compute_cluster,
-    required_attrs: { location: 'test-value', machine_learning_workspace_id: 'test-value', name: 'test-value', scale_settings: [{ 'key1' => 'val1' }], vm_priority: 'test-value', vm_size: 'test-value' },
+    required_attrs: { location: 'test-value', machine_learning_workspace_id: 'test-value', name: 'test-value', scale_settings: { 'key1' => 'val1' }, vm_priority: 'test-value', vm_size: 'test-value' },
     expected_outputs: [:id, :subnet_resource_id],
     sensitive_fields: [],
     immutable_fields: [],

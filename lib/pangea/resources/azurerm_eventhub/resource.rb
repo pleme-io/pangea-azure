@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::EventhubAttributes,
       outputs: { id: :id },
       map: [:name, :partition_count],
-      map_present: [:capture_description, :retention_description, :status]
+      map_present: [:capture_description, :message_retention, :namespace_id, :namespace_name, :resource_group_name, :retention_description, :status]
   end
   module Azure
     include AzureEventhub

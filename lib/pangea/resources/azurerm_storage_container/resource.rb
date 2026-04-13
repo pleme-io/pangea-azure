@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StorageContainerAttributes,
       outputs: { id: :id },
       map: [:name],
-      map_present: [:container_access_type, :storage_account_id, :storage_account_name],
+      map_present: [:container_access_type, :default_encryption_scope, :metadata, :storage_account_id, :storage_account_name],
       map_bool: [:encryption_scope_override_enabled]
   end
   module Azure

@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureServicebusSubscriptionRule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ action: 'test-value', correlation_filter: [{ 'key1' => 'val1' }], sql_filter: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ action: 'test-value', correlation_filter: { 'key1' => 'val1' }, sql_filter: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -91,7 +91,7 @@ RSpec.describe Pangea::Resources::AzureServicebusSubscriptionRule do
       it 'includes correlation_filter when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_servicebus_subscription_rule('opt', required_attrs.merge(correlation_filter: [{ 'key1' => 'val1' }]))
+        synth.azurerm_servicebus_subscription_rule('opt', required_attrs.merge(correlation_filter: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_servicebus_subscription_rule', 'opt')
         expect(config).to have_key('correlation_filter')

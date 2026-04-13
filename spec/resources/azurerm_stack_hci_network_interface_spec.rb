@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureStackHciNetworkInterface do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { custom_location_id: 'test-value', ip_configuration: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { custom_location_id: 'test-value', ip_configuration: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_stack_hci_network_interface' do
     context 'with required attributes only' do
@@ -120,7 +120,7 @@ RSpec.describe Pangea::Resources::AzureStackHciNetworkInterface do
 
         config = validate_resource_structure(result, 'azurerm_stack_hci_network_interface', 'typed')
         expect(config['custom_location_id']).to be_a(String)
-        expect(config['ip_configuration']).to be_a(Array)
+        expect(config['ip_configuration']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -156,7 +156,7 @@ RSpec.describe Pangea::Resources::AzureStackHciNetworkInterface do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_stack_hci_network_interface,
     method: :azurerm_stack_hci_network_interface,
-    required_attrs: { custom_location_id: 'test-value', ip_configuration: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { custom_location_id: 'test-value', ip_configuration: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

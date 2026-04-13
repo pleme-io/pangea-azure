@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AutomationRunbookAttributes,
       outputs: { id: :id },
       map: [:automation_account_name, :location, :name, :resource_group_name, :runbook_type],
-      map_present: [:description, :draft, :log_activity_trace_level, :publish_content_link, :runtime_environment_name, :tags],
+      map_present: [:content, :description, :draft, :job_schedule, :log_activity_trace_level, :publish_content_link, :runtime_environment_name, :tags],
       map_bool: [:log_progress, :log_verbose]
   end
   module Azure

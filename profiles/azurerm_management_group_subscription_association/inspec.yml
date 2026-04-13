@@ -1,0 +1,8 @@
+name: azurerm_management_group_subscription_association
+title: Manages a azurerm_management_group_subscription_association resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

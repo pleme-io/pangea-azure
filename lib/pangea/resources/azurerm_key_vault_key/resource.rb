@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::KeyVaultKeyAttributes,
       outputs: { id: :id },
       map: [:key_opts, :key_type, :key_vault_id, :name],
-      map_present: [:expiration_date, :key_size, :not_before_date, :rotation_policy, :tags]
+      map_present: [:curve, :expiration_date, :key_size, :not_before_date, :rotation_policy, :tags]
   end
   module Azure
     include AzureKeyVaultKey

@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementApiDiagnostic do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ backend_request: [{ 'key1' => 'val1' }], backend_response: [{ 'key1' => 'val1' }], frontend_request: [{ 'key1' => 'val1' }], frontend_response: [{ 'key1' => 'val1' }], operation_name_format: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ always_log_errors: true, backend_request: { 'key1' => 'val1' }, backend_response: { 'key1' => 'val1' }, frontend_request: { 'key1' => 'val1' }, frontend_response: { 'key1' => 'val1' }, http_correlation_protocol: 'test-value', log_client_ip: true, operation_name_format: 'test-value', sampling_percentage: 3.14, verbosity: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -72,19 +72,41 @@ RSpec.describe Pangea::Resources::AzureApiManagementApiDiagnostic do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'full')
+        expect(config).to have_key('always_log_errors')
         expect(config).to have_key('backend_request')
         expect(config).to have_key('backend_response')
         expect(config).to have_key('frontend_request')
         expect(config).to have_key('frontend_response')
+        expect(config).to have_key('http_correlation_protocol')
+        expect(config).to have_key('log_client_ip')
         expect(config).to have_key('operation_name_format')
+        expect(config).to have_key('sampling_percentage')
+        expect(config).to have_key('verbosity')
       end
     end
 
     context 'optional attributes' do
+      it 'includes always_log_errors when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(always_log_errors: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'opt')
+        expect(config).to have_key('always_log_errors')
+      end
+
+      it 'omits always_log_errors when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'minimal')
+        expect(config).not_to have_key('always_log_errors')
+      end
       it 'includes backend_request when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(backend_request: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(backend_request: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'opt')
         expect(config).to have_key('backend_request')
@@ -101,7 +123,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementApiDiagnostic do
       it 'includes backend_response when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(backend_response: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(backend_response: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'opt')
         expect(config).to have_key('backend_response')
@@ -118,7 +140,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementApiDiagnostic do
       it 'includes frontend_request when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(frontend_request: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(frontend_request: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'opt')
         expect(config).to have_key('frontend_request')
@@ -135,7 +157,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementApiDiagnostic do
       it 'includes frontend_response when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(frontend_response: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(frontend_response: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'opt')
         expect(config).to have_key('frontend_response')
@@ -148,6 +170,40 @@ RSpec.describe Pangea::Resources::AzureApiManagementApiDiagnostic do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'minimal')
         expect(config).not_to have_key('frontend_response')
+      end
+      it 'includes http_correlation_protocol when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(http_correlation_protocol: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'opt')
+        expect(config).to have_key('http_correlation_protocol')
+      end
+
+      it 'omits http_correlation_protocol when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'minimal')
+        expect(config).not_to have_key('http_correlation_protocol')
+      end
+      it 'includes log_client_ip when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(log_client_ip: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'opt')
+        expect(config).to have_key('log_client_ip')
+      end
+
+      it 'omits log_client_ip when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'minimal')
+        expect(config).not_to have_key('log_client_ip')
       end
       it 'includes operation_name_format when provided' do
         synth = create_synthesizer
@@ -165,6 +221,65 @@ RSpec.describe Pangea::Resources::AzureApiManagementApiDiagnostic do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'minimal')
         expect(config).not_to have_key('operation_name_format')
+      end
+      it 'includes sampling_percentage when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(sampling_percentage: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'opt')
+        expect(config).to have_key('sampling_percentage')
+      end
+
+      it 'omits sampling_percentage when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'minimal')
+        expect(config).not_to have_key('sampling_percentage')
+      end
+      it 'includes verbosity when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('opt', required_attrs.merge(verbosity: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'opt')
+        expect(config).to have_key('verbosity')
+      end
+
+      it 'omits verbosity when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api_diagnostic('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', 'minimal')
+        expect(config).not_to have_key('verbosity')
+      end
+    end
+
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts always_log_errors=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(always_log_errors: val)
+          synth.azurerm_api_management_api_diagnostic("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', "bool_#{val}")
+          expect(config['always_log_errors']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts log_client_ip=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(log_client_ip: val)
+          synth.azurerm_api_management_api_diagnostic("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_api_management_api_diagnostic', "bool_#{val}")
+          expect(config['log_client_ip']).to eq(val)
+        end
       end
     end
 
@@ -217,5 +332,5 @@ RSpec.describe Pangea::Resources::AzureApiManagementApiDiagnostic do
     expected_outputs: [:id, :always_log_errors, :http_correlation_protocol, :log_client_ip, :sampling_percentage, :verbosity],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:always_log_errors, :log_client_ip]
 end

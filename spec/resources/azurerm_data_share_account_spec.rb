@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDataShareAccount do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_data_share_account' do
     context 'with required attributes only' do
@@ -83,7 +83,7 @@ RSpec.describe Pangea::Resources::AzureDataShareAccount do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_data_share_account', 'typed')
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -119,7 +119,7 @@ RSpec.describe Pangea::Resources::AzureDataShareAccount do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_data_share_account,
     method: :azurerm_data_share_account,
-    required_attrs: { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

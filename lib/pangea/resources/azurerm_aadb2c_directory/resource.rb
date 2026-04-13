@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::Aadb2cDirectoryAttributes,
       outputs: { id: :id },
       map: [:data_residency_location, :domain_name, :resource_group_name, :sku_name],
-      map_present: [:tags]
+      map_present: [:country_code, :display_name, :tags]
   end
   module Azure
     include AzureAadb2cDirectory

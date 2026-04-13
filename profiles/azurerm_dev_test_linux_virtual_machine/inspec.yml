@@ -1,0 +1,8 @@
+name: azurerm_dev_test_linux_virtual_machine
+title: Manages a azurerm_dev_test_linux_virtual_machine resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppIntegrationAccountCertificate do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ key_vault_key: [{ 'key1' => 'val1' }], metadata: 'test-value', public_certificate: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ key_vault_key: { 'key1' => 'val1' }, metadata: 'test-value', public_certificate: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppIntegrationAccountCertificate do
       it 'includes key_vault_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_logic_app_integration_account_certificate('opt', required_attrs.merge(key_vault_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_logic_app_integration_account_certificate('opt', required_attrs.merge(key_vault_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_integration_account_certificate', 'opt')
         expect(config).to have_key('key_vault_key')

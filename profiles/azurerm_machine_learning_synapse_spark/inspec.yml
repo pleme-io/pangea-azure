@@ -1,0 +1,8 @@
+name: azurerm_machine_learning_synapse_spark
+title: Manages a azurerm_machine_learning_synapse_spark resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

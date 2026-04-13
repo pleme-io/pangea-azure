@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::CostAnomalyAlertAttributes,
       outputs: { id: :id },
       map: [:display_name, :email_addresses, :email_subject, :name],
-      map_present: [:message]
+      map_present: [:message, :notification_email, :subscription_id]
   end
   module Azure
     include AzureCostAnomalyAlert

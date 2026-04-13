@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::LbAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:edge_zone, :frontend_ip_configuration, :sku, :sku_tier, :tags]
+      map_present: [:edge_zone, :frontend_ip_configuration, :public_ip_address_id, :sku, :sku_tier, :subnet_id, :tags]
   end
   module Azure
     include AzureLb

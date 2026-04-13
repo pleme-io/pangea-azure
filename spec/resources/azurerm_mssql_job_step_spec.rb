@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureMssqlJobStep do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ initial_retry_interval_seconds: 3.14, job_credential_id: 'test-value', maximum_retry_interval_seconds: 3.14, output_target: [{ 'key1' => 'val1' }], retry_attempts: 3.14, retry_interval_backoff_multiplier: 3.14, timeout_seconds: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ initial_retry_interval_seconds: 3.14, job_credential_id: 'test-value', maximum_retry_interval_seconds: 3.14, output_target: { 'key1' => 'val1' }, retry_attempts: 3.14, retry_interval_backoff_multiplier: 3.14, timeout_seconds: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -116,7 +116,7 @@ RSpec.describe Pangea::Resources::AzureMssqlJobStep do
       it 'includes output_target when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_job_step('opt', required_attrs.merge(output_target: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_job_step('opt', required_attrs.merge(output_target: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_job_step', 'opt')
         expect(config).to have_key('output_target')

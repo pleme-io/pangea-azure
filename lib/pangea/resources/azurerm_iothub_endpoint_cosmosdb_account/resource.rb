@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::IothubEndpointCosmosdbAccountAttributes,
       outputs: { id: :id },
       map: [:container_name, :database_name, :endpoint_uri, :iothub_id, :name, :resource_group_name],
-      map_present: [:authentication_type, :identity_id, :partition_key_name, :partition_key_template, :primary_key, :secondary_key]
+      map_present: [:authentication_type, :identity_id, :partition_key_name, :partition_key_template, :primary_key, :secondary_key, :subscription_id]
   end
   module Azure
     include AzureIothubEndpointCosmosdbAccount

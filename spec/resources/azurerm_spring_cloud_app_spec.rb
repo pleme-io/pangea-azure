@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudApp do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ custom_persistent_disk: [{ 'key1' => 'val1' }], https_only: true, identity: [{ 'key1' => 'val1' }], ingress_settings: [{ 'key1' => 'val1' }], is_public: true, persistent_disk: [{ 'key1' => 'val1' }], public_endpoint_enabled: true, tls_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ addon_json: 'test-value', custom_persistent_disk: [{ 'key1' => 'val1' }], https_only: true, identity: { 'key1' => 'val1' }, ingress_settings: { 'key1' => 'val1' }, is_public: true, persistent_disk: { 'key1' => 'val1' }, public_endpoint_enabled: true, tls_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,6 +68,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudApp do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_spring_cloud_app', 'full')
+        expect(config).to have_key('addon_json')
         expect(config).to have_key('custom_persistent_disk')
         expect(config).to have_key('https_only')
         expect(config).to have_key('identity')
@@ -80,6 +81,23 @@ RSpec.describe Pangea::Resources::AzureSpringCloudApp do
     end
 
     context 'optional attributes' do
+      it 'includes addon_json when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_app('opt', required_attrs.merge(addon_json: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_app', 'opt')
+        expect(config).to have_key('addon_json')
+      end
+
+      it 'omits addon_json when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_app('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_app', 'minimal')
+        expect(config).not_to have_key('addon_json')
+      end
       it 'includes custom_persistent_disk when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -117,7 +135,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudApp do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_app('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_app('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_app', 'opt')
         expect(config).to have_key('identity')
@@ -134,7 +152,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudApp do
       it 'includes ingress_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_app('opt', required_attrs.merge(ingress_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_app('opt', required_attrs.merge(ingress_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_app', 'opt')
         expect(config).to have_key('ingress_settings')
@@ -168,7 +186,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudApp do
       it 'includes persistent_disk when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_app('opt', required_attrs.merge(persistent_disk: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_app('opt', required_attrs.merge(persistent_disk: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_app', 'opt')
         expect(config).to have_key('persistent_disk')

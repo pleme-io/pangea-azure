@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceSftp do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], description: 'test-value', host_key_fingerprint: 'test-value', integration_runtime_name: 'test-value', key_vault_password: [{ 'key1' => 'val1' }], key_vault_private_key_content_base64: [{ 'key1' => 'val1' }], key_vault_private_key_passphrase: [{ 'key1' => 'val1' }], parameters: { 'key1' => 'val1' }, password: 'test-value', private_key_content_base64: 'test-value', private_key_passphrase: 'test-value', private_key_path: 'test-value', skip_host_key_validation: true }) }
+      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], description: 'test-value', host_key_fingerprint: 'test-value', integration_runtime_name: 'test-value', key_vault_password: [{ 'key1' => 'val1' }], key_vault_private_key_content_base64: { 'key1' => 'val1' }, key_vault_private_key_passphrase: { 'key1' => 'val1' }, parameters: { 'key1' => 'val1' }, password: 'test-value', private_key_content_base64: 'test-value', private_key_passphrase: 'test-value', private_key_path: 'test-value', skip_host_key_validation: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -174,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceSftp do
       it 'includes key_vault_private_key_content_base64 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_sftp('opt', required_attrs.merge(key_vault_private_key_content_base64: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_sftp('opt', required_attrs.merge(key_vault_private_key_content_base64: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_sftp', 'opt')
         expect(config).to have_key('key_vault_private_key_content_base64')
@@ -191,7 +191,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceSftp do
       it 'includes key_vault_private_key_passphrase when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_sftp('opt', required_attrs.merge(key_vault_private_key_passphrase: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_sftp('opt', required_attrs.merge(key_vault_private_key_passphrase: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_sftp', 'opt')
         expect(config).to have_key('key_vault_private_key_passphrase')

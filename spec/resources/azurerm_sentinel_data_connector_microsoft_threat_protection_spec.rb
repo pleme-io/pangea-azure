@@ -54,6 +54,40 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorMicrosoftThreatProte
       end
     end
 
+    context 'with all attributes' do
+      let(:all_attrs) { required_attrs.merge({ tenant_id: 'test-value' }) }
+
+      it 'synthesizes with optional attributes' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_microsoft_threat_protection('full', all_attrs)
+        result = normalize_synthesis(synth.synthesis)
+
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_microsoft_threat_protection', 'full')
+        expect(config).to have_key('tenant_id')
+      end
+    end
+
+    context 'optional attributes' do
+      it 'includes tenant_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_microsoft_threat_protection('opt', required_attrs.merge(tenant_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_microsoft_threat_protection', 'opt')
+        expect(config).to have_key('tenant_id')
+      end
+
+      it 'omits tenant_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_microsoft_threat_protection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_microsoft_threat_protection', 'minimal')
+        expect(config).not_to have_key('tenant_id')
+      end
+    end
+
     context 'attribute types' do
       it 'validates expected attribute types' do
         synth = create_synthesizer

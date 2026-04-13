@@ -62,6 +62,105 @@ RSpec.describe Pangea::Resources::AzureManagementGroup do
       end
     end
 
+    context 'with all attributes' do
+      let(:all_attrs) { required_attrs.merge({ display_name: 'test-value', name: 'test-value', parent_management_group_id: 'test-value', subscription_ids: ['test-value'] }) }
+
+      it 'synthesizes with optional attributes' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('full', all_attrs)
+        result = normalize_synthesis(synth.synthesis)
+
+        config = validate_resource_structure(result, 'azurerm_management_group', 'full')
+        expect(config).to have_key('display_name')
+        expect(config).to have_key('name')
+        expect(config).to have_key('parent_management_group_id')
+        expect(config).to have_key('subscription_ids')
+      end
+    end
+
+    context 'optional attributes' do
+      it 'includes display_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('opt', required_attrs.merge(display_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group', 'opt')
+        expect(config).to have_key('display_name')
+      end
+
+      it 'omits display_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group', 'minimal')
+        expect(config).not_to have_key('display_name')
+      end
+      it 'includes name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('opt', required_attrs.merge(name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group', 'opt')
+        expect(config).to have_key('name')
+      end
+
+      it 'omits name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group', 'minimal')
+        expect(config).not_to have_key('name')
+      end
+      it 'includes parent_management_group_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('opt', required_attrs.merge(parent_management_group_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group', 'opt')
+        expect(config).to have_key('parent_management_group_id')
+      end
+
+      it 'omits parent_management_group_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group', 'minimal')
+        expect(config).not_to have_key('parent_management_group_id')
+      end
+      it 'includes subscription_ids when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('opt', required_attrs.merge(subscription_ids: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group', 'opt')
+        expect(config).to have_key('subscription_ids')
+      end
+
+      it 'omits subscription_ids when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group', 'minimal')
+        expect(config).not_to have_key('subscription_ids')
+      end
+    end
+
+    context 'attribute types' do
+      it 'validates expected attribute types' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group('typed', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+
+        config = validate_resource_structure(result, 'azurerm_management_group', 'typed')
+      end
+    end
+
     context 'multiple instances' do
       it 'synthesizes multiple resources independently' do
         synth = create_synthesizer

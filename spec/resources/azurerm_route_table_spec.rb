@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureRouteTable do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ bgp_route_propagation_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ bgp_route_propagation_enabled: true, route: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureRouteTable do
 
         config = validate_resource_structure(result, 'azurerm_route_table', 'full')
         expect(config).to have_key('bgp_route_propagation_enabled')
+        expect(config).to have_key('route')
         expect(config).to have_key('tags')
       end
     end
@@ -88,6 +89,23 @@ RSpec.describe Pangea::Resources::AzureRouteTable do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_route_table', 'minimal')
         expect(config).not_to have_key('bgp_route_propagation_enabled')
+      end
+      it 'includes route when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_route_table('opt', required_attrs.merge(route: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_route_table', 'opt')
+        expect(config).to have_key('route')
+      end
+
+      it 'omits route when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_route_table('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_route_table', 'minimal')
+        expect(config).not_to have_key('route')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer

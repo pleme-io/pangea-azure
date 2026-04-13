@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureAutomationSoftwareUpdateConfiguration do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { automation_account_id: 'test-value', name: 'test-value', schedule: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { automation_account_id: 'test-value', name: 'test-value', schedule: { 'key1' => 'val1' } } }
 
   describe ':azurerm_automation_software_update_configuration' do
     context 'with required attributes only' do
@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSoftwareUpdateConfiguration do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ duration: 'test-value', linux: [{ 'key1' => 'val1' }], non_azure_computer_names: ['test-value'], post_task: [{ 'key1' => 'val1' }], pre_task: [{ 'key1' => 'val1' }], target: [{ 'key1' => 'val1' }], virtual_machine_ids: ['test-value'], windows: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ duration: 'test-value', linux: { 'key1' => 'val1' }, non_azure_computer_names: ['test-value'], post_task: { 'key1' => 'val1' }, pre_task: { 'key1' => 'val1' }, target: { 'key1' => 'val1' }, virtual_machine_ids: ['test-value'], windows: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -98,7 +98,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSoftwareUpdateConfiguration do
       it 'includes linux when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(linux: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(linux: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_software_update_configuration', 'opt')
         expect(config).to have_key('linux')
@@ -132,7 +132,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSoftwareUpdateConfiguration do
       it 'includes post_task when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(post_task: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(post_task: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_software_update_configuration', 'opt')
         expect(config).to have_key('post_task')
@@ -149,7 +149,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSoftwareUpdateConfiguration do
       it 'includes pre_task when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(pre_task: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(pre_task: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_software_update_configuration', 'opt')
         expect(config).to have_key('pre_task')
@@ -166,7 +166,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSoftwareUpdateConfiguration do
       it 'includes target when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(target: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(target: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_software_update_configuration', 'opt')
         expect(config).to have_key('target')
@@ -200,7 +200,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSoftwareUpdateConfiguration do
       it 'includes windows when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(windows: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automation_software_update_configuration('opt', required_attrs.merge(windows: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_software_update_configuration', 'opt')
         expect(config).to have_key('windows')
@@ -226,7 +226,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSoftwareUpdateConfiguration do
         config = validate_resource_structure(result, 'azurerm_automation_software_update_configuration', 'typed')
         expect(config['automation_account_id']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['schedule']).to be_a(Array)
+        expect(config['schedule']).to be_a(Hash)
       end
     end
 
@@ -259,7 +259,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSoftwareUpdateConfiguration do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_automation_software_update_configuration,
     method: :azurerm_automation_software_update_configuration,
-    required_attrs: { automation_account_id: 'test-value', name: 'test-value', schedule: [{ 'key1' => 'val1' }] },
+    required_attrs: { automation_account_id: 'test-value', name: 'test-value', schedule: { 'key1' => 'val1' } },
     expected_outputs: [:id, :error_code, :error_message],
     sensitive_fields: [],
     immutable_fields: [],

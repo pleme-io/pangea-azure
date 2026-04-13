@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementBackend do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ circuit_breaker_rule: [{ 'key1' => 'val1' }], credentials: [{ 'key1' => 'val1' }], description: 'test-value', proxy: [{ 'key1' => 'val1' }], resource_id: 'test-value', service_fabric_cluster: [{ 'key1' => 'val1' }], title: 'test-value', tls: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ circuit_breaker_rule: { 'key1' => 'val1' }, credentials: { 'key1' => 'val1' }, description: 'test-value', proxy: { 'key1' => 'val1' }, resource_id: 'test-value', service_fabric_cluster: { 'key1' => 'val1' }, title: 'test-value', tls: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,7 +66,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementBackend do
       it 'includes circuit_breaker_rule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_backend('opt', required_attrs.merge(circuit_breaker_rule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_backend('opt', required_attrs.merge(circuit_breaker_rule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_backend', 'opt')
         expect(config).to have_key('circuit_breaker_rule')
@@ -83,7 +83,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementBackend do
       it 'includes credentials when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_backend('opt', required_attrs.merge(credentials: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_backend('opt', required_attrs.merge(credentials: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_backend', 'opt')
         expect(config).to have_key('credentials')
@@ -117,7 +117,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementBackend do
       it 'includes proxy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_backend('opt', required_attrs.merge(proxy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_backend('opt', required_attrs.merge(proxy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_backend', 'opt')
         expect(config).to have_key('proxy')
@@ -151,7 +151,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementBackend do
       it 'includes service_fabric_cluster when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_backend('opt', required_attrs.merge(service_fabric_cluster: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_backend('opt', required_attrs.merge(service_fabric_cluster: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_backend', 'opt')
         expect(config).to have_key('service_fabric_cluster')
@@ -185,7 +185,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementBackend do
       it 'includes tls when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_backend('opt', required_attrs.merge(tls: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_backend('opt', required_attrs.merge(tls: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_backend', 'opt')
         expect(config).to have_key('tls')

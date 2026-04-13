@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsQueryPackQuery do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_settings_json: 'test-value', categories: ['test-value'], description: 'test-value', resource_types: ['test-value'], solutions: ['test-value'], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ additional_settings_json: 'test-value', categories: ['test-value'], description: 'test-value', name: 'test-value', resource_types: ['test-value'], solutions: ['test-value'], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsQueryPackQuery do
         expect(config).to have_key('additional_settings_json')
         expect(config).to have_key('categories')
         expect(config).to have_key('description')
+        expect(config).to have_key('name')
         expect(config).to have_key('resource_types')
         expect(config).to have_key('solutions')
         expect(config).to have_key('tags')
@@ -124,6 +125,23 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsQueryPackQuery do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_log_analytics_query_pack_query', 'minimal')
         expect(config).not_to have_key('description')
+      end
+      it 'includes name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_query_pack_query('opt', required_attrs.merge(name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_query_pack_query', 'opt')
+        expect(config).to have_key('name')
+      end
+
+      it 'omits name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_query_pack_query('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_query_pack_query', 'minimal')
+        expect(config).not_to have_key('name')
       end
       it 'includes resource_types when provided' do
         synth = create_synthesizer

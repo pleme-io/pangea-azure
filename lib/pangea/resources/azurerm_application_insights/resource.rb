@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ApplicationInsightsAttributes,
       outputs: { id: :id },
       map: [:application_type, :location, :name, :resource_group_name],
-      map_present: [:daily_data_cap_in_gb, :retention_in_days, :sampling_percentage, :tags],
+      map_present: [:daily_data_cap_in_gb, :retention_in_days, :sampling_percentage, :tags, :workspace_id],
       map_bool: [:daily_data_cap_notifications_disabled, :disable_ip_masking, :force_customer_storage_for_profiler, :internet_ingestion_enabled, :internet_query_enabled, :local_authentication_disabled]
   end
   module Azure

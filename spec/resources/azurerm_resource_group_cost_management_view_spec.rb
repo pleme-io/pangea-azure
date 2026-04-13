@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureResourceGroupCostManagementView do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { accumulated: true, chart_type: 'test-value', dataset: [{ 'key1' => 'val1' }], display_name: 'test-value', name: 'test-value', report_type: 'test-value', resource_group_id: 'test-value', timeframe: 'test-value' } }
+  let(:required_attrs) { { accumulated: true, chart_type: 'test-value', dataset: { 'key1' => 'val1' }, display_name: 'test-value', name: 'test-value', report_type: 'test-value', resource_group_id: 'test-value', timeframe: 'test-value' } }
 
   describe ':azurerm_resource_group_cost_management_view' do
     context 'with required attributes only' do
@@ -117,7 +117,7 @@ RSpec.describe Pangea::Resources::AzureResourceGroupCostManagementView do
         config = validate_resource_structure(result, 'azurerm_resource_group_cost_management_view', 'typed')
         expect([true, false]).to include(config['accumulated'])
         expect(config['chart_type']).to be_a(String)
-        expect(config['dataset']).to be_a(Array)
+        expect(config['dataset']).to be_a(Hash)
         expect(config['display_name']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['report_type']).to be_a(String)
@@ -155,7 +155,7 @@ RSpec.describe Pangea::Resources::AzureResourceGroupCostManagementView do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_resource_group_cost_management_view,
     method: :azurerm_resource_group_cost_management_view,
-    required_attrs: { accumulated: true, chart_type: 'test-value', dataset: [{ 'key1' => 'val1' }], display_name: 'test-value', name: 'test-value', report_type: 'test-value', resource_group_id: 'test-value', timeframe: 'test-value' },
+    required_attrs: { accumulated: true, chart_type: 'test-value', dataset: { 'key1' => 'val1' }, display_name: 'test-value', name: 'test-value', report_type: 'test-value', resource_group_id: 'test-value', timeframe: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

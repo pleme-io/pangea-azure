@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::PimEligibleRoleAssignmentAttributes,
       outputs: { id: :id },
       map: [:principal_id, :role_definition_id, :scope],
-      map_present: [:condition, :condition_version, :schedule, :ticket]
+      map_present: [:condition, :condition_version, :justification, :schedule, :ticket]
   end
   module Azure
     include AzurePimEligibleRoleAssignment

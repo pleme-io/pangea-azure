@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppEnvironmentCertificate do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ certificate_blob_base64: 'test-value', certificate_key_vault: [{ 'key1' => 'val1' }], certificate_password: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ certificate_blob_base64: 'test-value', certificate_key_vault: { 'key1' => 'val1' }, certificate_password: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -100,7 +100,7 @@ RSpec.describe Pangea::Resources::AzureContainerAppEnvironmentCertificate do
       it 'includes certificate_key_vault when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_app_environment_certificate('opt', required_attrs.merge(certificate_key_vault: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_app_environment_certificate('opt', required_attrs.merge(certificate_key_vault: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app_environment_certificate', 'opt')
         expect(config).to have_key('certificate_key_vault')

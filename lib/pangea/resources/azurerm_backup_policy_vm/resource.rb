@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::BackupPolicyVmAttributes,
       outputs: { id: :id },
       map: [:backup, :name, :recovery_vault_name, :resource_group_name],
-      map_present: [:instant_restore_resource_group, :policy_type, :retention_daily, :retention_monthly, :retention_weekly, :retention_yearly, :tiering_policy, :timezone]
+      map_present: [:instant_restore_resource_group, :instant_restore_retention_days, :policy_type, :retention_daily, :retention_monthly, :retention_weekly, :retention_yearly, :tiering_policy, :timezone]
   end
   module Azure
     include AzureBackupPolicyVm

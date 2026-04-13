@@ -1,0 +1,8 @@
+name: azurerm_digital_twins_time_series_database_connection
+title: Manages a azurerm_digital_twins_time_series_database_connection resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

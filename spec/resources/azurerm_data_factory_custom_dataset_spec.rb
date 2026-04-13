@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDataFactoryCustomDataset do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { data_factory_id: 'test-value', linked_service: [{ 'key1' => 'val1' }], name: 'test-value', type: 'test-value', type_properties_json: 'test-value' } }
+  let(:required_attrs) { { data_factory_id: 'test-value', linked_service: { 'key1' => 'val1' }, name: 'test-value', type: 'test-value', type_properties_json: 'test-value' } }
 
   describe ':azurerm_data_factory_custom_dataset' do
     context 'with required attributes only' do
@@ -174,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryCustomDataset do
 
         config = validate_resource_structure(result, 'azurerm_data_factory_custom_dataset', 'typed')
         expect(config['data_factory_id']).to be_a(String)
-        expect(config['linked_service']).to be_a(Array)
+        expect(config['linked_service']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['type']).to be_a(String)
         expect(config['type_properties_json']).to be_a(String)
@@ -210,7 +210,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryCustomDataset do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_data_factory_custom_dataset,
     method: :azurerm_data_factory_custom_dataset,
-    required_attrs: { data_factory_id: 'test-value', linked_service: [{ 'key1' => 'val1' }], name: 'test-value', type: 'test-value', type_properties_json: 'test-value' },
+    required_attrs: { data_factory_id: 'test-value', linked_service: { 'key1' => 'val1' }, name: 'test-value', type: 'test-value', type_properties_json: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

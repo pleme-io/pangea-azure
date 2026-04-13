@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppTriggerRecurrence do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ schedule: [{ 'key1' => 'val1' }], start_time: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ schedule: { 'key1' => 'val1' }, start_time: 'test-value', time_zone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,6 +66,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppTriggerRecurrence do
         config = validate_resource_structure(result, 'azurerm_logic_app_trigger_recurrence', 'full')
         expect(config).to have_key('schedule')
         expect(config).to have_key('start_time')
+        expect(config).to have_key('time_zone')
       end
     end
 
@@ -73,7 +74,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppTriggerRecurrence do
       it 'includes schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_logic_app_trigger_recurrence('opt', required_attrs.merge(schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_logic_app_trigger_recurrence('opt', required_attrs.merge(schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_trigger_recurrence', 'opt')
         expect(config).to have_key('schedule')
@@ -103,6 +104,23 @@ RSpec.describe Pangea::Resources::AzureLogicAppTriggerRecurrence do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_trigger_recurrence', 'minimal')
         expect(config).not_to have_key('start_time')
+      end
+      it 'includes time_zone when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_trigger_recurrence('opt', required_attrs.merge(time_zone: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_trigger_recurrence', 'opt')
+        expect(config).to have_key('time_zone')
+      end
+
+      it 'omits time_zone when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_logic_app_trigger_recurrence('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_logic_app_trigger_recurrence', 'minimal')
+        expect(config).not_to have_key('time_zone')
       end
     end
 

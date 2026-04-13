@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureStreamAnalyticsOutputEventhub do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { eventhub_name: 'test-value', name: 'test-value', resource_group_name: 'test-value', serialization: [{ 'key1' => 'val1' }], servicebus_namespace: 'test-value', stream_analytics_job_name: 'test-value' } }
+  let(:required_attrs) { { eventhub_name: 'test-value', name: 'test-value', resource_group_name: 'test-value', serialization: { 'key1' => 'val1' }, servicebus_namespace: 'test-value', stream_analytics_job_name: 'test-value' } }
 
   describe ':azurerm_stream_analytics_output_eventhub' do
     context 'with required attributes only' do
@@ -165,7 +165,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsOutputEventhub do
         expect(config['eventhub_name']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['serialization']).to be_a(Array)
+        expect(config['serialization']).to be_a(Hash)
         expect(config['servicebus_namespace']).to be_a(String)
         expect(config['stream_analytics_job_name']).to be_a(String)
       end
@@ -200,7 +200,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsOutputEventhub do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_stream_analytics_output_eventhub,
     method: :azurerm_stream_analytics_output_eventhub,
-    required_attrs: { eventhub_name: 'test-value', name: 'test-value', resource_group_name: 'test-value', serialization: [{ 'key1' => 'val1' }], servicebus_namespace: 'test-value', stream_analytics_job_name: 'test-value' },
+    required_attrs: { eventhub_name: 'test-value', name: 'test-value', resource_group_name: 'test-value', serialization: { 'key1' => 'val1' }, servicebus_namespace: 'test-value', stream_analytics_job_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [:shared_access_policy_key],
     immutable_fields: [],

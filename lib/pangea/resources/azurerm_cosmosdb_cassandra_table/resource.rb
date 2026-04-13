@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::CosmosdbCassandraTableAttributes,
       outputs: { id: :id },
       map: [:cassandra_keyspace_id, :name, :schema],
-      map_present: [:analytical_storage_ttl, :autoscale_settings, :default_ttl]
+      map_present: [:analytical_storage_ttl, :autoscale_settings, :default_ttl, :throughput]
   end
   module Azure
     include AzureCosmosdbCassandraTable

@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureNetworkWatcherFlowLog do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { enabled: true, name: 'test-value', network_watcher_name: 'test-value', resource_group_name: 'test-value', retention_policy: [{ 'key1' => 'val1' }], storage_account_id: 'test-value' } }
+  let(:required_attrs) { { enabled: true, name: 'test-value', network_watcher_name: 'test-value', resource_group_name: 'test-value', retention_policy: { 'key1' => 'val1' }, storage_account_id: 'test-value' } }
 
   describe ':azurerm_network_watcher_flow_log' do
     context 'with required attributes only' do
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureNetworkWatcherFlowLog do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ tags: { 'key1' => 'val1' }, traffic_analytics: [{ 'key1' => 'val1' }], version: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ location: 'test-value', network_security_group_id: 'test-value', tags: { 'key1' => 'val1' }, target_resource_id: 'test-value', traffic_analytics: { 'key1' => 'val1' }, version: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,13 +68,50 @@ RSpec.describe Pangea::Resources::AzureNetworkWatcherFlowLog do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_network_watcher_flow_log', 'full')
+        expect(config).to have_key('location')
+        expect(config).to have_key('network_security_group_id')
         expect(config).to have_key('tags')
+        expect(config).to have_key('target_resource_id')
         expect(config).to have_key('traffic_analytics')
         expect(config).to have_key('version')
       end
     end
 
     context 'optional attributes' do
+      it 'includes location when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_network_watcher_flow_log('opt', required_attrs.merge(location: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_network_watcher_flow_log', 'opt')
+        expect(config).to have_key('location')
+      end
+
+      it 'omits location when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_network_watcher_flow_log('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_network_watcher_flow_log', 'minimal')
+        expect(config).not_to have_key('location')
+      end
+      it 'includes network_security_group_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_network_watcher_flow_log('opt', required_attrs.merge(network_security_group_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_network_watcher_flow_log', 'opt')
+        expect(config).to have_key('network_security_group_id')
+      end
+
+      it 'omits network_security_group_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_network_watcher_flow_log('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_network_watcher_flow_log', 'minimal')
+        expect(config).not_to have_key('network_security_group_id')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -92,10 +129,27 @@ RSpec.describe Pangea::Resources::AzureNetworkWatcherFlowLog do
         config = validate_resource_structure(result, 'azurerm_network_watcher_flow_log', 'minimal')
         expect(config).not_to have_key('tags')
       end
+      it 'includes target_resource_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_network_watcher_flow_log('opt', required_attrs.merge(target_resource_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_network_watcher_flow_log', 'opt')
+        expect(config).to have_key('target_resource_id')
+      end
+
+      it 'omits target_resource_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_network_watcher_flow_log('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_network_watcher_flow_log', 'minimal')
+        expect(config).not_to have_key('target_resource_id')
+      end
       it 'includes traffic_analytics when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_network_watcher_flow_log('opt', required_attrs.merge(traffic_analytics: [{ 'key1' => 'val1' }]))
+        synth.azurerm_network_watcher_flow_log('opt', required_attrs.merge(traffic_analytics: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_network_watcher_flow_log', 'opt')
         expect(config).to have_key('traffic_analytics')
@@ -154,7 +208,7 @@ RSpec.describe Pangea::Resources::AzureNetworkWatcherFlowLog do
         expect(config['name']).to be_a(String)
         expect(config['network_watcher_name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['retention_policy']).to be_a(Array)
+        expect(config['retention_policy']).to be_a(Hash)
         expect(config['storage_account_id']).to be_a(String)
       end
     end
@@ -188,7 +242,7 @@ RSpec.describe Pangea::Resources::AzureNetworkWatcherFlowLog do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_network_watcher_flow_log,
     method: :azurerm_network_watcher_flow_log,
-    required_attrs: { enabled: true, name: 'test-value', network_watcher_name: 'test-value', resource_group_name: 'test-value', retention_policy: [{ 'key1' => 'val1' }], storage_account_id: 'test-value' },
+    required_attrs: { enabled: true, name: 'test-value', network_watcher_name: 'test-value', resource_group_name: 'test-value', retention_policy: { 'key1' => 'val1' }, storage_account_id: 'test-value' },
     expected_outputs: [:id, :location, :network_security_group_id, :target_resource_id],
     sensitive_fields: [],
     immutable_fields: [],

@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDataProtectionBackupPolicyKubernetesCluster do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { backup_repeating_time_intervals: ['test-value'], default_retention_rule: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value', vault_name: 'test-value' } }
+  let(:required_attrs) { { backup_repeating_time_intervals: ['test-value'], default_retention_rule: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value', vault_name: 'test-value' } }
 
   describe ':azurerm_data_protection_backup_policy_kubernetes_cluster' do
     context 'with required attributes only' do
@@ -102,7 +102,7 @@ RSpec.describe Pangea::Resources::AzureDataProtectionBackupPolicyKubernetesClust
 
         config = validate_resource_structure(result, 'azurerm_data_protection_backup_policy_kubernetes_cluster', 'typed')
         expect(config['backup_repeating_time_intervals']).to be_a(Array)
-        expect(config['default_retention_rule']).to be_a(Array)
+        expect(config['default_retention_rule']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['vault_name']).to be_a(String)
@@ -138,7 +138,7 @@ RSpec.describe Pangea::Resources::AzureDataProtectionBackupPolicyKubernetesClust
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_data_protection_backup_policy_kubernetes_cluster,
     method: :azurerm_data_protection_backup_policy_kubernetes_cluster,
-    required_attrs: { backup_repeating_time_intervals: ['test-value'], default_retention_rule: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value', vault_name: 'test-value' },
+    required_attrs: { backup_repeating_time_intervals: ['test-value'], default_retention_rule: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value', vault_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

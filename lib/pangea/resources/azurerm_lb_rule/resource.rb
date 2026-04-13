@@ -15,7 +15,7 @@ module Pangea::Resources
       outputs: { id: :id },
       map: [:backend_port, :frontend_ip_configuration_name, :frontend_port, :loadbalancer_id, :name, :protocol],
       map_present: [:backend_address_pool_ids, :idle_timeout_in_minutes, :load_distribution, :probe_id],
-      map_bool: [:disable_outbound_snat]
+      map_bool: [:disable_outbound_snat, :enable_floating_ip, :enable_tcp_reset, :floating_ip_enabled, :tcp_reset_enabled]
   end
   module Azure
     include AzureLbRule

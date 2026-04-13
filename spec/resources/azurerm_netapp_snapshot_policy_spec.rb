@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureNetappSnapshotPolicy do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ daily_schedule: [{ 'key1' => 'val1' }], hourly_schedule: [{ 'key1' => 'val1' }], monthly_schedule: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, weekly_schedule: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ daily_schedule: { 'key1' => 'val1' }, hourly_schedule: { 'key1' => 'val1' }, monthly_schedule: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, weekly_schedule: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureNetappSnapshotPolicy do
       it 'includes daily_schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_netapp_snapshot_policy('opt', required_attrs.merge(daily_schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_netapp_snapshot_policy('opt', required_attrs.merge(daily_schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_snapshot_policy', 'opt')
         expect(config).to have_key('daily_schedule')
@@ -80,7 +80,7 @@ RSpec.describe Pangea::Resources::AzureNetappSnapshotPolicy do
       it 'includes hourly_schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_netapp_snapshot_policy('opt', required_attrs.merge(hourly_schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_netapp_snapshot_policy('opt', required_attrs.merge(hourly_schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_snapshot_policy', 'opt')
         expect(config).to have_key('hourly_schedule')
@@ -97,7 +97,7 @@ RSpec.describe Pangea::Resources::AzureNetappSnapshotPolicy do
       it 'includes monthly_schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_netapp_snapshot_policy('opt', required_attrs.merge(monthly_schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_netapp_snapshot_policy('opt', required_attrs.merge(monthly_schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_snapshot_policy', 'opt')
         expect(config).to have_key('monthly_schedule')
@@ -131,7 +131,7 @@ RSpec.describe Pangea::Resources::AzureNetappSnapshotPolicy do
       it 'includes weekly_schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_netapp_snapshot_policy('opt', required_attrs.merge(weekly_schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_netapp_snapshot_policy('opt', required_attrs.merge(weekly_schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_snapshot_policy', 'opt')
         expect(config).to have_key('weekly_schedule')

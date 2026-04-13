@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StorageShareDirectoryAttributes,
       outputs: { id: :id },
       map: [:name],
-      map_present: [:metadata]
+      map_present: [:metadata, :storage_share_id, :storage_share_url]
   end
   module Azure
     include AzureStorageShareDirectory

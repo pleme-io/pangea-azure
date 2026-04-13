@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGatewayRouteConfig do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ filters: ['test-value'], open_api: [{ 'key1' => 'val1' }], predicates: ['test-value'], route: [{ 'key1' => 'val1' }], spring_cloud_app_id: 'test-value', sso_validation_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ filters: ['test-value'], open_api: { 'key1' => 'val1' }, predicates: ['test-value'], route: [{ 'key1' => 'val1' }], spring_cloud_app_id: 'test-value', sso_validation_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -81,7 +81,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudGatewayRouteConfig do
       it 'includes open_api when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_gateway_route_config('opt', required_attrs.merge(open_api: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_gateway_route_config('opt', required_attrs.merge(open_api: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_gateway_route_config', 'opt')
         expect(config).to have_key('open_api')

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::CognitiveAccountRaiBlocklistAttributes,
       outputs: { id: :id },
       map: [:cognitive_account_id, :name],
-      map_present: [:description]
+      map_present: [:description, :tags]
   end
   module Azure
     include AzureCognitiveAccountRaiBlocklist

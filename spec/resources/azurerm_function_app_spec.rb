@@ -69,7 +69,7 @@ RSpec.describe Pangea::Resources::AzureFunctionApp do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auth_settings: [{ 'key1' => 'val1' }], client_cert_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], daily_memory_time_quota: 3.14, enable_builtin_logging: true, enabled: true, https_only: true, identity: [{ 'key1' => 'val1' }], os_type: 'test-value', site_config: [{ 'key1' => 'val1' }], source_control: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, version: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: { 'key1' => 'val1' }, client_cert_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], daily_memory_time_quota: 3.14, enable_builtin_logging: true, enabled: true, https_only: true, identity: { 'key1' => 'val1' }, key_vault_reference_identity_id: 'test-value', os_type: 'test-value', site_config: { 'key1' => 'val1' }, source_control: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, version: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -78,6 +78,7 @@ RSpec.describe Pangea::Resources::AzureFunctionApp do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_function_app', 'full')
+        expect(config).to have_key('app_settings')
         expect(config).to have_key('auth_settings')
         expect(config).to have_key('client_cert_mode')
         expect(config).to have_key('connection_string')
@@ -86,6 +87,7 @@ RSpec.describe Pangea::Resources::AzureFunctionApp do
         expect(config).to have_key('enabled')
         expect(config).to have_key('https_only')
         expect(config).to have_key('identity')
+        expect(config).to have_key('key_vault_reference_identity_id')
         expect(config).to have_key('os_type')
         expect(config).to have_key('site_config')
         expect(config).to have_key('source_control')
@@ -95,10 +97,27 @@ RSpec.describe Pangea::Resources::AzureFunctionApp do
     end
 
     context 'optional attributes' do
+      it 'includes app_settings when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_function_app('opt', required_attrs.merge(app_settings: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_function_app', 'opt')
+        expect(config).to have_key('app_settings')
+      end
+
+      it 'omits app_settings when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_function_app('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_function_app', 'minimal')
+        expect(config).not_to have_key('app_settings')
+      end
       it 'includes auth_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app('opt', required_attrs.merge(auth_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app('opt', required_attrs.merge(auth_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app', 'opt')
         expect(config).to have_key('auth_settings')
@@ -217,7 +236,7 @@ RSpec.describe Pangea::Resources::AzureFunctionApp do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app', 'opt')
         expect(config).to have_key('identity')
@@ -230,6 +249,23 @@ RSpec.describe Pangea::Resources::AzureFunctionApp do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app', 'minimal')
         expect(config).not_to have_key('identity')
+      end
+      it 'includes key_vault_reference_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_function_app('opt', required_attrs.merge(key_vault_reference_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_function_app', 'opt')
+        expect(config).to have_key('key_vault_reference_identity_id')
+      end
+
+      it 'omits key_vault_reference_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_function_app('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_function_app', 'minimal')
+        expect(config).not_to have_key('key_vault_reference_identity_id')
       end
       it 'includes os_type when provided' do
         synth = create_synthesizer
@@ -251,7 +287,7 @@ RSpec.describe Pangea::Resources::AzureFunctionApp do
       it 'includes site_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app('opt', required_attrs.merge(site_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app('opt', required_attrs.merge(site_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app', 'opt')
         expect(config).to have_key('site_config')
@@ -268,7 +304,7 @@ RSpec.describe Pangea::Resources::AzureFunctionApp do
       it 'includes source_control when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app('opt', required_attrs.merge(source_control: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app('opt', required_attrs.merge(source_control: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app', 'opt')
         expect(config).to have_key('source_control')

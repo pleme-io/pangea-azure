@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureDashboardGrafana do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ api_key_enabled: true, auto_generated_domain_name_label_scope: 'test-value', azure_monitor_workspace_integrations: [{ 'key1' => 'val1' }], deterministic_outbound_ip_enabled: true, identity: [{ 'key1' => 'val1' }], public_network_access_enabled: true, sku: 'test-value', smtp: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, zone_redundancy_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ api_key_enabled: true, auto_generated_domain_name_label_scope: 'test-value', azure_monitor_workspace_integrations: [{ 'key1' => 'val1' }], deterministic_outbound_ip_enabled: true, identity: { 'key1' => 'val1' }, public_network_access_enabled: true, sku: 'test-value', smtp: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, zone_redundancy_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -153,7 +153,7 @@ RSpec.describe Pangea::Resources::AzureDashboardGrafana do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dashboard_grafana('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dashboard_grafana('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dashboard_grafana', 'opt')
         expect(config).to have_key('identity')
@@ -204,7 +204,7 @@ RSpec.describe Pangea::Resources::AzureDashboardGrafana do
       it 'includes smtp when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dashboard_grafana('opt', required_attrs.merge(smtp: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dashboard_grafana('opt', required_attrs.merge(smtp: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dashboard_grafana', 'opt')
         expect(config).to have_key('smtp')

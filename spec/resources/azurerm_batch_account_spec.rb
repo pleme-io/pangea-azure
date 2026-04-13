@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureBatchAccount do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ encryption: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], key_vault_reference: [{ 'key1' => 'val1' }], network_profile: [{ 'key1' => 'val1' }], pool_allocation_mode: 'test-value', public_network_access_enabled: true, storage_account_authentication_mode: 'test-value', storage_account_id: 'test-value', storage_account_node_identity: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ allowed_authentication_modes: ['test-value'], encryption: [{ 'key1' => 'val1' }], identity: { 'key1' => 'val1' }, key_vault_reference: { 'key1' => 'val1' }, network_profile: { 'key1' => 'val1' }, pool_allocation_mode: 'test-value', public_network_access_enabled: true, storage_account_authentication_mode: 'test-value', storage_account_id: 'test-value', storage_account_node_identity: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,6 +70,7 @@ RSpec.describe Pangea::Resources::AzureBatchAccount do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_batch_account', 'full')
+        expect(config).to have_key('allowed_authentication_modes')
         expect(config).to have_key('encryption')
         expect(config).to have_key('identity')
         expect(config).to have_key('key_vault_reference')
@@ -84,6 +85,23 @@ RSpec.describe Pangea::Resources::AzureBatchAccount do
     end
 
     context 'optional attributes' do
+      it 'includes allowed_authentication_modes when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_batch_account('opt', required_attrs.merge(allowed_authentication_modes: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_batch_account', 'opt')
+        expect(config).to have_key('allowed_authentication_modes')
+      end
+
+      it 'omits allowed_authentication_modes when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_batch_account('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_batch_account', 'minimal')
+        expect(config).not_to have_key('allowed_authentication_modes')
+      end
       it 'includes encryption when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -104,7 +122,7 @@ RSpec.describe Pangea::Resources::AzureBatchAccount do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_account('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_account('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_account', 'opt')
         expect(config).to have_key('identity')
@@ -121,7 +139,7 @@ RSpec.describe Pangea::Resources::AzureBatchAccount do
       it 'includes key_vault_reference when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_account('opt', required_attrs.merge(key_vault_reference: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_account('opt', required_attrs.merge(key_vault_reference: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_account', 'opt')
         expect(config).to have_key('key_vault_reference')
@@ -138,7 +156,7 @@ RSpec.describe Pangea::Resources::AzureBatchAccount do
       it 'includes network_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_batch_account('opt', required_attrs.merge(network_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_batch_account('opt', required_attrs.merge(network_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_batch_account', 'opt')
         expect(config).to have_key('network_profile')

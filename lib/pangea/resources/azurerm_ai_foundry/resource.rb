@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::AiFoundryAttributes,
       outputs: { id: :id },
       map: [:identity, :key_vault_id, :location, :name, :resource_group_name, :storage_account_id],
-      map_present: [:application_insights_id, :container_registry_id, :description, :encryption, :friendly_name, :managed_network, :primary_user_assigned_identity, :public_network_access, :tags]
+      map_present: [:application_insights_id, :container_registry_id, :description, :encryption, :friendly_name, :managed_network, :primary_user_assigned_identity, :public_network_access, :tags],
+      map_bool: [:high_business_impact_enabled]
   end
   module Azure
     include AzureAiFoundry

@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeInstance do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ assign_to_user: [{ 'key1' => 'val1' }], authorization_type: 'test-value', description: 'test-value', identity: [{ 'key1' => 'val1' }], local_auth_enabled: true, node_public_ip_enabled: true, ssh: [{ 'key1' => 'val1' }], subnet_resource_id: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ assign_to_user: { 'key1' => 'val1' }, authorization_type: 'test-value', description: 'test-value', identity: { 'key1' => 'val1' }, local_auth_enabled: true, node_public_ip_enabled: true, ssh: { 'key1' => 'val1' }, subnet_resource_id: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,7 +67,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeInstance do
       it 'includes assign_to_user when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_machine_learning_compute_instance('opt', required_attrs.merge(assign_to_user: [{ 'key1' => 'val1' }]))
+        synth.azurerm_machine_learning_compute_instance('opt', required_attrs.merge(assign_to_user: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_compute_instance', 'opt')
         expect(config).to have_key('assign_to_user')
@@ -118,7 +118,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeInstance do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_machine_learning_compute_instance('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_machine_learning_compute_instance('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_compute_instance', 'opt')
         expect(config).to have_key('identity')
@@ -169,7 +169,7 @@ RSpec.describe Pangea::Resources::AzureMachineLearningComputeInstance do
       it 'includes ssh when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_machine_learning_compute_instance('opt', required_attrs.merge(ssh: [{ 'key1' => 'val1' }]))
+        synth.azurerm_machine_learning_compute_instance('opt', required_attrs.merge(ssh: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_machine_learning_compute_instance', 'opt')
         expect(config).to have_key('ssh')

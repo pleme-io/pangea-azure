@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::VirtualMachineAttributes,
       outputs: { id: :id },
       map: [:location, :name, :network_interface_ids, :resource_group_name, :storage_os_disk, :vm_size],
-      map_present: [:additional_capabilities, :boot_diagnostics, :identity, :os_profile, :os_profile_linux_config, :os_profile_secrets, :os_profile_windows_config, :plan, :primary_network_interface_id, :proximity_placement_group_id, :storage_data_disk, :storage_image_reference, :tags, :zones],
+      map_present: [:additional_capabilities, :availability_set_id, :boot_diagnostics, :identity, :license_type, :os_profile, :os_profile_linux_config, :os_profile_secrets, :os_profile_windows_config, :plan, :primary_network_interface_id, :proximity_placement_group_id, :storage_data_disk, :storage_image_reference, :tags, :zones],
       map_bool: [:delete_data_disks_on_termination, :delete_os_disk_on_termination]
   end
   module Azure

@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureArcKubernetesProvisionedCluster do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_arc_kubernetes_provisioned_cluster' do
     context 'with required attributes only' do
@@ -67,7 +67,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesProvisionedCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ arc_agent_auto_upgrade_enabled: true, arc_agent_desired_version: 'test-value', azure_active_directory: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ arc_agent_auto_upgrade_enabled: true, arc_agent_desired_version: 'test-value', azure_active_directory: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -121,7 +121,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesProvisionedCluster do
       it 'includes azure_active_directory when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_arc_kubernetes_provisioned_cluster('opt', required_attrs.merge(azure_active_directory: [{ 'key1' => 'val1' }]))
+        synth.azurerm_arc_kubernetes_provisioned_cluster('opt', required_attrs.merge(azure_active_directory: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_arc_kubernetes_provisioned_cluster', 'opt')
         expect(config).to have_key('azure_active_directory')
@@ -176,7 +176,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesProvisionedCluster do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_arc_kubernetes_provisioned_cluster', 'typed')
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -212,7 +212,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesProvisionedCluster do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_arc_kubernetes_provisioned_cluster,
     method: :azurerm_arc_kubernetes_provisioned_cluster,
-    required_attrs: { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id, :agent_version, :distribution, :infrastructure, :kubernetes_version, :offering, :total_core_count, :total_node_count],
     sensitive_fields: [],
     immutable_fields: [],

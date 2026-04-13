@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureSecurityCenterAssessment do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { assessment_policy_id: 'test-value', status: [{ 'key1' => 'val1' }], target_resource_id: 'test-value' } }
+  let(:required_attrs) { { assessment_policy_id: 'test-value', status: { 'key1' => 'val1' }, target_resource_id: 'test-value' } }
 
   describe ':azurerm_security_center_assessment' do
     context 'with required attributes only' do
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureSecurityCenterAssessment do
 
         config = validate_resource_structure(result, 'azurerm_security_center_assessment', 'typed')
         expect(config['assessment_policy_id']).to be_a(String)
-        expect(config['status']).to be_a(Array)
+        expect(config['status']).to be_a(Hash)
         expect(config['target_resource_id']).to be_a(String)
       end
     end
@@ -118,7 +118,7 @@ RSpec.describe Pangea::Resources::AzureSecurityCenterAssessment do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_security_center_assessment,
     method: :azurerm_security_center_assessment,
-    required_attrs: { assessment_policy_id: 'test-value', status: [{ 'key1' => 'val1' }], target_resource_id: 'test-value' },
+    required_attrs: { assessment_policy_id: 'test-value', status: { 'key1' => 'val1' }, target_resource_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

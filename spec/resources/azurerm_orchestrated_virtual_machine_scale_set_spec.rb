@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_capabilities: [{ 'key1' => 'val1' }], automatic_instance_repair: [{ 'key1' => 'val1' }], boot_diagnostics: [{ 'key1' => 'val1' }], capacity_reservation_group_id: 'test-value', data_disk: [{ 'key1' => 'val1' }], encryption_at_host_enabled: true, eviction_policy: 'test-value', extension: [{ 'key1' => 'val1' }], extension_operations_enabled: true, extensions_time_budget: 'test-value', identity: [{ 'key1' => 'val1' }], license_type: 'test-value', max_bid_price: 3.14, network_api_version: 'test-value', network_interface: [{ 'key1' => 'val1' }], os_disk: [{ 'key1' => 'val1' }], os_profile: [{ 'key1' => 'val1' }], plan: [{ 'key1' => 'val1' }], priority: 'test-value', priority_mix: [{ 'key1' => 'val1' }], proximity_placement_group_id: 'test-value', rolling_upgrade_policy: [{ 'key1' => 'val1' }], sku_name: 'test-value', sku_profile: [{ 'key1' => 'val1' }], source_image_id: 'test-value', source_image_reference: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, termination_notification: [{ 'key1' => 'val1' }], upgrade_mode: 'test-value', user_data_base64: 'test-value', zone_balance: true, zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ additional_capabilities: { 'key1' => 'val1' }, automatic_instance_repair: { 'key1' => 'val1' }, boot_diagnostics: { 'key1' => 'val1' }, capacity_reservation_group_id: 'test-value', data_disk: [{ 'key1' => 'val1' }], encryption_at_host_enabled: true, eviction_policy: 'test-value', extension: [{ 'key1' => 'val1' }], extension_operations_enabled: true, extensions_time_budget: 'test-value', identity: { 'key1' => 'val1' }, instances: 3.14, license_type: 'test-value', max_bid_price: 3.14, network_api_version: 'test-value', network_interface: [{ 'key1' => 'val1' }], os_disk: { 'key1' => 'val1' }, os_profile: { 'key1' => 'val1' }, plan: { 'key1' => 'val1' }, priority: 'test-value', priority_mix: { 'key1' => 'val1' }, proximity_placement_group_id: 'test-value', rolling_upgrade_policy: { 'key1' => 'val1' }, single_placement_group: true, sku_name: 'test-value', sku_profile: { 'key1' => 'val1' }, source_image_id: 'test-value', source_image_reference: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, termination_notification: { 'key1' => 'val1' }, upgrade_mode: 'test-value', user_data_base64: 'test-value', zone_balance: true, zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -79,6 +79,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
         expect(config).to have_key('extension_operations_enabled')
         expect(config).to have_key('extensions_time_budget')
         expect(config).to have_key('identity')
+        expect(config).to have_key('instances')
         expect(config).to have_key('license_type')
         expect(config).to have_key('max_bid_price')
         expect(config).to have_key('network_api_version')
@@ -90,6 +91,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
         expect(config).to have_key('priority_mix')
         expect(config).to have_key('proximity_placement_group_id')
         expect(config).to have_key('rolling_upgrade_policy')
+        expect(config).to have_key('single_placement_group')
         expect(config).to have_key('sku_name')
         expect(config).to have_key('sku_profile')
         expect(config).to have_key('source_image_id')
@@ -107,7 +109,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes additional_capabilities when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(additional_capabilities: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(additional_capabilities: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('additional_capabilities')
@@ -124,7 +126,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes automatic_instance_repair when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(automatic_instance_repair: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(automatic_instance_repair: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('automatic_instance_repair')
@@ -141,7 +143,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes boot_diagnostics when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(boot_diagnostics: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(boot_diagnostics: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('boot_diagnostics')
@@ -277,7 +279,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('identity')
@@ -290,6 +292,23 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'minimal')
         expect(config).not_to have_key('identity')
+      end
+      it 'includes instances when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(instances: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
+        expect(config).to have_key('instances')
+      end
+
+      it 'omits instances when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_orchestrated_virtual_machine_scale_set('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'minimal')
+        expect(config).not_to have_key('instances')
       end
       it 'includes license_type when provided' do
         synth = create_synthesizer
@@ -362,7 +381,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes os_disk when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(os_disk: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(os_disk: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('os_disk')
@@ -379,7 +398,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes os_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(os_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(os_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('os_profile')
@@ -396,7 +415,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes plan when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(plan: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(plan: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('plan')
@@ -430,7 +449,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes priority_mix when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(priority_mix: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(priority_mix: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('priority_mix')
@@ -464,7 +483,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes rolling_upgrade_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(rolling_upgrade_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(rolling_upgrade_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('rolling_upgrade_policy')
@@ -477,6 +496,23 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'minimal')
         expect(config).not_to have_key('rolling_upgrade_policy')
+      end
+      it 'includes single_placement_group when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(single_placement_group: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
+        expect(config).to have_key('single_placement_group')
+      end
+
+      it 'omits single_placement_group when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_orchestrated_virtual_machine_scale_set('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'minimal')
+        expect(config).not_to have_key('single_placement_group')
       end
       it 'includes sku_name when provided' do
         synth = create_synthesizer
@@ -498,7 +534,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes sku_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(sku_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(sku_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('sku_profile')
@@ -532,7 +568,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes source_image_reference when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(source_image_reference: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(source_image_reference: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('source_image_reference')
@@ -566,7 +602,7 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
       it 'includes termination_notification when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(termination_notification: [{ 'key1' => 'val1' }]))
+        synth.azurerm_orchestrated_virtual_machine_scale_set('opt', required_attrs.merge(termination_notification: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('termination_notification')
@@ -681,6 +717,17 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
         end
       end
       [true, false].each do |val|
+        it "accepts single_placement_group=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(single_placement_group: val)
+          synth.azurerm_orchestrated_virtual_machine_scale_set("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_orchestrated_virtual_machine_scale_set', "bool_#{val}")
+          expect(config['single_placement_group']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
         it "accepts zone_balance=#{val}" do
           synth = create_synthesizer
           synth.extend(described_class)
@@ -741,5 +788,5 @@ RSpec.describe Pangea::Resources::AzureOrchestratedVirtualMachineScaleSet do
     expected_outputs: [:id, :instances, :single_placement_group, :unique_id],
     sensitive_fields: [:user_data_base64],
     immutable_fields: [],
-    boolean_fields: [:encryption_at_host_enabled, :extension_operations_enabled, :zone_balance]
+    boolean_fields: [:encryption_at_host_enabled, :extension_operations_enabled, :single_placement_group, :zone_balance]
 end

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AppServicePlanAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku],
-      map_present: [:app_service_environment_id, :kind, :tags],
+      map_present: [:app_service_environment_id, :kind, :maximum_elastic_worker_count, :tags],
       map_bool: [:is_xenon, :per_site_scaling, :reserved, :zone_redundant]
   end
   module Azure

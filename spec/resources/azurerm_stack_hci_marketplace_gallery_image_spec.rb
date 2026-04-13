@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureStackHciMarketplaceGalleryImage do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { custom_location_id: 'test-value', hyperv_generation: 'test-value', identifier: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', os_type: 'test-value', resource_group_name: 'test-value', version: 'test-value' } }
+  let(:required_attrs) { { custom_location_id: 'test-value', hyperv_generation: 'test-value', identifier: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', os_type: 'test-value', resource_group_name: 'test-value', version: 'test-value' } }
 
   describe ':azurerm_stack_hci_marketplace_gallery_image' do
     context 'with required attributes only' do
@@ -103,7 +103,7 @@ RSpec.describe Pangea::Resources::AzureStackHciMarketplaceGalleryImage do
         config = validate_resource_structure(result, 'azurerm_stack_hci_marketplace_gallery_image', 'typed')
         expect(config['custom_location_id']).to be_a(String)
         expect(config['hyperv_generation']).to be_a(String)
-        expect(config['identifier']).to be_a(Array)
+        expect(config['identifier']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['os_type']).to be_a(String)
@@ -141,7 +141,7 @@ RSpec.describe Pangea::Resources::AzureStackHciMarketplaceGalleryImage do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_stack_hci_marketplace_gallery_image,
     method: :azurerm_stack_hci_marketplace_gallery_image,
-    required_attrs: { custom_location_id: 'test-value', hyperv_generation: 'test-value', identifier: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', os_type: 'test-value', resource_group_name: 'test-value', version: 'test-value' },
+    required_attrs: { custom_location_id: 'test-value', hyperv_generation: 'test-value', identifier: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', os_type: 'test-value', resource_group_name: 'test-value', version: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

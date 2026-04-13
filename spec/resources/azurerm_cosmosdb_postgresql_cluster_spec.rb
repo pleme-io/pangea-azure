@@ -67,7 +67,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ administrator_login_password: 'test-value', coordinator_public_ip_access_enabled: true, coordinator_server_edition: 'test-value', coordinator_storage_quota_in_mb: 3.14, coordinator_vcore_count: 3.14, ha_enabled: true, maintenance_window: [{ 'key1' => 'val1' }], node_public_ip_access_enabled: true, node_server_edition: 'test-value', point_in_time_in_utc: 'test-value', preferred_primary_zone: 'test-value', source_location: 'test-value', source_resource_id: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ administrator_login_password: 'test-value', citus_version: 'test-value', coordinator_public_ip_access_enabled: true, coordinator_server_edition: 'test-value', coordinator_storage_quota_in_mb: 3.14, coordinator_vcore_count: 3.14, ha_enabled: true, maintenance_window: { 'key1' => 'val1' }, node_public_ip_access_enabled: true, node_server_edition: 'test-value', node_storage_quota_in_mb: 3.14, node_vcores: 3.14, point_in_time_in_utc: 'test-value', preferred_primary_zone: 'test-value', shards_on_coordinator_enabled: true, source_location: 'test-value', source_resource_id: 'test-value', sql_version: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -77,6 +77,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
 
         config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'full')
         expect(config).to have_key('administrator_login_password')
+        expect(config).to have_key('citus_version')
         expect(config).to have_key('coordinator_public_ip_access_enabled')
         expect(config).to have_key('coordinator_server_edition')
         expect(config).to have_key('coordinator_storage_quota_in_mb')
@@ -85,10 +86,14 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
         expect(config).to have_key('maintenance_window')
         expect(config).to have_key('node_public_ip_access_enabled')
         expect(config).to have_key('node_server_edition')
+        expect(config).to have_key('node_storage_quota_in_mb')
+        expect(config).to have_key('node_vcores')
         expect(config).to have_key('point_in_time_in_utc')
         expect(config).to have_key('preferred_primary_zone')
+        expect(config).to have_key('shards_on_coordinator_enabled')
         expect(config).to have_key('source_location')
         expect(config).to have_key('source_resource_id')
+        expect(config).to have_key('sql_version')
         expect(config).to have_key('tags')
       end
     end
@@ -110,6 +115,23 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'minimal')
         expect(config).not_to have_key('administrator_login_password')
+      end
+      it 'includes citus_version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('opt', required_attrs.merge(citus_version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'opt')
+        expect(config).to have_key('citus_version')
+      end
+
+      it 'omits citus_version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'minimal')
+        expect(config).not_to have_key('citus_version')
       end
       it 'includes coordinator_public_ip_access_enabled when provided' do
         synth = create_synthesizer
@@ -199,7 +221,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
       it 'includes maintenance_window when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_postgresql_cluster('opt', required_attrs.merge(maintenance_window: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_postgresql_cluster('opt', required_attrs.merge(maintenance_window: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'opt')
         expect(config).to have_key('maintenance_window')
@@ -247,6 +269,40 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
         config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'minimal')
         expect(config).not_to have_key('node_server_edition')
       end
+      it 'includes node_storage_quota_in_mb when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('opt', required_attrs.merge(node_storage_quota_in_mb: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'opt')
+        expect(config).to have_key('node_storage_quota_in_mb')
+      end
+
+      it 'omits node_storage_quota_in_mb when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'minimal')
+        expect(config).not_to have_key('node_storage_quota_in_mb')
+      end
+      it 'includes node_vcores when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('opt', required_attrs.merge(node_vcores: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'opt')
+        expect(config).to have_key('node_vcores')
+      end
+
+      it 'omits node_vcores when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'minimal')
+        expect(config).not_to have_key('node_vcores')
+      end
       it 'includes point_in_time_in_utc when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -281,6 +337,23 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
         config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'minimal')
         expect(config).not_to have_key('preferred_primary_zone')
       end
+      it 'includes shards_on_coordinator_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('opt', required_attrs.merge(shards_on_coordinator_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'opt')
+        expect(config).to have_key('shards_on_coordinator_enabled')
+      end
+
+      it 'omits shards_on_coordinator_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'minimal')
+        expect(config).not_to have_key('shards_on_coordinator_enabled')
+      end
       it 'includes source_location when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -314,6 +387,23 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'minimal')
         expect(config).not_to have_key('source_resource_id')
+      end
+      it 'includes sql_version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('opt', required_attrs.merge(sql_version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'opt')
+        expect(config).to have_key('sql_version')
+      end
+
+      it 'omits sql_version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_postgresql_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', 'minimal')
+        expect(config).not_to have_key('sql_version')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer
@@ -375,6 +465,17 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
           expect(config['node_public_ip_access_enabled']).to eq(val)
         end
       end
+      [true, false].each do |val|
+        it "accepts shards_on_coordinator_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(shards_on_coordinator_enabled: val)
+          synth.azurerm_cosmosdb_postgresql_cluster("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_cosmosdb_postgresql_cluster', "bool_#{val}")
+          expect(config['shards_on_coordinator_enabled']).to eq(val)
+        end
+      end
     end
 
     context 'attribute types' do
@@ -425,5 +526,5 @@ RSpec.describe Pangea::Resources::AzureCosmosdbPostgresqlCluster do
     expected_outputs: [:id, :citus_version, :earliest_restore_time, :node_storage_quota_in_mb, :node_vcores, :servers, :shards_on_coordinator_enabled, :sql_version],
     sensitive_fields: [:administrator_login_password],
     immutable_fields: [],
-    boolean_fields: [:coordinator_public_ip_access_enabled, :ha_enabled, :node_public_ip_access_enabled]
+    boolean_fields: [:coordinator_public_ip_access_enabled, :ha_enabled, :node_public_ip_access_enabled, :shards_on_coordinator_enabled]
 end

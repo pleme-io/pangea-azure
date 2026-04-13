@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudApiPortal do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ api_try_out_enabled: true, gateway_ids: ['test-value'], https_only_enabled: true, instance_count: 3.14, public_network_access_enabled: true, sso: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ api_try_out_enabled: true, gateway_ids: ['test-value'], https_only_enabled: true, instance_count: 3.14, public_network_access_enabled: true, sso: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -162,7 +162,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudApiPortal do
       it 'includes sso when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_api_portal('opt', required_attrs.merge(sso: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_api_portal('opt', required_attrs.merge(sso: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_api_portal', 'opt')
         expect(config).to have_key('sso')

@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureAutomationRunbook do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', draft: [{ 'key1' => 'val1' }], log_activity_trace_level: 3.14, publish_content_link: [{ 'key1' => 'val1' }], runtime_environment_name: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ content: 'test-value', description: 'test-value', draft: { 'key1' => 'val1' }, job_schedule: [{ 'key1' => 'val1' }], log_activity_trace_level: 3.14, publish_content_link: { 'key1' => 'val1' }, runtime_environment_name: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,8 +66,10 @@ RSpec.describe Pangea::Resources::AzureAutomationRunbook do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_automation_runbook', 'full')
+        expect(config).to have_key('content')
         expect(config).to have_key('description')
         expect(config).to have_key('draft')
+        expect(config).to have_key('job_schedule')
         expect(config).to have_key('log_activity_trace_level')
         expect(config).to have_key('publish_content_link')
         expect(config).to have_key('runtime_environment_name')
@@ -76,6 +78,23 @@ RSpec.describe Pangea::Resources::AzureAutomationRunbook do
     end
 
     context 'optional attributes' do
+      it 'includes content when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_runbook('opt', required_attrs.merge(content: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_runbook', 'opt')
+        expect(config).to have_key('content')
+      end
+
+      it 'omits content when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_runbook('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_runbook', 'minimal')
+        expect(config).not_to have_key('content')
+      end
       it 'includes description when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -96,7 +115,7 @@ RSpec.describe Pangea::Resources::AzureAutomationRunbook do
       it 'includes draft when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automation_runbook('opt', required_attrs.merge(draft: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automation_runbook('opt', required_attrs.merge(draft: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_runbook', 'opt')
         expect(config).to have_key('draft')
@@ -109,6 +128,23 @@ RSpec.describe Pangea::Resources::AzureAutomationRunbook do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_runbook', 'minimal')
         expect(config).not_to have_key('draft')
+      end
+      it 'includes job_schedule when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_runbook('opt', required_attrs.merge(job_schedule: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_runbook', 'opt')
+        expect(config).to have_key('job_schedule')
+      end
+
+      it 'omits job_schedule when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_runbook('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_runbook', 'minimal')
+        expect(config).not_to have_key('job_schedule')
       end
       it 'includes log_activity_trace_level when provided' do
         synth = create_synthesizer
@@ -130,7 +166,7 @@ RSpec.describe Pangea::Resources::AzureAutomationRunbook do
       it 'includes publish_content_link when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automation_runbook('opt', required_attrs.merge(publish_content_link: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automation_runbook('opt', required_attrs.merge(publish_content_link: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_runbook', 'opt')
         expect(config).to have_key('publish_content_link')

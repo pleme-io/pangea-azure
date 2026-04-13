@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::WindowsVirtualMachineAttributes,
       outputs: { id: :id },
       map: [:location, :name, :network_interface_ids, :os_disk, :resource_group_name, :size],
-      map_present: [:additional_capabilities, :additional_unattend_content, :admin_password, :admin_username, :availability_set_id, :boot_diagnostics, :capacity_reservation_group_id, :custom_data, :dedicated_host_group_id, :dedicated_host_id, :edge_zone, :eviction_policy, :extensions_time_budget, :gallery_application, :identity, :license_type, :max_bid_price, :os_image_notification, :plan, :platform_fault_domain, :priority, :proximity_placement_group_id, :reboot_setting, :secret, :source_image_id, :source_image_reference, :tags, :termination_notification, :timezone, :user_data, :virtual_machine_scale_set_id, :winrm_listener, :zone],
-      map_bool: [:bypass_platform_safety_checks_on_user_schedule_enabled, :encryption_at_host_enabled, :secure_boot_enabled, :vtpm_enabled]
+      map_present: [:additional_capabilities, :additional_unattend_content, :admin_password, :admin_username, :availability_set_id, :boot_diagnostics, :capacity_reservation_group_id, :computer_name, :custom_data, :dedicated_host_group_id, :dedicated_host_id, :disk_controller_type, :edge_zone, :eviction_policy, :extensions_time_budget, :gallery_application, :identity, :license_type, :max_bid_price, :os_image_notification, :os_managed_disk_id, :patch_assessment_mode, :patch_mode, :plan, :platform_fault_domain, :priority, :proximity_placement_group_id, :reboot_setting, :secret, :source_image_id, :source_image_reference, :tags, :termination_notification, :timezone, :user_data, :virtual_machine_scale_set_id, :winrm_listener, :zone],
+      map_bool: [:allow_extension_operations, :automatic_updates_enabled, :bypass_platform_safety_checks_on_user_schedule_enabled, :enable_automatic_updates, :encryption_at_host_enabled, :hotpatching_enabled, :provision_vm_agent, :secure_boot_enabled, :vm_agent_platform_updates_enabled, :vtpm_enabled]
   end
   module Azure
     include AzureWindowsVirtualMachine

@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceOdata do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], basic_authentication: [{ 'key1' => 'val1' }], description: 'test-value', integration_runtime_name: 'test-value', parameters: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], basic_authentication: { 'key1' => 'val1' }, description: 'test-value', integration_runtime_name: 'test-value', parameters: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -98,7 +98,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceOdata do
       it 'includes basic_authentication when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_odata('opt', required_attrs.merge(basic_authentication: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_odata('opt', required_attrs.merge(basic_authentication: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_odata', 'opt')
         expect(config).to have_key('basic_authentication')

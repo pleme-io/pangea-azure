@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureDevTestVirtualNetwork do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', subnet: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', subnet: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -91,7 +91,7 @@ RSpec.describe Pangea::Resources::AzureDevTestVirtualNetwork do
       it 'includes subnet when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dev_test_virtual_network('opt', required_attrs.merge(subnet: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dev_test_virtual_network('opt', required_attrs.merge(subnet: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dev_test_virtual_network', 'opt')
         expect(config).to have_key('subnet')

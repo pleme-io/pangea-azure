@@ -1,0 +1,8 @@
+name: azurerm_lb_probe
+title: Manages a azurerm_lb_probe resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

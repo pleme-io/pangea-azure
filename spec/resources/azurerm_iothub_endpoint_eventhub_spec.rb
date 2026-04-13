@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureIothubEndpointEventhub do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ authentication_type: 'test-value', connection_string: 'test-value', endpoint_uri: 'test-value', entity_path: 'test-value', identity_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ authentication_type: 'test-value', connection_string: 'test-value', endpoint_uri: 'test-value', entity_path: 'test-value', identity_id: 'test-value', subscription_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,6 +69,7 @@ RSpec.describe Pangea::Resources::AzureIothubEndpointEventhub do
         expect(config).to have_key('endpoint_uri')
         expect(config).to have_key('entity_path')
         expect(config).to have_key('identity_id')
+        expect(config).to have_key('subscription_id')
       end
     end
 
@@ -157,6 +158,23 @@ RSpec.describe Pangea::Resources::AzureIothubEndpointEventhub do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iothub_endpoint_eventhub', 'minimal')
         expect(config).not_to have_key('identity_id')
+      end
+      it 'includes subscription_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub_endpoint_eventhub('opt', required_attrs.merge(subscription_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub_endpoint_eventhub', 'opt')
+        expect(config).to have_key('subscription_id')
+      end
+
+      it 'omits subscription_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub_endpoint_eventhub('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub_endpoint_eventhub', 'minimal')
+        expect(config).not_to have_key('subscription_id')
       end
     end
 

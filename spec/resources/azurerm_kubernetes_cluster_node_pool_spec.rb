@@ -69,7 +69,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_scaling_enabled: true, capacity_reservation_group_id: 'test-value', eviction_policy: 'test-value', fips_enabled: true, gpu_driver: 'test-value', gpu_instance: 'test-value', host_encryption_enabled: true, host_group_id: 'test-value', kubelet_config: [{ 'key1' => 'val1' }], linux_os_config: [{ 'key1' => 'val1' }], max_count: 3.14, min_count: 3.14, mode: 'test-value', node_network_profile: [{ 'key1' => 'val1' }], node_public_ip_enabled: true, node_public_ip_prefix_id: 'test-value', node_taints: ['test-value'], os_disk_type: 'test-value', os_type: 'test-value', pod_subnet_id: 'test-value', priority: 'test-value', proximity_placement_group_id: 'test-value', scale_down_mode: 'test-value', snapshot_id: 'test-value', spot_max_price: 3.14, tags: { 'key1' => 'val1' }, temporary_name_for_rotation: 'test-value', ultra_ssd_enabled: true, upgrade_settings: [{ 'key1' => 'val1' }], vnet_subnet_id: 'test-value', windows_profile: [{ 'key1' => 'val1' }], workload_runtime: 'test-value', zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ auto_scaling_enabled: true, capacity_reservation_group_id: 'test-value', eviction_policy: 'test-value', fips_enabled: true, gpu_driver: 'test-value', gpu_instance: 'test-value', host_encryption_enabled: true, host_group_id: 'test-value', kubelet_config: { 'key1' => 'val1' }, kubelet_disk_type: 'test-value', linux_os_config: { 'key1' => 'val1' }, max_count: 3.14, max_pods: 3.14, min_count: 3.14, mode: 'test-value', node_count: 3.14, node_labels: { 'key1' => 'val1' }, node_network_profile: { 'key1' => 'val1' }, node_public_ip_enabled: true, node_public_ip_prefix_id: 'test-value', node_taints: ['test-value'], orchestrator_version: 'test-value', os_disk_size_gb: 3.14, os_disk_type: 'test-value', os_sku: 'test-value', os_type: 'test-value', pod_subnet_id: 'test-value', priority: 'test-value', proximity_placement_group_id: 'test-value', scale_down_mode: 'test-value', snapshot_id: 'test-value', spot_max_price: 3.14, tags: { 'key1' => 'val1' }, temporary_name_for_rotation: 'test-value', ultra_ssd_enabled: true, upgrade_settings: { 'key1' => 'val1' }, vm_size: 'test-value', vnet_subnet_id: 'test-value', windows_profile: { 'key1' => 'val1' }, workload_runtime: 'test-value', zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -87,15 +87,22 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
         expect(config).to have_key('host_encryption_enabled')
         expect(config).to have_key('host_group_id')
         expect(config).to have_key('kubelet_config')
+        expect(config).to have_key('kubelet_disk_type')
         expect(config).to have_key('linux_os_config')
         expect(config).to have_key('max_count')
+        expect(config).to have_key('max_pods')
         expect(config).to have_key('min_count')
         expect(config).to have_key('mode')
+        expect(config).to have_key('node_count')
+        expect(config).to have_key('node_labels')
         expect(config).to have_key('node_network_profile')
         expect(config).to have_key('node_public_ip_enabled')
         expect(config).to have_key('node_public_ip_prefix_id')
         expect(config).to have_key('node_taints')
+        expect(config).to have_key('orchestrator_version')
+        expect(config).to have_key('os_disk_size_gb')
         expect(config).to have_key('os_disk_type')
+        expect(config).to have_key('os_sku')
         expect(config).to have_key('os_type')
         expect(config).to have_key('pod_subnet_id')
         expect(config).to have_key('priority')
@@ -107,6 +114,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
         expect(config).to have_key('temporary_name_for_rotation')
         expect(config).to have_key('ultra_ssd_enabled')
         expect(config).to have_key('upgrade_settings')
+        expect(config).to have_key('vm_size')
         expect(config).to have_key('vnet_subnet_id')
         expect(config).to have_key('windows_profile')
         expect(config).to have_key('workload_runtime')
@@ -254,7 +262,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
       it 'includes kubelet_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(kubelet_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(kubelet_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
         expect(config).to have_key('kubelet_config')
@@ -268,10 +276,27 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
         expect(config).not_to have_key('kubelet_config')
       end
+      it 'includes kubelet_disk_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(kubelet_disk_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
+        expect(config).to have_key('kubelet_disk_type')
+      end
+
+      it 'omits kubelet_disk_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
+        expect(config).not_to have_key('kubelet_disk_type')
+      end
       it 'includes linux_os_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(linux_os_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(linux_os_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
         expect(config).to have_key('linux_os_config')
@@ -301,6 +326,23 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
         expect(config).not_to have_key('max_count')
+      end
+      it 'includes max_pods when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(max_pods: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
+        expect(config).to have_key('max_pods')
+      end
+
+      it 'omits max_pods when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
+        expect(config).not_to have_key('max_pods')
       end
       it 'includes min_count when provided' do
         synth = create_synthesizer
@@ -336,10 +378,44 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
         expect(config).not_to have_key('mode')
       end
+      it 'includes node_count when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(node_count: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
+        expect(config).to have_key('node_count')
+      end
+
+      it 'omits node_count when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
+        expect(config).not_to have_key('node_count')
+      end
+      it 'includes node_labels when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(node_labels: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
+        expect(config).to have_key('node_labels')
+      end
+
+      it 'omits node_labels when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
+        expect(config).not_to have_key('node_labels')
+      end
       it 'includes node_network_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(node_network_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(node_network_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
         expect(config).to have_key('node_network_profile')
@@ -404,6 +480,40 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
         expect(config).not_to have_key('node_taints')
       end
+      it 'includes orchestrator_version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(orchestrator_version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
+        expect(config).to have_key('orchestrator_version')
+      end
+
+      it 'omits orchestrator_version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
+        expect(config).not_to have_key('orchestrator_version')
+      end
+      it 'includes os_disk_size_gb when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(os_disk_size_gb: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
+        expect(config).to have_key('os_disk_size_gb')
+      end
+
+      it 'omits os_disk_size_gb when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
+        expect(config).not_to have_key('os_disk_size_gb')
+      end
       it 'includes os_disk_type when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -420,6 +530,23 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
         expect(config).not_to have_key('os_disk_type')
+      end
+      it 'includes os_sku when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(os_sku: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
+        expect(config).to have_key('os_sku')
+      end
+
+      it 'omits os_sku when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
+        expect(config).not_to have_key('os_sku')
       end
       it 'includes os_type when provided' do
         synth = create_synthesizer
@@ -594,7 +721,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
       it 'includes upgrade_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(upgrade_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(upgrade_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
         expect(config).to have_key('upgrade_settings')
@@ -607,6 +734,23 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
         expect(config).not_to have_key('upgrade_settings')
+      end
+      it 'includes vm_size when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(vm_size: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
+        expect(config).to have_key('vm_size')
+      end
+
+      it 'omits vm_size when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster_node_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'minimal')
+        expect(config).not_to have_key('vm_size')
       end
       it 'includes vnet_subnet_id when provided' do
         synth = create_synthesizer
@@ -628,7 +772,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesClusterNodePool do
       it 'includes windows_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(windows_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster_node_pool('opt', required_attrs.merge(windows_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster_node_pool', 'opt')
         expect(config).to have_key('windows_profile')

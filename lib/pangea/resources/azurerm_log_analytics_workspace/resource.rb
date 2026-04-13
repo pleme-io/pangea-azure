@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::LogAnalyticsWorkspaceAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:daily_quota_gb, :data_collection_rule_id, :identity, :reservation_capacity_in_gb_per_day, :tags],
-      map_bool: [:allow_resource_only_permissions, :cmk_for_query_forced, :immediate_data_purge_on_30_days_enabled, :internet_ingestion_enabled, :internet_query_enabled]
+      map_present: [:daily_quota_gb, :data_collection_rule_id, :identity, :reservation_capacity_in_gb_per_day, :retention_in_days, :sku, :tags],
+      map_bool: [:allow_resource_only_permissions, :cmk_for_query_forced, :immediate_data_purge_on_30_days_enabled, :internet_ingestion_enabled, :internet_query_enabled, :local_authentication_disabled, :local_authentication_enabled]
   end
   module Azure
     include AzureLogAnalyticsWorkspace

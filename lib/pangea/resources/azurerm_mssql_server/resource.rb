@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::MssqlServerAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :version],
-      map_present: [:administrator_login_password, :administrator_login_password_wo, :administrator_login_password_wo_version, :azuread_administrator, :connection_policy, :identity, :minimum_tls_version, :tags, :transparent_data_encryption_key_vault_key_id],
+      map_present: [:administrator_login, :administrator_login_password, :administrator_login_password_wo, :administrator_login_password_wo_version, :azuread_administrator, :connection_policy, :identity, :minimum_tls_version, :primary_user_assigned_identity_id, :tags, :transparent_data_encryption_key_vault_key_id],
       map_bool: [:express_vulnerability_assessment_enabled, :outbound_network_restriction_enabled, :public_network_access_enabled]
   end
   module Azure

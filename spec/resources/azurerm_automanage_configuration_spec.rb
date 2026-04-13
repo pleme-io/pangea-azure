@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureAutomanageConfiguration do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ antimalware: [{ 'key1' => 'val1' }], automation_account_enabled: true, azure_security_baseline: [{ 'key1' => 'val1' }], backup: [{ 'key1' => 'val1' }], boot_diagnostics_enabled: true, defender_for_cloud_enabled: true, guest_configuration_enabled: true, log_analytics_enabled: true, status_change_alert_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ antimalware: { 'key1' => 'val1' }, automation_account_enabled: true, azure_security_baseline: { 'key1' => 'val1' }, backup: { 'key1' => 'val1' }, boot_diagnostics_enabled: true, defender_for_cloud_enabled: true, guest_configuration_enabled: true, log_analytics_enabled: true, status_change_alert_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,7 +68,7 @@ RSpec.describe Pangea::Resources::AzureAutomanageConfiguration do
       it 'includes antimalware when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automanage_configuration('opt', required_attrs.merge(antimalware: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automanage_configuration('opt', required_attrs.merge(antimalware: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automanage_configuration', 'opt')
         expect(config).to have_key('antimalware')
@@ -102,7 +102,7 @@ RSpec.describe Pangea::Resources::AzureAutomanageConfiguration do
       it 'includes azure_security_baseline when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automanage_configuration('opt', required_attrs.merge(azure_security_baseline: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automanage_configuration('opt', required_attrs.merge(azure_security_baseline: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automanage_configuration', 'opt')
         expect(config).to have_key('azure_security_baseline')
@@ -119,7 +119,7 @@ RSpec.describe Pangea::Resources::AzureAutomanageConfiguration do
       it 'includes backup when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automanage_configuration('opt', required_attrs.merge(backup: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automanage_configuration('opt', required_attrs.merge(backup: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automanage_configuration', 'opt')
         expect(config).to have_key('backup')

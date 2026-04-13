@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureLocalNetworkGateway do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ address_space: ['test-value'], bgp_settings: [{ 'key1' => 'val1' }], gateway_address: 'test-value', gateway_fqdn: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ address_space: ['test-value'], bgp_settings: { 'key1' => 'val1' }, gateway_address: 'test-value', gateway_fqdn: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -80,7 +80,7 @@ RSpec.describe Pangea::Resources::AzureLocalNetworkGateway do
       it 'includes bgp_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_local_network_gateway('opt', required_attrs.merge(bgp_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_local_network_gateway('opt', required_attrs.merge(bgp_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_local_network_gateway', 'opt')
         expect(config).to have_key('bgp_settings')

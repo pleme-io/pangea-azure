@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedDatabase do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ long_term_retention_policy: [{ 'key1' => 'val1' }], point_in_time_restore: [{ 'key1' => 'val1' }], short_term_retention_days: 3.14, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ long_term_retention_policy: { 'key1' => 'val1' }, point_in_time_restore: { 'key1' => 'val1' }, short_term_retention_days: 3.14, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -62,7 +62,7 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedDatabase do
       it 'includes long_term_retention_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_managed_database('opt', required_attrs.merge(long_term_retention_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_managed_database('opt', required_attrs.merge(long_term_retention_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_managed_database', 'opt')
         expect(config).to have_key('long_term_retention_policy')
@@ -79,7 +79,7 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedDatabase do
       it 'includes point_in_time_restore when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_managed_database('opt', required_attrs.merge(point_in_time_restore: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_managed_database('opt', required_attrs.merge(point_in_time_restore: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_managed_database', 'opt')
         expect(config).to have_key('point_in_time_restore')

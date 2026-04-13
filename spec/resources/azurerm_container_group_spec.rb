@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureContainerGroup do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ diagnostics: [{ 'key1' => 'val1' }], dns_config: [{ 'key1' => 'val1' }], dns_name_label: 'test-value', dns_name_label_reuse_policy: 'test-value', identity: [{ 'key1' => 'val1' }], image_registry_credential: [{ 'key1' => 'val1' }], init_container: [{ 'key1' => 'val1' }], ip_address_type: 'test-value', key_vault_key_id: 'test-value', key_vault_user_assigned_identity_id: 'test-value', priority: 'test-value', restart_policy: 'test-value', sku: 'test-value', subnet_ids: ['test-value'], tags: { 'key1' => 'val1' }, zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ diagnostics: { 'key1' => 'val1' }, dns_config: { 'key1' => 'val1' }, dns_name_label: 'test-value', dns_name_label_reuse_policy: 'test-value', exposed_port: [{ 'key1' => 'val1' }], identity: { 'key1' => 'val1' }, image_registry_credential: [{ 'key1' => 'val1' }], init_container: [{ 'key1' => 'val1' }], ip_address_type: 'test-value', key_vault_key_id: 'test-value', key_vault_user_assigned_identity_id: 'test-value', network_profile_id: 'test-value', priority: 'test-value', restart_policy: 'test-value', sku: 'test-value', subnet_ids: ['test-value'], tags: { 'key1' => 'val1' }, zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,12 +74,14 @@ RSpec.describe Pangea::Resources::AzureContainerGroup do
         expect(config).to have_key('dns_config')
         expect(config).to have_key('dns_name_label')
         expect(config).to have_key('dns_name_label_reuse_policy')
+        expect(config).to have_key('exposed_port')
         expect(config).to have_key('identity')
         expect(config).to have_key('image_registry_credential')
         expect(config).to have_key('init_container')
         expect(config).to have_key('ip_address_type')
         expect(config).to have_key('key_vault_key_id')
         expect(config).to have_key('key_vault_user_assigned_identity_id')
+        expect(config).to have_key('network_profile_id')
         expect(config).to have_key('priority')
         expect(config).to have_key('restart_policy')
         expect(config).to have_key('sku')
@@ -93,7 +95,7 @@ RSpec.describe Pangea::Resources::AzureContainerGroup do
       it 'includes diagnostics when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_group('opt', required_attrs.merge(diagnostics: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_group('opt', required_attrs.merge(diagnostics: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_group', 'opt')
         expect(config).to have_key('diagnostics')
@@ -110,7 +112,7 @@ RSpec.describe Pangea::Resources::AzureContainerGroup do
       it 'includes dns_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_group('opt', required_attrs.merge(dns_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_group('opt', required_attrs.merge(dns_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_group', 'opt')
         expect(config).to have_key('dns_config')
@@ -158,10 +160,27 @@ RSpec.describe Pangea::Resources::AzureContainerGroup do
         config = validate_resource_structure(result, 'azurerm_container_group', 'minimal')
         expect(config).not_to have_key('dns_name_label_reuse_policy')
       end
+      it 'includes exposed_port when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_group('opt', required_attrs.merge(exposed_port: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_group', 'opt')
+        expect(config).to have_key('exposed_port')
+      end
+
+      it 'omits exposed_port when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_group('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_group', 'minimal')
+        expect(config).not_to have_key('exposed_port')
+      end
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_group('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_group('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_group', 'opt')
         expect(config).to have_key('identity')
@@ -259,6 +278,23 @@ RSpec.describe Pangea::Resources::AzureContainerGroup do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_group', 'minimal')
         expect(config).not_to have_key('key_vault_user_assigned_identity_id')
+      end
+      it 'includes network_profile_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_group('opt', required_attrs.merge(network_profile_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_group', 'opt')
+        expect(config).to have_key('network_profile_id')
+      end
+
+      it 'omits network_profile_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_group('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_group', 'minimal')
+        expect(config).not_to have_key('network_profile_id')
       end
       it 'includes priority when provided' do
         synth = create_synthesizer

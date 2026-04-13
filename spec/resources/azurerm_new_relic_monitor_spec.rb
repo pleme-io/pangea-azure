@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureNewRelicMonitor do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', plan: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', user: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', plan: { 'key1' => 'val1' }, resource_group_name: 'test-value', user: { 'key1' => 'val1' } } }
 
   describe ':azurerm_new_relic_monitor' do
     context 'with required attributes only' do
@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureNewRelicMonitor do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ account_creation_source: 'test-value', identity: [{ 'key1' => 'val1' }], ingestion_key: 'test-value', org_creation_source: 'test-value', user_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ account_creation_source: 'test-value', account_id: 'test-value', identity: { 'key1' => 'val1' }, ingestion_key: 'test-value', org_creation_source: 'test-value', organization_id: 'test-value', user_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,9 +67,11 @@ RSpec.describe Pangea::Resources::AzureNewRelicMonitor do
 
         config = validate_resource_structure(result, 'azurerm_new_relic_monitor', 'full')
         expect(config).to have_key('account_creation_source')
+        expect(config).to have_key('account_id')
         expect(config).to have_key('identity')
         expect(config).to have_key('ingestion_key')
         expect(config).to have_key('org_creation_source')
+        expect(config).to have_key('organization_id')
         expect(config).to have_key('user_id')
       end
     end
@@ -92,10 +94,27 @@ RSpec.describe Pangea::Resources::AzureNewRelicMonitor do
         config = validate_resource_structure(result, 'azurerm_new_relic_monitor', 'minimal')
         expect(config).not_to have_key('account_creation_source')
       end
+      it 'includes account_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_new_relic_monitor('opt', required_attrs.merge(account_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_new_relic_monitor', 'opt')
+        expect(config).to have_key('account_id')
+      end
+
+      it 'omits account_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_new_relic_monitor('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_new_relic_monitor', 'minimal')
+        expect(config).not_to have_key('account_id')
+      end
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_new_relic_monitor('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_new_relic_monitor('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_new_relic_monitor', 'opt')
         expect(config).to have_key('identity')
@@ -143,6 +162,23 @@ RSpec.describe Pangea::Resources::AzureNewRelicMonitor do
         config = validate_resource_structure(result, 'azurerm_new_relic_monitor', 'minimal')
         expect(config).not_to have_key('org_creation_source')
       end
+      it 'includes organization_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_new_relic_monitor('opt', required_attrs.merge(organization_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_new_relic_monitor', 'opt')
+        expect(config).to have_key('organization_id')
+      end
+
+      it 'omits organization_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_new_relic_monitor('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_new_relic_monitor', 'minimal')
+        expect(config).not_to have_key('organization_id')
+      end
       it 'includes user_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -179,9 +215,9 @@ RSpec.describe Pangea::Resources::AzureNewRelicMonitor do
         config = validate_resource_structure(result, 'azurerm_new_relic_monitor', 'typed')
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['plan']).to be_a(Array)
+        expect(config['plan']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['user']).to be_a(Array)
+        expect(config['user']).to be_a(Hash)
       end
     end
 
@@ -214,7 +250,7 @@ RSpec.describe Pangea::Resources::AzureNewRelicMonitor do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_new_relic_monitor,
     method: :azurerm_new_relic_monitor,
-    required_attrs: { location: 'test-value', name: 'test-value', plan: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', user: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', plan: { 'key1' => 'val1' }, resource_group_name: 'test-value', user: { 'key1' => 'val1' } },
     expected_outputs: [:id, :account_id, :organization_id],
     sensitive_fields: [:ingestion_key],
     immutable_fields: [],

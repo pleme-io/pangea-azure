@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_sentinel_data_connector_office_irm,
       attributes_class: Azure::Types::SentinelDataConnectorOfficeIrmAttributes,
       outputs: { id: :id },
-      map: [:log_analytics_workspace_id, :name]
+      map: [:log_analytics_workspace_id, :name],
+      map_present: [:tenant_id]
   end
   module Azure
     include AzureSentinelDataConnectorOfficeIrm

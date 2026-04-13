@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::BatchAccountAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:encryption, :identity, :key_vault_reference, :network_profile, :pool_allocation_mode, :storage_account_authentication_mode, :storage_account_id, :storage_account_node_identity, :tags],
+      map_present: [:allowed_authentication_modes, :encryption, :identity, :key_vault_reference, :network_profile, :pool_allocation_mode, :storage_account_authentication_mode, :storage_account_id, :storage_account_node_identity, :tags],
       map_bool: [:public_network_access_enabled]
   end
   module Azure

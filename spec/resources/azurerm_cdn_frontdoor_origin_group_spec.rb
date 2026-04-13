@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureCdnFrontdoorOriginGroup do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { cdn_frontdoor_profile_id: 'test-value', load_balancing: [{ 'key1' => 'val1' }], name: 'test-value' } }
+  let(:required_attrs) { { cdn_frontdoor_profile_id: 'test-value', load_balancing: { 'key1' => 'val1' }, name: 'test-value' } }
 
   describe ':azurerm_cdn_frontdoor_origin_group' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorOriginGroup do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ health_probe: [{ 'key1' => 'val1' }], restore_traffic_time_to_healed_or_new_endpoint_in_minutes: 3.14, session_affinity_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ health_probe: { 'key1' => 'val1' }, restore_traffic_time_to_healed_or_new_endpoint_in_minutes: 3.14, session_affinity_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorOriginGroup do
       it 'includes health_probe when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cdn_frontdoor_origin_group('opt', required_attrs.merge(health_probe: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cdn_frontdoor_origin_group('opt', required_attrs.merge(health_probe: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_origin_group', 'opt')
         expect(config).to have_key('health_probe')
@@ -134,7 +134,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorOriginGroup do
 
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_origin_group', 'typed')
         expect(config['cdn_frontdoor_profile_id']).to be_a(String)
-        expect(config['load_balancing']).to be_a(Array)
+        expect(config['load_balancing']).to be_a(Hash)
         expect(config['name']).to be_a(String)
       end
     end
@@ -168,7 +168,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorOriginGroup do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_cdn_frontdoor_origin_group,
     method: :azurerm_cdn_frontdoor_origin_group,
-    required_attrs: { cdn_frontdoor_profile_id: 'test-value', load_balancing: [{ 'key1' => 'val1' }], name: 'test-value' },
+    required_attrs: { cdn_frontdoor_profile_id: 'test-value', load_balancing: { 'key1' => 'val1' }, name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

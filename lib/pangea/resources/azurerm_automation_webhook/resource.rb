@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AutomationWebhookAttributes,
       outputs: { id: :id },
       map: [:automation_account_name, :expiry_time, :name, :resource_group_name, :runbook_name],
-      map_present: [:parameters, :run_on_worker_group],
+      map_present: [:parameters, :run_on_worker_group, :uri],
       map_bool: [:enabled]
   end
   module Azure

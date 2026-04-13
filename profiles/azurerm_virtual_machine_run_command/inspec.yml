@@ -1,0 +1,8 @@
+name: azurerm_virtual_machine_run_command
+title: Manages a azurerm_virtual_machine_run_command resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

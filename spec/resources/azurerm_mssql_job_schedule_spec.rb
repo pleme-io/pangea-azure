@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureMssqlJobSchedule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ interval: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ enabled: true, end_time: 'test-value', interval: 'test-value', start_time: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,11 +68,48 @@ RSpec.describe Pangea::Resources::AzureMssqlJobSchedule do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_mssql_job_schedule', 'full')
+        expect(config).to have_key('enabled')
+        expect(config).to have_key('end_time')
         expect(config).to have_key('interval')
+        expect(config).to have_key('start_time')
       end
     end
 
     context 'optional attributes' do
+      it 'includes enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_job_schedule('opt', required_attrs.merge(enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_job_schedule', 'opt')
+        expect(config).to have_key('enabled')
+      end
+
+      it 'omits enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_job_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_job_schedule', 'minimal')
+        expect(config).not_to have_key('enabled')
+      end
+      it 'includes end_time when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_job_schedule('opt', required_attrs.merge(end_time: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_job_schedule', 'opt')
+        expect(config).to have_key('end_time')
+      end
+
+      it 'omits end_time when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_job_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_job_schedule', 'minimal')
+        expect(config).not_to have_key('end_time')
+      end
       it 'includes interval when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -89,6 +126,37 @@ RSpec.describe Pangea::Resources::AzureMssqlJobSchedule do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_job_schedule', 'minimal')
         expect(config).not_to have_key('interval')
+      end
+      it 'includes start_time when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_job_schedule('opt', required_attrs.merge(start_time: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_job_schedule', 'opt')
+        expect(config).to have_key('start_time')
+      end
+
+      it 'omits start_time when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_job_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_job_schedule', 'minimal')
+        expect(config).not_to have_key('start_time')
+      end
+    end
+
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enabled: val)
+          synth.azurerm_mssql_job_schedule("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_mssql_job_schedule', "bool_#{val}")
+          expect(config['enabled']).to eq(val)
+        end
       end
     end
 
@@ -138,5 +206,5 @@ RSpec.describe Pangea::Resources::AzureMssqlJobSchedule do
     expected_outputs: [:id, :enabled, :end_time, :start_time],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:enabled]
 end

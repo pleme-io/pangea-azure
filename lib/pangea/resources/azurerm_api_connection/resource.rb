@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ApiConnectionAttributes,
       outputs: { id: :id },
       map: [:managed_api_id, :name, :resource_group_name],
-      map_present: [:parameter_values, :tags]
+      map_present: [:display_name, :parameter_values, :tags]
   end
   module Azure
     include AzureApiConnection

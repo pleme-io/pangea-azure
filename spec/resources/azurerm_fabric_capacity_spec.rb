@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureFabricCapacity do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } } }
 
   describe ':azurerm_fabric_capacity' do
     context 'with required attributes only' do
@@ -104,7 +104,7 @@ RSpec.describe Pangea::Resources::AzureFabricCapacity do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
       end
     end
 
@@ -137,7 +137,7 @@ RSpec.describe Pangea::Resources::AzureFabricCapacity do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_fabric_capacity,
     method: :azurerm_fabric_capacity,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

@@ -1,0 +1,8 @@
+name: azurerm_databricks_workspace_customer_managed_key
+title: Manages a azurerm_databricks_workspace_customer_managed_key resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

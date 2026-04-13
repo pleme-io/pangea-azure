@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::KustoEventgridDataConnectionAttributes,
       outputs: { id: :id },
       map: [:cluster_name, :database_name, :eventhub_consumer_group_name, :eventhub_id, :location, :name, :resource_group_name, :storage_account_id],
-      map_present: [:blob_storage_event_type, :data_format, :database_routing_type, :mapping_rule_name, :table_name],
+      map_present: [:blob_storage_event_type, :data_format, :database_routing_type, :eventgrid_event_subscription_id, :eventgrid_resource_id, :managed_identity_id, :managed_identity_resource_id, :mapping_rule_name, :table_name],
       map_bool: [:skip_first_record]
   end
   module Azure

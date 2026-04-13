@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureResourceGroupTemplateDeployment do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ debug_level: 'test-value', tags: { 'key1' => 'val1' }, template_spec_version_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ debug_level: 'test-value', parameters_content: 'test-value', tags: { 'key1' => 'val1' }, template_content: 'test-value', template_spec_version_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,7 +69,9 @@ RSpec.describe Pangea::Resources::AzureResourceGroupTemplateDeployment do
 
         config = validate_resource_structure(result, 'azurerm_resource_group_template_deployment', 'full')
         expect(config).to have_key('debug_level')
+        expect(config).to have_key('parameters_content')
         expect(config).to have_key('tags')
+        expect(config).to have_key('template_content')
         expect(config).to have_key('template_spec_version_id')
       end
     end
@@ -92,6 +94,23 @@ RSpec.describe Pangea::Resources::AzureResourceGroupTemplateDeployment do
         config = validate_resource_structure(result, 'azurerm_resource_group_template_deployment', 'minimal')
         expect(config).not_to have_key('debug_level')
       end
+      it 'includes parameters_content when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_resource_group_template_deployment('opt', required_attrs.merge(parameters_content: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_resource_group_template_deployment', 'opt')
+        expect(config).to have_key('parameters_content')
+      end
+
+      it 'omits parameters_content when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_resource_group_template_deployment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_resource_group_template_deployment', 'minimal')
+        expect(config).not_to have_key('parameters_content')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -108,6 +127,23 @@ RSpec.describe Pangea::Resources::AzureResourceGroupTemplateDeployment do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_resource_group_template_deployment', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes template_content when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_resource_group_template_deployment('opt', required_attrs.merge(template_content: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_resource_group_template_deployment', 'opt')
+        expect(config).to have_key('template_content')
+      end
+
+      it 'omits template_content when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_resource_group_template_deployment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_resource_group_template_deployment', 'minimal')
+        expect(config).not_to have_key('template_content')
       end
       it 'includes template_spec_version_id when provided' do
         synth = create_synthesizer

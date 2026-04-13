@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { admin_password: 'test-value', admin_username: 'test-value', instances: 3.14, location: 'test-value', name: 'test-value', network_interface: [{ 'key1' => 'val1' }], os_disk: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', sku: 'test-value' } }
+  let(:required_attrs) { { admin_password: 'test-value', admin_username: 'test-value', instances: 3.14, location: 'test-value', name: 'test-value', network_interface: [{ 'key1' => 'val1' }], os_disk: { 'key1' => 'val1' }, resource_group_name: 'test-value', sku: 'test-value' } }
 
   describe ':azurerm_windows_virtual_machine_scale_set' do
     context 'with required attributes only' do
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_capabilities: [{ 'key1' => 'val1' }], additional_unattend_content: [{ 'key1' => 'val1' }], automatic_instance_repair: [{ 'key1' => 'val1' }], automatic_os_upgrade_policy: [{ 'key1' => 'val1' }], boot_diagnostics: [{ 'key1' => 'val1' }], capacity_reservation_group_id: 'test-value', custom_data: 'test-value', data_disk: [{ 'key1' => 'val1' }], do_not_run_extensions_on_overprovisioned_machines: true, edge_zone: 'test-value', enable_automatic_updates: true, encryption_at_host_enabled: true, eviction_policy: 'test-value', extension: [{ 'key1' => 'val1' }], extension_operations_enabled: true, extensions_time_budget: 'test-value', gallery_application: [{ 'key1' => 'val1' }], health_probe_id: 'test-value', host_group_id: 'test-value', identity: [{ 'key1' => 'val1' }], license_type: 'test-value', max_bid_price: 3.14, overprovision: true, plan: [{ 'key1' => 'val1' }], priority: 'test-value', provision_vm_agent: true, proximity_placement_group_id: 'test-value', resilient_vm_creation_enabled: true, resilient_vm_deletion_enabled: true, rolling_upgrade_policy: [{ 'key1' => 'val1' }], scale_in: [{ 'key1' => 'val1' }], secret: [{ 'key1' => 'val1' }], secure_boot_enabled: true, single_placement_group: true, source_image_id: 'test-value', source_image_reference: [{ 'key1' => 'val1' }], spot_restore: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, termination_notification: [{ 'key1' => 'val1' }], timezone: 'test-value', upgrade_mode: 'test-value', user_data: 'test-value', vtpm_enabled: true, winrm_listener: [{ 'key1' => 'val1' }], zone_balance: true, zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ additional_capabilities: { 'key1' => 'val1' }, additional_unattend_content: [{ 'key1' => 'val1' }], automatic_instance_repair: { 'key1' => 'val1' }, automatic_os_upgrade_policy: { 'key1' => 'val1' }, boot_diagnostics: { 'key1' => 'val1' }, capacity_reservation_group_id: 'test-value', computer_name_prefix: 'test-value', custom_data: 'test-value', data_disk: [{ 'key1' => 'val1' }], do_not_run_extensions_on_overprovisioned_machines: true, edge_zone: 'test-value', enable_automatic_updates: true, encryption_at_host_enabled: true, eviction_policy: 'test-value', extension: [{ 'key1' => 'val1' }], extension_operations_enabled: true, extensions_time_budget: 'test-value', gallery_application: [{ 'key1' => 'val1' }], health_probe_id: 'test-value', host_group_id: 'test-value', identity: { 'key1' => 'val1' }, license_type: 'test-value', max_bid_price: 3.14, overprovision: true, plan: { 'key1' => 'val1' }, platform_fault_domain_count: 3.14, priority: 'test-value', provision_vm_agent: true, proximity_placement_group_id: 'test-value', resilient_vm_creation_enabled: true, resilient_vm_deletion_enabled: true, rolling_upgrade_policy: { 'key1' => 'val1' }, scale_in: { 'key1' => 'val1' }, secret: [{ 'key1' => 'val1' }], secure_boot_enabled: true, single_placement_group: true, source_image_id: 'test-value', source_image_reference: { 'key1' => 'val1' }, spot_restore: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, termination_notification: { 'key1' => 'val1' }, timezone: 'test-value', upgrade_mode: 'test-value', user_data: 'test-value', vtpm_enabled: true, winrm_listener: [{ 'key1' => 'val1' }], zone_balance: true, zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,6 +74,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
         expect(config).to have_key('automatic_os_upgrade_policy')
         expect(config).to have_key('boot_diagnostics')
         expect(config).to have_key('capacity_reservation_group_id')
+        expect(config).to have_key('computer_name_prefix')
         expect(config).to have_key('custom_data')
         expect(config).to have_key('data_disk')
         expect(config).to have_key('do_not_run_extensions_on_overprovisioned_machines')
@@ -92,6 +93,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
         expect(config).to have_key('max_bid_price')
         expect(config).to have_key('overprovision')
         expect(config).to have_key('plan')
+        expect(config).to have_key('platform_fault_domain_count')
         expect(config).to have_key('priority')
         expect(config).to have_key('provision_vm_agent')
         expect(config).to have_key('proximity_placement_group_id')
@@ -121,7 +123,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes additional_capabilities when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(additional_capabilities: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(additional_capabilities: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('additional_capabilities')
@@ -155,7 +157,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes automatic_instance_repair when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(automatic_instance_repair: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(automatic_instance_repair: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('automatic_instance_repair')
@@ -172,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes automatic_os_upgrade_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(automatic_os_upgrade_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(automatic_os_upgrade_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('automatic_os_upgrade_policy')
@@ -189,7 +191,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes boot_diagnostics when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(boot_diagnostics: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(boot_diagnostics: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('boot_diagnostics')
@@ -219,6 +221,23 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'minimal')
         expect(config).not_to have_key('capacity_reservation_group_id')
+      end
+      it 'includes computer_name_prefix when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(computer_name_prefix: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
+        expect(config).to have_key('computer_name_prefix')
+      end
+
+      it 'omits computer_name_prefix when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_virtual_machine_scale_set('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'minimal')
+        expect(config).not_to have_key('computer_name_prefix')
       end
       it 'includes custom_data when provided' do
         synth = create_synthesizer
@@ -444,7 +463,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('identity')
@@ -512,7 +531,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes plan when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(plan: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(plan: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('plan')
@@ -525,6 +544,23 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'minimal')
         expect(config).not_to have_key('plan')
+      end
+      it 'includes platform_fault_domain_count when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(platform_fault_domain_count: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
+        expect(config).to have_key('platform_fault_domain_count')
+      end
+
+      it 'omits platform_fault_domain_count when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_virtual_machine_scale_set('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'minimal')
+        expect(config).not_to have_key('platform_fault_domain_count')
       end
       it 'includes priority when provided' do
         synth = create_synthesizer
@@ -614,7 +650,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes rolling_upgrade_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(rolling_upgrade_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(rolling_upgrade_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('rolling_upgrade_policy')
@@ -631,7 +667,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes scale_in when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(scale_in: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(scale_in: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('scale_in')
@@ -716,7 +752,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes source_image_reference when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(source_image_reference: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(source_image_reference: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('source_image_reference')
@@ -733,7 +769,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes spot_restore when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(spot_restore: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(spot_restore: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('spot_restore')
@@ -767,7 +803,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
       it 'includes termination_notification when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(termination_notification: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_virtual_machine_scale_set('opt', required_attrs.merge(termination_notification: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('termination_notification')
@@ -1059,7 +1095,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['network_interface']).to be_a(Array)
-        expect(config['os_disk']).to be_a(Array)
+        expect(config['os_disk']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['sku']).to be_a(String)
       end
@@ -1094,7 +1130,7 @@ RSpec.describe Pangea::Resources::AzureWindowsVirtualMachineScaleSet do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_windows_virtual_machine_scale_set,
     method: :azurerm_windows_virtual_machine_scale_set,
-    required_attrs: { admin_password: 'test-value', admin_username: 'test-value', instances: 3.14, location: 'test-value', name: 'test-value', network_interface: [{ 'key1' => 'val1' }], os_disk: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', sku: 'test-value' },
+    required_attrs: { admin_password: 'test-value', admin_username: 'test-value', instances: 3.14, location: 'test-value', name: 'test-value', network_interface: [{ 'key1' => 'val1' }], os_disk: { 'key1' => 'val1' }, resource_group_name: 'test-value', sku: 'test-value' },
     expected_outputs: [:id, :computer_name_prefix, :platform_fault_domain_count, :unique_id],
     sensitive_fields: [:admin_password, :custom_data],
     immutable_fields: [],

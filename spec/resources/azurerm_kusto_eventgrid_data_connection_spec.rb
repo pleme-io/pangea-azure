@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureKustoEventgridDataConnection do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ blob_storage_event_type: 'test-value', data_format: 'test-value', database_routing_type: 'test-value', mapping_rule_name: 'test-value', skip_first_record: true, table_name: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ blob_storage_event_type: 'test-value', data_format: 'test-value', database_routing_type: 'test-value', eventgrid_event_subscription_id: 'test-value', eventgrid_resource_id: 'test-value', managed_identity_id: 'test-value', managed_identity_resource_id: 'test-value', mapping_rule_name: 'test-value', skip_first_record: true, table_name: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -73,6 +73,10 @@ RSpec.describe Pangea::Resources::AzureKustoEventgridDataConnection do
         expect(config).to have_key('blob_storage_event_type')
         expect(config).to have_key('data_format')
         expect(config).to have_key('database_routing_type')
+        expect(config).to have_key('eventgrid_event_subscription_id')
+        expect(config).to have_key('eventgrid_resource_id')
+        expect(config).to have_key('managed_identity_id')
+        expect(config).to have_key('managed_identity_resource_id')
         expect(config).to have_key('mapping_rule_name')
         expect(config).to have_key('skip_first_record')
         expect(config).to have_key('table_name')
@@ -130,6 +134,74 @@ RSpec.describe Pangea::Resources::AzureKustoEventgridDataConnection do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kusto_eventgrid_data_connection', 'minimal')
         expect(config).not_to have_key('database_routing_type')
+      end
+      it 'includes eventgrid_event_subscription_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventgrid_data_connection('opt', required_attrs.merge(eventgrid_event_subscription_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventgrid_data_connection', 'opt')
+        expect(config).to have_key('eventgrid_event_subscription_id')
+      end
+
+      it 'omits eventgrid_event_subscription_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventgrid_data_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventgrid_data_connection', 'minimal')
+        expect(config).not_to have_key('eventgrid_event_subscription_id')
+      end
+      it 'includes eventgrid_resource_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventgrid_data_connection('opt', required_attrs.merge(eventgrid_resource_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventgrid_data_connection', 'opt')
+        expect(config).to have_key('eventgrid_resource_id')
+      end
+
+      it 'omits eventgrid_resource_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventgrid_data_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventgrid_data_connection', 'minimal')
+        expect(config).not_to have_key('eventgrid_resource_id')
+      end
+      it 'includes managed_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventgrid_data_connection('opt', required_attrs.merge(managed_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventgrid_data_connection', 'opt')
+        expect(config).to have_key('managed_identity_id')
+      end
+
+      it 'omits managed_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventgrid_data_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventgrid_data_connection', 'minimal')
+        expect(config).not_to have_key('managed_identity_id')
+      end
+      it 'includes managed_identity_resource_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventgrid_data_connection('opt', required_attrs.merge(managed_identity_resource_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventgrid_data_connection', 'opt')
+        expect(config).to have_key('managed_identity_resource_id')
+      end
+
+      it 'omits managed_identity_resource_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventgrid_data_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventgrid_data_connection', 'minimal')
+        expect(config).not_to have_key('managed_identity_resource_id')
       end
       it 'includes mapping_rule_name when provided' do
         synth = create_synthesizer

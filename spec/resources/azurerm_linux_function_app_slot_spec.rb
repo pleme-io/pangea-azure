@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { function_app_id: 'test-value', name: 'test-value', site_config: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { function_app_id: 'test-value', name: 'test-value', site_config: { 'key1' => 'val1' } } }
 
   describe ':azurerm_linux_function_app_slot' do
     context 'with required attributes only' do
@@ -73,7 +73,7 @@ RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: [{ 'key1' => 'val1' }], auth_settings_v2: [{ 'key1' => 'val1' }], backup: [{ 'key1' => 'val1' }], builtin_logging_enabled: true, client_certificate_enabled: true, client_certificate_exclusion_paths: 'test-value', client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], content_share_force_disabled: true, daily_memory_time_quota: 3.14, enabled: true, ftp_publish_basic_authentication_enabled: true, functions_extension_version: 'test-value', https_only: true, identity: [{ 'key1' => 'val1' }], public_network_access_enabled: true, service_plan_id: 'test-value', storage_account: [{ 'key1' => 'val1' }], storage_account_access_key: 'test-value', storage_account_name: 'test-value', storage_key_vault_secret_id: 'test-value', storage_uses_managed_identity: true, tags: { 'key1' => 'val1' }, virtual_network_backup_restore_enabled: true, virtual_network_subnet_id: 'test-value', vnet_image_pull_enabled: true, webdeploy_publish_basic_authentication_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: { 'key1' => 'val1' }, auth_settings_v2: { 'key1' => 'val1' }, backup: { 'key1' => 'val1' }, builtin_logging_enabled: true, client_certificate_enabled: true, client_certificate_exclusion_paths: 'test-value', client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], content_share_force_disabled: true, daily_memory_time_quota: 3.14, enabled: true, ftp_publish_basic_authentication_enabled: true, functions_extension_version: 'test-value', https_only: true, identity: { 'key1' => 'val1' }, key_vault_reference_identity_id: 'test-value', public_network_access_enabled: true, service_plan_id: 'test-value', storage_account: [{ 'key1' => 'val1' }], storage_account_access_key: 'test-value', storage_account_name: 'test-value', storage_key_vault_secret_id: 'test-value', storage_uses_managed_identity: true, tags: { 'key1' => 'val1' }, virtual_network_backup_restore_enabled: true, virtual_network_subnet_id: 'test-value', vnet_image_pull_enabled: true, webdeploy_publish_basic_authentication_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -98,6 +98,7 @@ RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
         expect(config).to have_key('functions_extension_version')
         expect(config).to have_key('https_only')
         expect(config).to have_key('identity')
+        expect(config).to have_key('key_vault_reference_identity_id')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('service_plan_id')
         expect(config).to have_key('storage_account')
@@ -134,7 +135,7 @@ RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
       it 'includes auth_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_function_app_slot('opt', required_attrs.merge(auth_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_function_app_slot('opt', required_attrs.merge(auth_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_function_app_slot', 'opt')
         expect(config).to have_key('auth_settings')
@@ -151,7 +152,7 @@ RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
       it 'includes auth_settings_v2 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_function_app_slot('opt', required_attrs.merge(auth_settings_v2: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_function_app_slot('opt', required_attrs.merge(auth_settings_v2: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_function_app_slot', 'opt')
         expect(config).to have_key('auth_settings_v2')
@@ -168,7 +169,7 @@ RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
       it 'includes backup when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_function_app_slot('opt', required_attrs.merge(backup: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_function_app_slot('opt', required_attrs.merge(backup: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_function_app_slot', 'opt')
         expect(config).to have_key('backup')
@@ -372,7 +373,7 @@ RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_function_app_slot('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_function_app_slot('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_function_app_slot', 'opt')
         expect(config).to have_key('identity')
@@ -385,6 +386,23 @@ RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_function_app_slot', 'minimal')
         expect(config).not_to have_key('identity')
+      end
+      it 'includes key_vault_reference_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_function_app_slot('opt', required_attrs.merge(key_vault_reference_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_function_app_slot', 'opt')
+        expect(config).to have_key('key_vault_reference_identity_id')
+      end
+
+      it 'omits key_vault_reference_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_function_app_slot('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_function_app_slot', 'minimal')
+        expect(config).not_to have_key('key_vault_reference_identity_id')
       end
       it 'includes public_network_access_enabled when provided' do
         synth = create_synthesizer
@@ -735,7 +753,7 @@ RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
         config = validate_resource_structure(result, 'azurerm_linux_function_app_slot', 'typed')
         expect(config['function_app_id']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['site_config']).to be_a(Array)
+        expect(config['site_config']).to be_a(Hash)
       end
     end
 
@@ -768,7 +786,7 @@ RSpec.describe Pangea::Resources::AzureLinuxFunctionAppSlot do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_linux_function_app_slot,
     method: :azurerm_linux_function_app_slot,
-    required_attrs: { function_app_id: 'test-value', name: 'test-value', site_config: [{ 'key1' => 'val1' }] },
+    required_attrs: { function_app_id: 'test-value', name: 'test-value', site_config: { 'key1' => 'val1' } },
     expected_outputs: [:id, :custom_domain_verification_id, :default_hostname, :hosting_environment_id, :key_vault_reference_identity_id, :kind, :outbound_ip_address_list, :outbound_ip_addresses, :possible_outbound_ip_address_list, :possible_outbound_ip_addresses, :site_credential],
     sensitive_fields: [:custom_domain_verification_id, :site_credential, :storage_account_access_key],
     immutable_fields: [],

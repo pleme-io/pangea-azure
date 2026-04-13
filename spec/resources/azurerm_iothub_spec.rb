@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureIothub do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } } }
 
   describe ':azurerm_iothub' do
     context 'with required attributes only' do
@@ -75,7 +75,7 @@ RSpec.describe Pangea::Resources::AzureIothub do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ cloud_to_device: [{ 'key1' => 'val1' }], event_hub_partition_count: 3.14, event_hub_retention_in_days: 3.14, fallback_route: [{ 'key1' => 'val1' }], file_upload: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], local_authentication_enabled: true, min_tls_version: 'test-value', network_rule_set: [{ 'key1' => 'val1' }], public_network_access_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ cloud_to_device: { 'key1' => 'val1' }, endpoint: [{ 'key1' => 'val1' }], enrichment: [{ 'key1' => 'val1' }], event_hub_partition_count: 3.14, event_hub_retention_in_days: 3.14, fallback_route: { 'key1' => 'val1' }, file_upload: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, local_authentication_enabled: true, min_tls_version: 'test-value', network_rule_set: [{ 'key1' => 'val1' }], public_network_access_enabled: true, route: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -85,6 +85,8 @@ RSpec.describe Pangea::Resources::AzureIothub do
 
         config = validate_resource_structure(result, 'azurerm_iothub', 'full')
         expect(config).to have_key('cloud_to_device')
+        expect(config).to have_key('endpoint')
+        expect(config).to have_key('enrichment')
         expect(config).to have_key('event_hub_partition_count')
         expect(config).to have_key('event_hub_retention_in_days')
         expect(config).to have_key('fallback_route')
@@ -94,6 +96,7 @@ RSpec.describe Pangea::Resources::AzureIothub do
         expect(config).to have_key('min_tls_version')
         expect(config).to have_key('network_rule_set')
         expect(config).to have_key('public_network_access_enabled')
+        expect(config).to have_key('route')
         expect(config).to have_key('tags')
       end
     end
@@ -102,7 +105,7 @@ RSpec.describe Pangea::Resources::AzureIothub do
       it 'includes cloud_to_device when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_iothub('opt', required_attrs.merge(cloud_to_device: [{ 'key1' => 'val1' }]))
+        synth.azurerm_iothub('opt', required_attrs.merge(cloud_to_device: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iothub', 'opt')
         expect(config).to have_key('cloud_to_device')
@@ -115,6 +118,40 @@ RSpec.describe Pangea::Resources::AzureIothub do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iothub', 'minimal')
         expect(config).not_to have_key('cloud_to_device')
+      end
+      it 'includes endpoint when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub('opt', required_attrs.merge(endpoint: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub', 'opt')
+        expect(config).to have_key('endpoint')
+      end
+
+      it 'omits endpoint when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub', 'minimal')
+        expect(config).not_to have_key('endpoint')
+      end
+      it 'includes enrichment when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub('opt', required_attrs.merge(enrichment: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub', 'opt')
+        expect(config).to have_key('enrichment')
+      end
+
+      it 'omits enrichment when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub', 'minimal')
+        expect(config).not_to have_key('enrichment')
       end
       it 'includes event_hub_partition_count when provided' do
         synth = create_synthesizer
@@ -153,7 +190,7 @@ RSpec.describe Pangea::Resources::AzureIothub do
       it 'includes fallback_route when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_iothub('opt', required_attrs.merge(fallback_route: [{ 'key1' => 'val1' }]))
+        synth.azurerm_iothub('opt', required_attrs.merge(fallback_route: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iothub', 'opt')
         expect(config).to have_key('fallback_route')
@@ -170,7 +207,7 @@ RSpec.describe Pangea::Resources::AzureIothub do
       it 'includes file_upload when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_iothub('opt', required_attrs.merge(file_upload: [{ 'key1' => 'val1' }]))
+        synth.azurerm_iothub('opt', required_attrs.merge(file_upload: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iothub', 'opt')
         expect(config).to have_key('file_upload')
@@ -187,7 +224,7 @@ RSpec.describe Pangea::Resources::AzureIothub do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_iothub('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_iothub('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iothub', 'opt')
         expect(config).to have_key('identity')
@@ -269,6 +306,23 @@ RSpec.describe Pangea::Resources::AzureIothub do
         config = validate_resource_structure(result, 'azurerm_iothub', 'minimal')
         expect(config).not_to have_key('public_network_access_enabled')
       end
+      it 'includes route when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub('opt', required_attrs.merge(route: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub', 'opt')
+        expect(config).to have_key('route')
+      end
+
+      it 'omits route when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub', 'minimal')
+        expect(config).not_to have_key('route')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -324,7 +378,7 @@ RSpec.describe Pangea::Resources::AzureIothub do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
       end
     end
 
@@ -357,7 +411,7 @@ RSpec.describe Pangea::Resources::AzureIothub do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_iothub,
     method: :azurerm_iothub,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } },
     expected_outputs: [:id, :endpoint, :enrichment, :event_hub_events_endpoint, :event_hub_events_namespace, :event_hub_events_path, :event_hub_operations_endpoint, :event_hub_operations_path, :hostname, :route, :shared_access_policy, :type],
     sensitive_fields: [],
     immutable_fields: [],

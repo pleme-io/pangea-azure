@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccountNetworkRules do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ ip_rules: ['test-value'], private_link_access: [{ 'key1' => 'val1' }], virtual_network_subnet_ids: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ bypass: ['test-value'], ip_rules: ['test-value'], private_link_access: [{ 'key1' => 'val1' }], virtual_network_subnet_ids: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,6 +64,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccountNetworkRules do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_storage_account_network_rules', 'full')
+        expect(config).to have_key('bypass')
         expect(config).to have_key('ip_rules')
         expect(config).to have_key('private_link_access')
         expect(config).to have_key('virtual_network_subnet_ids')
@@ -71,6 +72,23 @@ RSpec.describe Pangea::Resources::AzureStorageAccountNetworkRules do
     end
 
     context 'optional attributes' do
+      it 'includes bypass when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_network_rules('opt', required_attrs.merge(bypass: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_network_rules', 'opt')
+        expect(config).to have_key('bypass')
+      end
+
+      it 'omits bypass when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_network_rules('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_network_rules', 'minimal')
+        expect(config).not_to have_key('bypass')
+      end
       it 'includes ip_rules when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

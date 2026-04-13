@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzurePaloAltoLocalRulestackRule do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { action: 'test-value', applications: ['test-value'], destination: [{ 'key1' => 'val1' }], name: 'test-value', priority: 3.14, rulestack_id: 'test-value', source: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { action: 'test-value', applications: ['test-value'], destination: { 'key1' => 'val1' }, name: 'test-value', priority: 3.14, rulestack_id: 'test-value', source: { 'key1' => 'val1' } } }
 
   describe ':azurerm_palo_alto_local_rulestack_rule' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzurePaloAltoLocalRulestackRule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ audit_comment: 'test-value', category: [{ 'key1' => 'val1' }], decryption_rule_type: 'test-value', description: 'test-value', enabled: true, inspection_certificate_id: 'test-value', logging_enabled: true, negate_destination: true, negate_source: true, protocol: 'test-value', protocol_ports: ['test-value'], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ audit_comment: 'test-value', category: { 'key1' => 'val1' }, decryption_rule_type: 'test-value', description: 'test-value', enabled: true, inspection_certificate_id: 'test-value', logging_enabled: true, negate_destination: true, negate_source: true, protocol: 'test-value', protocol_ports: ['test-value'], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -87,7 +87,7 @@ RSpec.describe Pangea::Resources::AzurePaloAltoLocalRulestackRule do
       it 'includes category when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_palo_alto_local_rulestack_rule('opt', required_attrs.merge(category: [{ 'key1' => 'val1' }]))
+        synth.azurerm_palo_alto_local_rulestack_rule('opt', required_attrs.merge(category: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_palo_alto_local_rulestack_rule', 'opt')
         expect(config).to have_key('category')
@@ -330,11 +330,11 @@ RSpec.describe Pangea::Resources::AzurePaloAltoLocalRulestackRule do
         config = validate_resource_structure(result, 'azurerm_palo_alto_local_rulestack_rule', 'typed')
         expect(config['action']).to be_a(String)
         expect(config['applications']).to be_a(Array)
-        expect(config['destination']).to be_a(Array)
+        expect(config['destination']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['priority']).to be_a(Float)
         expect(config['rulestack_id']).to be_a(String)
-        expect(config['source']).to be_a(Array)
+        expect(config['source']).to be_a(Hash)
       end
     end
 
@@ -367,7 +367,7 @@ RSpec.describe Pangea::Resources::AzurePaloAltoLocalRulestackRule do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_palo_alto_local_rulestack_rule,
     method: :azurerm_palo_alto_local_rulestack_rule,
-    required_attrs: { action: 'test-value', applications: ['test-value'], destination: [{ 'key1' => 'val1' }], name: 'test-value', priority: 3.14, rulestack_id: 'test-value', source: [{ 'key1' => 'val1' }] },
+    required_attrs: { action: 'test-value', applications: ['test-value'], destination: { 'key1' => 'val1' }, name: 'test-value', priority: 3.14, rulestack_id: 'test-value', source: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

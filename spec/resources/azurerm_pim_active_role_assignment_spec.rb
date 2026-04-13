@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzurePimActiveRoleAssignment do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ schedule: [{ 'key1' => 'val1' }], ticket: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ justification: 'test-value', schedule: { 'key1' => 'val1' }, ticket: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,16 +66,34 @@ RSpec.describe Pangea::Resources::AzurePimActiveRoleAssignment do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_pim_active_role_assignment', 'full')
+        expect(config).to have_key('justification')
         expect(config).to have_key('schedule')
         expect(config).to have_key('ticket')
       end
     end
 
     context 'optional attributes' do
+      it 'includes justification when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_pim_active_role_assignment('opt', required_attrs.merge(justification: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_pim_active_role_assignment', 'opt')
+        expect(config).to have_key('justification')
+      end
+
+      it 'omits justification when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_pim_active_role_assignment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_pim_active_role_assignment', 'minimal')
+        expect(config).not_to have_key('justification')
+      end
       it 'includes schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_pim_active_role_assignment('opt', required_attrs.merge(schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_pim_active_role_assignment('opt', required_attrs.merge(schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_pim_active_role_assignment', 'opt')
         expect(config).to have_key('schedule')
@@ -92,7 +110,7 @@ RSpec.describe Pangea::Resources::AzurePimActiveRoleAssignment do
       it 'includes ticket when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_pim_active_role_assignment('opt', required_attrs.merge(ticket: [{ 'key1' => 'val1' }]))
+        synth.azurerm_pim_active_role_assignment('opt', required_attrs.merge(ticket: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_pim_active_role_assignment', 'opt')
         expect(config).to have_key('ticket')

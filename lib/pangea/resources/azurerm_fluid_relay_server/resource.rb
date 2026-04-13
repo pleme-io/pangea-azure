@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::FluidRelayServerAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:customer_managed_key, :identity, :tags]
+      map_present: [:customer_managed_key, :identity, :storage_sku, :tags]
   end
   module Azure
     include AzureFluidRelayServer

@@ -14,6 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SentinelAlertRuleAnomalyBuiltInAttributes,
       outputs: { id: :id },
       map: [:log_analytics_workspace_id, :mode],
+      map_present: [:display_name, :name],
       map_bool: [:enabled]
   end
   module Azure

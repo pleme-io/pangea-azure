@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureCognitiveAccountRaiBlocklist do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -52,6 +52,7 @@ RSpec.describe Pangea::Resources::AzureCognitiveAccountRaiBlocklist do
 
         config = validate_resource_structure(result, 'azurerm_cognitive_account_rai_blocklist', 'full')
         expect(config).to have_key('description')
+        expect(config).to have_key('tags')
       end
     end
 
@@ -72,6 +73,23 @@ RSpec.describe Pangea::Resources::AzureCognitiveAccountRaiBlocklist do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cognitive_account_rai_blocklist', 'minimal')
         expect(config).not_to have_key('description')
+      end
+      it 'includes tags when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cognitive_account_rai_blocklist('opt', required_attrs.merge(tags: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cognitive_account_rai_blocklist', 'opt')
+        expect(config).to have_key('tags')
+      end
+
+      it 'omits tags when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cognitive_account_rai_blocklist('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cognitive_account_rai_blocklist', 'minimal')
+        expect(config).not_to have_key('tags')
       end
     end
 

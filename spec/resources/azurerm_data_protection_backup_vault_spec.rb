@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataProtectionBackupVault do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ cross_region_restore_enabled: true, identity: [{ 'key1' => 'val1' }], immutability: 'test-value', retention_duration_in_days: 3.14, soft_delete: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ cross_region_restore_enabled: true, identity: { 'key1' => 'val1' }, immutability: 'test-value', retention_duration_in_days: 3.14, soft_delete: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -81,7 +81,7 @@ RSpec.describe Pangea::Resources::AzureDataProtectionBackupVault do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_protection_backup_vault('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_protection_backup_vault('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_protection_backup_vault', 'opt')
         expect(config).to have_key('identity')

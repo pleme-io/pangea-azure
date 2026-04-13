@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureAiFoundryProject do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', friendly_name: 'test-value', identity: [{ 'key1' => 'val1' }], primary_user_assigned_identity: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', friendly_name: 'test-value', high_business_impact_enabled: true, identity: { 'key1' => 'val1' }, primary_user_assigned_identity: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,6 +68,7 @@ RSpec.describe Pangea::Resources::AzureAiFoundryProject do
         config = validate_resource_structure(result, 'azurerm_ai_foundry_project', 'full')
         expect(config).to have_key('description')
         expect(config).to have_key('friendly_name')
+        expect(config).to have_key('high_business_impact_enabled')
         expect(config).to have_key('identity')
         expect(config).to have_key('primary_user_assigned_identity')
         expect(config).to have_key('tags')
@@ -109,10 +110,27 @@ RSpec.describe Pangea::Resources::AzureAiFoundryProject do
         config = validate_resource_structure(result, 'azurerm_ai_foundry_project', 'minimal')
         expect(config).not_to have_key('friendly_name')
       end
+      it 'includes high_business_impact_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_ai_foundry_project('opt', required_attrs.merge(high_business_impact_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_ai_foundry_project', 'opt')
+        expect(config).to have_key('high_business_impact_enabled')
+      end
+
+      it 'omits high_business_impact_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_ai_foundry_project('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_ai_foundry_project', 'minimal')
+        expect(config).not_to have_key('high_business_impact_enabled')
+      end
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_ai_foundry_project('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_ai_foundry_project('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_ai_foundry_project', 'opt')
         expect(config).to have_key('identity')
@@ -159,6 +177,20 @@ RSpec.describe Pangea::Resources::AzureAiFoundryProject do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_ai_foundry_project', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+    end
+
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts high_business_impact_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(high_business_impact_enabled: val)
+          synth.azurerm_ai_foundry_project("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_ai_foundry_project', "bool_#{val}")
+          expect(config['high_business_impact_enabled']).to eq(val)
+        end
       end
     end
 
@@ -209,5 +241,5 @@ RSpec.describe Pangea::Resources::AzureAiFoundryProject do
     expected_outputs: [:id, :high_business_impact_enabled, :project_id],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:high_business_impact_enabled]
 end

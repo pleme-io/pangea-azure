@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureHealthcareDicomService do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ cors: [{ 'key1' => 'val1' }], data_partitions_enabled: true, encryption_key_url: 'test-value', identity: [{ 'key1' => 'val1' }], public_network_access_enabled: true, storage: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ cors: { 'key1' => 'val1' }, data_partitions_enabled: true, encryption_key_url: 'test-value', identity: { 'key1' => 'val1' }, public_network_access_enabled: true, storage: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -82,7 +82,7 @@ RSpec.describe Pangea::Resources::AzureHealthcareDicomService do
       it 'includes cors when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_healthcare_dicom_service('opt', required_attrs.merge(cors: [{ 'key1' => 'val1' }]))
+        synth.azurerm_healthcare_dicom_service('opt', required_attrs.merge(cors: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_healthcare_dicom_service', 'opt')
         expect(config).to have_key('cors')
@@ -133,7 +133,7 @@ RSpec.describe Pangea::Resources::AzureHealthcareDicomService do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_healthcare_dicom_service('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_healthcare_dicom_service('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_healthcare_dicom_service', 'opt')
         expect(config).to have_key('identity')
@@ -167,7 +167,7 @@ RSpec.describe Pangea::Resources::AzureHealthcareDicomService do
       it 'includes storage when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_healthcare_dicom_service('opt', required_attrs.merge(storage: [{ 'key1' => 'val1' }]))
+        synth.azurerm_healthcare_dicom_service('opt', required_attrs.merge(storage: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_healthcare_dicom_service', 'opt')
         expect(config).to have_key('storage')

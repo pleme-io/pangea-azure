@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureLogicAppIntegrationAccountBatchConfiguration do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { batch_group_name: 'test-value', integration_account_name: 'test-value', name: 'test-value', release_criteria: [{ 'key1' => 'val1' }], resource_group_name: 'test-value' } }
+  let(:required_attrs) { { batch_group_name: 'test-value', integration_account_name: 'test-value', name: 'test-value', release_criteria: { 'key1' => 'val1' }, resource_group_name: 'test-value' } }
 
   describe ':azurerm_logic_app_integration_account_batch_configuration' do
     context 'with required attributes only' do
@@ -86,7 +86,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppIntegrationAccountBatchConfigurat
         expect(config['batch_group_name']).to be_a(String)
         expect(config['integration_account_name']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['release_criteria']).to be_a(Array)
+        expect(config['release_criteria']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
       end
     end
@@ -120,7 +120,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppIntegrationAccountBatchConfigurat
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_logic_app_integration_account_batch_configuration,
     method: :azurerm_logic_app_integration_account_batch_configuration,
-    required_attrs: { batch_group_name: 'test-value', integration_account_name: 'test-value', name: 'test-value', release_criteria: [{ 'key1' => 'val1' }], resource_group_name: 'test-value' },
+    required_attrs: { batch_group_name: 'test-value', integration_account_name: 'test-value', name: 'test-value', release_criteria: { 'key1' => 'val1' }, resource_group_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

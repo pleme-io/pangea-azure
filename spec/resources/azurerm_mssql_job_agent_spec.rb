@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureMssqlJobAgent do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ identity: [{ 'key1' => 'val1' }], sku: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ identity: { 'key1' => 'val1' }, sku: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureMssqlJobAgent do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_job_agent('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_job_agent('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_job_agent', 'opt')
         expect(config).to have_key('identity')

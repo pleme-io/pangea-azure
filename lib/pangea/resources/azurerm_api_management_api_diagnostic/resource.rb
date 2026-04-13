@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::ApiManagementApiDiagnosticAttributes,
       outputs: { id: :id },
       map: [:api_management_logger_id, :api_management_name, :api_name, :identifier, :resource_group_name],
-      map_present: [:backend_request, :backend_response, :frontend_request, :frontend_response, :operation_name_format]
+      map_present: [:backend_request, :backend_response, :frontend_request, :frontend_response, :http_correlation_protocol, :operation_name_format, :sampling_percentage, :verbosity],
+      map_bool: [:always_log_errors, :log_client_ip]
   end
   module Azure
     include AzureApiManagementApiDiagnostic

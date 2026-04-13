@@ -73,7 +73,7 @@ RSpec.describe Pangea::Resources::AzureKeyVaultCertificate do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ certificate: [{ 'key1' => 'val1' }], certificate_policy: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ certificate: { 'key1' => 'val1' }, certificate_policy: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -92,7 +92,7 @@ RSpec.describe Pangea::Resources::AzureKeyVaultCertificate do
       it 'includes certificate when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_key_vault_certificate('opt', required_attrs.merge(certificate: [{ 'key1' => 'val1' }]))
+        synth.azurerm_key_vault_certificate('opt', required_attrs.merge(certificate: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_key_vault_certificate', 'opt')
         expect(config).to have_key('certificate')
@@ -109,7 +109,7 @@ RSpec.describe Pangea::Resources::AzureKeyVaultCertificate do
       it 'includes certificate_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_key_vault_certificate('opt', required_attrs.merge(certificate_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_key_vault_certificate('opt', required_attrs.merge(certificate_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_key_vault_certificate', 'opt')
         expect(config).to have_key('certificate_policy')

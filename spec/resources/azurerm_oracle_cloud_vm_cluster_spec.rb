@@ -79,7 +79,7 @@ RSpec.describe Pangea::Resources::AzureOracleCloudVmCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ backup_subnet_cidr: 'test-value', data_collection_options: [{ 'key1' => 'val1' }], file_system_configuration: [{ 'key1' => 'val1' }], scan_listener_port_tcp: 3.14, scan_listener_port_tcp_ssl: 3.14, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ backup_subnet_cidr: 'test-value', cluster_name: 'test-value', data_collection_options: { 'key1' => 'val1' }, data_storage_percentage: 3.14, data_storage_size_in_tbs: 3.14, db_node_storage_size_in_gbs: 3.14, domain: 'test-value', file_system_configuration: [{ 'key1' => 'val1' }], local_backup_enabled: true, memory_size_in_gbs: 3.14, scan_listener_port_tcp: 3.14, scan_listener_port_tcp_ssl: 3.14, sparse_diskgroup_enabled: true, system_version: 'test-value', tags: { 'key1' => 'val1' }, time_zone: 'test-value', zone_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -89,11 +89,22 @@ RSpec.describe Pangea::Resources::AzureOracleCloudVmCluster do
 
         config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'full')
         expect(config).to have_key('backup_subnet_cidr')
+        expect(config).to have_key('cluster_name')
         expect(config).to have_key('data_collection_options')
+        expect(config).to have_key('data_storage_percentage')
+        expect(config).to have_key('data_storage_size_in_tbs')
+        expect(config).to have_key('db_node_storage_size_in_gbs')
+        expect(config).to have_key('domain')
         expect(config).to have_key('file_system_configuration')
+        expect(config).to have_key('local_backup_enabled')
+        expect(config).to have_key('memory_size_in_gbs')
         expect(config).to have_key('scan_listener_port_tcp')
         expect(config).to have_key('scan_listener_port_tcp_ssl')
+        expect(config).to have_key('sparse_diskgroup_enabled')
+        expect(config).to have_key('system_version')
         expect(config).to have_key('tags')
+        expect(config).to have_key('time_zone')
+        expect(config).to have_key('zone_id')
       end
     end
 
@@ -115,10 +126,27 @@ RSpec.describe Pangea::Resources::AzureOracleCloudVmCluster do
         config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
         expect(config).not_to have_key('backup_subnet_cidr')
       end
+      it 'includes cluster_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(cluster_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('cluster_name')
+      end
+
+      it 'omits cluster_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('cluster_name')
+      end
       it 'includes data_collection_options when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(data_collection_options: [{ 'key1' => 'val1' }]))
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(data_collection_options: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
         expect(config).to have_key('data_collection_options')
@@ -131,6 +159,74 @@ RSpec.describe Pangea::Resources::AzureOracleCloudVmCluster do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
         expect(config).not_to have_key('data_collection_options')
+      end
+      it 'includes data_storage_percentage when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(data_storage_percentage: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('data_storage_percentage')
+      end
+
+      it 'omits data_storage_percentage when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('data_storage_percentage')
+      end
+      it 'includes data_storage_size_in_tbs when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(data_storage_size_in_tbs: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('data_storage_size_in_tbs')
+      end
+
+      it 'omits data_storage_size_in_tbs when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('data_storage_size_in_tbs')
+      end
+      it 'includes db_node_storage_size_in_gbs when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(db_node_storage_size_in_gbs: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('db_node_storage_size_in_gbs')
+      end
+
+      it 'omits db_node_storage_size_in_gbs when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('db_node_storage_size_in_gbs')
+      end
+      it 'includes domain when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(domain: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('domain')
+      end
+
+      it 'omits domain when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('domain')
       end
       it 'includes file_system_configuration when provided' do
         synth = create_synthesizer
@@ -148,6 +244,40 @@ RSpec.describe Pangea::Resources::AzureOracleCloudVmCluster do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
         expect(config).not_to have_key('file_system_configuration')
+      end
+      it 'includes local_backup_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(local_backup_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('local_backup_enabled')
+      end
+
+      it 'omits local_backup_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('local_backup_enabled')
+      end
+      it 'includes memory_size_in_gbs when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(memory_size_in_gbs: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('memory_size_in_gbs')
+      end
+
+      it 'omits memory_size_in_gbs when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('memory_size_in_gbs')
       end
       it 'includes scan_listener_port_tcp when provided' do
         synth = create_synthesizer
@@ -183,6 +313,40 @@ RSpec.describe Pangea::Resources::AzureOracleCloudVmCluster do
         config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
         expect(config).not_to have_key('scan_listener_port_tcp_ssl')
       end
+      it 'includes sparse_diskgroup_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(sparse_diskgroup_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('sparse_diskgroup_enabled')
+      end
+
+      it 'omits sparse_diskgroup_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('sparse_diskgroup_enabled')
+      end
+      it 'includes system_version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(system_version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('system_version')
+      end
+
+      it 'omits system_version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('system_version')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -199,6 +363,65 @@ RSpec.describe Pangea::Resources::AzureOracleCloudVmCluster do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes time_zone when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(time_zone: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('time_zone')
+      end
+
+      it 'omits time_zone when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('time_zone')
+      end
+      it 'includes zone_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('opt', required_attrs.merge(zone_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'opt')
+        expect(config).to have_key('zone_id')
+      end
+
+      it 'omits zone_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_cloud_vm_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', 'minimal')
+        expect(config).not_to have_key('zone_id')
+      end
+    end
+
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts local_backup_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(local_backup_enabled: val)
+          synth.azurerm_oracle_cloud_vm_cluster("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', "bool_#{val}")
+          expect(config['local_backup_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts sparse_diskgroup_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(sparse_diskgroup_enabled: val)
+          synth.azurerm_oracle_cloud_vm_cluster("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_oracle_cloud_vm_cluster', "bool_#{val}")
+          expect(config['sparse_diskgroup_enabled']).to eq(val)
+        end
       end
     end
 
@@ -259,5 +482,5 @@ RSpec.describe Pangea::Resources::AzureOracleCloudVmCluster do
     expected_outputs: [:id, :cluster_name, :data_storage_percentage, :data_storage_size_in_tbs, :db_node_storage_size_in_gbs, :domain, :hostname_actual, :local_backup_enabled, :memory_size_in_gbs, :ocid, :sparse_diskgroup_enabled, :system_version, :time_zone, :zone_id],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:local_backup_enabled, :sparse_diskgroup_enabled]
 end

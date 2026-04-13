@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachineAvailabilityGroupListe
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ availability_group_name: 'test-value', load_balancer_configuration: [{ 'key1' => 'val1' }], multi_subnet_ip_configuration: [{ 'key1' => 'val1' }], port: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ availability_group_name: 'test-value', load_balancer_configuration: { 'key1' => 'val1' }, multi_subnet_ip_configuration: [{ 'key1' => 'val1' }], port: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -79,7 +79,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachineAvailabilityGroupListe
       it 'includes load_balancer_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_virtual_machine_availability_group_listener('opt', required_attrs.merge(load_balancer_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_virtual_machine_availability_group_listener('opt', required_attrs.merge(load_balancer_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_virtual_machine_availability_group_listener', 'opt')
         expect(config).to have_key('load_balancer_configuration')

@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbGremlinGraph do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ analytical_storage_ttl: 3.14, autoscale_settings: [{ 'key1' => 'val1' }], conflict_resolution_policy: [{ 'key1' => 'val1' }], default_ttl: 3.14, index_policy: [{ 'key1' => 'val1' }], partition_key_version: 3.14, unique_key: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ analytical_storage_ttl: 3.14, autoscale_settings: { 'key1' => 'val1' }, conflict_resolution_policy: { 'key1' => 'val1' }, default_ttl: 3.14, index_policy: { 'key1' => 'val1' }, partition_key_version: 3.14, throughput: 3.14, unique_key: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,6 +70,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbGremlinGraph do
         expect(config).to have_key('default_ttl')
         expect(config).to have_key('index_policy')
         expect(config).to have_key('partition_key_version')
+        expect(config).to have_key('throughput')
         expect(config).to have_key('unique_key')
       end
     end
@@ -95,7 +96,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbGremlinGraph do
       it 'includes autoscale_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_gremlin_graph('opt', required_attrs.merge(autoscale_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_gremlin_graph('opt', required_attrs.merge(autoscale_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_gremlin_graph', 'opt')
         expect(config).to have_key('autoscale_settings')
@@ -112,7 +113,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbGremlinGraph do
       it 'includes conflict_resolution_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_gremlin_graph('opt', required_attrs.merge(conflict_resolution_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_gremlin_graph('opt', required_attrs.merge(conflict_resolution_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_gremlin_graph', 'opt')
         expect(config).to have_key('conflict_resolution_policy')
@@ -146,7 +147,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbGremlinGraph do
       it 'includes index_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_gremlin_graph('opt', required_attrs.merge(index_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_gremlin_graph('opt', required_attrs.merge(index_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_gremlin_graph', 'opt')
         expect(config).to have_key('index_policy')
@@ -176,6 +177,23 @@ RSpec.describe Pangea::Resources::AzureCosmosdbGremlinGraph do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_gremlin_graph', 'minimal')
         expect(config).not_to have_key('partition_key_version')
+      end
+      it 'includes throughput when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_gremlin_graph('opt', required_attrs.merge(throughput: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_gremlin_graph', 'opt')
+        expect(config).to have_key('throughput')
+      end
+
+      it 'omits throughput when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_gremlin_graph('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_gremlin_graph', 'minimal')
+        expect(config).not_to have_key('throughput')
       end
       it 'includes unique_key when provided' do
         synth = create_synthesizer

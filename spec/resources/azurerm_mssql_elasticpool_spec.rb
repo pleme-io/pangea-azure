@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMssqlElasticpool do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', per_database_settings: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', server_name: 'test-value', sku: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', per_database_settings: { 'key1' => 'val1' }, resource_group_name: 'test-value', server_name: 'test-value', sku: { 'key1' => 'val1' } } }
 
   describe ':azurerm_mssql_elasticpool' do
     context 'with required attributes only' do
@@ -39,6 +39,7 @@ RSpec.describe Pangea::Resources::AzureMssqlElasticpool do
 
         expect(ref.id).to eq("${azurerm_mssql_elasticpool.test.id}")
         expect(ref.enclave_type).to eq("${azurerm_mssql_elasticpool.test.enclave_type}")
+        expect(ref.high_availability_replica_count).to eq("${azurerm_mssql_elasticpool.test.high_availability_replica_count}")
         expect(ref.license_type).to eq("${azurerm_mssql_elasticpool.test.license_type}")
         expect(ref.max_size_bytes).to eq("${azurerm_mssql_elasticpool.test.max_size_bytes}")
         expect(ref.max_size_gb).to eq("${azurerm_mssql_elasticpool.test.max_size_gb}")
@@ -54,6 +55,7 @@ RSpec.describe Pangea::Resources::AzureMssqlElasticpool do
 
         config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'test')
         expect(config).not_to have_key('enclave_type')
+        expect(config).not_to have_key('high_availability_replica_count')
         expect(config).not_to have_key('license_type')
         expect(config).not_to have_key('max_size_bytes')
         expect(config).not_to have_key('max_size_gb')
@@ -61,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureMssqlElasticpool do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ maintenance_configuration_name: 'test-value', tags: { 'key1' => 'val1' }, zone_redundant: true }) }
+      let(:all_attrs) { required_attrs.merge({ enclave_type: 'test-value', high_availability_replica_count: 3.14, license_type: 'test-value', maintenance_configuration_name: 'test-value', max_size_bytes: 3.14, max_size_gb: 3.14, tags: { 'key1' => 'val1' }, zone_redundant: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,13 +72,69 @@ RSpec.describe Pangea::Resources::AzureMssqlElasticpool do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'full')
+        expect(config).to have_key('enclave_type')
+        expect(config).to have_key('high_availability_replica_count')
+        expect(config).to have_key('license_type')
         expect(config).to have_key('maintenance_configuration_name')
+        expect(config).to have_key('max_size_bytes')
+        expect(config).to have_key('max_size_gb')
         expect(config).to have_key('tags')
         expect(config).to have_key('zone_redundant')
       end
     end
 
     context 'optional attributes' do
+      it 'includes enclave_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('opt', required_attrs.merge(enclave_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'opt')
+        expect(config).to have_key('enclave_type')
+      end
+
+      it 'omits enclave_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'minimal')
+        expect(config).not_to have_key('enclave_type')
+      end
+      it 'includes high_availability_replica_count when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('opt', required_attrs.merge(high_availability_replica_count: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'opt')
+        expect(config).to have_key('high_availability_replica_count')
+      end
+
+      it 'omits high_availability_replica_count when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'minimal')
+        expect(config).not_to have_key('high_availability_replica_count')
+      end
+      it 'includes license_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('opt', required_attrs.merge(license_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'opt')
+        expect(config).to have_key('license_type')
+      end
+
+      it 'omits license_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'minimal')
+        expect(config).not_to have_key('license_type')
+      end
       it 'includes maintenance_configuration_name when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -93,6 +151,40 @@ RSpec.describe Pangea::Resources::AzureMssqlElasticpool do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'minimal')
         expect(config).not_to have_key('maintenance_configuration_name')
+      end
+      it 'includes max_size_bytes when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('opt', required_attrs.merge(max_size_bytes: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'opt')
+        expect(config).to have_key('max_size_bytes')
+      end
+
+      it 'omits max_size_bytes when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'minimal')
+        expect(config).not_to have_key('max_size_bytes')
+      end
+      it 'includes max_size_gb when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('opt', required_attrs.merge(max_size_gb: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'opt')
+        expect(config).to have_key('max_size_gb')
+      end
+
+      it 'omits max_size_gb when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_elasticpool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'minimal')
+        expect(config).not_to have_key('max_size_gb')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer
@@ -154,10 +246,10 @@ RSpec.describe Pangea::Resources::AzureMssqlElasticpool do
         config = validate_resource_structure(result, 'azurerm_mssql_elasticpool', 'typed')
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['per_database_settings']).to be_a(Array)
+        expect(config['per_database_settings']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['server_name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
       end
     end
 
@@ -190,8 +282,8 @@ RSpec.describe Pangea::Resources::AzureMssqlElasticpool do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_mssql_elasticpool,
     method: :azurerm_mssql_elasticpool,
-    required_attrs: { location: 'test-value', name: 'test-value', per_database_settings: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', server_name: 'test-value', sku: [{ 'key1' => 'val1' }] },
-    expected_outputs: [:id, :enclave_type, :license_type, :max_size_bytes, :max_size_gb],
+    required_attrs: { location: 'test-value', name: 'test-value', per_database_settings: { 'key1' => 'val1' }, resource_group_name: 'test-value', server_name: 'test-value', sku: { 'key1' => 'val1' } },
+    expected_outputs: [:id, :enclave_type, :high_availability_replica_count, :license_type, :max_size_bytes, :max_size_gb],
     sensitive_fields: [],
     immutable_fields: [],
     boolean_fields: [:zone_redundant]

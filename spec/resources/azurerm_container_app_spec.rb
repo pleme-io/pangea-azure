@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureContainerApp do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { container_app_environment_id: 'test-value', name: 'test-value', resource_group_name: 'test-value', revision_mode: 'test-value', template: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { container_app_environment_id: 'test-value', name: 'test-value', resource_group_name: 'test-value', revision_mode: 'test-value', template: { 'key1' => 'val1' } } }
 
   describe ':azurerm_container_app' do
     context 'with required attributes only' do
@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureContainerApp do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ dapr: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], ingress: [{ 'key1' => 'val1' }], max_inactive_revisions: 3.14, registry: [{ 'key1' => 'val1' }], secret: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, workload_profile_name: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ dapr: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, ingress: { 'key1' => 'val1' }, max_inactive_revisions: 3.14, registry: [{ 'key1' => 'val1' }], secret: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, workload_profile_name: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -87,7 +87,7 @@ RSpec.describe Pangea::Resources::AzureContainerApp do
       it 'includes dapr when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_app('opt', required_attrs.merge(dapr: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_app('opt', required_attrs.merge(dapr: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app', 'opt')
         expect(config).to have_key('dapr')
@@ -104,7 +104,7 @@ RSpec.describe Pangea::Resources::AzureContainerApp do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_app('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_app('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app', 'opt')
         expect(config).to have_key('identity')
@@ -121,7 +121,7 @@ RSpec.describe Pangea::Resources::AzureContainerApp do
       it 'includes ingress when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_app('opt', required_attrs.merge(ingress: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_app('opt', required_attrs.merge(ingress: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_app', 'opt')
         expect(config).to have_key('ingress')
@@ -241,7 +241,7 @@ RSpec.describe Pangea::Resources::AzureContainerApp do
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['revision_mode']).to be_a(String)
-        expect(config['template']).to be_a(Array)
+        expect(config['template']).to be_a(Hash)
       end
     end
 
@@ -274,7 +274,7 @@ RSpec.describe Pangea::Resources::AzureContainerApp do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_container_app,
     method: :azurerm_container_app,
-    required_attrs: { container_app_environment_id: 'test-value', name: 'test-value', resource_group_name: 'test-value', revision_mode: 'test-value', template: [{ 'key1' => 'val1' }] },
+    required_attrs: { container_app_environment_id: 'test-value', name: 'test-value', resource_group_name: 'test-value', revision_mode: 'test-value', template: { 'key1' => 'val1' } },
     expected_outputs: [:id, :custom_domain_verification_id, :latest_revision_fqdn, :latest_revision_name, :location, :outbound_ip_addresses],
     sensitive_fields: [:custom_domain_verification_id],
     immutable_fields: [],

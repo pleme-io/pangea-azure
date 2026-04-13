@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureAutomationSourceControl do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { automation_account_id: 'test-value', folder_path: 'test-value', name: 'test-value', repository_url: 'test-value', security: [{ 'key1' => 'val1' }], source_control_type: 'test-value' } }
+  let(:required_attrs) { { automation_account_id: 'test-value', folder_path: 'test-value', name: 'test-value', repository_url: 'test-value', security: { 'key1' => 'val1' }, source_control_type: 'test-value' } }
 
   describe ':azurerm_automation_source_control' do
     context 'with required attributes only' do
@@ -166,7 +166,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSourceControl do
         expect(config['folder_path']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['repository_url']).to be_a(String)
-        expect(config['security']).to be_a(Array)
+        expect(config['security']).to be_a(Hash)
         expect(config['source_control_type']).to be_a(String)
       end
     end
@@ -200,7 +200,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSourceControl do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_automation_source_control,
     method: :azurerm_automation_source_control,
-    required_attrs: { automation_account_id: 'test-value', folder_path: 'test-value', name: 'test-value', repository_url: 'test-value', security: [{ 'key1' => 'val1' }], source_control_type: 'test-value' },
+    required_attrs: { automation_account_id: 'test-value', folder_path: 'test-value', name: 'test-value', repository_url: 'test-value', security: { 'key1' => 'val1' }, source_control_type: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

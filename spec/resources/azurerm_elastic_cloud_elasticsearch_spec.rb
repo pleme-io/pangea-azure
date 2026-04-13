@@ -65,7 +65,7 @@ RSpec.describe Pangea::Resources::AzureElasticCloudElasticsearch do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ logs: [{ 'key1' => 'val1' }], monitoring_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ logs: { 'key1' => 'val1' }, monitoring_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureElasticCloudElasticsearch do
       it 'includes logs when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_elastic_cloud_elasticsearch('opt', required_attrs.merge(logs: [{ 'key1' => 'val1' }]))
+        synth.azurerm_elastic_cloud_elasticsearch('opt', required_attrs.merge(logs: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_elastic_cloud_elasticsearch', 'opt')
         expect(config).to have_key('logs')

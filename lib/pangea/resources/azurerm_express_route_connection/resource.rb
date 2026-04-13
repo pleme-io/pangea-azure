@@ -15,7 +15,7 @@ module Pangea::Resources
       outputs: { id: :id },
       map: [:express_route_circuit_peering_id, :express_route_gateway_id, :name],
       map_present: [:authorization_key, :routing, :routing_weight],
-      map_bool: [:express_route_gateway_bypass_enabled, :private_link_fast_path_enabled]
+      map_bool: [:enable_internet_security, :express_route_gateway_bypass_enabled, :internet_security_enabled, :private_link_fast_path_enabled]
   end
   module Azure
     include AzureExpressRouteConnection

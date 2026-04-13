@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_api_management_tag,
       attributes_class: Azure::Types::ApiManagementTagAttributes,
       outputs: { id: :id },
-      map: [:api_management_id, :name]
+      map: [:api_management_id, :name],
+      map_present: [:display_name]
   end
   module Azure
     include AzureApiManagementTag

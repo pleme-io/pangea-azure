@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureCdnEndpointCustomDomain do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ cdn_managed_https: [{ 'key1' => 'val1' }], user_managed_https: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ cdn_managed_https: { 'key1' => 'val1' }, user_managed_https: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -60,7 +60,7 @@ RSpec.describe Pangea::Resources::AzureCdnEndpointCustomDomain do
       it 'includes cdn_managed_https when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cdn_endpoint_custom_domain('opt', required_attrs.merge(cdn_managed_https: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cdn_endpoint_custom_domain('opt', required_attrs.merge(cdn_managed_https: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cdn_endpoint_custom_domain', 'opt')
         expect(config).to have_key('cdn_managed_https')
@@ -77,7 +77,7 @@ RSpec.describe Pangea::Resources::AzureCdnEndpointCustomDomain do
       it 'includes user_managed_https when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cdn_endpoint_custom_domain('opt', required_attrs.merge(user_managed_https: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cdn_endpoint_custom_domain('opt', required_attrs.merge(user_managed_https: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cdn_endpoint_custom_domain', 'opt')
         expect(config).to have_key('user_managed_https')

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::RouteTableAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:tags],
+      map_present: [:route, :tags],
       map_bool: [:bgp_route_propagation_enabled]
   end
   module Azure

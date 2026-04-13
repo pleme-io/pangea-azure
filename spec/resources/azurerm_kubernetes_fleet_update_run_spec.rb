@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureKubernetesFleetUpdateRun do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { kubernetes_fleet_manager_id: 'test-value', managed_cluster_update: [{ 'key1' => 'val1' }], name: 'test-value' } }
+  let(:required_attrs) { { kubernetes_fleet_manager_id: 'test-value', managed_cluster_update: { 'key1' => 'val1' }, name: 'test-value' } }
 
   describe ':azurerm_kubernetes_fleet_update_run' do
     context 'with required attributes only' do
@@ -102,7 +102,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesFleetUpdateRun do
 
         config = validate_resource_structure(result, 'azurerm_kubernetes_fleet_update_run', 'typed')
         expect(config['kubernetes_fleet_manager_id']).to be_a(String)
-        expect(config['managed_cluster_update']).to be_a(Array)
+        expect(config['managed_cluster_update']).to be_a(Hash)
         expect(config['name']).to be_a(String)
       end
     end
@@ -136,7 +136,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesFleetUpdateRun do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_kubernetes_fleet_update_run,
     method: :azurerm_kubernetes_fleet_update_run,
-    required_attrs: { kubernetes_fleet_manager_id: 'test-value', managed_cluster_update: [{ 'key1' => 'val1' }], name: 'test-value' },
+    required_attrs: { kubernetes_fleet_manager_id: 'test-value', managed_cluster_update: { 'key1' => 'val1' }, name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

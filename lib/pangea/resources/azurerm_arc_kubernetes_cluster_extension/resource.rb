@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ArcKubernetesClusterExtensionAttributes,
       outputs: { id: :id },
       map: [:cluster_id, :extension_type, :identity, :name],
-      map_present: [:configuration_protected_settings, :configuration_settings, :version]
+      map_present: [:configuration_protected_settings, :configuration_settings, :release_namespace, :release_train, :target_namespace, :version]
   end
   module Azure
     include AzureArcKubernetesClusterExtension

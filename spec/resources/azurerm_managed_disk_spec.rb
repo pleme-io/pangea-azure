@@ -71,7 +71,7 @@ RSpec.describe Pangea::Resources::AzureManagedDisk do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ disk_access_id: 'test-value', disk_encryption_set_id: 'test-value', edge_zone: 'test-value', encryption_settings: [{ 'key1' => 'val1' }], gallery_image_reference_id: 'test-value', hyper_v_generation: 'test-value', image_reference_id: 'test-value', network_access_policy: 'test-value', on_demand_bursting_enabled: true, optimized_frequent_attach_enabled: true, os_type: 'test-value', performance_plus_enabled: true, public_network_access_enabled: true, secure_vm_disk_encryption_set_id: 'test-value', security_type: 'test-value', source_resource_id: 'test-value', storage_account_id: 'test-value', tags: { 'key1' => 'val1' }, trusted_launch_enabled: true, upload_size_bytes: 3.14, zone: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ disk_access_id: 'test-value', disk_encryption_set_id: 'test-value', disk_iops_read_only: 3.14, disk_iops_read_write: 3.14, disk_mbps_read_only: 3.14, disk_mbps_read_write: 3.14, disk_size_gb: 3.14, edge_zone: 'test-value', encryption_settings: { 'key1' => 'val1' }, gallery_image_reference_id: 'test-value', hyper_v_generation: 'test-value', image_reference_id: 'test-value', logical_sector_size: 3.14, max_shares: 3.14, network_access_policy: 'test-value', on_demand_bursting_enabled: true, optimized_frequent_attach_enabled: true, os_type: 'test-value', performance_plus_enabled: true, public_network_access_enabled: true, secure_vm_disk_encryption_set_id: 'test-value', security_type: 'test-value', source_resource_id: 'test-value', source_uri: 'test-value', storage_account_id: 'test-value', tags: { 'key1' => 'val1' }, tier: 'test-value', trusted_launch_enabled: true, upload_size_bytes: 3.14, zone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -82,11 +82,18 @@ RSpec.describe Pangea::Resources::AzureManagedDisk do
         config = validate_resource_structure(result, 'azurerm_managed_disk', 'full')
         expect(config).to have_key('disk_access_id')
         expect(config).to have_key('disk_encryption_set_id')
+        expect(config).to have_key('disk_iops_read_only')
+        expect(config).to have_key('disk_iops_read_write')
+        expect(config).to have_key('disk_mbps_read_only')
+        expect(config).to have_key('disk_mbps_read_write')
+        expect(config).to have_key('disk_size_gb')
         expect(config).to have_key('edge_zone')
         expect(config).to have_key('encryption_settings')
         expect(config).to have_key('gallery_image_reference_id')
         expect(config).to have_key('hyper_v_generation')
         expect(config).to have_key('image_reference_id')
+        expect(config).to have_key('logical_sector_size')
+        expect(config).to have_key('max_shares')
         expect(config).to have_key('network_access_policy')
         expect(config).to have_key('on_demand_bursting_enabled')
         expect(config).to have_key('optimized_frequent_attach_enabled')
@@ -96,8 +103,10 @@ RSpec.describe Pangea::Resources::AzureManagedDisk do
         expect(config).to have_key('secure_vm_disk_encryption_set_id')
         expect(config).to have_key('security_type')
         expect(config).to have_key('source_resource_id')
+        expect(config).to have_key('source_uri')
         expect(config).to have_key('storage_account_id')
         expect(config).to have_key('tags')
+        expect(config).to have_key('tier')
         expect(config).to have_key('trusted_launch_enabled')
         expect(config).to have_key('upload_size_bytes')
         expect(config).to have_key('zone')
@@ -139,6 +148,91 @@ RSpec.describe Pangea::Resources::AzureManagedDisk do
         config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
         expect(config).not_to have_key('disk_encryption_set_id')
       end
+      it 'includes disk_iops_read_only when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('opt', required_attrs.merge(disk_iops_read_only: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
+        expect(config).to have_key('disk_iops_read_only')
+      end
+
+      it 'omits disk_iops_read_only when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
+        expect(config).not_to have_key('disk_iops_read_only')
+      end
+      it 'includes disk_iops_read_write when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('opt', required_attrs.merge(disk_iops_read_write: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
+        expect(config).to have_key('disk_iops_read_write')
+      end
+
+      it 'omits disk_iops_read_write when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
+        expect(config).not_to have_key('disk_iops_read_write')
+      end
+      it 'includes disk_mbps_read_only when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('opt', required_attrs.merge(disk_mbps_read_only: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
+        expect(config).to have_key('disk_mbps_read_only')
+      end
+
+      it 'omits disk_mbps_read_only when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
+        expect(config).not_to have_key('disk_mbps_read_only')
+      end
+      it 'includes disk_mbps_read_write when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('opt', required_attrs.merge(disk_mbps_read_write: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
+        expect(config).to have_key('disk_mbps_read_write')
+      end
+
+      it 'omits disk_mbps_read_write when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
+        expect(config).not_to have_key('disk_mbps_read_write')
+      end
+      it 'includes disk_size_gb when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('opt', required_attrs.merge(disk_size_gb: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
+        expect(config).to have_key('disk_size_gb')
+      end
+
+      it 'omits disk_size_gb when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
+        expect(config).not_to have_key('disk_size_gb')
+      end
       it 'includes edge_zone when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -159,7 +253,7 @@ RSpec.describe Pangea::Resources::AzureManagedDisk do
       it 'includes encryption_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_managed_disk('opt', required_attrs.merge(encryption_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_managed_disk('opt', required_attrs.merge(encryption_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
         expect(config).to have_key('encryption_settings')
@@ -223,6 +317,40 @@ RSpec.describe Pangea::Resources::AzureManagedDisk do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
         expect(config).not_to have_key('image_reference_id')
+      end
+      it 'includes logical_sector_size when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('opt', required_attrs.merge(logical_sector_size: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
+        expect(config).to have_key('logical_sector_size')
+      end
+
+      it 'omits logical_sector_size when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
+        expect(config).not_to have_key('logical_sector_size')
+      end
+      it 'includes max_shares when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('opt', required_attrs.merge(max_shares: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
+        expect(config).to have_key('max_shares')
+      end
+
+      it 'omits max_shares when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
+        expect(config).not_to have_key('max_shares')
       end
       it 'includes network_access_policy when provided' do
         synth = create_synthesizer
@@ -377,6 +505,23 @@ RSpec.describe Pangea::Resources::AzureManagedDisk do
         config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
         expect(config).not_to have_key('source_resource_id')
       end
+      it 'includes source_uri when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('opt', required_attrs.merge(source_uri: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
+        expect(config).to have_key('source_uri')
+      end
+
+      it 'omits source_uri when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
+        expect(config).not_to have_key('source_uri')
+      end
       it 'includes storage_account_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -410,6 +555,23 @@ RSpec.describe Pangea::Resources::AzureManagedDisk do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes tier when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('opt', required_attrs.merge(tier: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'opt')
+        expect(config).to have_key('tier')
+      end
+
+      it 'omits tier when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_managed_disk('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_managed_disk', 'minimal')
+        expect(config).not_to have_key('tier')
       end
       it 'includes trusted_launch_enabled when provided' do
         synth = create_synthesizer

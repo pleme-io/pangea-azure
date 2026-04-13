@@ -1,0 +1,8 @@
+name: azurerm_voice_services_communications_gateway
+title: Manages a azurerm_voice_services_communications_gateway resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

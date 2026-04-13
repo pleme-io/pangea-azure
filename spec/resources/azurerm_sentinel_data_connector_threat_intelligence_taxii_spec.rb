@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorThreatIntelligenceTa
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ lookback_date: 'test-value', password: 'test-value', polling_frequency: 'test-value', user_name: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ lookback_date: 'test-value', password: 'test-value', polling_frequency: 'test-value', tenant_id: 'test-value', user_name: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorThreatIntelligenceTa
         expect(config).to have_key('lookback_date')
         expect(config).to have_key('password')
         expect(config).to have_key('polling_frequency')
+        expect(config).to have_key('tenant_id')
         expect(config).to have_key('user_name')
       end
     end
@@ -122,6 +123,23 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorThreatIntelligenceTa
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_threat_intelligence_taxii', 'minimal')
         expect(config).not_to have_key('polling_frequency')
+      end
+      it 'includes tenant_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_threat_intelligence_taxii('opt', required_attrs.merge(tenant_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_threat_intelligence_taxii', 'opt')
+        expect(config).to have_key('tenant_id')
+      end
+
+      it 'omits tenant_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_threat_intelligence_taxii('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_threat_intelligence_taxii', 'minimal')
+        expect(config).not_to have_key('tenant_id')
       end
       it 'includes user_name when provided' do
         synth = create_synthesizer

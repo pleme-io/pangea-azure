@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ApiManagementApiPolicyAttributes,
       outputs: { id: :id },
       map: [:api_management_name, :api_name, :resource_group_name],
-      map_present: [:xml_link]
+      map_present: [:xml_content, :xml_link]
   end
   module Azure
     include AzureApiManagementApiPolicy

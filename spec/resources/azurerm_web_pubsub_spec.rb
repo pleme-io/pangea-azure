@@ -71,7 +71,7 @@ RSpec.describe Pangea::Resources::AzureWebPubsub do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ aad_auth_enabled: true, capacity: 3.14, identity: [{ 'key1' => 'val1' }], live_trace: [{ 'key1' => 'val1' }], local_auth_enabled: true, public_network_access_enabled: true, tags: { 'key1' => 'val1' }, tls_client_cert_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ aad_auth_enabled: true, capacity: 3.14, identity: { 'key1' => 'val1' }, live_trace: { 'key1' => 'val1' }, local_auth_enabled: true, public_network_access_enabled: true, tags: { 'key1' => 'val1' }, tls_client_cert_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -129,7 +129,7 @@ RSpec.describe Pangea::Resources::AzureWebPubsub do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_web_pubsub('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_web_pubsub('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_web_pubsub', 'opt')
         expect(config).to have_key('identity')
@@ -146,7 +146,7 @@ RSpec.describe Pangea::Resources::AzureWebPubsub do
       it 'includes live_trace when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_web_pubsub('opt', required_attrs.merge(live_trace: [{ 'key1' => 'val1' }]))
+        synth.azurerm_web_pubsub('opt', required_attrs.merge(live_trace: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_web_pubsub', 'opt')
         expect(config).to have_key('live_trace')

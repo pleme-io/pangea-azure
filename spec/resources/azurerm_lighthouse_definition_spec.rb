@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureLighthouseDefinition do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', eligible_authorization: [{ 'key1' => 'val1' }], plan: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', eligible_authorization: [{ 'key1' => 'val1' }], lighthouse_definition_id: 'test-value', plan: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,6 +66,7 @@ RSpec.describe Pangea::Resources::AzureLighthouseDefinition do
         config = validate_resource_structure(result, 'azurerm_lighthouse_definition', 'full')
         expect(config).to have_key('description')
         expect(config).to have_key('eligible_authorization')
+        expect(config).to have_key('lighthouse_definition_id')
         expect(config).to have_key('plan')
       end
     end
@@ -105,10 +106,27 @@ RSpec.describe Pangea::Resources::AzureLighthouseDefinition do
         config = validate_resource_structure(result, 'azurerm_lighthouse_definition', 'minimal')
         expect(config).not_to have_key('eligible_authorization')
       end
+      it 'includes lighthouse_definition_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lighthouse_definition('opt', required_attrs.merge(lighthouse_definition_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lighthouse_definition', 'opt')
+        expect(config).to have_key('lighthouse_definition_id')
+      end
+
+      it 'omits lighthouse_definition_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lighthouse_definition('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lighthouse_definition', 'minimal')
+        expect(config).not_to have_key('lighthouse_definition_id')
+      end
       it 'includes plan when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_lighthouse_definition('opt', required_attrs.merge(plan: [{ 'key1' => 'val1' }]))
+        synth.azurerm_lighthouse_definition('opt', required_attrs.merge(plan: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_lighthouse_definition', 'opt')
         expect(config).to have_key('plan')

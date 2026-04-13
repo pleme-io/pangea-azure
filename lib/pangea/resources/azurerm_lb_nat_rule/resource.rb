@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::LbNatRuleAttributes,
       outputs: { id: :id },
       map: [:backend_port, :frontend_ip_configuration_name, :loadbalancer_id, :name, :protocol, :resource_group_name],
-      map_present: [:backend_address_pool_id, :frontend_port, :frontend_port_end, :frontend_port_start, :idle_timeout_in_minutes]
+      map_present: [:backend_address_pool_id, :frontend_port, :frontend_port_end, :frontend_port_start, :idle_timeout_in_minutes],
+      map_bool: [:enable_floating_ip, :enable_tcp_reset, :floating_ip_enabled, :tcp_reset_enabled]
   end
   module Azure
     include AzureLbNatRule

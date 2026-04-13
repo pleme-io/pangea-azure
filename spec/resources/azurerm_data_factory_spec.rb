@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureDataFactory do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ github_configuration: [{ 'key1' => 'val1' }], global_parameter: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], managed_virtual_network_enabled: true, public_network_enabled: true, purview_id: 'test-value', tags: { 'key1' => 'val1' }, vsts_configuration: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ customer_managed_key_id: 'test-value', customer_managed_key_identity_id: 'test-value', github_configuration: { 'key1' => 'val1' }, global_parameter: [{ 'key1' => 'val1' }], identity: { 'key1' => 'val1' }, managed_virtual_network_enabled: true, public_network_enabled: true, purview_id: 'test-value', tags: { 'key1' => 'val1' }, vsts_configuration: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,6 +66,8 @@ RSpec.describe Pangea::Resources::AzureDataFactory do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_data_factory', 'full')
+        expect(config).to have_key('customer_managed_key_id')
+        expect(config).to have_key('customer_managed_key_identity_id')
         expect(config).to have_key('github_configuration')
         expect(config).to have_key('global_parameter')
         expect(config).to have_key('identity')
@@ -78,10 +80,44 @@ RSpec.describe Pangea::Resources::AzureDataFactory do
     end
 
     context 'optional attributes' do
+      it 'includes customer_managed_key_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory('opt', required_attrs.merge(customer_managed_key_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory', 'opt')
+        expect(config).to have_key('customer_managed_key_id')
+      end
+
+      it 'omits customer_managed_key_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory', 'minimal')
+        expect(config).not_to have_key('customer_managed_key_id')
+      end
+      it 'includes customer_managed_key_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory('opt', required_attrs.merge(customer_managed_key_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory', 'opt')
+        expect(config).to have_key('customer_managed_key_identity_id')
+      end
+
+      it 'omits customer_managed_key_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory', 'minimal')
+        expect(config).not_to have_key('customer_managed_key_identity_id')
+      end
       it 'includes github_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory('opt', required_attrs.merge(github_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory('opt', required_attrs.merge(github_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory', 'opt')
         expect(config).to have_key('github_configuration')
@@ -115,7 +151,7 @@ RSpec.describe Pangea::Resources::AzureDataFactory do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory', 'opt')
         expect(config).to have_key('identity')
@@ -200,7 +236,7 @@ RSpec.describe Pangea::Resources::AzureDataFactory do
       it 'includes vsts_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory('opt', required_attrs.merge(vsts_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory('opt', required_attrs.merge(vsts_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory', 'opt')
         expect(config).to have_key('vsts_configuration')

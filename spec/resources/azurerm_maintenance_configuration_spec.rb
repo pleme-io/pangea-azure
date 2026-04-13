@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureMaintenanceConfiguration do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ in_guest_user_patch_mode: 'test-value', install_patches: [{ 'key1' => 'val1' }], properties: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, visibility: 'test-value', window: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ in_guest_user_patch_mode: 'test-value', install_patches: { 'key1' => 'val1' }, properties: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, visibility: 'test-value', window: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -81,7 +81,7 @@ RSpec.describe Pangea::Resources::AzureMaintenanceConfiguration do
       it 'includes install_patches when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_maintenance_configuration('opt', required_attrs.merge(install_patches: [{ 'key1' => 'val1' }]))
+        synth.azurerm_maintenance_configuration('opt', required_attrs.merge(install_patches: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_maintenance_configuration', 'opt')
         expect(config).to have_key('install_patches')
@@ -149,7 +149,7 @@ RSpec.describe Pangea::Resources::AzureMaintenanceConfiguration do
       it 'includes window when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_maintenance_configuration('opt', required_attrs.merge(window: [{ 'key1' => 'val1' }]))
+        synth.azurerm_maintenance_configuration('opt', required_attrs.merge(window: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_maintenance_configuration', 'opt')
         expect(config).to have_key('window')

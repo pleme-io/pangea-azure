@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::MssqlJobScheduleAttributes,
       outputs: { id: :id },
       map: [:job_id, :type],
-      map_present: [:interval]
+      map_present: [:end_time, :interval, :start_time],
+      map_bool: [:enabled]
   end
   module Azure
     include AzureMssqlJobSchedule

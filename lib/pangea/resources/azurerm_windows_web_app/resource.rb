@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::WindowsWebAppAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :service_plan_id, :site_config],
-      map_present: [:app_settings, :auth_settings, :auth_settings_v2, :backup, :client_certificate_exclusion_paths, :client_certificate_mode, :connection_string, :identity, :logs, :sticky_settings, :storage_account, :tags, :virtual_network_subnet_id],
-      map_bool: [:client_affinity_enabled, :client_certificate_enabled, :enabled, :ftp_publish_basic_authentication_enabled, :https_only, :public_network_access_enabled, :virtual_network_backup_restore_enabled, :webdeploy_publish_basic_authentication_enabled]
+      map_present: [:app_settings, :auth_settings, :auth_settings_v2, :backup, :client_certificate_exclusion_paths, :client_certificate_mode, :connection_string, :identity, :key_vault_reference_identity_id, :logs, :sticky_settings, :storage_account, :tags, :virtual_network_subnet_id, :zip_deploy_file],
+      map_bool: [:client_affinity_enabled, :client_certificate_enabled, :enabled, :ftp_publish_basic_authentication_enabled, :https_only, :public_network_access_enabled, :virtual_network_backup_restore_enabled, :virtual_network_image_pull_enabled, :webdeploy_publish_basic_authentication_enabled]
   end
   module Azure
     include AzureWindowsWebApp

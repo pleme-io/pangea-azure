@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', runtime_name: 'test-value', runtime_version: 'test-value', service_plan_id: 'test-value', site_config: [{ 'key1' => 'val1' }], storage_authentication_type: 'test-value', storage_container_endpoint: 'test-value', storage_container_type: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', runtime_name: 'test-value', runtime_version: 'test-value', service_plan_id: 'test-value', site_config: { 'key1' => 'val1' }, storage_authentication_type: 'test-value', storage_container_endpoint: 'test-value', storage_container_type: 'test-value' } }
 
   describe ':azurerm_function_app_flex_consumption' do
     context 'with required attributes only' do
@@ -73,7 +73,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ always_ready: [{ 'key1' => 'val1' }], app_settings: { 'key1' => 'val1' }, auth_settings: [{ 'key1' => 'val1' }], auth_settings_v2: [{ 'key1' => 'val1' }], client_certificate_enabled: true, client_certificate_exclusion_paths: 'test-value', client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], enabled: true, http_concurrency: 3.14, https_only: true, identity: [{ 'key1' => 'val1' }], instance_memory_in_mb: 3.14, maximum_instance_count: 3.14, public_network_access_enabled: true, sticky_settings: [{ 'key1' => 'val1' }], storage_access_key: 'test-value', storage_user_assigned_identity_id: 'test-value', tags: { 'key1' => 'val1' }, virtual_network_subnet_id: 'test-value', webdeploy_publish_basic_authentication_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ always_ready: [{ 'key1' => 'val1' }], app_settings: { 'key1' => 'val1' }, auth_settings: { 'key1' => 'val1' }, auth_settings_v2: { 'key1' => 'val1' }, client_certificate_enabled: true, client_certificate_exclusion_paths: 'test-value', client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], enabled: true, http_concurrency: 3.14, https_only: true, identity: { 'key1' => 'val1' }, instance_memory_in_mb: 3.14, maximum_instance_count: 3.14, public_network_access_enabled: true, sticky_settings: { 'key1' => 'val1' }, storage_access_key: 'test-value', storage_user_assigned_identity_id: 'test-value', tags: { 'key1' => 'val1' }, virtual_network_subnet_id: 'test-value', webdeploy_publish_basic_authentication_enabled: true, zip_deploy_file: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -103,6 +103,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
         expect(config).to have_key('tags')
         expect(config).to have_key('virtual_network_subnet_id')
         expect(config).to have_key('webdeploy_publish_basic_authentication_enabled')
+        expect(config).to have_key('zip_deploy_file')
       end
     end
 
@@ -144,7 +145,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
       it 'includes auth_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app_flex_consumption('opt', required_attrs.merge(auth_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app_flex_consumption('opt', required_attrs.merge(auth_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app_flex_consumption', 'opt')
         expect(config).to have_key('auth_settings')
@@ -161,7 +162,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
       it 'includes auth_settings_v2 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app_flex_consumption('opt', required_attrs.merge(auth_settings_v2: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app_flex_consumption('opt', required_attrs.merge(auth_settings_v2: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app_flex_consumption', 'opt')
         expect(config).to have_key('auth_settings_v2')
@@ -297,7 +298,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app_flex_consumption('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app_flex_consumption('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app_flex_consumption', 'opt')
         expect(config).to have_key('identity')
@@ -365,7 +366,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
       it 'includes sticky_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app_flex_consumption('opt', required_attrs.merge(sticky_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app_flex_consumption('opt', required_attrs.merge(sticky_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app_flex_consumption', 'opt')
         expect(config).to have_key('sticky_settings')
@@ -464,6 +465,23 @@ RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
         config = validate_resource_structure(result, 'azurerm_function_app_flex_consumption', 'minimal')
         expect(config).not_to have_key('webdeploy_publish_basic_authentication_enabled')
       end
+      it 'includes zip_deploy_file when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_function_app_flex_consumption('opt', required_attrs.merge(zip_deploy_file: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_function_app_flex_consumption', 'opt')
+        expect(config).to have_key('zip_deploy_file')
+      end
+
+      it 'omits zip_deploy_file when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_function_app_flex_consumption('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_function_app_flex_consumption', 'minimal')
+        expect(config).not_to have_key('zip_deploy_file')
+      end
     end
 
     context 'sensitive fields' do
@@ -546,7 +564,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
         expect(config['runtime_name']).to be_a(String)
         expect(config['runtime_version']).to be_a(String)
         expect(config['service_plan_id']).to be_a(String)
-        expect(config['site_config']).to be_a(Array)
+        expect(config['site_config']).to be_a(Hash)
         expect(config['storage_authentication_type']).to be_a(String)
         expect(config['storage_container_endpoint']).to be_a(String)
         expect(config['storage_container_type']).to be_a(String)
@@ -582,7 +600,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppFlexConsumption do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_function_app_flex_consumption,
     method: :azurerm_function_app_flex_consumption,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', runtime_name: 'test-value', runtime_version: 'test-value', service_plan_id: 'test-value', site_config: [{ 'key1' => 'val1' }], storage_authentication_type: 'test-value', storage_container_endpoint: 'test-value', storage_container_type: 'test-value' },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', runtime_name: 'test-value', runtime_version: 'test-value', service_plan_id: 'test-value', site_config: { 'key1' => 'val1' }, storage_authentication_type: 'test-value', storage_container_endpoint: 'test-value', storage_container_type: 'test-value' },
     expected_outputs: [:id, :custom_domain_verification_id, :default_hostname, :hosting_environment_id, :kind, :outbound_ip_address_list, :outbound_ip_addresses, :possible_outbound_ip_address_list, :possible_outbound_ip_addresses, :site_credential, :zip_deploy_file],
     sensitive_fields: [:custom_domain_verification_id, :site_credential],
     immutable_fields: [],

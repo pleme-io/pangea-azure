@@ -65,7 +65,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppSlot do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auth_settings: [{ 'key1' => 'val1' }], connection_string: [{ 'key1' => 'val1' }], daily_memory_time_quota: 3.14, enable_builtin_logging: true, enabled: true, https_only: true, identity: [{ 'key1' => 'val1' }], os_type: 'test-value', site_config: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, version: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: { 'key1' => 'val1' }, connection_string: [{ 'key1' => 'val1' }], daily_memory_time_quota: 3.14, enable_builtin_logging: true, enabled: true, https_only: true, identity: { 'key1' => 'val1' }, os_type: 'test-value', site_config: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, version: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,6 +74,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppSlot do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_function_app_slot', 'full')
+        expect(config).to have_key('app_settings')
         expect(config).to have_key('auth_settings')
         expect(config).to have_key('connection_string')
         expect(config).to have_key('daily_memory_time_quota')
@@ -89,10 +90,27 @@ RSpec.describe Pangea::Resources::AzureFunctionAppSlot do
     end
 
     context 'optional attributes' do
+      it 'includes app_settings when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_function_app_slot('opt', required_attrs.merge(app_settings: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_function_app_slot', 'opt')
+        expect(config).to have_key('app_settings')
+      end
+
+      it 'omits app_settings when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_function_app_slot('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_function_app_slot', 'minimal')
+        expect(config).not_to have_key('app_settings')
+      end
       it 'includes auth_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app_slot('opt', required_attrs.merge(auth_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app_slot('opt', required_attrs.merge(auth_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app_slot', 'opt')
         expect(config).to have_key('auth_settings')
@@ -194,7 +212,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppSlot do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app_slot('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app_slot('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app_slot', 'opt')
         expect(config).to have_key('identity')
@@ -228,7 +246,7 @@ RSpec.describe Pangea::Resources::AzureFunctionAppSlot do
       it 'includes site_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_function_app_slot('opt', required_attrs.merge(site_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_function_app_slot('opt', required_attrs.merge(site_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_function_app_slot', 'opt')
         expect(config).to have_key('site_config')

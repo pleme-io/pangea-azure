@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorFirewallPolicy do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ custom_block_response_body: 'test-value', custom_block_response_status_code: 3.14, custom_rule: [{ 'key1' => 'val1' }], enabled: true, log_scrubbing: [{ 'key1' => 'val1' }], managed_rule: [{ 'key1' => 'val1' }], redirect_url: 'test-value', request_body_check_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ captcha_cookie_expiration_in_minutes: 3.14, custom_block_response_body: 'test-value', custom_block_response_status_code: 3.14, custom_rule: [{ 'key1' => 'val1' }], enabled: true, js_challenge_cookie_expiration_in_minutes: 3.14, log_scrubbing: { 'key1' => 'val1' }, managed_rule: [{ 'key1' => 'val1' }], redirect_url: 'test-value', request_body_check_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,10 +68,12 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorFirewallPolicy do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_firewall_policy', 'full')
+        expect(config).to have_key('captcha_cookie_expiration_in_minutes')
         expect(config).to have_key('custom_block_response_body')
         expect(config).to have_key('custom_block_response_status_code')
         expect(config).to have_key('custom_rule')
         expect(config).to have_key('enabled')
+        expect(config).to have_key('js_challenge_cookie_expiration_in_minutes')
         expect(config).to have_key('log_scrubbing')
         expect(config).to have_key('managed_rule')
         expect(config).to have_key('redirect_url')
@@ -81,6 +83,23 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorFirewallPolicy do
     end
 
     context 'optional attributes' do
+      it 'includes captcha_cookie_expiration_in_minutes when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cdn_frontdoor_firewall_policy('opt', required_attrs.merge(captcha_cookie_expiration_in_minutes: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_firewall_policy', 'opt')
+        expect(config).to have_key('captcha_cookie_expiration_in_minutes')
+      end
+
+      it 'omits captcha_cookie_expiration_in_minutes when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cdn_frontdoor_firewall_policy('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_firewall_policy', 'minimal')
+        expect(config).not_to have_key('captcha_cookie_expiration_in_minutes')
+      end
       it 'includes custom_block_response_body when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -149,10 +168,27 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorFirewallPolicy do
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_firewall_policy', 'minimal')
         expect(config).not_to have_key('enabled')
       end
+      it 'includes js_challenge_cookie_expiration_in_minutes when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cdn_frontdoor_firewall_policy('opt', required_attrs.merge(js_challenge_cookie_expiration_in_minutes: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_firewall_policy', 'opt')
+        expect(config).to have_key('js_challenge_cookie_expiration_in_minutes')
+      end
+
+      it 'omits js_challenge_cookie_expiration_in_minutes when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cdn_frontdoor_firewall_policy('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_firewall_policy', 'minimal')
+        expect(config).not_to have_key('js_challenge_cookie_expiration_in_minutes')
+      end
       it 'includes log_scrubbing when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cdn_frontdoor_firewall_policy('opt', required_attrs.merge(log_scrubbing: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cdn_frontdoor_firewall_policy('opt', required_attrs.merge(log_scrubbing: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_firewall_policy', 'opt')
         expect(config).to have_key('log_scrubbing')

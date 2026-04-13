@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureNotificationHub do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ apns_credential: [{ 'key1' => 'val1' }], browser_credential: [{ 'key1' => 'val1' }], gcm_credential: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ apns_credential: { 'key1' => 'val1' }, browser_credential: { 'key1' => 'val1' }, gcm_credential: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -62,7 +62,7 @@ RSpec.describe Pangea::Resources::AzureNotificationHub do
       it 'includes apns_credential when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_notification_hub('opt', required_attrs.merge(apns_credential: [{ 'key1' => 'val1' }]))
+        synth.azurerm_notification_hub('opt', required_attrs.merge(apns_credential: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_notification_hub', 'opt')
         expect(config).to have_key('apns_credential')
@@ -79,7 +79,7 @@ RSpec.describe Pangea::Resources::AzureNotificationHub do
       it 'includes browser_credential when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_notification_hub('opt', required_attrs.merge(browser_credential: [{ 'key1' => 'val1' }]))
+        synth.azurerm_notification_hub('opt', required_attrs.merge(browser_credential: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_notification_hub', 'opt')
         expect(config).to have_key('browser_credential')
@@ -96,7 +96,7 @@ RSpec.describe Pangea::Resources::AzureNotificationHub do
       it 'includes gcm_credential when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_notification_hub('opt', required_attrs.merge(gcm_credential: [{ 'key1' => 'val1' }]))
+        synth.azurerm_notification_hub('opt', required_attrs.merge(gcm_credential: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_notification_hub', 'opt')
         expect(config).to have_key('gcm_credential')

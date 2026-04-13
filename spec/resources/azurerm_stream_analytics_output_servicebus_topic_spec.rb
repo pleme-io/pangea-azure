@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureStreamAnalyticsOutputServicebusTopic do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { name: 'test-value', resource_group_name: 'test-value', serialization: [{ 'key1' => 'val1' }], servicebus_namespace: 'test-value', stream_analytics_job_name: 'test-value', topic_name: 'test-value' } }
+  let(:required_attrs) { { name: 'test-value', resource_group_name: 'test-value', serialization: { 'key1' => 'val1' }, servicebus_namespace: 'test-value', stream_analytics_job_name: 'test-value', topic_name: 'test-value' } }
 
   describe ':azurerm_stream_analytics_output_servicebus_topic' do
     context 'with required attributes only' do
@@ -164,7 +164,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsOutputServicebusTopic do
         config = validate_resource_structure(result, 'azurerm_stream_analytics_output_servicebus_topic', 'typed')
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['serialization']).to be_a(Array)
+        expect(config['serialization']).to be_a(Hash)
         expect(config['servicebus_namespace']).to be_a(String)
         expect(config['stream_analytics_job_name']).to be_a(String)
         expect(config['topic_name']).to be_a(String)
@@ -200,7 +200,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsOutputServicebusTopic do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_stream_analytics_output_servicebus_topic,
     method: :azurerm_stream_analytics_output_servicebus_topic,
-    required_attrs: { name: 'test-value', resource_group_name: 'test-value', serialization: [{ 'key1' => 'val1' }], servicebus_namespace: 'test-value', stream_analytics_job_name: 'test-value', topic_name: 'test-value' },
+    required_attrs: { name: 'test-value', resource_group_name: 'test-value', serialization: { 'key1' => 'val1' }, servicebus_namespace: 'test-value', stream_analytics_job_name: 'test-value', topic_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [:shared_access_policy_key],
     immutable_fields: [],

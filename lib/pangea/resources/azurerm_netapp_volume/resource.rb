@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::NetappVolumeAttributes,
       outputs: { id: :id },
       map: [:account_name, :location, :name, :pool_name, :resource_group_name, :service_level, :storage_quota_in_gb, :subnet_id, :volume_path],
-      map_present: [:accept_grow_capacity_pool_for_short_term_clone_split, :cool_access, :create_from_snapshot_resource_id, :data_protection_backup_policy, :data_protection_replication, :data_protection_snapshot_policy, :export_policy_rule, :tags, :zone],
+      map_present: [:accept_grow_capacity_pool_for_short_term_clone_split, :cool_access, :create_from_snapshot_resource_id, :data_protection_advanced_ransomware, :data_protection_backup_policy, :data_protection_replication, :data_protection_snapshot_policy, :encryption_key_source, :export_policy_rule, :key_vault_private_endpoint_id, :network_features, :protocols, :security_style, :tags, :throughput_in_mibps, :zone],
       map_bool: [:azure_vmware_data_store_enabled, :kerberos_enabled, :large_volume_enabled, :smb3_protocol_encryption_enabled, :smb_access_based_enumeration_enabled, :smb_continuous_availability_enabled, :smb_non_browsable_enabled, :snapshot_directory_visible]
   end
   module Azure

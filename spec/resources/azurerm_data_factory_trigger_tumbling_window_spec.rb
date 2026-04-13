@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDataFactoryTriggerTumblingWindow do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { data_factory_id: 'test-value', frequency: 'test-value', interval: 3.14, name: 'test-value', pipeline: [{ 'key1' => 'val1' }], start_time: 'test-value' } }
+  let(:required_attrs) { { data_factory_id: 'test-value', frequency: 'test-value', interval: 3.14, name: 'test-value', pipeline: { 'key1' => 'val1' }, start_time: 'test-value' } }
 
   describe ':azurerm_data_factory_trigger_tumbling_window' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryTriggerTumblingWindow do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ activated: true, additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], delay: 'test-value', description: 'test-value', end_time: 'test-value', max_concurrency: 3.14, retry: [{ 'key1' => 'val1' }], trigger_dependency: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ activated: true, additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], delay: 'test-value', description: 'test-value', end_time: 'test-value', max_concurrency: 3.14, retry: { 'key1' => 'val1' }, trigger_dependency: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -186,7 +186,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryTriggerTumblingWindow do
       it 'includes retry when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_trigger_tumbling_window('opt', required_attrs.merge(retry: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_trigger_tumbling_window('opt', required_attrs.merge(retry: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_trigger_tumbling_window', 'opt')
         expect(config).to have_key('retry')
@@ -245,7 +245,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryTriggerTumblingWindow do
         expect(config['frequency']).to be_a(String)
         expect(config['interval']).to be_a(Float)
         expect(config['name']).to be_a(String)
-        expect(config['pipeline']).to be_a(Array)
+        expect(config['pipeline']).to be_a(Hash)
         expect(config['start_time']).to be_a(String)
       end
     end
@@ -279,7 +279,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryTriggerTumblingWindow do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_data_factory_trigger_tumbling_window,
     method: :azurerm_data_factory_trigger_tumbling_window,
-    required_attrs: { data_factory_id: 'test-value', frequency: 'test-value', interval: 3.14, name: 'test-value', pipeline: [{ 'key1' => 'val1' }], start_time: 'test-value' },
+    required_attrs: { data_factory_id: 'test-value', frequency: 'test-value', interval: 3.14, name: 'test-value', pipeline: { 'key1' => 'val1' }, start_time: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

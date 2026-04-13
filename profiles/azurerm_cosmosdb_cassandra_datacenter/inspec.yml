@@ -1,0 +1,8 @@
+name: azurerm_cosmosdb_cassandra_datacenter
+title: Manages a azurerm_cosmosdb_cassandra_datacenter resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

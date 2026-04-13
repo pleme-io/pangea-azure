@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AppServiceCertificateOrderAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:key_size, :product_type, :tags, :validity_in_years],
+      map_present: [:csr, :distinguished_name, :key_size, :product_type, :tags, :validity_in_years],
       map_bool: [:auto_renew]
   end
   module Azure

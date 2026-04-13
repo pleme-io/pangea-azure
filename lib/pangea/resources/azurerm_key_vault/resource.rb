@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::KeyVaultAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku_name, :tenant_id],
-      map_present: [:contact, :network_acls, :soft_delete_retention_days, :tags],
-      map_bool: [:enabled_for_deployment, :enabled_for_disk_encryption, :enabled_for_template_deployment, :public_network_access_enabled, :purge_protection_enabled]
+      map_present: [:access_policy, :contact, :network_acls, :soft_delete_retention_days, :tags],
+      map_bool: [:enable_rbac_authorization, :enabled_for_deployment, :enabled_for_disk_encryption, :enabled_for_template_deployment, :public_network_access_enabled, :purge_protection_enabled, :rbac_authorization_enabled]
   end
   module Azure
     include AzureKeyVault

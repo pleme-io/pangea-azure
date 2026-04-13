@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureWebApplicationFirewallPolicy do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', managed_rules: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', managed_rules: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_web_application_firewall_policy' do
     context 'with required attributes only' do
@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureWebApplicationFirewallPolicy do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ custom_rules: [{ 'key1' => 'val1' }], policy_settings: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ custom_rules: [{ 'key1' => 'val1' }], policy_settings: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -93,7 +93,7 @@ RSpec.describe Pangea::Resources::AzureWebApplicationFirewallPolicy do
       it 'includes policy_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_web_application_firewall_policy('opt', required_attrs.merge(policy_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_web_application_firewall_policy('opt', required_attrs.merge(policy_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_web_application_firewall_policy', 'opt')
         expect(config).to have_key('policy_settings')
@@ -135,7 +135,7 @@ RSpec.describe Pangea::Resources::AzureWebApplicationFirewallPolicy do
 
         config = validate_resource_structure(result, 'azurerm_web_application_firewall_policy', 'typed')
         expect(config['location']).to be_a(String)
-        expect(config['managed_rules']).to be_a(Array)
+        expect(config['managed_rules']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
       end
@@ -170,7 +170,7 @@ RSpec.describe Pangea::Resources::AzureWebApplicationFirewallPolicy do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_web_application_firewall_policy,
     method: :azurerm_web_application_firewall_policy,
-    required_attrs: { location: 'test-value', managed_rules: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { location: 'test-value', managed_rules: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id, :http_listener_ids, :path_based_rule_ids],
     sensitive_fields: [],
     immutable_fields: [],

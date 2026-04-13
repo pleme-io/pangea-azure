@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::FunctionAppFlexConsumptionAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :runtime_name, :runtime_version, :service_plan_id, :site_config, :storage_authentication_type, :storage_container_endpoint, :storage_container_type],
-      map_present: [:always_ready, :app_settings, :auth_settings, :auth_settings_v2, :client_certificate_exclusion_paths, :client_certificate_mode, :connection_string, :http_concurrency, :identity, :instance_memory_in_mb, :maximum_instance_count, :sticky_settings, :storage_access_key, :storage_user_assigned_identity_id, :tags, :virtual_network_subnet_id],
+      map_present: [:always_ready, :app_settings, :auth_settings, :auth_settings_v2, :client_certificate_exclusion_paths, :client_certificate_mode, :connection_string, :http_concurrency, :identity, :instance_memory_in_mb, :maximum_instance_count, :sticky_settings, :storage_access_key, :storage_user_assigned_identity_id, :tags, :virtual_network_subnet_id, :zip_deploy_file],
       map_bool: [:client_certificate_enabled, :enabled, :https_only, :public_network_access_enabled, :webdeploy_publish_basic_authentication_enabled]
   end
   module Azure

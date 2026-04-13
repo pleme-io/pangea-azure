@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::BotWebAppAttributes,
       outputs: { id: :id },
       map: [:location, :microsoft_app_id, :name, :resource_group_name, :sku],
-      map_present: [:developer_app_insights_api_key, :developer_app_insights_application_id, :developer_app_insights_key, :endpoint, :luis_app_ids, :luis_key, :tags]
+      map_present: [:developer_app_insights_api_key, :developer_app_insights_application_id, :developer_app_insights_key, :display_name, :endpoint, :luis_app_ids, :luis_key, :tags]
   end
   module Azure
     include AzureBotWebApp

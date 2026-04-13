@@ -1,0 +1,8 @@
+name: azurerm_api_management_workspace
+title: Manages a azurerm_api_management_workspace resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

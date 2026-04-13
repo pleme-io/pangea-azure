@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', service_plan_id: 'test-value', site_config: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', service_plan_id: 'test-value', site_config: { 'key1' => 'val1' } } }
 
   describe ':azurerm_windows_function_app' do
     context 'with required attributes only' do
@@ -77,7 +77,7 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: [{ 'key1' => 'val1' }], auth_settings_v2: [{ 'key1' => 'val1' }], backup: [{ 'key1' => 'val1' }], builtin_logging_enabled: true, client_certificate_enabled: true, client_certificate_exclusion_paths: 'test-value', client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], content_share_force_disabled: true, daily_memory_time_quota: 3.14, enabled: true, ftp_publish_basic_authentication_enabled: true, functions_extension_version: 'test-value', identity: [{ 'key1' => 'val1' }], public_network_access_enabled: true, sticky_settings: [{ 'key1' => 'val1' }], storage_account: [{ 'key1' => 'val1' }], storage_account_access_key: 'test-value', storage_account_name: 'test-value', storage_key_vault_secret_id: 'test-value', storage_uses_managed_identity: true, tags: { 'key1' => 'val1' }, virtual_network_backup_restore_enabled: true, virtual_network_subnet_id: 'test-value', vnet_image_pull_enabled: true, webdeploy_publish_basic_authentication_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: { 'key1' => 'val1' }, auth_settings_v2: { 'key1' => 'val1' }, backup: { 'key1' => 'val1' }, builtin_logging_enabled: true, client_certificate_enabled: true, client_certificate_exclusion_paths: 'test-value', client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], content_share_force_disabled: true, daily_memory_time_quota: 3.14, enabled: true, ftp_publish_basic_authentication_enabled: true, functions_extension_version: 'test-value', https_only: true, identity: { 'key1' => 'val1' }, key_vault_reference_identity_id: 'test-value', public_network_access_enabled: true, sticky_settings: { 'key1' => 'val1' }, storage_account: [{ 'key1' => 'val1' }], storage_account_access_key: 'test-value', storage_account_name: 'test-value', storage_key_vault_secret_id: 'test-value', storage_uses_managed_identity: true, tags: { 'key1' => 'val1' }, virtual_network_backup_restore_enabled: true, virtual_network_subnet_id: 'test-value', vnet_image_pull_enabled: true, webdeploy_publish_basic_authentication_enabled: true, zip_deploy_file: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -100,7 +100,9 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
         expect(config).to have_key('enabled')
         expect(config).to have_key('ftp_publish_basic_authentication_enabled')
         expect(config).to have_key('functions_extension_version')
+        expect(config).to have_key('https_only')
         expect(config).to have_key('identity')
+        expect(config).to have_key('key_vault_reference_identity_id')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('sticky_settings')
         expect(config).to have_key('storage_account')
@@ -113,6 +115,7 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
         expect(config).to have_key('virtual_network_subnet_id')
         expect(config).to have_key('vnet_image_pull_enabled')
         expect(config).to have_key('webdeploy_publish_basic_authentication_enabled')
+        expect(config).to have_key('zip_deploy_file')
       end
     end
 
@@ -137,7 +140,7 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
       it 'includes auth_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_function_app('opt', required_attrs.merge(auth_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_function_app('opt', required_attrs.merge(auth_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_function_app', 'opt')
         expect(config).to have_key('auth_settings')
@@ -154,7 +157,7 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
       it 'includes auth_settings_v2 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_function_app('opt', required_attrs.merge(auth_settings_v2: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_function_app('opt', required_attrs.merge(auth_settings_v2: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_function_app', 'opt')
         expect(config).to have_key('auth_settings_v2')
@@ -171,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
       it 'includes backup when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_function_app('opt', required_attrs.merge(backup: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_function_app('opt', required_attrs.merge(backup: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_function_app', 'opt')
         expect(config).to have_key('backup')
@@ -355,10 +358,27 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
         config = validate_resource_structure(result, 'azurerm_windows_function_app', 'minimal')
         expect(config).not_to have_key('functions_extension_version')
       end
+      it 'includes https_only when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_function_app('opt', required_attrs.merge(https_only: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_function_app', 'opt')
+        expect(config).to have_key('https_only')
+      end
+
+      it 'omits https_only when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_function_app('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_function_app', 'minimal')
+        expect(config).not_to have_key('https_only')
+      end
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_function_app('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_function_app('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_function_app', 'opt')
         expect(config).to have_key('identity')
@@ -371,6 +391,23 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_function_app', 'minimal')
         expect(config).not_to have_key('identity')
+      end
+      it 'includes key_vault_reference_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_function_app('opt', required_attrs.merge(key_vault_reference_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_function_app', 'opt')
+        expect(config).to have_key('key_vault_reference_identity_id')
+      end
+
+      it 'omits key_vault_reference_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_function_app('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_function_app', 'minimal')
+        expect(config).not_to have_key('key_vault_reference_identity_id')
       end
       it 'includes public_network_access_enabled when provided' do
         synth = create_synthesizer
@@ -392,7 +429,7 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
       it 'includes sticky_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_windows_function_app('opt', required_attrs.merge(sticky_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_windows_function_app('opt', required_attrs.merge(sticky_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_windows_function_app', 'opt')
         expect(config).to have_key('sticky_settings')
@@ -576,6 +613,23 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
         config = validate_resource_structure(result, 'azurerm_windows_function_app', 'minimal')
         expect(config).not_to have_key('webdeploy_publish_basic_authentication_enabled')
       end
+      it 'includes zip_deploy_file when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_function_app('opt', required_attrs.merge(zip_deploy_file: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_function_app', 'opt')
+        expect(config).to have_key('zip_deploy_file')
+      end
+
+      it 'omits zip_deploy_file when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_windows_function_app('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_windows_function_app', 'minimal')
+        expect(config).not_to have_key('zip_deploy_file')
+      end
     end
 
     context 'sensitive fields' do
@@ -641,6 +695,17 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
           result = normalize_synthesis(synth.synthesis)
           config = validate_resource_structure(result, 'azurerm_windows_function_app', "bool_#{val}")
           expect(config['ftp_publish_basic_authentication_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts https_only=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(https_only: val)
+          synth.azurerm_windows_function_app("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_windows_function_app', "bool_#{val}")
+          expect(config['https_only']).to eq(val)
         end
       end
       [true, false].each do |val|
@@ -712,7 +777,7 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['service_plan_id']).to be_a(String)
-        expect(config['site_config']).to be_a(Array)
+        expect(config['site_config']).to be_a(Hash)
       end
     end
 
@@ -745,9 +810,9 @@ RSpec.describe Pangea::Resources::AzureWindowsFunctionApp do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_windows_function_app,
     method: :azurerm_windows_function_app,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', service_plan_id: 'test-value', site_config: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', service_plan_id: 'test-value', site_config: { 'key1' => 'val1' } },
     expected_outputs: [:id, :custom_domain_verification_id, :default_hostname, :hosting_environment_id, :https_only, :key_vault_reference_identity_id, :kind, :outbound_ip_address_list, :outbound_ip_addresses, :possible_outbound_ip_address_list, :possible_outbound_ip_addresses, :site_credential, :zip_deploy_file],
     sensitive_fields: [:custom_domain_verification_id, :site_credential, :storage_account_access_key],
     immutable_fields: [],
-    boolean_fields: [:builtin_logging_enabled, :client_certificate_enabled, :content_share_force_disabled, :enabled, :ftp_publish_basic_authentication_enabled, :public_network_access_enabled, :storage_uses_managed_identity, :virtual_network_backup_restore_enabled, :vnet_image_pull_enabled, :webdeploy_publish_basic_authentication_enabled]
+    boolean_fields: [:builtin_logging_enabled, :client_certificate_enabled, :content_share_force_disabled, :enabled, :ftp_publish_basic_authentication_enabled, :https_only, :public_network_access_enabled, :storage_uses_managed_identity, :virtual_network_backup_restore_enabled, :vnet_image_pull_enabled, :webdeploy_publish_basic_authentication_enabled]
 end

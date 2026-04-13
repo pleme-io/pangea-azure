@@ -58,6 +58,76 @@ RSpec.describe Pangea::Resources::AzureFederatedIdentityCredential do
       end
     end
 
+    context 'with all attributes' do
+      let(:all_attrs) { required_attrs.merge({ parent_id: 'test-value', resource_group_name: 'test-value', user_assigned_identity_id: 'test-value' }) }
+
+      it 'synthesizes with optional attributes' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_federated_identity_credential('full', all_attrs)
+        result = normalize_synthesis(synth.synthesis)
+
+        config = validate_resource_structure(result, 'azurerm_federated_identity_credential', 'full')
+        expect(config).to have_key('parent_id')
+        expect(config).to have_key('resource_group_name')
+        expect(config).to have_key('user_assigned_identity_id')
+      end
+    end
+
+    context 'optional attributes' do
+      it 'includes parent_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_federated_identity_credential('opt', required_attrs.merge(parent_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_federated_identity_credential', 'opt')
+        expect(config).to have_key('parent_id')
+      end
+
+      it 'omits parent_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_federated_identity_credential('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_federated_identity_credential', 'minimal')
+        expect(config).not_to have_key('parent_id')
+      end
+      it 'includes resource_group_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_federated_identity_credential('opt', required_attrs.merge(resource_group_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_federated_identity_credential', 'opt')
+        expect(config).to have_key('resource_group_name')
+      end
+
+      it 'omits resource_group_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_federated_identity_credential('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_federated_identity_credential', 'minimal')
+        expect(config).not_to have_key('resource_group_name')
+      end
+      it 'includes user_assigned_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_federated_identity_credential('opt', required_attrs.merge(user_assigned_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_federated_identity_credential', 'opt')
+        expect(config).to have_key('user_assigned_identity_id')
+      end
+
+      it 'omits user_assigned_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_federated_identity_credential('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_federated_identity_credential', 'minimal')
+        expect(config).not_to have_key('user_assigned_identity_id')
+      end
+    end
+
     context 'attribute types' do
       it 'validates expected attribute types' do
         synth = create_synthesizer

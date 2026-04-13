@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ManagedApplicationAttributes,
       outputs: { id: :id },
       map: [:kind, :location, :managed_resource_group_name, :name, :resource_group_name],
-      map_present: [:application_definition_id, :plan, :tags]
+      map_present: [:application_definition_id, :parameter_values, :plan, :tags]
   end
   module Azure
     include AzureManagedApplication

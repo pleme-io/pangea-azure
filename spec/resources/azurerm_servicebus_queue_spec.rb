@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureServicebusQueue do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ batched_operations_enabled: true, dead_lettering_on_message_expiration: true, duplicate_detection_history_time_window: 'test-value', express_enabled: true, forward_dead_lettered_messages_to: 'test-value', forward_to: 'test-value', lock_duration: 'test-value', max_delivery_count: 3.14, partitioning_enabled: true, requires_duplicate_detection: true, requires_session: true, status: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ auto_delete_on_idle: 'test-value', batched_operations_enabled: true, dead_lettering_on_message_expiration: true, default_message_ttl: 'test-value', duplicate_detection_history_time_window: 'test-value', express_enabled: true, forward_dead_lettered_messages_to: 'test-value', forward_to: 'test-value', lock_duration: 'test-value', max_delivery_count: 3.14, max_message_size_in_kilobytes: 3.14, max_size_in_megabytes: 3.14, partitioning_enabled: true, requires_duplicate_detection: true, requires_session: true, status: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,14 +70,18 @@ RSpec.describe Pangea::Resources::AzureServicebusQueue do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'full')
+        expect(config).to have_key('auto_delete_on_idle')
         expect(config).to have_key('batched_operations_enabled')
         expect(config).to have_key('dead_lettering_on_message_expiration')
+        expect(config).to have_key('default_message_ttl')
         expect(config).to have_key('duplicate_detection_history_time_window')
         expect(config).to have_key('express_enabled')
         expect(config).to have_key('forward_dead_lettered_messages_to')
         expect(config).to have_key('forward_to')
         expect(config).to have_key('lock_duration')
         expect(config).to have_key('max_delivery_count')
+        expect(config).to have_key('max_message_size_in_kilobytes')
+        expect(config).to have_key('max_size_in_megabytes')
         expect(config).to have_key('partitioning_enabled')
         expect(config).to have_key('requires_duplicate_detection')
         expect(config).to have_key('requires_session')
@@ -86,6 +90,23 @@ RSpec.describe Pangea::Resources::AzureServicebusQueue do
     end
 
     context 'optional attributes' do
+      it 'includes auto_delete_on_idle when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_servicebus_queue('opt', required_attrs.merge(auto_delete_on_idle: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'opt')
+        expect(config).to have_key('auto_delete_on_idle')
+      end
+
+      it 'omits auto_delete_on_idle when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_servicebus_queue('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'minimal')
+        expect(config).not_to have_key('auto_delete_on_idle')
+      end
       it 'includes batched_operations_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -119,6 +140,23 @@ RSpec.describe Pangea::Resources::AzureServicebusQueue do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'minimal')
         expect(config).not_to have_key('dead_lettering_on_message_expiration')
+      end
+      it 'includes default_message_ttl when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_servicebus_queue('opt', required_attrs.merge(default_message_ttl: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'opt')
+        expect(config).to have_key('default_message_ttl')
+      end
+
+      it 'omits default_message_ttl when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_servicebus_queue('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'minimal')
+        expect(config).not_to have_key('default_message_ttl')
       end
       it 'includes duplicate_detection_history_time_window when provided' do
         synth = create_synthesizer
@@ -221,6 +259,40 @@ RSpec.describe Pangea::Resources::AzureServicebusQueue do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'minimal')
         expect(config).not_to have_key('max_delivery_count')
+      end
+      it 'includes max_message_size_in_kilobytes when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_servicebus_queue('opt', required_attrs.merge(max_message_size_in_kilobytes: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'opt')
+        expect(config).to have_key('max_message_size_in_kilobytes')
+      end
+
+      it 'omits max_message_size_in_kilobytes when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_servicebus_queue('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'minimal')
+        expect(config).not_to have_key('max_message_size_in_kilobytes')
+      end
+      it 'includes max_size_in_megabytes when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_servicebus_queue('opt', required_attrs.merge(max_size_in_megabytes: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'opt')
+        expect(config).to have_key('max_size_in_megabytes')
+      end
+
+      it 'omits max_size_in_megabytes when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_servicebus_queue('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_servicebus_queue', 'minimal')
+        expect(config).not_to have_key('max_size_in_megabytes')
       end
       it 'includes partitioning_enabled when provided' do
         synth = create_synthesizer

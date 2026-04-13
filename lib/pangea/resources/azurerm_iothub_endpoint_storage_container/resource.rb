@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::IothubEndpointStorageContainerAttributes,
       outputs: { id: :id },
       map: [:container_name, :iothub_id, :name, :resource_group_name],
-      map_present: [:authentication_type, :batch_frequency_in_seconds, :connection_string, :encoding, :endpoint_uri, :file_name_format, :identity_id, :max_chunk_size_in_bytes]
+      map_present: [:authentication_type, :batch_frequency_in_seconds, :connection_string, :encoding, :endpoint_uri, :file_name_format, :identity_id, :max_chunk_size_in_bytes, :subscription_id]
   end
   module Azure
     include AzureIothubEndpointStorageContainer

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SpringCloudBuildDeploymentAttributes,
       outputs: { id: :id },
       map: [:build_result_id, :name, :spring_cloud_app_id],
-      map_present: [:application_performance_monitoring_ids, :environment_variables, :instance_count, :quota]
+      map_present: [:addon_json, :application_performance_monitoring_ids, :environment_variables, :instance_count, :quota]
   end
   module Azure
     include AzureSpringCloudBuildDeployment

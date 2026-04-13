@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StorageAccountCustomerManagedKeyAttributes,
       outputs: { id: :id },
       map: [:storage_account_id],
-      map_present: [:federated_identity_client_id, :user_assigned_identity_id]
+      map_present: [:federated_identity_client_id, :key_name, :key_vault_id, :key_vault_key_id, :key_vault_uri, :key_version, :managed_hsm_key_id, :user_assigned_identity_id]
   end
   module Azure
     include AzureStorageAccountCustomerManagedKey

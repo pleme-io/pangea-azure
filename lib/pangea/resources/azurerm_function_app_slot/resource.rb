@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::FunctionAppSlotAttributes,
       outputs: { id: :id },
       map: [:app_service_plan_id, :function_app_name, :location, :name, :resource_group_name, :storage_account_access_key, :storage_account_name],
-      map_present: [:auth_settings, :connection_string, :daily_memory_time_quota, :identity, :os_type, :site_config, :tags, :version],
+      map_present: [:app_settings, :auth_settings, :connection_string, :daily_memory_time_quota, :identity, :os_type, :site_config, :tags, :version],
       map_bool: [:enable_builtin_logging, :enabled, :https_only]
   end
   module Azure

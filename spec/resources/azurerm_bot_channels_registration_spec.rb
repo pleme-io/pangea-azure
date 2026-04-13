@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureBotChannelsRegistration do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ cmk_key_vault_url: 'test-value', description: 'test-value', developer_app_insights_api_key: 'test-value', developer_app_insights_application_id: 'test-value', developer_app_insights_key: 'test-value', endpoint: 'test-value', icon_url: 'test-value', public_network_access_enabled: true, streaming_endpoint_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ cmk_key_vault_url: 'test-value', description: 'test-value', developer_app_insights_api_key: 'test-value', developer_app_insights_application_id: 'test-value', developer_app_insights_key: 'test-value', display_name: 'test-value', endpoint: 'test-value', icon_url: 'test-value', public_network_access_enabled: true, streaming_endpoint_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,6 +69,7 @@ RSpec.describe Pangea::Resources::AzureBotChannelsRegistration do
         expect(config).to have_key('developer_app_insights_api_key')
         expect(config).to have_key('developer_app_insights_application_id')
         expect(config).to have_key('developer_app_insights_key')
+        expect(config).to have_key('display_name')
         expect(config).to have_key('endpoint')
         expect(config).to have_key('icon_url')
         expect(config).to have_key('public_network_access_enabled')
@@ -162,6 +163,23 @@ RSpec.describe Pangea::Resources::AzureBotChannelsRegistration do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_bot_channels_registration', 'minimal')
         expect(config).not_to have_key('developer_app_insights_key')
+      end
+      it 'includes display_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_bot_channels_registration('opt', required_attrs.merge(display_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_bot_channels_registration', 'opt')
+        expect(config).to have_key('display_name')
+      end
+
+      it 'omits display_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_bot_channels_registration('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_bot_channels_registration', 'minimal')
+        expect(config).not_to have_key('display_name')
       end
       it 'includes endpoint when provided' do
         synth = create_synthesizer

@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ bgp_route_translation_for_nat_enabled: true, bgp_settings: [{ 'key1' => 'val1' }], custom_route: [{ 'key1' => 'val1' }], default_local_network_gateway_id: 'test-value', dns_forwarding_enabled: true, edge_zone: 'test-value', ip_sec_replay_protection_enabled: true, policy_group: [{ 'key1' => 'val1' }], private_ip_address_enabled: true, remote_vnet_traffic_enabled: true, tags: { 'key1' => 'val1' }, virtual_wan_traffic_enabled: true, vpn_client_configuration: [{ 'key1' => 'val1' }], vpn_type: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ active_active: true, bgp_enabled: true, bgp_route_translation_for_nat_enabled: true, bgp_settings: { 'key1' => 'val1' }, custom_route: { 'key1' => 'val1' }, default_local_network_gateway_id: 'test-value', dns_forwarding_enabled: true, edge_zone: 'test-value', enable_bgp: true, generation: 'test-value', ip_sec_replay_protection_enabled: true, policy_group: [{ 'key1' => 'val1' }], private_ip_address_enabled: true, remote_vnet_traffic_enabled: true, tags: { 'key1' => 'val1' }, virtual_wan_traffic_enabled: true, vpn_client_configuration: { 'key1' => 'val1' }, vpn_type: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,12 +70,16 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'full')
+        expect(config).to have_key('active_active')
+        expect(config).to have_key('bgp_enabled')
         expect(config).to have_key('bgp_route_translation_for_nat_enabled')
         expect(config).to have_key('bgp_settings')
         expect(config).to have_key('custom_route')
         expect(config).to have_key('default_local_network_gateway_id')
         expect(config).to have_key('dns_forwarding_enabled')
         expect(config).to have_key('edge_zone')
+        expect(config).to have_key('enable_bgp')
+        expect(config).to have_key('generation')
         expect(config).to have_key('ip_sec_replay_protection_enabled')
         expect(config).to have_key('policy_group')
         expect(config).to have_key('private_ip_address_enabled')
@@ -88,6 +92,40 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
     end
 
     context 'optional attributes' do
+      it 'includes active_active when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(active_active: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'opt')
+        expect(config).to have_key('active_active')
+      end
+
+      it 'omits active_active when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'minimal')
+        expect(config).not_to have_key('active_active')
+      end
+      it 'includes bgp_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(bgp_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'opt')
+        expect(config).to have_key('bgp_enabled')
+      end
+
+      it 'omits bgp_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'minimal')
+        expect(config).not_to have_key('bgp_enabled')
+      end
       it 'includes bgp_route_translation_for_nat_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -108,7 +146,7 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
       it 'includes bgp_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(bgp_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(bgp_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'opt')
         expect(config).to have_key('bgp_settings')
@@ -125,7 +163,7 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
       it 'includes custom_route when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(custom_route: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(custom_route: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'opt')
         expect(config).to have_key('custom_route')
@@ -189,6 +227,40 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'minimal')
         expect(config).not_to have_key('edge_zone')
+      end
+      it 'includes enable_bgp when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(enable_bgp: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'opt')
+        expect(config).to have_key('enable_bgp')
+      end
+
+      it 'omits enable_bgp when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'minimal')
+        expect(config).not_to have_key('enable_bgp')
+      end
+      it 'includes generation when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(generation: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'opt')
+        expect(config).to have_key('generation')
+      end
+
+      it 'omits generation when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'minimal')
+        expect(config).not_to have_key('generation')
       end
       it 'includes ip_sec_replay_protection_enabled when provided' do
         synth = create_synthesizer
@@ -295,7 +367,7 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
       it 'includes vpn_client_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(vpn_client_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_network_gateway('opt', required_attrs.merge(vpn_client_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', 'opt')
         expect(config).to have_key('vpn_client_configuration')
@@ -330,6 +402,28 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
 
     context 'boolean fields' do
       [true, false].each do |val|
+        it "accepts active_active=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(active_active: val)
+          synth.azurerm_virtual_network_gateway("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', "bool_#{val}")
+          expect(config['active_active']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts bgp_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(bgp_enabled: val)
+          synth.azurerm_virtual_network_gateway("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', "bool_#{val}")
+          expect(config['bgp_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
         it "accepts bgp_route_translation_for_nat_enabled=#{val}" do
           synth = create_synthesizer
           synth.extend(described_class)
@@ -349,6 +443,17 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
           result = normalize_synthesis(synth.synthesis)
           config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', "bool_#{val}")
           expect(config['dns_forwarding_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts enable_bgp=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enable_bgp: val)
+          synth.azurerm_virtual_network_gateway("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_virtual_network_gateway', "bool_#{val}")
+          expect(config['enable_bgp']).to eq(val)
         end
       end
       [true, false].each do |val|
@@ -447,5 +552,5 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGateway do
     expected_outputs: [:id, :active_active, :bgp_enabled, :enable_bgp, :generation],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: [:bgp_route_translation_for_nat_enabled, :dns_forwarding_enabled, :ip_sec_replay_protection_enabled, :private_ip_address_enabled, :remote_vnet_traffic_enabled, :virtual_wan_traffic_enabled]
+    boolean_fields: [:active_active, :bgp_enabled, :bgp_route_translation_for_nat_enabled, :dns_forwarding_enabled, :enable_bgp, :ip_sec_replay_protection_enabled, :private_ip_address_enabled, :remote_vnet_traffic_enabled, :virtual_wan_traffic_enabled]
 end

@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureAutomationJobSchedule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ parameters: { 'key1' => 'val1' }, run_on: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ job_schedule_id: 'test-value', parameters: { 'key1' => 'val1' }, run_on: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,12 +66,30 @@ RSpec.describe Pangea::Resources::AzureAutomationJobSchedule do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_automation_job_schedule', 'full')
+        expect(config).to have_key('job_schedule_id')
         expect(config).to have_key('parameters')
         expect(config).to have_key('run_on')
       end
     end
 
     context 'optional attributes' do
+      it 'includes job_schedule_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_job_schedule('opt', required_attrs.merge(job_schedule_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_job_schedule', 'opt')
+        expect(config).to have_key('job_schedule_id')
+      end
+
+      it 'omits job_schedule_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_job_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_job_schedule', 'minimal')
+        expect(config).not_to have_key('job_schedule_id')
+      end
       it 'includes parameters when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

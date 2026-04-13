@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorOffice365 do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ exchange_enabled: true, sharepoint_enabled: true, teams_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ exchange_enabled: true, sharepoint_enabled: true, teams_enabled: true, tenant_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorOffice365 do
         expect(config).to have_key('exchange_enabled')
         expect(config).to have_key('sharepoint_enabled')
         expect(config).to have_key('teams_enabled')
+        expect(config).to have_key('tenant_id')
       end
     end
 
@@ -121,6 +122,23 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorOffice365 do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_office_365', 'minimal')
         expect(config).not_to have_key('teams_enabled')
+      end
+      it 'includes tenant_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_office_365('opt', required_attrs.merge(tenant_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_office_365', 'opt')
+        expect(config).to have_key('tenant_id')
+      end
+
+      it 'omits tenant_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_office_365('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_office_365', 'minimal')
+        expect(config).not_to have_key('tenant_id')
       end
     end
 

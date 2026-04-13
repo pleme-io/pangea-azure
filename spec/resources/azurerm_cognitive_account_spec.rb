@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureCognitiveAccount do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ custom_question_answering_search_service_id: 'test-value', custom_question_answering_search_service_key: 'test-value', custom_subdomain_name: 'test-value', customer_managed_key: [{ 'key1' => 'val1' }], dynamic_throttling_enabled: true, fqdns: ['test-value'], identity: [{ 'key1' => 'val1' }], local_auth_enabled: true, metrics_advisor_aad_client_id: 'test-value', metrics_advisor_aad_tenant_id: 'test-value', metrics_advisor_super_user_name: 'test-value', metrics_advisor_website_name: 'test-value', network_acls: [{ 'key1' => 'val1' }], network_injection: [{ 'key1' => 'val1' }], outbound_network_access_restricted: true, project_management_enabled: true, public_network_access_enabled: true, qna_runtime_endpoint: 'test-value', storage: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ custom_question_answering_search_service_id: 'test-value', custom_question_answering_search_service_key: 'test-value', custom_subdomain_name: 'test-value', customer_managed_key: { 'key1' => 'val1' }, dynamic_throttling_enabled: true, fqdns: ['test-value'], identity: { 'key1' => 'val1' }, local_auth_enabled: true, metrics_advisor_aad_client_id: 'test-value', metrics_advisor_aad_tenant_id: 'test-value', metrics_advisor_super_user_name: 'test-value', metrics_advisor_website_name: 'test-value', network_acls: { 'key1' => 'val1' }, network_injection: { 'key1' => 'val1' }, outbound_network_access_restricted: true, project_management_enabled: true, public_network_access_enabled: true, qna_runtime_endpoint: 'test-value', storage: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -146,7 +146,7 @@ RSpec.describe Pangea::Resources::AzureCognitiveAccount do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cognitive_account('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cognitive_account('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cognitive_account', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -197,7 +197,7 @@ RSpec.describe Pangea::Resources::AzureCognitiveAccount do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cognitive_account('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cognitive_account('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cognitive_account', 'opt')
         expect(config).to have_key('identity')
@@ -299,7 +299,7 @@ RSpec.describe Pangea::Resources::AzureCognitiveAccount do
       it 'includes network_acls when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cognitive_account('opt', required_attrs.merge(network_acls: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cognitive_account('opt', required_attrs.merge(network_acls: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cognitive_account', 'opt')
         expect(config).to have_key('network_acls')
@@ -316,7 +316,7 @@ RSpec.describe Pangea::Resources::AzureCognitiveAccount do
       it 'includes network_injection when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cognitive_account('opt', required_attrs.merge(network_injection: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cognitive_account('opt', required_attrs.merge(network_injection: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cognitive_account', 'opt')
         expect(config).to have_key('network_injection')

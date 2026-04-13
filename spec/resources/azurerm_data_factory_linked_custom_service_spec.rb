@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedCustomService do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], description: 'test-value', integration_runtime: [{ 'key1' => 'val1' }], parameters: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], description: 'test-value', integration_runtime: { 'key1' => 'val1' }, parameters: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -114,7 +114,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedCustomService do
       it 'includes integration_runtime when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_custom_service('opt', required_attrs.merge(integration_runtime: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_custom_service('opt', required_attrs.merge(integration_runtime: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_custom_service', 'opt')
         expect(config).to have_key('integration_runtime')

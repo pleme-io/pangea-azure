@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureCdnEndpoint do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ content_types_to_compress: ['test-value'], delivery_rule: [{ 'key1' => 'val1' }], geo_filter: [{ 'key1' => 'val1' }], global_delivery_rule: [{ 'key1' => 'val1' }], is_compression_enabled: true, is_http_allowed: true, is_https_allowed: true, optimization_type: 'test-value', origin_host_header: 'test-value', origin_path: 'test-value', probe_path: 'test-value', querystring_caching_behaviour: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ content_types_to_compress: ['test-value'], delivery_rule: [{ 'key1' => 'val1' }], geo_filter: [{ 'key1' => 'val1' }], global_delivery_rule: { 'key1' => 'val1' }, is_compression_enabled: true, is_http_allowed: true, is_https_allowed: true, optimization_type: 'test-value', origin_host_header: 'test-value', origin_path: 'test-value', probe_path: 'test-value', querystring_caching_behaviour: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -135,7 +135,7 @@ RSpec.describe Pangea::Resources::AzureCdnEndpoint do
       it 'includes global_delivery_rule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cdn_endpoint('opt', required_attrs.merge(global_delivery_rule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cdn_endpoint('opt', required_attrs.merge(global_delivery_rule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cdn_endpoint', 'opt')
         expect(config).to have_key('global_delivery_rule')

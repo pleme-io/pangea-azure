@@ -1,0 +1,8 @@
+name: azurerm_firewall_application_rule_collection
+title: Manages a azurerm_firewall_application_rule_collection resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

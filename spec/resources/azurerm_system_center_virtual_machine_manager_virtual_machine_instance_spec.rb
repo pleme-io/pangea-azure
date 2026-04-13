@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureSystemCenterVirtualMachineManagerVirtualMachineInstance do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { custom_location_id: 'test-value', infrastructure: [{ 'key1' => 'val1' }], scoped_resource_id: 'test-value' } }
+  let(:required_attrs) { { custom_location_id: 'test-value', infrastructure: { 'key1' => 'val1' }, scoped_resource_id: 'test-value' } }
 
   describe ':azurerm_system_center_virtual_machine_manager_virtual_machine_instance' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureSystemCenterVirtualMachineManagerVirtualM
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ hardware: [{ 'key1' => 'val1' }], network_interface: [{ 'key1' => 'val1' }], operating_system: [{ 'key1' => 'val1' }], storage_disk: [{ 'key1' => 'val1' }], system_center_virtual_machine_manager_availability_set_ids: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ hardware: { 'key1' => 'val1' }, network_interface: [{ 'key1' => 'val1' }], operating_system: { 'key1' => 'val1' }, storage_disk: [{ 'key1' => 'val1' }], system_center_virtual_machine_manager_availability_set_ids: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureSystemCenterVirtualMachineManagerVirtualM
       it 'includes hardware when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_system_center_virtual_machine_manager_virtual_machine_instance('opt', required_attrs.merge(hardware: [{ 'key1' => 'val1' }]))
+        synth.azurerm_system_center_virtual_machine_manager_virtual_machine_instance('opt', required_attrs.merge(hardware: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_system_center_virtual_machine_manager_virtual_machine_instance', 'opt')
         expect(config).to have_key('hardware')
@@ -97,7 +97,7 @@ RSpec.describe Pangea::Resources::AzureSystemCenterVirtualMachineManagerVirtualM
       it 'includes operating_system when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_system_center_virtual_machine_manager_virtual_machine_instance('opt', required_attrs.merge(operating_system: [{ 'key1' => 'val1' }]))
+        synth.azurerm_system_center_virtual_machine_manager_virtual_machine_instance('opt', required_attrs.merge(operating_system: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_system_center_virtual_machine_manager_virtual_machine_instance', 'opt')
         expect(config).to have_key('operating_system')
@@ -156,7 +156,7 @@ RSpec.describe Pangea::Resources::AzureSystemCenterVirtualMachineManagerVirtualM
 
         config = validate_resource_structure(result, 'azurerm_system_center_virtual_machine_manager_virtual_machine_instance', 'typed')
         expect(config['custom_location_id']).to be_a(String)
-        expect(config['infrastructure']).to be_a(Array)
+        expect(config['infrastructure']).to be_a(Hash)
         expect(config['scoped_resource_id']).to be_a(String)
       end
     end
@@ -190,7 +190,7 @@ RSpec.describe Pangea::Resources::AzureSystemCenterVirtualMachineManagerVirtualM
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_system_center_virtual_machine_manager_virtual_machine_instance,
     method: :azurerm_system_center_virtual_machine_manager_virtual_machine_instance,
-    required_attrs: { custom_location_id: 'test-value', infrastructure: [{ 'key1' => 'val1' }], scoped_resource_id: 'test-value' },
+    required_attrs: { custom_location_id: 'test-value', infrastructure: { 'key1' => 'val1' }, scoped_resource_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureLogAnalyticsSolution do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', plan: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', solution_name: 'test-value', workspace_name: 'test-value', workspace_resource_id: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', plan: { 'key1' => 'val1' }, resource_group_name: 'test-value', solution_name: 'test-value', workspace_name: 'test-value', workspace_resource_id: 'test-value' } }
 
   describe ':azurerm_log_analytics_solution' do
     context 'with required attributes only' do
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsSolution do
 
         config = validate_resource_structure(result, 'azurerm_log_analytics_solution', 'typed')
         expect(config['location']).to be_a(String)
-        expect(config['plan']).to be_a(Array)
+        expect(config['plan']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['solution_name']).to be_a(String)
         expect(config['workspace_name']).to be_a(String)
@@ -121,7 +121,7 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsSolution do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_log_analytics_solution,
     method: :azurerm_log_analytics_solution,
-    required_attrs: { location: 'test-value', plan: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', solution_name: 'test-value', workspace_name: 'test-value', workspace_resource_id: 'test-value' },
+    required_attrs: { location: 'test-value', plan: { 'key1' => 'val1' }, resource_group_name: 'test-value', solution_name: 'test-value', workspace_name: 'test-value', workspace_resource_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

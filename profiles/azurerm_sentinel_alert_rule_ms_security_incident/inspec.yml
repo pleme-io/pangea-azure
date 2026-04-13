@@ -1,0 +1,8 @@
+name: azurerm_sentinel_alert_rule_ms_security_incident
+title: Manages a azurerm_sentinel_alert_rule_ms_security_incident resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

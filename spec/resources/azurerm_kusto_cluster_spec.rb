@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureKustoCluster do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } } }
 
   describe ':azurerm_kusto_cluster' do
     context 'with required attributes only' do
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureKustoCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ allowed_fqdns: ['test-value'], allowed_ip_ranges: ['test-value'], auto_stop_enabled: true, disk_encryption_enabled: true, double_encryption_enabled: true, identity: [{ 'key1' => 'val1' }], language_extension: [{ 'key1' => 'val1' }], language_extensions: [{ 'key1' => 'val1' }], optimized_auto_scale: [{ 'key1' => 'val1' }], outbound_network_access_restricted: true, public_ip_type: 'test-value', public_network_access_enabled: true, purge_enabled: true, streaming_ingestion_enabled: true, tags: { 'key1' => 'val1' }, virtual_network_configuration: [{ 'key1' => 'val1' }], zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ allowed_fqdns: ['test-value'], allowed_ip_ranges: ['test-value'], auto_stop_enabled: true, disk_encryption_enabled: true, double_encryption_enabled: true, identity: { 'key1' => 'val1' }, language_extension: [{ 'key1' => 'val1' }], language_extensions: [{ 'key1' => 'val1' }], optimized_auto_scale: { 'key1' => 'val1' }, outbound_network_access_restricted: true, public_ip_type: 'test-value', public_network_access_enabled: true, purge_enabled: true, streaming_ingestion_enabled: true, tags: { 'key1' => 'val1' }, trusted_external_tenants: ['test-value'], virtual_network_configuration: { 'key1' => 'val1' }, zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -83,6 +83,7 @@ RSpec.describe Pangea::Resources::AzureKustoCluster do
         expect(config).to have_key('purge_enabled')
         expect(config).to have_key('streaming_ingestion_enabled')
         expect(config).to have_key('tags')
+        expect(config).to have_key('trusted_external_tenants')
         expect(config).to have_key('virtual_network_configuration')
         expect(config).to have_key('zones')
       end
@@ -177,7 +178,7 @@ RSpec.describe Pangea::Resources::AzureKustoCluster do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kusto_cluster('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kusto_cluster('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kusto_cluster', 'opt')
         expect(config).to have_key('identity')
@@ -228,7 +229,7 @@ RSpec.describe Pangea::Resources::AzureKustoCluster do
       it 'includes optimized_auto_scale when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kusto_cluster('opt', required_attrs.merge(optimized_auto_scale: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kusto_cluster('opt', required_attrs.merge(optimized_auto_scale: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kusto_cluster', 'opt')
         expect(config).to have_key('optimized_auto_scale')
@@ -344,10 +345,27 @@ RSpec.describe Pangea::Resources::AzureKustoCluster do
         config = validate_resource_structure(result, 'azurerm_kusto_cluster', 'minimal')
         expect(config).not_to have_key('tags')
       end
+      it 'includes trusted_external_tenants when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_cluster('opt', required_attrs.merge(trusted_external_tenants: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_cluster', 'opt')
+        expect(config).to have_key('trusted_external_tenants')
+      end
+
+      it 'omits trusted_external_tenants when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_cluster', 'minimal')
+        expect(config).not_to have_key('trusted_external_tenants')
+      end
       it 'includes virtual_network_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kusto_cluster('opt', required_attrs.merge(virtual_network_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kusto_cluster('opt', required_attrs.merge(virtual_network_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kusto_cluster', 'opt')
         expect(config).to have_key('virtual_network_configuration')
@@ -471,7 +489,7 @@ RSpec.describe Pangea::Resources::AzureKustoCluster do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
       end
     end
 
@@ -504,7 +522,7 @@ RSpec.describe Pangea::Resources::AzureKustoCluster do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_kusto_cluster,
     method: :azurerm_kusto_cluster,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } },
     expected_outputs: [:id, :data_ingestion_uri, :trusted_external_tenants, :uri],
     sensitive_fields: [],
     immutable_fields: [],

@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureEventgridNamespace do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ capacity: 3.14, identity: [{ 'key1' => 'val1' }], inbound_ip_rule: [{ 'key1' => 'val1' }], public_network_access: 'test-value', sku: 'test-value', tags: { 'key1' => 'val1' }, topic_spaces_configuration: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ capacity: 3.14, identity: { 'key1' => 'val1' }, inbound_ip_rule: [{ 'key1' => 'val1' }], public_network_access: 'test-value', sku: 'test-value', tags: { 'key1' => 'val1' }, topic_spaces_configuration: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -82,7 +82,7 @@ RSpec.describe Pangea::Resources::AzureEventgridNamespace do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_namespace('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_namespace('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_namespace', 'opt')
         expect(config).to have_key('identity')

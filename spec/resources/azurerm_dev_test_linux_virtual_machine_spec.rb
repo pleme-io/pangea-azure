@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDevTestLinuxVirtualMachine do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { gallery_image_reference: [{ 'key1' => 'val1' }], lab_name: 'test-value', lab_subnet_name: 'test-value', lab_virtual_network_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', size: 'test-value', storage_type: 'test-value', username: 'test-value' } }
+  let(:required_attrs) { { gallery_image_reference: { 'key1' => 'val1' }, lab_name: 'test-value', lab_subnet_name: 'test-value', lab_virtual_network_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', size: 'test-value', storage_type: 'test-value', username: 'test-value' } }
 
   describe ':azurerm_dev_test_linux_virtual_machine' do
     context 'with required attributes only' do
@@ -238,7 +238,7 @@ RSpec.describe Pangea::Resources::AzureDevTestLinuxVirtualMachine do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_dev_test_linux_virtual_machine', 'typed')
-        expect(config['gallery_image_reference']).to be_a(Array)
+        expect(config['gallery_image_reference']).to be_a(Hash)
         expect(config['lab_name']).to be_a(String)
         expect(config['lab_subnet_name']).to be_a(String)
         expect(config['lab_virtual_network_id']).to be_a(String)
@@ -280,7 +280,7 @@ RSpec.describe Pangea::Resources::AzureDevTestLinuxVirtualMachine do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_dev_test_linux_virtual_machine,
     method: :azurerm_dev_test_linux_virtual_machine,
-    required_attrs: { gallery_image_reference: [{ 'key1' => 'val1' }], lab_name: 'test-value', lab_subnet_name: 'test-value', lab_virtual_network_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', size: 'test-value', storage_type: 'test-value', username: 'test-value' },
+    required_attrs: { gallery_image_reference: { 'key1' => 'val1' }, lab_name: 'test-value', lab_subnet_name: 'test-value', lab_virtual_network_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', size: 'test-value', storage_type: 'test-value', username: 'test-value' },
     expected_outputs: [:id, :fqdn, :unique_identifier],
     sensitive_fields: [:password],
     immutable_fields: [],

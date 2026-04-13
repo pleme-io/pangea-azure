@@ -13,9 +13,9 @@ module Pangea::Resources
     define_resource :azurerm_application_gateway,
       attributes_class: Azure::Types::ApplicationGatewayAttributes,
       outputs: { id: :id },
-      map: [:backend_address_pool, :backend_http_settings, :frontend_ip_configuration, :frontend_port, :gateway_ip_configuration, :http_listener, :location, :name, :request_routing_rule, :resource_group_name, :sku],
-      map_present: [:authentication_certificate, :autoscale_configuration, :custom_error_configuration, :firewall_policy_id, :global, :identity, :private_link_configuration, :probe, :redirect_configuration, :rewrite_rule_set, :ssl_certificate, :ssl_policy, :ssl_profile, :tags, :trusted_client_certificate, :trusted_root_certificate, :url_path_map, :waf_configuration, :zones],
-      map_bool: [:fips_enabled, :force_firewall_policy_association]
+      map: [:backend_address_pool, :frontend_ip_configuration, :frontend_port, :gateway_ip_configuration, :location, :name, :resource_group_name, :sku],
+      map_present: [:authentication_certificate, :autoscale_configuration, :backend, :backend_http_settings, :custom_error_configuration, :firewall_policy_id, :global, :http_listener, :identity, :listener, :private_link_configuration, :probe, :redirect_configuration, :request_routing_rule, :rewrite_rule_set, :routing_rule, :ssl_certificate, :ssl_policy, :ssl_profile, :tags, :trusted_client_certificate, :trusted_root_certificate, :url_path_map, :waf_configuration, :zones],
+      map_bool: [:enable_http2, :fips_enabled, :force_firewall_policy_association, :http2_enabled]
   end
   module Azure
     include AzureApplicationGateway

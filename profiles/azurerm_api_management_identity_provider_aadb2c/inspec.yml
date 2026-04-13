@@ -1,0 +1,8 @@
+name: azurerm_api_management_identity_provider_aadb2c
+title: Manages a azurerm_api_management_identity_provider_aadb2c resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

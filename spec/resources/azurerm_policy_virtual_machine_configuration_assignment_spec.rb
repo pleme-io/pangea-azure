@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzurePolicyVirtualMachineConfigurationAssignment do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { configuration: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', virtual_machine_id: 'test-value' } }
+  let(:required_attrs) { { configuration: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', virtual_machine_id: 'test-value' } }
 
   describe ':azurerm_policy_virtual_machine_configuration_assignment' do
     context 'with required attributes only' do
@@ -49,7 +49,7 @@ RSpec.describe Pangea::Resources::AzurePolicyVirtualMachineConfigurationAssignme
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_policy_virtual_machine_configuration_assignment', 'typed')
-        expect(config['configuration']).to be_a(Array)
+        expect(config['configuration']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['virtual_machine_id']).to be_a(String)
@@ -85,7 +85,7 @@ RSpec.describe Pangea::Resources::AzurePolicyVirtualMachineConfigurationAssignme
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_policy_virtual_machine_configuration_assignment,
     method: :azurerm_policy_virtual_machine_configuration_assignment,
-    required_attrs: { configuration: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', virtual_machine_id: 'test-value' },
+    required_attrs: { configuration: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', virtual_machine_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

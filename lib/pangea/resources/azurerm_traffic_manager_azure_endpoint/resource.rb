@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::TrafficManagerAzureEndpointAttributes,
       outputs: { id: :id },
       map: [:name, :profile_id, :target_resource_id],
-      map_present: [:custom_header, :geo_mappings, :subnet, :weight],
+      map_present: [:custom_header, :geo_mappings, :priority, :subnet, :weight],
       map_bool: [:always_serve_enabled, :enabled]
   end
   module Azure

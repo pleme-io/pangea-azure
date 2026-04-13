@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureExtendedCustomLocation do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ authentication: [{ 'key1' => 'val1' }], display_name: 'test-value', host_type: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ authentication: { 'key1' => 'val1' }, display_name: 'test-value', host_type: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureExtendedCustomLocation do
       it 'includes authentication when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_extended_custom_location('opt', required_attrs.merge(authentication: [{ 'key1' => 'val1' }]))
+        synth.azurerm_extended_custom_location('opt', required_attrs.merge(authentication: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_extended_custom_location', 'opt')
         expect(config).to have_key('authentication')

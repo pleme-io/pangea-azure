@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::VirtualMachineScaleSetAttributes,
       outputs: { id: :id },
       map: [:location, :name, :network_profile, :os_profile, :resource_group_name, :sku, :storage_profile_os_disk, :upgrade_policy_mode],
-      map_present: [:boot_diagnostics, :eviction_policy, :extension, :health_probe_id, :identity, :os_profile_linux_config, :os_profile_secrets, :os_profile_windows_config, :plan, :priority, :proximity_placement_group_id, :rolling_upgrade_policy, :storage_profile_data_disk, :storage_profile_image_reference, :tags, :zones],
+      map_present: [:boot_diagnostics, :eviction_policy, :extension, :health_probe_id, :identity, :license_type, :os_profile_linux_config, :os_profile_secrets, :os_profile_windows_config, :plan, :priority, :proximity_placement_group_id, :rolling_upgrade_policy, :storage_profile_data_disk, :storage_profile_image_reference, :tags, :zones],
       map_bool: [:automatic_os_upgrade, :overprovision, :single_placement_group]
   end
   module Azure

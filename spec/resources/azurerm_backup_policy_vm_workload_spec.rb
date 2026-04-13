@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureBackupPolicyVmWorkload do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { name: 'test-value', protection_policy: [{ 'key1' => 'val1' }], recovery_vault_name: 'test-value', resource_group_name: 'test-value', settings: [{ 'key1' => 'val1' }], workload_type: 'test-value' } }
+  let(:required_attrs) { { name: 'test-value', protection_policy: [{ 'key1' => 'val1' }], recovery_vault_name: 'test-value', resource_group_name: 'test-value', settings: { 'key1' => 'val1' }, workload_type: 'test-value' } }
 
   describe ':azurerm_backup_policy_vm_workload' do
     context 'with required attributes only' do
@@ -53,7 +53,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVmWorkload do
         expect(config['protection_policy']).to be_a(Array)
         expect(config['recovery_vault_name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['settings']).to be_a(Array)
+        expect(config['settings']).to be_a(Hash)
         expect(config['workload_type']).to be_a(String)
       end
     end
@@ -87,7 +87,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVmWorkload do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_backup_policy_vm_workload,
     method: :azurerm_backup_policy_vm_workload,
-    required_attrs: { name: 'test-value', protection_policy: [{ 'key1' => 'val1' }], recovery_vault_name: 'test-value', resource_group_name: 'test-value', settings: [{ 'key1' => 'val1' }], workload_type: 'test-value' },
+    required_attrs: { name: 'test-value', protection_policy: [{ 'key1' => 'val1' }], recovery_vault_name: 'test-value', resource_group_name: 'test-value', settings: { 'key1' => 'val1' }, workload_type: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

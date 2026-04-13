@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureStorageBlob do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ cache_control: 'test-value', content_md5: 'test-value', content_type: 'test-value', encryption_scope: 'test-value', parallelism: 3.14, size: 3.14, source: 'test-value', source_content: 'test-value', source_uri: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ access_tier: 'test-value', cache_control: 'test-value', content_md5: 'test-value', content_type: 'test-value', encryption_scope: 'test-value', metadata: { 'key1' => 'val1' }, parallelism: 3.14, size: 3.14, source: 'test-value', source_content: 'test-value', source_uri: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,10 +68,12 @@ RSpec.describe Pangea::Resources::AzureStorageBlob do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_storage_blob', 'full')
+        expect(config).to have_key('access_tier')
         expect(config).to have_key('cache_control')
         expect(config).to have_key('content_md5')
         expect(config).to have_key('content_type')
         expect(config).to have_key('encryption_scope')
+        expect(config).to have_key('metadata')
         expect(config).to have_key('parallelism')
         expect(config).to have_key('size')
         expect(config).to have_key('source')
@@ -81,6 +83,23 @@ RSpec.describe Pangea::Resources::AzureStorageBlob do
     end
 
     context 'optional attributes' do
+      it 'includes access_tier when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_blob('opt', required_attrs.merge(access_tier: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_blob', 'opt')
+        expect(config).to have_key('access_tier')
+      end
+
+      it 'omits access_tier when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_blob('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_blob', 'minimal')
+        expect(config).not_to have_key('access_tier')
+      end
       it 'includes cache_control when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -148,6 +167,23 @@ RSpec.describe Pangea::Resources::AzureStorageBlob do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_blob', 'minimal')
         expect(config).not_to have_key('encryption_scope')
+      end
+      it 'includes metadata when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_blob('opt', required_attrs.merge(metadata: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_blob', 'opt')
+        expect(config).to have_key('metadata')
+      end
+
+      it 'omits metadata when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_blob('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_blob', 'minimal')
+        expect(config).not_to have_key('metadata')
       end
       it 'includes parallelism when provided' do
         synth = create_synthesizer

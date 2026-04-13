@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StorageDataLakeGen2PathAttributes,
       outputs: { id: :id },
       map: [:filesystem_name, :path, :resource, :storage_account_id],
-      map_present: [:ace]
+      map_present: [:ace, :group, :owner]
   end
   module Azure
     include AzureStorageDataLakeGen2Path

@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureRecoveryServicesVault do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ classic_vmware_replication_enabled: true, cross_region_restore_enabled: true, encryption: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], monitoring: [{ 'key1' => 'val1' }], public_network_access_enabled: true, soft_delete_enabled: true, storage_mode_type: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ classic_vmware_replication_enabled: true, cross_region_restore_enabled: true, encryption: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, immutability: 'test-value', monitoring: { 'key1' => 'val1' }, public_network_access_enabled: true, soft_delete_enabled: true, storage_mode_type: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,6 +68,7 @@ RSpec.describe Pangea::Resources::AzureRecoveryServicesVault do
         expect(config).to have_key('cross_region_restore_enabled')
         expect(config).to have_key('encryption')
         expect(config).to have_key('identity')
+        expect(config).to have_key('immutability')
         expect(config).to have_key('monitoring')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('soft_delete_enabled')
@@ -114,7 +115,7 @@ RSpec.describe Pangea::Resources::AzureRecoveryServicesVault do
       it 'includes encryption when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_recovery_services_vault('opt', required_attrs.merge(encryption: [{ 'key1' => 'val1' }]))
+        synth.azurerm_recovery_services_vault('opt', required_attrs.merge(encryption: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_recovery_services_vault', 'opt')
         expect(config).to have_key('encryption')
@@ -131,7 +132,7 @@ RSpec.describe Pangea::Resources::AzureRecoveryServicesVault do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_recovery_services_vault('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_recovery_services_vault('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_recovery_services_vault', 'opt')
         expect(config).to have_key('identity')
@@ -145,10 +146,27 @@ RSpec.describe Pangea::Resources::AzureRecoveryServicesVault do
         config = validate_resource_structure(result, 'azurerm_recovery_services_vault', 'minimal')
         expect(config).not_to have_key('identity')
       end
+      it 'includes immutability when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_recovery_services_vault('opt', required_attrs.merge(immutability: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_recovery_services_vault', 'opt')
+        expect(config).to have_key('immutability')
+      end
+
+      it 'omits immutability when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_recovery_services_vault('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_recovery_services_vault', 'minimal')
+        expect(config).not_to have_key('immutability')
+      end
       it 'includes monitoring when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_recovery_services_vault('opt', required_attrs.merge(monitoring: [{ 'key1' => 'val1' }]))
+        synth.azurerm_recovery_services_vault('opt', required_attrs.merge(monitoring: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_recovery_services_vault', 'opt')
         expect(config).to have_key('monitoring')

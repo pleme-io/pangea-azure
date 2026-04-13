@@ -1,0 +1,8 @@
+name: azurerm_palo_alto_next_generation_firewall_virtual_hub_strata_cloud_manager
+title: Manages a azurerm_palo_alto_next_generation_firewall_virtual_hub_strata_cloud_manager resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

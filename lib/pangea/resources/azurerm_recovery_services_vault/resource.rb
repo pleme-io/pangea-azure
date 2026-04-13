@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::RecoveryServicesVaultAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku],
-      map_present: [:encryption, :identity, :monitoring, :storage_mode_type, :tags],
+      map_present: [:encryption, :identity, :immutability, :monitoring, :storage_mode_type, :tags],
       map_bool: [:classic_vmware_replication_enabled, :cross_region_restore_enabled, :public_network_access_enabled, :soft_delete_enabled]
   end
   module Azure

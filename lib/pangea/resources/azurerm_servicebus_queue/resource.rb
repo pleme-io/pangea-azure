@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ServicebusQueueAttributes,
       outputs: { id: :id },
       map: [:name, :namespace_id],
-      map_present: [:duplicate_detection_history_time_window, :forward_dead_lettered_messages_to, :forward_to, :lock_duration, :max_delivery_count, :status],
+      map_present: [:auto_delete_on_idle, :default_message_ttl, :duplicate_detection_history_time_window, :forward_dead_lettered_messages_to, :forward_to, :lock_duration, :max_delivery_count, :max_message_size_in_kilobytes, :max_size_in_megabytes, :status],
       map_bool: [:batched_operations_enabled, :dead_lettering_on_message_expiration, :express_enabled, :partitioning_enabled, :requires_duplicate_detection, :requires_session]
   end
   module Azure

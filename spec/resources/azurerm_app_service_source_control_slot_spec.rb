@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureAppServiceSourceControlSlot do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ github_action_configuration: [{ 'key1' => 'val1' }], rollback_enabled: true, use_local_git: true, use_manual_integration: true, use_mercurial: true }) }
+      let(:all_attrs) { required_attrs.merge({ branch: 'test-value', github_action_configuration: { 'key1' => 'val1' }, repo_url: 'test-value', rollback_enabled: true, use_local_git: true, use_manual_integration: true, use_mercurial: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,7 +70,9 @@ RSpec.describe Pangea::Resources::AzureAppServiceSourceControlSlot do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_app_service_source_control_slot', 'full')
+        expect(config).to have_key('branch')
         expect(config).to have_key('github_action_configuration')
+        expect(config).to have_key('repo_url')
         expect(config).to have_key('rollback_enabled')
         expect(config).to have_key('use_local_git')
         expect(config).to have_key('use_manual_integration')
@@ -79,10 +81,27 @@ RSpec.describe Pangea::Resources::AzureAppServiceSourceControlSlot do
     end
 
     context 'optional attributes' do
+      it 'includes branch when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_source_control_slot('opt', required_attrs.merge(branch: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_source_control_slot', 'opt')
+        expect(config).to have_key('branch')
+      end
+
+      it 'omits branch when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_source_control_slot('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_source_control_slot', 'minimal')
+        expect(config).not_to have_key('branch')
+      end
       it 'includes github_action_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service_source_control_slot('opt', required_attrs.merge(github_action_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service_source_control_slot('opt', required_attrs.merge(github_action_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_source_control_slot', 'opt')
         expect(config).to have_key('github_action_configuration')
@@ -95,6 +114,23 @@ RSpec.describe Pangea::Resources::AzureAppServiceSourceControlSlot do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_source_control_slot', 'minimal')
         expect(config).not_to have_key('github_action_configuration')
+      end
+      it 'includes repo_url when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_source_control_slot('opt', required_attrs.merge(repo_url: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_source_control_slot', 'opt')
+        expect(config).to have_key('repo_url')
+      end
+
+      it 'omits repo_url when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_source_control_slot('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_source_control_slot', 'minimal')
+        expect(config).not_to have_key('repo_url')
       end
       it 'includes rollback_enabled when provided' do
         synth = create_synthesizer

@@ -65,7 +65,7 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicatedVm do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ multi_vm_group_name: 'test-value', target_availability_set_id: 'test-value', target_boot_diagnostic_storage_account_id: 'test-value', target_capacity_reservation_group_id: 'test-value', target_edge_zone: 'test-value', target_proximity_placement_group_id: 'test-value', target_virtual_machine_scale_set_id: 'test-value', target_zone: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ managed_disk: [{ 'key1' => 'val1' }], multi_vm_group_name: 'test-value', network_interface: [{ 'key1' => 'val1' }], target_availability_set_id: 'test-value', target_boot_diagnostic_storage_account_id: 'test-value', target_capacity_reservation_group_id: 'test-value', target_edge_zone: 'test-value', target_network_id: 'test-value', target_proximity_placement_group_id: 'test-value', target_virtual_machine_scale_set_id: 'test-value', target_virtual_machine_size: 'test-value', target_zone: 'test-value', test_network_id: 'test-value', unmanaged_disk: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,18 +74,41 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicatedVm do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'full')
+        expect(config).to have_key('managed_disk')
         expect(config).to have_key('multi_vm_group_name')
+        expect(config).to have_key('network_interface')
         expect(config).to have_key('target_availability_set_id')
         expect(config).to have_key('target_boot_diagnostic_storage_account_id')
         expect(config).to have_key('target_capacity_reservation_group_id')
         expect(config).to have_key('target_edge_zone')
+        expect(config).to have_key('target_network_id')
         expect(config).to have_key('target_proximity_placement_group_id')
         expect(config).to have_key('target_virtual_machine_scale_set_id')
+        expect(config).to have_key('target_virtual_machine_size')
         expect(config).to have_key('target_zone')
+        expect(config).to have_key('test_network_id')
+        expect(config).to have_key('unmanaged_disk')
       end
     end
 
     context 'optional attributes' do
+      it 'includes managed_disk when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('opt', required_attrs.merge(managed_disk: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'opt')
+        expect(config).to have_key('managed_disk')
+      end
+
+      it 'omits managed_disk when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
+        expect(config).not_to have_key('managed_disk')
+      end
       it 'includes multi_vm_group_name when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -102,6 +125,23 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicatedVm do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
         expect(config).not_to have_key('multi_vm_group_name')
+      end
+      it 'includes network_interface when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('opt', required_attrs.merge(network_interface: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'opt')
+        expect(config).to have_key('network_interface')
+      end
+
+      it 'omits network_interface when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
+        expect(config).not_to have_key('network_interface')
       end
       it 'includes target_availability_set_id when provided' do
         synth = create_synthesizer
@@ -171,6 +211,23 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicatedVm do
         config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
         expect(config).not_to have_key('target_edge_zone')
       end
+      it 'includes target_network_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('opt', required_attrs.merge(target_network_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'opt')
+        expect(config).to have_key('target_network_id')
+      end
+
+      it 'omits target_network_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
+        expect(config).not_to have_key('target_network_id')
+      end
       it 'includes target_proximity_placement_group_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -205,6 +262,23 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicatedVm do
         config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
         expect(config).not_to have_key('target_virtual_machine_scale_set_id')
       end
+      it 'includes target_virtual_machine_size when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('opt', required_attrs.merge(target_virtual_machine_size: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'opt')
+        expect(config).to have_key('target_virtual_machine_size')
+      end
+
+      it 'omits target_virtual_machine_size when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
+        expect(config).not_to have_key('target_virtual_machine_size')
+      end
       it 'includes target_zone when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -221,6 +295,40 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicatedVm do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
         expect(config).not_to have_key('target_zone')
+      end
+      it 'includes test_network_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('opt', required_attrs.merge(test_network_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'opt')
+        expect(config).to have_key('test_network_id')
+      end
+
+      it 'omits test_network_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
+        expect(config).not_to have_key('test_network_id')
+      end
+      it 'includes unmanaged_disk when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('opt', required_attrs.merge(unmanaged_disk: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'opt')
+        expect(config).to have_key('unmanaged_disk')
+      end
+
+      it 'omits unmanaged_disk when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_site_recovery_replicated_vm('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_site_recovery_replicated_vm', 'minimal')
+        expect(config).not_to have_key('unmanaged_disk')
       end
     end
 

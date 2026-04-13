@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureVirtualNetwork do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ address_space: ['test-value'], bgp_community: 'test-value', ddos_protection_plan: [{ 'key1' => 'val1' }], edge_zone: 'test-value', encryption: [{ 'key1' => 'val1' }], flow_timeout_in_minutes: 3.14, ip_address_pool: [{ 'key1' => 'val1' }], private_endpoint_vnet_policies: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ address_space: ['test-value'], bgp_community: 'test-value', ddos_protection_plan: { 'key1' => 'val1' }, dns_servers: ['test-value'], edge_zone: 'test-value', encryption: { 'key1' => 'val1' }, flow_timeout_in_minutes: 3.14, ip_address_pool: [{ 'key1' => 'val1' }], private_endpoint_vnet_policies: 'test-value', subnet: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -71,11 +71,13 @@ RSpec.describe Pangea::Resources::AzureVirtualNetwork do
         expect(config).to have_key('address_space')
         expect(config).to have_key('bgp_community')
         expect(config).to have_key('ddos_protection_plan')
+        expect(config).to have_key('dns_servers')
         expect(config).to have_key('edge_zone')
         expect(config).to have_key('encryption')
         expect(config).to have_key('flow_timeout_in_minutes')
         expect(config).to have_key('ip_address_pool')
         expect(config).to have_key('private_endpoint_vnet_policies')
+        expect(config).to have_key('subnet')
         expect(config).to have_key('tags')
       end
     end
@@ -118,7 +120,7 @@ RSpec.describe Pangea::Resources::AzureVirtualNetwork do
       it 'includes ddos_protection_plan when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_network('opt', required_attrs.merge(ddos_protection_plan: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_network('opt', required_attrs.merge(ddos_protection_plan: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network', 'opt')
         expect(config).to have_key('ddos_protection_plan')
@@ -131,6 +133,23 @@ RSpec.describe Pangea::Resources::AzureVirtualNetwork do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network', 'minimal')
         expect(config).not_to have_key('ddos_protection_plan')
+      end
+      it 'includes dns_servers when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network('opt', required_attrs.merge(dns_servers: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network', 'opt')
+        expect(config).to have_key('dns_servers')
+      end
+
+      it 'omits dns_servers when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network', 'minimal')
+        expect(config).not_to have_key('dns_servers')
       end
       it 'includes edge_zone when provided' do
         synth = create_synthesizer
@@ -152,7 +171,7 @@ RSpec.describe Pangea::Resources::AzureVirtualNetwork do
       it 'includes encryption when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_network('opt', required_attrs.merge(encryption: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_network('opt', required_attrs.merge(encryption: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network', 'opt')
         expect(config).to have_key('encryption')
@@ -216,6 +235,23 @@ RSpec.describe Pangea::Resources::AzureVirtualNetwork do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network', 'minimal')
         expect(config).not_to have_key('private_endpoint_vnet_policies')
+      end
+      it 'includes subnet when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network('opt', required_attrs.merge(subnet: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network', 'opt')
+        expect(config).to have_key('subnet')
+      end
+
+      it 'omits subnet when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network', 'minimal')
+        expect(config).not_to have_key('subnet')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer

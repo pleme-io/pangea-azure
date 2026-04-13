@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::RoleDefinitionAttributes,
       outputs: { id: :id },
       map: [:name, :scope],
-      map_present: [:description, :permissions]
+      map_present: [:assignable_scopes, :description, :permissions, :role_definition_id]
   end
   module Azure
     include AzureRoleDefinition

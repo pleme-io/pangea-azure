@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSchedule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', month_days: [3.14], monthly_occurrence: [{ 'key1' => 'val1' }], timezone: 'test-value', week_days: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', expiry_time: 'test-value', interval: 3.14, month_days: [3.14], monthly_occurrence: { 'key1' => 'val1' }, start_time: 'test-value', timezone: 'test-value', week_days: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,8 +69,11 @@ RSpec.describe Pangea::Resources::AzureAutomationSchedule do
 
         config = validate_resource_structure(result, 'azurerm_automation_schedule', 'full')
         expect(config).to have_key('description')
+        expect(config).to have_key('expiry_time')
+        expect(config).to have_key('interval')
         expect(config).to have_key('month_days')
         expect(config).to have_key('monthly_occurrence')
+        expect(config).to have_key('start_time')
         expect(config).to have_key('timezone')
         expect(config).to have_key('week_days')
       end
@@ -94,6 +97,40 @@ RSpec.describe Pangea::Resources::AzureAutomationSchedule do
         config = validate_resource_structure(result, 'azurerm_automation_schedule', 'minimal')
         expect(config).not_to have_key('description')
       end
+      it 'includes expiry_time when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_schedule('opt', required_attrs.merge(expiry_time: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_schedule', 'opt')
+        expect(config).to have_key('expiry_time')
+      end
+
+      it 'omits expiry_time when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_schedule', 'minimal')
+        expect(config).not_to have_key('expiry_time')
+      end
+      it 'includes interval when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_schedule('opt', required_attrs.merge(interval: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_schedule', 'opt')
+        expect(config).to have_key('interval')
+      end
+
+      it 'omits interval when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_schedule', 'minimal')
+        expect(config).not_to have_key('interval')
+      end
       it 'includes month_days when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -114,7 +151,7 @@ RSpec.describe Pangea::Resources::AzureAutomationSchedule do
       it 'includes monthly_occurrence when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_automation_schedule('opt', required_attrs.merge(monthly_occurrence: [{ 'key1' => 'val1' }]))
+        synth.azurerm_automation_schedule('opt', required_attrs.merge(monthly_occurrence: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_schedule', 'opt')
         expect(config).to have_key('monthly_occurrence')
@@ -127,6 +164,23 @@ RSpec.describe Pangea::Resources::AzureAutomationSchedule do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_automation_schedule', 'minimal')
         expect(config).not_to have_key('monthly_occurrence')
+      end
+      it 'includes start_time when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_schedule('opt', required_attrs.merge(start_time: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_schedule', 'opt')
+        expect(config).to have_key('start_time')
+      end
+
+      it 'omits start_time when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_automation_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_automation_schedule', 'minimal')
+        expect(config).not_to have_key('start_time')
       end
       it 'includes timezone when provided' do
         synth = create_synthesizer

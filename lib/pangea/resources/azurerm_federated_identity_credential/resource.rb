@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_federated_identity_credential,
       attributes_class: Azure::Types::FederatedIdentityCredentialAttributes,
       outputs: { id: :id },
-      map: [:audience, :issuer, :name, :subject]
+      map: [:audience, :issuer, :name, :subject],
+      map_present: [:parent_id, :resource_group_name, :user_assigned_identity_id]
   end
   module Azure
     include AzureFederatedIdentityCredential

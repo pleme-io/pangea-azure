@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureKubernetesCluster do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { default_node_pool: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { default_node_pool: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_kubernetes_cluster' do
     context 'with required attributes only' do
@@ -48,6 +48,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
         expect(ref.kubernetes_version).to eq("${azurerm_kubernetes_cluster.test.kubernetes_version}")
         expect(ref.node_resource_group).to eq("${azurerm_kubernetes_cluster.test.node_resource_group}")
         expect(ref.node_resource_group_id).to eq("${azurerm_kubernetes_cluster.test.node_resource_group_id}")
+        expect(ref.oidc_issuer_enabled).to eq("${azurerm_kubernetes_cluster.test.oidc_issuer_enabled}")
         expect(ref.oidc_issuer_url).to eq("${azurerm_kubernetes_cluster.test.oidc_issuer_url}")
         expect(ref.portal_fqdn).to eq("${azurerm_kubernetes_cluster.test.portal_fqdn}")
         expect(ref.private_dns_zone_id).to eq("${azurerm_kubernetes_cluster.test.private_dns_zone_id}")
@@ -73,6 +74,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
         expect(config).not_to have_key('kubernetes_version')
         expect(config).not_to have_key('node_resource_group')
         expect(config).not_to have_key('node_resource_group_id')
+        expect(config).not_to have_key('oidc_issuer_enabled')
         expect(config).not_to have_key('oidc_issuer_url')
         expect(config).not_to have_key('portal_fqdn')
         expect(config).not_to have_key('private_dns_zone_id')
@@ -81,7 +83,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ aci_connector_linux: [{ 'key1' => 'val1' }], ai_toolchain_operator_enabled: true, api_server_access_profile: [{ 'key1' => 'val1' }], auto_scaler_profile: [{ 'key1' => 'val1' }], automatic_upgrade_channel: 'test-value', azure_active_directory_role_based_access_control: [{ 'key1' => 'val1' }], azure_policy_enabled: true, bootstrap_profile: [{ 'key1' => 'val1' }], confidential_computing: [{ 'key1' => 'val1' }], cost_analysis_enabled: true, custom_ca_trust_certificates_base64: ['test-value'], disk_encryption_set_id: 'test-value', dns_prefix: 'test-value', dns_prefix_private_cluster: 'test-value', edge_zone: 'test-value', http_application_routing_enabled: true, http_proxy_config: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], image_cleaner_enabled: true, image_cleaner_interval_hours: 3.14, ingress_application_gateway: [{ 'key1' => 'val1' }], key_management_service: [{ 'key1' => 'val1' }], key_vault_secrets_provider: [{ 'key1' => 'val1' }], kubelet_identity: [{ 'key1' => 'val1' }], linux_profile: [{ 'key1' => 'val1' }], local_account_disabled: true, maintenance_window: [{ 'key1' => 'val1' }], maintenance_window_auto_upgrade: [{ 'key1' => 'val1' }], maintenance_window_node_os: [{ 'key1' => 'val1' }], microsoft_defender: [{ 'key1' => 'val1' }], monitor_metrics: [{ 'key1' => 'val1' }], network_profile: [{ 'key1' => 'val1' }], node_os_upgrade_channel: 'test-value', node_provisioning_profile: [{ 'key1' => 'val1' }], oidc_issuer_enabled: true, oms_agent: [{ 'key1' => 'val1' }], open_service_mesh_enabled: true, private_cluster_enabled: true, private_cluster_public_fqdn_enabled: true, role_based_access_control_enabled: true, run_command_enabled: true, service_mesh_profile: [{ 'key1' => 'val1' }], service_principal: [{ 'key1' => 'val1' }], sku_tier: 'test-value', storage_profile: [{ 'key1' => 'val1' }], support_plan: 'test-value', tags: { 'key1' => 'val1' }, upgrade_override: [{ 'key1' => 'val1' }], web_app_routing: [{ 'key1' => 'val1' }], windows_profile: [{ 'key1' => 'val1' }], workload_autoscaler_profile: [{ 'key1' => 'val1' }], workload_identity_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ aci_connector_linux: { 'key1' => 'val1' }, ai_toolchain_operator_enabled: true, api_server_access_profile: { 'key1' => 'val1' }, auto_scaler_profile: { 'key1' => 'val1' }, automatic_upgrade_channel: 'test-value', azure_active_directory_role_based_access_control: { 'key1' => 'val1' }, azure_policy_enabled: true, bootstrap_profile: { 'key1' => 'val1' }, confidential_computing: { 'key1' => 'val1' }, cost_analysis_enabled: true, custom_ca_trust_certificates_base64: ['test-value'], disk_encryption_set_id: 'test-value', dns_prefix: 'test-value', dns_prefix_private_cluster: 'test-value', edge_zone: 'test-value', http_application_routing_enabled: true, http_proxy_config: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, image_cleaner_enabled: true, image_cleaner_interval_hours: 3.14, ingress_application_gateway: { 'key1' => 'val1' }, key_management_service: { 'key1' => 'val1' }, key_vault_secrets_provider: { 'key1' => 'val1' }, kubelet_identity: { 'key1' => 'val1' }, kubernetes_version: 'test-value', linux_profile: { 'key1' => 'val1' }, local_account_disabled: true, maintenance_window: { 'key1' => 'val1' }, maintenance_window_auto_upgrade: { 'key1' => 'val1' }, maintenance_window_node_os: { 'key1' => 'val1' }, microsoft_defender: { 'key1' => 'val1' }, monitor_metrics: { 'key1' => 'val1' }, network_profile: { 'key1' => 'val1' }, node_os_upgrade_channel: 'test-value', node_provisioning_profile: { 'key1' => 'val1' }, node_resource_group: 'test-value', oidc_issuer_enabled: true, oms_agent: { 'key1' => 'val1' }, open_service_mesh_enabled: true, private_cluster_enabled: true, private_cluster_public_fqdn_enabled: true, private_dns_zone_id: 'test-value', role_based_access_control_enabled: true, run_command_enabled: true, service_mesh_profile: { 'key1' => 'val1' }, service_principal: { 'key1' => 'val1' }, sku_tier: 'test-value', storage_profile: { 'key1' => 'val1' }, support_plan: 'test-value', tags: { 'key1' => 'val1' }, upgrade_override: { 'key1' => 'val1' }, web_app_routing: { 'key1' => 'val1' }, windows_profile: { 'key1' => 'val1' }, workload_autoscaler_profile: { 'key1' => 'val1' }, workload_identity_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -114,6 +116,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
         expect(config).to have_key('key_management_service')
         expect(config).to have_key('key_vault_secrets_provider')
         expect(config).to have_key('kubelet_identity')
+        expect(config).to have_key('kubernetes_version')
         expect(config).to have_key('linux_profile')
         expect(config).to have_key('local_account_disabled')
         expect(config).to have_key('maintenance_window')
@@ -124,11 +127,13 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
         expect(config).to have_key('network_profile')
         expect(config).to have_key('node_os_upgrade_channel')
         expect(config).to have_key('node_provisioning_profile')
+        expect(config).to have_key('node_resource_group')
         expect(config).to have_key('oidc_issuer_enabled')
         expect(config).to have_key('oms_agent')
         expect(config).to have_key('open_service_mesh_enabled')
         expect(config).to have_key('private_cluster_enabled')
         expect(config).to have_key('private_cluster_public_fqdn_enabled')
+        expect(config).to have_key('private_dns_zone_id')
         expect(config).to have_key('role_based_access_control_enabled')
         expect(config).to have_key('run_command_enabled')
         expect(config).to have_key('service_mesh_profile')
@@ -149,7 +154,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes aci_connector_linux when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(aci_connector_linux: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(aci_connector_linux: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('aci_connector_linux')
@@ -183,7 +188,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes api_server_access_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(api_server_access_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(api_server_access_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('api_server_access_profile')
@@ -200,7 +205,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes auto_scaler_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(auto_scaler_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(auto_scaler_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('auto_scaler_profile')
@@ -234,7 +239,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes azure_active_directory_role_based_access_control when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(azure_active_directory_role_based_access_control: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(azure_active_directory_role_based_access_control: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('azure_active_directory_role_based_access_control')
@@ -268,7 +273,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes bootstrap_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(bootstrap_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(bootstrap_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('bootstrap_profile')
@@ -285,7 +290,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes confidential_computing when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(confidential_computing: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(confidential_computing: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('confidential_computing')
@@ -421,7 +426,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes http_proxy_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(http_proxy_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(http_proxy_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('http_proxy_config')
@@ -438,7 +443,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('identity')
@@ -489,7 +494,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes ingress_application_gateway when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(ingress_application_gateway: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(ingress_application_gateway: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('ingress_application_gateway')
@@ -506,7 +511,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes key_management_service when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(key_management_service: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(key_management_service: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('key_management_service')
@@ -523,7 +528,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes key_vault_secrets_provider when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(key_vault_secrets_provider: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(key_vault_secrets_provider: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('key_vault_secrets_provider')
@@ -540,7 +545,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes kubelet_identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(kubelet_identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(kubelet_identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('kubelet_identity')
@@ -554,10 +559,27 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'minimal')
         expect(config).not_to have_key('kubelet_identity')
       end
+      it 'includes kubernetes_version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(kubernetes_version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
+        expect(config).to have_key('kubernetes_version')
+      end
+
+      it 'omits kubernetes_version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'minimal')
+        expect(config).not_to have_key('kubernetes_version')
+      end
       it 'includes linux_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(linux_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(linux_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('linux_profile')
@@ -591,7 +613,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes maintenance_window when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(maintenance_window: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(maintenance_window: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('maintenance_window')
@@ -608,7 +630,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes maintenance_window_auto_upgrade when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(maintenance_window_auto_upgrade: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(maintenance_window_auto_upgrade: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('maintenance_window_auto_upgrade')
@@ -625,7 +647,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes maintenance_window_node_os when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(maintenance_window_node_os: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(maintenance_window_node_os: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('maintenance_window_node_os')
@@ -642,7 +664,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes microsoft_defender when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(microsoft_defender: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(microsoft_defender: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('microsoft_defender')
@@ -659,7 +681,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes monitor_metrics when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(monitor_metrics: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(monitor_metrics: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('monitor_metrics')
@@ -676,7 +698,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes network_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(network_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(network_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('network_profile')
@@ -710,7 +732,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes node_provisioning_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(node_provisioning_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(node_provisioning_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('node_provisioning_profile')
@@ -723,6 +745,23 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'minimal')
         expect(config).not_to have_key('node_provisioning_profile')
+      end
+      it 'includes node_resource_group when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(node_resource_group: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
+        expect(config).to have_key('node_resource_group')
+      end
+
+      it 'omits node_resource_group when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'minimal')
+        expect(config).not_to have_key('node_resource_group')
       end
       it 'includes oidc_issuer_enabled when provided' do
         synth = create_synthesizer
@@ -744,7 +783,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes oms_agent when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(oms_agent: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(oms_agent: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('oms_agent')
@@ -809,6 +848,23 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'minimal')
         expect(config).not_to have_key('private_cluster_public_fqdn_enabled')
       end
+      it 'includes private_dns_zone_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(private_dns_zone_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
+        expect(config).to have_key('private_dns_zone_id')
+      end
+
+      it 'omits private_dns_zone_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kubernetes_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'minimal')
+        expect(config).not_to have_key('private_dns_zone_id')
+      end
       it 'includes role_based_access_control_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -846,7 +902,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes service_mesh_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(service_mesh_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(service_mesh_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('service_mesh_profile')
@@ -863,7 +919,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes service_principal when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(service_principal: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(service_principal: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('service_principal')
@@ -897,7 +953,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes storage_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(storage_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(storage_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('storage_profile')
@@ -948,7 +1004,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes upgrade_override when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(upgrade_override: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(upgrade_override: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('upgrade_override')
@@ -965,7 +1021,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes web_app_routing when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(web_app_routing: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(web_app_routing: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('web_app_routing')
@@ -982,7 +1038,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes windows_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(windows_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(windows_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('windows_profile')
@@ -999,7 +1055,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
       it 'includes workload_autoscaler_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(workload_autoscaler_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_cluster('opt', required_attrs.merge(workload_autoscaler_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'opt')
         expect(config).to have_key('workload_autoscaler_profile')
@@ -1196,7 +1252,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_kubernetes_cluster', 'typed')
-        expect(config['default_node_pool']).to be_a(Array)
+        expect(config['default_node_pool']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -1232,8 +1288,8 @@ RSpec.describe Pangea::Resources::AzureKubernetesCluster do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_kubernetes_cluster,
     method: :azurerm_kubernetes_cluster,
-    required_attrs: { default_node_pool: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
-    expected_outputs: [:id, :current_kubernetes_version, :fqdn, :http_application_routing_zone_name, :kube_admin_config, :kube_admin_config_raw, :kube_config, :kube_config_raw, :kubernetes_version, :node_resource_group, :node_resource_group_id, :oidc_issuer_url, :portal_fqdn, :private_dns_zone_id, :private_fqdn],
+    required_attrs: { default_node_pool: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    expected_outputs: [:id, :current_kubernetes_version, :fqdn, :http_application_routing_zone_name, :kube_admin_config, :kube_admin_config_raw, :kube_config, :kube_config_raw, :kubernetes_version, :node_resource_group, :node_resource_group_id, :oidc_issuer_enabled, :oidc_issuer_url, :portal_fqdn, :private_dns_zone_id, :private_fqdn],
     sensitive_fields: [:kube_admin_config, :kube_admin_config_raw, :kube_config, :kube_config_raw],
     immutable_fields: [],
     boolean_fields: [:ai_toolchain_operator_enabled, :azure_policy_enabled, :cost_analysis_enabled, :http_application_routing_enabled, :image_cleaner_enabled, :local_account_disabled, :oidc_issuer_enabled, :open_service_mesh_enabled, :private_cluster_enabled, :private_cluster_public_fqdn_enabled, :role_based_access_control_enabled, :run_command_enabled, :workload_identity_enabled]

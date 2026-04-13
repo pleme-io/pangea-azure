@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzurePrivateDnsZone do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ soa_record: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ soa_record: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -79,7 +79,7 @@ RSpec.describe Pangea::Resources::AzurePrivateDnsZone do
       it 'includes soa_record when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_private_dns_zone('opt', required_attrs.merge(soa_record: [{ 'key1' => 'val1' }]))
+        synth.azurerm_private_dns_zone('opt', required_attrs.merge(soa_record: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_private_dns_zone', 'opt')
         expect(config).to have_key('soa_record')

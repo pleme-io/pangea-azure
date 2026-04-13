@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMaintenanceAssignmentDynamicScope do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { filter: [{ 'key1' => 'val1' }], maintenance_configuration_id: 'test-value', name: 'test-value' } }
+  let(:required_attrs) { { filter: { 'key1' => 'val1' }, maintenance_configuration_id: 'test-value', name: 'test-value' } }
 
   describe ':azurerm_maintenance_assignment_dynamic_scope' do
     context 'with required attributes only' do
@@ -49,7 +49,7 @@ RSpec.describe Pangea::Resources::AzureMaintenanceAssignmentDynamicScope do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_maintenance_assignment_dynamic_scope', 'typed')
-        expect(config['filter']).to be_a(Array)
+        expect(config['filter']).to be_a(Hash)
         expect(config['maintenance_configuration_id']).to be_a(String)
         expect(config['name']).to be_a(String)
       end
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureMaintenanceAssignmentDynamicScope do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_maintenance_assignment_dynamic_scope,
     method: :azurerm_maintenance_assignment_dynamic_scope,
-    required_attrs: { filter: [{ 'key1' => 'val1' }], maintenance_configuration_id: 'test-value', name: 'test-value' },
+    required_attrs: { filter: { 'key1' => 'val1' }, maintenance_configuration_id: 'test-value', name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorThreatIntelligence d
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ lookback_date: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ lookback_date: 'test-value', tenant_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -65,6 +65,7 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorThreatIntelligence d
 
         config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_threat_intelligence', 'full')
         expect(config).to have_key('lookback_date')
+        expect(config).to have_key('tenant_id')
       end
     end
 
@@ -85,6 +86,23 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorThreatIntelligence d
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_threat_intelligence', 'minimal')
         expect(config).not_to have_key('lookback_date')
+      end
+      it 'includes tenant_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_threat_intelligence('opt', required_attrs.merge(tenant_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_threat_intelligence', 'opt')
+        expect(config).to have_key('tenant_id')
+      end
+
+      it 'omits tenant_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_threat_intelligence('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_threat_intelligence', 'minimal')
+        expect(config).not_to have_key('tenant_id')
       end
     end
 

@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzurePolicyDefinition do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', management_group_id: 'test-value', parameters: 'test-value', policy_rule: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', management_group_id: 'test-value', metadata: 'test-value', parameters: 'test-value', policy_rule: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,6 +68,7 @@ RSpec.describe Pangea::Resources::AzurePolicyDefinition do
         config = validate_resource_structure(result, 'azurerm_policy_definition', 'full')
         expect(config).to have_key('description')
         expect(config).to have_key('management_group_id')
+        expect(config).to have_key('metadata')
         expect(config).to have_key('parameters')
         expect(config).to have_key('policy_rule')
       end
@@ -107,6 +108,23 @@ RSpec.describe Pangea::Resources::AzurePolicyDefinition do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_policy_definition', 'minimal')
         expect(config).not_to have_key('management_group_id')
+      end
+      it 'includes metadata when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_policy_definition('opt', required_attrs.merge(metadata: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_policy_definition', 'opt')
+        expect(config).to have_key('metadata')
+      end
+
+      it 'omits metadata when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_policy_definition('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_policy_definition', 'minimal')
+        expect(config).not_to have_key('metadata')
       end
       it 'includes parameters when provided' do
         synth = create_synthesizer

@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureKustoScript do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ continue_on_errors_enabled: true, principal_permissions_action: 'test-value', sas_token: 'test-value', script_content: 'test-value', script_level: 'test-value', url: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ continue_on_errors_enabled: true, force_an_update_when_value_changed: 'test-value', principal_permissions_action: 'test-value', sas_token: 'test-value', script_content: 'test-value', script_level: 'test-value', url: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -65,6 +65,7 @@ RSpec.describe Pangea::Resources::AzureKustoScript do
 
         config = validate_resource_structure(result, 'azurerm_kusto_script', 'full')
         expect(config).to have_key('continue_on_errors_enabled')
+        expect(config).to have_key('force_an_update_when_value_changed')
         expect(config).to have_key('principal_permissions_action')
         expect(config).to have_key('sas_token')
         expect(config).to have_key('script_content')
@@ -90,6 +91,23 @@ RSpec.describe Pangea::Resources::AzureKustoScript do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kusto_script', 'minimal')
         expect(config).not_to have_key('continue_on_errors_enabled')
+      end
+      it 'includes force_an_update_when_value_changed when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_script('opt', required_attrs.merge(force_an_update_when_value_changed: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_script', 'opt')
+        expect(config).to have_key('force_an_update_when_value_changed')
+      end
+
+      it 'omits force_an_update_when_value_changed when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_script('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_script', 'minimal')
+        expect(config).not_to have_key('force_an_update_when_value_changed')
       end
       it 'includes principal_permissions_action when provided' do
         synth = create_synthesizer

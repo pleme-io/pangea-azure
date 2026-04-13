@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbMongoCollection do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ analytical_storage_ttl: 3.14, autoscale_settings: [{ 'key1' => 'val1' }], default_ttl_seconds: 3.14, index: [{ 'key1' => 'val1' }], shard_key: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ analytical_storage_ttl: 3.14, autoscale_settings: { 'key1' => 'val1' }, default_ttl_seconds: 3.14, index: [{ 'key1' => 'val1' }], shard_key: 'test-value', throughput: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -71,6 +71,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbMongoCollection do
         expect(config).to have_key('default_ttl_seconds')
         expect(config).to have_key('index')
         expect(config).to have_key('shard_key')
+        expect(config).to have_key('throughput')
       end
     end
 
@@ -95,7 +96,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbMongoCollection do
       it 'includes autoscale_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_mongo_collection('opt', required_attrs.merge(autoscale_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_mongo_collection('opt', required_attrs.merge(autoscale_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_mongo_collection', 'opt')
         expect(config).to have_key('autoscale_settings')
@@ -159,6 +160,23 @@ RSpec.describe Pangea::Resources::AzureCosmosdbMongoCollection do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_mongo_collection', 'minimal')
         expect(config).not_to have_key('shard_key')
+      end
+      it 'includes throughput when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_mongo_collection('opt', required_attrs.merge(throughput: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_mongo_collection', 'opt')
+        expect(config).to have_key('throughput')
+      end
+
+      it 'omits throughput when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_mongo_collection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_mongo_collection', 'minimal')
+        expect(config).not_to have_key('throughput')
       end
     end
 

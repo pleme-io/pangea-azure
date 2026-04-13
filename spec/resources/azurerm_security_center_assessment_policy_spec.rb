@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureSecurityCenterAssessmentPolicy do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ implementation_effort: 'test-value', remediation_description: 'test-value', severity: 'test-value', threats: ['test-value'], user_impact: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ categories: ['test-value'], implementation_effort: 'test-value', remediation_description: 'test-value', severity: 'test-value', threats: ['test-value'], user_impact: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,6 +66,7 @@ RSpec.describe Pangea::Resources::AzureSecurityCenterAssessmentPolicy do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_security_center_assessment_policy', 'full')
+        expect(config).to have_key('categories')
         expect(config).to have_key('implementation_effort')
         expect(config).to have_key('remediation_description')
         expect(config).to have_key('severity')
@@ -75,6 +76,23 @@ RSpec.describe Pangea::Resources::AzureSecurityCenterAssessmentPolicy do
     end
 
     context 'optional attributes' do
+      it 'includes categories when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_security_center_assessment_policy('opt', required_attrs.merge(categories: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_security_center_assessment_policy', 'opt')
+        expect(config).to have_key('categories')
+      end
+
+      it 'omits categories when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_security_center_assessment_policy('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_security_center_assessment_policy', 'minimal')
+        expect(config).not_to have_key('categories')
+      end
       it 'includes implementation_effort when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

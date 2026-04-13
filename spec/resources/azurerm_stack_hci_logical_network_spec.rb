@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureStackHciLogicalNetwork do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { custom_location_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', subnet: [{ 'key1' => 'val1' }], virtual_switch_name: 'test-value' } }
+  let(:required_attrs) { { custom_location_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', subnet: { 'key1' => 'val1' }, virtual_switch_name: 'test-value' } }
 
   describe ':azurerm_stack_hci_logical_network' do
     context 'with required attributes only' do
@@ -105,7 +105,7 @@ RSpec.describe Pangea::Resources::AzureStackHciLogicalNetwork do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['subnet']).to be_a(Array)
+        expect(config['subnet']).to be_a(Hash)
         expect(config['virtual_switch_name']).to be_a(String)
       end
     end
@@ -139,7 +139,7 @@ RSpec.describe Pangea::Resources::AzureStackHciLogicalNetwork do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_stack_hci_logical_network,
     method: :azurerm_stack_hci_logical_network,
-    required_attrs: { custom_location_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', subnet: [{ 'key1' => 'val1' }], virtual_switch_name: 'test-value' },
+    required_attrs: { custom_location_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', subnet: { 'key1' => 'val1' }, virtual_switch_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureBackupProtectedVm do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ backup_policy_id: 'test-value', exclude_disk_luns: [3.14], include_disk_luns: [3.14] }) }
+      let(:all_attrs) { required_attrs.merge({ backup_policy_id: 'test-value', exclude_disk_luns: [3.14], include_disk_luns: [3.14], protection_state: 'test-value', source_vm_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,6 +69,8 @@ RSpec.describe Pangea::Resources::AzureBackupProtectedVm do
         expect(config).to have_key('backup_policy_id')
         expect(config).to have_key('exclude_disk_luns')
         expect(config).to have_key('include_disk_luns')
+        expect(config).to have_key('protection_state')
+        expect(config).to have_key('source_vm_id')
       end
     end
 
@@ -123,6 +125,40 @@ RSpec.describe Pangea::Resources::AzureBackupProtectedVm do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_protected_vm', 'minimal')
         expect(config).not_to have_key('include_disk_luns')
+      end
+      it 'includes protection_state when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_backup_protected_vm('opt', required_attrs.merge(protection_state: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_backup_protected_vm', 'opt')
+        expect(config).to have_key('protection_state')
+      end
+
+      it 'omits protection_state when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_backup_protected_vm('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_backup_protected_vm', 'minimal')
+        expect(config).not_to have_key('protection_state')
+      end
+      it 'includes source_vm_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_backup_protected_vm('opt', required_attrs.merge(source_vm_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_backup_protected_vm', 'opt')
+        expect(config).to have_key('source_vm_id')
+      end
+
+      it 'omits source_vm_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_backup_protected_vm('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_backup_protected_vm', 'minimal')
+        expect(config).not_to have_key('source_vm_id')
       end
     end
 

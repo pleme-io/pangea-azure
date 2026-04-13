@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureAppServiceConnection do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { app_service_id: 'test-value', authentication: [{ 'key1' => 'val1' }], name: 'test-value', target_resource_id: 'test-value' } }
+  let(:required_attrs) { { app_service_id: 'test-value', authentication: { 'key1' => 'val1' }, name: 'test-value', target_resource_id: 'test-value' } }
 
   describe ':azurerm_app_service_connection' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureAppServiceConnection do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ client_type: 'test-value', secret_store: [{ 'key1' => 'val1' }], vnet_solution: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ client_type: 'test-value', secret_store: { 'key1' => 'val1' }, vnet_solution: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -78,7 +78,7 @@ RSpec.describe Pangea::Resources::AzureAppServiceConnection do
       it 'includes secret_store when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service_connection('opt', required_attrs.merge(secret_store: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service_connection('opt', required_attrs.merge(secret_store: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_connection', 'opt')
         expect(config).to have_key('secret_store')
@@ -120,7 +120,7 @@ RSpec.describe Pangea::Resources::AzureAppServiceConnection do
 
         config = validate_resource_structure(result, 'azurerm_app_service_connection', 'typed')
         expect(config['app_service_id']).to be_a(String)
-        expect(config['authentication']).to be_a(Array)
+        expect(config['authentication']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['target_resource_id']).to be_a(String)
       end
@@ -155,7 +155,7 @@ RSpec.describe Pangea::Resources::AzureAppServiceConnection do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_app_service_connection,
     method: :azurerm_app_service_connection,
-    required_attrs: { app_service_id: 'test-value', authentication: [{ 'key1' => 'val1' }], name: 'test-value', target_resource_id: 'test-value' },
+    required_attrs: { app_service_id: 'test-value', authentication: { 'key1' => 'val1' }, name: 'test-value', target_resource_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSharedImageGallery do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', sharing: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', sharing: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -91,7 +91,7 @@ RSpec.describe Pangea::Resources::AzureSharedImageGallery do
       it 'includes sharing when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_shared_image_gallery('opt', required_attrs.merge(sharing: [{ 'key1' => 'val1' }]))
+        synth.azurerm_shared_image_gallery('opt', required_attrs.merge(sharing: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_shared_image_gallery', 'opt')
         expect(config).to have_key('sharing')

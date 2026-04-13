@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::MssqlFailoverGroupAttributes,
       outputs: { id: :id },
       map: [:name, :partner_server, :read_write_endpoint_failover_policy, :server_id],
-      map_present: [:databases, :tags]
+      map_present: [:databases, :tags],
+      map_bool: [:readonly_endpoint_failover_policy_enabled]
   end
   module Azure
     include AzureMssqlFailoverGroup

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::DataFactoryAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:github_configuration, :global_parameter, :identity, :purview_id, :tags, :vsts_configuration],
+      map_present: [:customer_managed_key_id, :customer_managed_key_identity_id, :github_configuration, :global_parameter, :identity, :purview_id, :tags, :vsts_configuration],
       map_bool: [:managed_virtual_network_enabled, :public_network_enabled]
   end
   module Azure

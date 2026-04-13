@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AppConfigurationFeatureAttributes,
       outputs: { id: :id },
       map: [:configuration_store_id, :name],
-      map_present: [:description, :label, :percentage_filter_value, :tags, :targeting_filter, :timewindow_filter],
+      map_present: [:custom_filter, :description, :etag, :key, :label, :percentage_filter_value, :tags, :targeting_filter, :timewindow_filter],
       map_bool: [:enabled, :locked]
   end
   module Azure

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::OracleExascaleDatabaseStorageVaultAttributes,
       outputs: { id: :id },
       map: [:additional_flash_cache_percentage, :display_name, :high_capacity_database_storage, :location, :name, :resource_group_name, :zones],
-      map_present: [:tags, :time_zone]
+      map_present: [:description, :tags, :time_zone]
   end
   module Azure
     include AzureOracleExascaleDatabaseStorageVault

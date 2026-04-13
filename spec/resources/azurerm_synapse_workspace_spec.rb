@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureSynapseWorkspace do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ azure_devops_repo: [{ 'key1' => 'val1' }], azuread_authentication_only: true, compute_subnet_id: 'test-value', customer_managed_key: [{ 'key1' => 'val1' }], data_exfiltration_protection_enabled: true, github_repo: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], linking_allowed_for_aad_tenant_ids: ['test-value'], managed_virtual_network_enabled: true, public_network_access_enabled: true, purview_id: 'test-value', sql_administrator_login: 'test-value', sql_administrator_login_password: 'test-value', sql_identity_control_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ azure_devops_repo: { 'key1' => 'val1' }, azuread_authentication_only: true, compute_subnet_id: 'test-value', customer_managed_key: { 'key1' => 'val1' }, data_exfiltration_protection_enabled: true, github_repo: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, linking_allowed_for_aad_tenant_ids: ['test-value'], managed_resource_group_name: 'test-value', managed_virtual_network_enabled: true, public_network_access_enabled: true, purview_id: 'test-value', sql_administrator_login: 'test-value', sql_administrator_login_password: 'test-value', sql_identity_control_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,6 +74,7 @@ RSpec.describe Pangea::Resources::AzureSynapseWorkspace do
         expect(config).to have_key('github_repo')
         expect(config).to have_key('identity')
         expect(config).to have_key('linking_allowed_for_aad_tenant_ids')
+        expect(config).to have_key('managed_resource_group_name')
         expect(config).to have_key('managed_virtual_network_enabled')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('purview_id')
@@ -88,7 +89,7 @@ RSpec.describe Pangea::Resources::AzureSynapseWorkspace do
       it 'includes azure_devops_repo when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_synapse_workspace('opt', required_attrs.merge(azure_devops_repo: [{ 'key1' => 'val1' }]))
+        synth.azurerm_synapse_workspace('opt', required_attrs.merge(azure_devops_repo: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_workspace', 'opt')
         expect(config).to have_key('azure_devops_repo')
@@ -139,7 +140,7 @@ RSpec.describe Pangea::Resources::AzureSynapseWorkspace do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_synapse_workspace('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_synapse_workspace('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_workspace', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -173,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureSynapseWorkspace do
       it 'includes github_repo when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_synapse_workspace('opt', required_attrs.merge(github_repo: [{ 'key1' => 'val1' }]))
+        synth.azurerm_synapse_workspace('opt', required_attrs.merge(github_repo: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_workspace', 'opt')
         expect(config).to have_key('github_repo')
@@ -190,7 +191,7 @@ RSpec.describe Pangea::Resources::AzureSynapseWorkspace do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_synapse_workspace('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_synapse_workspace('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_workspace', 'opt')
         expect(config).to have_key('identity')
@@ -220,6 +221,23 @@ RSpec.describe Pangea::Resources::AzureSynapseWorkspace do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_workspace', 'minimal')
         expect(config).not_to have_key('linking_allowed_for_aad_tenant_ids')
+      end
+      it 'includes managed_resource_group_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_synapse_workspace('opt', required_attrs.merge(managed_resource_group_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_synapse_workspace', 'opt')
+        expect(config).to have_key('managed_resource_group_name')
+      end
+
+      it 'omits managed_resource_group_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_synapse_workspace('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_synapse_workspace', 'minimal')
+        expect(config).not_to have_key('managed_resource_group_name')
       end
       it 'includes managed_virtual_network_enabled when provided' do
         synth = create_synthesizer

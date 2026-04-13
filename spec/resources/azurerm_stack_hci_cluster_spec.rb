@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureStackHciCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ automanage_configuration_id: 'test-value', client_id: 'test-value', identity: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ automanage_configuration_id: 'test-value', client_id: 'test-value', identity: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, tenant_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,6 +74,7 @@ RSpec.describe Pangea::Resources::AzureStackHciCluster do
         expect(config).to have_key('client_id')
         expect(config).to have_key('identity')
         expect(config).to have_key('tags')
+        expect(config).to have_key('tenant_id')
       end
     end
 
@@ -115,7 +116,7 @@ RSpec.describe Pangea::Resources::AzureStackHciCluster do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_stack_hci_cluster('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_stack_hci_cluster('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_stack_hci_cluster', 'opt')
         expect(config).to have_key('identity')
@@ -145,6 +146,23 @@ RSpec.describe Pangea::Resources::AzureStackHciCluster do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_stack_hci_cluster', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes tenant_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_stack_hci_cluster('opt', required_attrs.merge(tenant_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_stack_hci_cluster', 'opt')
+        expect(config).to have_key('tenant_id')
+      end
+
+      it 'omits tenant_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_stack_hci_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_stack_hci_cluster', 'minimal')
+        expect(config).not_to have_key('tenant_id')
       end
     end
 

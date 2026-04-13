@@ -1,0 +1,8 @@
+name: azurerm_eventhub
+title: Manages a azurerm_eventhub resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

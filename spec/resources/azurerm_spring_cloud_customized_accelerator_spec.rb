@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureSpringCloudCustomizedAccelerator do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { git_repository: [{ 'key1' => 'val1' }], name: 'test-value', spring_cloud_accelerator_id: 'test-value' } }
+  let(:required_attrs) { { git_repository: { 'key1' => 'val1' }, name: 'test-value', spring_cloud_accelerator_id: 'test-value' } }
 
   describe ':azurerm_spring_cloud_customized_accelerator' do
     context 'with required attributes only' do
@@ -155,7 +155,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudCustomizedAccelerator do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_spring_cloud_customized_accelerator', 'typed')
-        expect(config['git_repository']).to be_a(Array)
+        expect(config['git_repository']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['spring_cloud_accelerator_id']).to be_a(String)
       end
@@ -190,7 +190,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudCustomizedAccelerator do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_spring_cloud_customized_accelerator,
     method: :azurerm_spring_cloud_customized_accelerator,
-    required_attrs: { git_repository: [{ 'key1' => 'val1' }], name: 'test-value', spring_cloud_accelerator_id: 'test-value' },
+    required_attrs: { git_repository: { 'key1' => 'val1' }, name: 'test-value', spring_cloud_accelerator_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

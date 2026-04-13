@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SnapshotAttributes,
       outputs: { id: :id },
       map: [:create_option, :location, :name, :resource_group_name],
-      map_present: [:disk_access_id, :encryption_settings, :network_access_policy, :source_resource_id, :source_uri, :storage_account_id, :tags],
+      map_present: [:disk_access_id, :disk_size_gb, :encryption_settings, :network_access_policy, :source_resource_id, :source_uri, :storage_account_id, :tags],
       map_bool: [:incremental_enabled, :public_network_access_enabled]
   end
   module Azure

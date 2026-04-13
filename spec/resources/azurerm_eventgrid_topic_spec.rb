@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureEventgridTopic do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ identity: [{ 'key1' => 'val1' }], inbound_ip_rule: [{ 'key1' => 'val1' }], input_mapping_default_values: [{ 'key1' => 'val1' }], input_mapping_fields: [{ 'key1' => 'val1' }], input_schema: 'test-value', local_auth_enabled: true, public_network_access_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ identity: { 'key1' => 'val1' }, inbound_ip_rule: [{ 'key1' => 'val1' }], input_mapping_default_values: { 'key1' => 'val1' }, input_mapping_fields: { 'key1' => 'val1' }, input_schema: 'test-value', local_auth_enabled: true, public_network_access_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -83,7 +83,7 @@ RSpec.describe Pangea::Resources::AzureEventgridTopic do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_topic('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_topic('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_topic', 'opt')
         expect(config).to have_key('identity')
@@ -117,7 +117,7 @@ RSpec.describe Pangea::Resources::AzureEventgridTopic do
       it 'includes input_mapping_default_values when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_topic('opt', required_attrs.merge(input_mapping_default_values: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_topic('opt', required_attrs.merge(input_mapping_default_values: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_topic', 'opt')
         expect(config).to have_key('input_mapping_default_values')
@@ -134,7 +134,7 @@ RSpec.describe Pangea::Resources::AzureEventgridTopic do
       it 'includes input_mapping_fields when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_topic('opt', required_attrs.merge(input_mapping_fields: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_topic('opt', required_attrs.merge(input_mapping_fields: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_topic', 'opt')
         expect(config).to have_key('input_mapping_fields')

@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureImage do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ data_disk: [{ 'key1' => 'val1' }], hyper_v_generation: 'test-value', os_disk: [{ 'key1' => 'val1' }], source_virtual_machine_id: 'test-value', tags: { 'key1' => 'val1' }, zone_resilient: true }) }
+      let(:all_attrs) { required_attrs.merge({ data_disk: [{ 'key1' => 'val1' }], hyper_v_generation: 'test-value', os_disk: { 'key1' => 'val1' }, source_virtual_machine_id: 'test-value', tags: { 'key1' => 'val1' }, zone_resilient: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -98,7 +98,7 @@ RSpec.describe Pangea::Resources::AzureImage do
       it 'includes os_disk when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_image('opt', required_attrs.merge(os_disk: [{ 'key1' => 'val1' }]))
+        synth.azurerm_image('opt', required_attrs.merge(os_disk: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_image', 'opt')
         expect(config).to have_key('os_disk')

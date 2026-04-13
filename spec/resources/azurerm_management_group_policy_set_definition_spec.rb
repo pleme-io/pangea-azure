@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureManagementGroupPolicySetDefinition do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', parameters: 'test-value', policy_definition_group: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', metadata: 'test-value', parameters: 'test-value', policy_definition_group: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -65,6 +65,7 @@ RSpec.describe Pangea::Resources::AzureManagementGroupPolicySetDefinition do
 
         config = validate_resource_structure(result, 'azurerm_management_group_policy_set_definition', 'full')
         expect(config).to have_key('description')
+        expect(config).to have_key('metadata')
         expect(config).to have_key('parameters')
         expect(config).to have_key('policy_definition_group')
       end
@@ -87,6 +88,23 @@ RSpec.describe Pangea::Resources::AzureManagementGroupPolicySetDefinition do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_management_group_policy_set_definition', 'minimal')
         expect(config).not_to have_key('description')
+      end
+      it 'includes metadata when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group_policy_set_definition('opt', required_attrs.merge(metadata: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group_policy_set_definition', 'opt')
+        expect(config).to have_key('metadata')
+      end
+
+      it 'omits metadata when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_management_group_policy_set_definition('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_management_group_policy_set_definition', 'minimal')
+        expect(config).not_to have_key('metadata')
       end
       it 'includes parameters when provided' do
         synth = create_synthesizer

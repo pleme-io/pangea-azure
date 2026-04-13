@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMssqlFailoverGroup do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { name: 'test-value', partner_server: [{ 'key1' => 'val1' }], read_write_endpoint_failover_policy: [{ 'key1' => 'val1' }], server_id: 'test-value' } }
+  let(:required_attrs) { { name: 'test-value', partner_server: [{ 'key1' => 'val1' }], read_write_endpoint_failover_policy: { 'key1' => 'val1' }, server_id: 'test-value' } }
 
   describe ':azurerm_mssql_failover_group' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureMssqlFailoverGroup do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ databases: ['test-value'], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ databases: ['test-value'], readonly_endpoint_failover_policy_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -65,6 +65,7 @@ RSpec.describe Pangea::Resources::AzureMssqlFailoverGroup do
 
         config = validate_resource_structure(result, 'azurerm_mssql_failover_group', 'full')
         expect(config).to have_key('databases')
+        expect(config).to have_key('readonly_endpoint_failover_policy_enabled')
         expect(config).to have_key('tags')
       end
     end
@@ -87,6 +88,23 @@ RSpec.describe Pangea::Resources::AzureMssqlFailoverGroup do
         config = validate_resource_structure(result, 'azurerm_mssql_failover_group', 'minimal')
         expect(config).not_to have_key('databases')
       end
+      it 'includes readonly_endpoint_failover_policy_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_failover_group('opt', required_attrs.merge(readonly_endpoint_failover_policy_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_failover_group', 'opt')
+        expect(config).to have_key('readonly_endpoint_failover_policy_enabled')
+      end
+
+      it 'omits readonly_endpoint_failover_policy_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_failover_group('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_failover_group', 'minimal')
+        expect(config).not_to have_key('readonly_endpoint_failover_policy_enabled')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -106,6 +124,20 @@ RSpec.describe Pangea::Resources::AzureMssqlFailoverGroup do
       end
     end
 
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts readonly_endpoint_failover_policy_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(readonly_endpoint_failover_policy_enabled: val)
+          synth.azurerm_mssql_failover_group("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_mssql_failover_group', "bool_#{val}")
+          expect(config['readonly_endpoint_failover_policy_enabled']).to eq(val)
+        end
+      end
+    end
+
     context 'attribute types' do
       it 'validates expected attribute types' do
         synth = create_synthesizer
@@ -116,7 +148,7 @@ RSpec.describe Pangea::Resources::AzureMssqlFailoverGroup do
         config = validate_resource_structure(result, 'azurerm_mssql_failover_group', 'typed')
         expect(config['name']).to be_a(String)
         expect(config['partner_server']).to be_a(Array)
-        expect(config['read_write_endpoint_failover_policy']).to be_a(Array)
+        expect(config['read_write_endpoint_failover_policy']).to be_a(Hash)
         expect(config['server_id']).to be_a(String)
       end
     end
@@ -150,9 +182,9 @@ RSpec.describe Pangea::Resources::AzureMssqlFailoverGroup do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_mssql_failover_group,
     method: :azurerm_mssql_failover_group,
-    required_attrs: { name: 'test-value', partner_server: [{ 'key1' => 'val1' }], read_write_endpoint_failover_policy: [{ 'key1' => 'val1' }], server_id: 'test-value' },
+    required_attrs: { name: 'test-value', partner_server: [{ 'key1' => 'val1' }], read_write_endpoint_failover_policy: { 'key1' => 'val1' }, server_id: 'test-value' },
     expected_outputs: [:id, :readonly_endpoint_failover_policy_enabled],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:readonly_endpoint_failover_policy_enabled]
 end

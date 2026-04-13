@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SynapseWorkspaceAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :storage_data_lake_gen2_filesystem_id],
-      map_present: [:azure_devops_repo, :compute_subnet_id, :customer_managed_key, :github_repo, :identity, :linking_allowed_for_aad_tenant_ids, :purview_id, :sql_administrator_login, :sql_administrator_login_password, :tags],
+      map_present: [:azure_devops_repo, :compute_subnet_id, :customer_managed_key, :github_repo, :identity, :linking_allowed_for_aad_tenant_ids, :managed_resource_group_name, :purview_id, :sql_administrator_login, :sql_administrator_login_password, :tags],
       map_bool: [:azuread_authentication_only, :data_exfiltration_protection_enabled, :managed_virtual_network_enabled, :public_network_access_enabled, :sql_identity_control_enabled]
   end
   module Azure

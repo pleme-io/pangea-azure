@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ContainerGroupAttributes,
       outputs: { id: :id },
       map: [:container, :location, :name, :os_type, :resource_group_name],
-      map_present: [:diagnostics, :dns_config, :dns_name_label, :dns_name_label_reuse_policy, :identity, :image_registry_credential, :init_container, :ip_address_type, :key_vault_key_id, :key_vault_user_assigned_identity_id, :priority, :restart_policy, :sku, :subnet_ids, :tags, :zones]
+      map_present: [:diagnostics, :dns_config, :dns_name_label, :dns_name_label_reuse_policy, :exposed_port, :identity, :image_registry_credential, :init_container, :ip_address_type, :key_vault_key_id, :key_vault_user_assigned_identity_id, :network_profile_id, :priority, :restart_policy, :sku, :subnet_ids, :tags, :zones]
   end
   module Azure
     include AzureContainerGroup

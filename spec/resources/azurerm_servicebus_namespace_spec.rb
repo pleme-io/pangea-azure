@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureServicebusNamespace do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ capacity: 3.14, customer_managed_key: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], local_auth_enabled: true, minimum_tls_version: 'test-value', network_rule_set: [{ 'key1' => 'val1' }], premium_messaging_partitions: 3.14, public_network_access_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ capacity: 3.14, customer_managed_key: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, local_auth_enabled: true, minimum_tls_version: 'test-value', network_rule_set: { 'key1' => 'val1' }, premium_messaging_partitions: 3.14, public_network_access_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -105,7 +105,7 @@ RSpec.describe Pangea::Resources::AzureServicebusNamespace do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_servicebus_namespace('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_servicebus_namespace('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_servicebus_namespace', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -122,7 +122,7 @@ RSpec.describe Pangea::Resources::AzureServicebusNamespace do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_servicebus_namespace('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_servicebus_namespace('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_servicebus_namespace', 'opt')
         expect(config).to have_key('identity')
@@ -173,7 +173,7 @@ RSpec.describe Pangea::Resources::AzureServicebusNamespace do
       it 'includes network_rule_set when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_servicebus_namespace('opt', required_attrs.merge(network_rule_set: [{ 'key1' => 'val1' }]))
+        synth.azurerm_servicebus_namespace('opt', required_attrs.merge(network_rule_set: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_servicebus_namespace', 'opt')
         expect(config).to have_key('network_rule_set')

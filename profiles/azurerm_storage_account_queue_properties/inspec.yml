@@ -1,0 +1,8 @@
+name: azurerm_storage_account_queue_properties
+title: Manages a azurerm_storage_account_queue_properties resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureVideoIndexerAccount do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage: { 'key1' => 'val1' } } }
 
   describe ':azurerm_video_indexer_account' do
     context 'with required attributes only' do
@@ -101,11 +101,11 @@ RSpec.describe Pangea::Resources::AzureVideoIndexerAccount do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_video_indexer_account', 'typed')
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['storage']).to be_a(Array)
+        expect(config['storage']).to be_a(Hash)
       end
     end
 
@@ -138,7 +138,7 @@ RSpec.describe Pangea::Resources::AzureVideoIndexerAccount do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_video_indexer_account,
     method: :azurerm_video_indexer_account,
-    required_attrs: { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage: [{ 'key1' => 'val1' }] },
+    required_attrs: { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

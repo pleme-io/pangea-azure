@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureExpressRoutePort do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ billing_type: 'test-value', identity: [{ 'key1' => 'val1' }], link1: [{ 'key1' => 'val1' }], link2: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ billing_type: 'test-value', identity: { 'key1' => 'val1' }, link1: { 'key1' => 'val1' }, link2: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -97,7 +97,7 @@ RSpec.describe Pangea::Resources::AzureExpressRoutePort do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_express_route_port('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_express_route_port('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_express_route_port', 'opt')
         expect(config).to have_key('identity')
@@ -114,7 +114,7 @@ RSpec.describe Pangea::Resources::AzureExpressRoutePort do
       it 'includes link1 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_express_route_port('opt', required_attrs.merge(link1: [{ 'key1' => 'val1' }]))
+        synth.azurerm_express_route_port('opt', required_attrs.merge(link1: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_express_route_port', 'opt')
         expect(config).to have_key('link1')
@@ -131,7 +131,7 @@ RSpec.describe Pangea::Resources::AzureExpressRoutePort do
       it 'includes link2 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_express_route_port('opt', required_attrs.merge(link2: [{ 'key1' => 'val1' }]))
+        synth.azurerm_express_route_port('opt', required_attrs.merge(link2: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_express_route_port', 'opt')
         expect(config).to have_key('link2')

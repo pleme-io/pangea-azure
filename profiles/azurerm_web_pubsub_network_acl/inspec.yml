@@ -1,0 +1,8 @@
+name: azurerm_web_pubsub_network_acl
+title: Manages a azurerm_web_pubsub_network_acl resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

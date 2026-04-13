@@ -1,0 +1,8 @@
+name: azurerm_web_app_hybrid_connection
+title: Manages a azurerm_web_app_hybrid_connection resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

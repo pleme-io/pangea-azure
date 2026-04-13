@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstance do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ administrator_login_password: 'test-value', azure_active_directory_administrator: [{ 'key1' => 'val1' }], collation: 'test-value', database_format: 'test-value', dns_zone_partner_id: 'test-value', hybrid_secondary_usage: 'test-value', identity: [{ 'key1' => 'val1' }], maintenance_configuration_name: 'test-value', minimum_tls_version: 'test-value', public_data_endpoint_enabled: true, service_principal_type: 'test-value', storage_account_type: 'test-value', tags: { 'key1' => 'val1' }, timezone_id: 'test-value', zone_redundant_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ administrator_login: 'test-value', administrator_login_password: 'test-value', azure_active_directory_administrator: { 'key1' => 'val1' }, collation: 'test-value', database_format: 'test-value', dns_zone_partner_id: 'test-value', general_purpose_v2_enabled: true, hybrid_secondary_usage: 'test-value', identity: { 'key1' => 'val1' }, maintenance_configuration_name: 'test-value', minimum_tls_version: 'test-value', proxy_override: 'test-value', public_data_endpoint_enabled: true, service_principal_type: 'test-value', storage_account_type: 'test-value', tags: { 'key1' => 'val1' }, timezone_id: 'test-value', zone_redundant_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,15 +70,18 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstance do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'full')
+        expect(config).to have_key('administrator_login')
         expect(config).to have_key('administrator_login_password')
         expect(config).to have_key('azure_active_directory_administrator')
         expect(config).to have_key('collation')
         expect(config).to have_key('database_format')
         expect(config).to have_key('dns_zone_partner_id')
+        expect(config).to have_key('general_purpose_v2_enabled')
         expect(config).to have_key('hybrid_secondary_usage')
         expect(config).to have_key('identity')
         expect(config).to have_key('maintenance_configuration_name')
         expect(config).to have_key('minimum_tls_version')
+        expect(config).to have_key('proxy_override')
         expect(config).to have_key('public_data_endpoint_enabled')
         expect(config).to have_key('service_principal_type')
         expect(config).to have_key('storage_account_type')
@@ -89,6 +92,23 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstance do
     end
 
     context 'optional attributes' do
+      it 'includes administrator_login when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_managed_instance('opt', required_attrs.merge(administrator_login: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'opt')
+        expect(config).to have_key('administrator_login')
+      end
+
+      it 'omits administrator_login when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_managed_instance('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'minimal')
+        expect(config).not_to have_key('administrator_login')
+      end
       it 'includes administrator_login_password when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -109,7 +129,7 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstance do
       it 'includes azure_active_directory_administrator when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_managed_instance('opt', required_attrs.merge(azure_active_directory_administrator: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_managed_instance('opt', required_attrs.merge(azure_active_directory_administrator: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'opt')
         expect(config).to have_key('azure_active_directory_administrator')
@@ -174,6 +194,23 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstance do
         config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'minimal')
         expect(config).not_to have_key('dns_zone_partner_id')
       end
+      it 'includes general_purpose_v2_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_managed_instance('opt', required_attrs.merge(general_purpose_v2_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'opt')
+        expect(config).to have_key('general_purpose_v2_enabled')
+      end
+
+      it 'omits general_purpose_v2_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_managed_instance('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'minimal')
+        expect(config).not_to have_key('general_purpose_v2_enabled')
+      end
       it 'includes hybrid_secondary_usage when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -194,7 +231,7 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstance do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_managed_instance('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_managed_instance('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'opt')
         expect(config).to have_key('identity')
@@ -241,6 +278,23 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstance do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'minimal')
         expect(config).not_to have_key('minimum_tls_version')
+      end
+      it 'includes proxy_override when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_managed_instance('opt', required_attrs.merge(proxy_override: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'opt')
+        expect(config).to have_key('proxy_override')
+      end
+
+      it 'omits proxy_override when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_managed_instance('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', 'minimal')
+        expect(config).not_to have_key('proxy_override')
       end
       it 'includes public_data_endpoint_enabled when provided' do
         synth = create_synthesizer
@@ -355,6 +409,17 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstance do
 
     context 'boolean fields' do
       [true, false].each do |val|
+        it "accepts general_purpose_v2_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(general_purpose_v2_enabled: val)
+          synth.azurerm_mssql_managed_instance("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_mssql_managed_instance', "bool_#{val}")
+          expect(config['general_purpose_v2_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
         it "accepts public_data_endpoint_enabled=#{val}" do
           synth = create_synthesizer
           synth.extend(described_class)
@@ -430,5 +495,5 @@ RSpec.describe Pangea::Resources::AzureMssqlManagedInstance do
     expected_outputs: [:id, :administrator_login, :dns_zone, :fqdn, :proxy_override],
     sensitive_fields: [:administrator_login_password],
     immutable_fields: [],
-    boolean_fields: [:public_data_endpoint_enabled, :zone_redundant_enabled]
+    boolean_fields: [:general_purpose_v2_enabled, :public_data_endpoint_enabled, :zone_redundant_enabled]
 end

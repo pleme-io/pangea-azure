@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SpringCloudServiceAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:build_agent_pool_size, :config_server_git_setting, :container_registry, :default_build_service, :managed_environment_id, :marketplace, :network, :sku_name, :tags, :trace],
+      map_present: [:build_agent_pool_size, :config_server_git_setting, :container_registry, :default_build_service, :managed_environment_id, :marketplace, :network, :sku_name, :sku_tier, :tags, :trace],
       map_bool: [:log_stream_public_endpoint_enabled, :service_registry_enabled, :zone_redundant]
   end
   module Azure

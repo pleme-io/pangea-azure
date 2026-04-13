@@ -67,7 +67,7 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ accept_grow_capacity_pool_for_short_term_clone_split: 'test-value', azure_vmware_data_store_enabled: true, cool_access: [{ 'key1' => 'val1' }], create_from_snapshot_resource_id: 'test-value', data_protection_backup_policy: [{ 'key1' => 'val1' }], data_protection_replication: [{ 'key1' => 'val1' }], data_protection_snapshot_policy: [{ 'key1' => 'val1' }], export_policy_rule: [{ 'key1' => 'val1' }], kerberos_enabled: true, large_volume_enabled: true, smb3_protocol_encryption_enabled: true, smb_access_based_enumeration_enabled: true, smb_continuous_availability_enabled: true, smb_non_browsable_enabled: true, snapshot_directory_visible: true, tags: { 'key1' => 'val1' }, zone: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ accept_grow_capacity_pool_for_short_term_clone_split: 'test-value', azure_vmware_data_store_enabled: true, cool_access: { 'key1' => 'val1' }, create_from_snapshot_resource_id: 'test-value', data_protection_advanced_ransomware: { 'key1' => 'val1' }, data_protection_backup_policy: { 'key1' => 'val1' }, data_protection_replication: { 'key1' => 'val1' }, data_protection_snapshot_policy: { 'key1' => 'val1' }, encryption_key_source: 'test-value', export_policy_rule: [{ 'key1' => 'val1' }], kerberos_enabled: true, key_vault_private_endpoint_id: 'test-value', large_volume_enabled: true, network_features: 'test-value', protocols: ['test-value'], security_style: 'test-value', smb3_protocol_encryption_enabled: true, smb_access_based_enumeration_enabled: true, smb_continuous_availability_enabled: true, smb_non_browsable_enabled: true, snapshot_directory_visible: true, tags: { 'key1' => 'val1' }, throughput_in_mibps: 3.14, zone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -80,18 +80,25 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
         expect(config).to have_key('azure_vmware_data_store_enabled')
         expect(config).to have_key('cool_access')
         expect(config).to have_key('create_from_snapshot_resource_id')
+        expect(config).to have_key('data_protection_advanced_ransomware')
         expect(config).to have_key('data_protection_backup_policy')
         expect(config).to have_key('data_protection_replication')
         expect(config).to have_key('data_protection_snapshot_policy')
+        expect(config).to have_key('encryption_key_source')
         expect(config).to have_key('export_policy_rule')
         expect(config).to have_key('kerberos_enabled')
+        expect(config).to have_key('key_vault_private_endpoint_id')
         expect(config).to have_key('large_volume_enabled')
+        expect(config).to have_key('network_features')
+        expect(config).to have_key('protocols')
+        expect(config).to have_key('security_style')
         expect(config).to have_key('smb3_protocol_encryption_enabled')
         expect(config).to have_key('smb_access_based_enumeration_enabled')
         expect(config).to have_key('smb_continuous_availability_enabled')
         expect(config).to have_key('smb_non_browsable_enabled')
         expect(config).to have_key('snapshot_directory_visible')
         expect(config).to have_key('tags')
+        expect(config).to have_key('throughput_in_mibps')
         expect(config).to have_key('zone')
       end
     end
@@ -134,7 +141,7 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
       it 'includes cool_access when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_netapp_volume('opt', required_attrs.merge(cool_access: [{ 'key1' => 'val1' }]))
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(cool_access: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
         expect(config).to have_key('cool_access')
@@ -165,10 +172,27 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
         config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
         expect(config).not_to have_key('create_from_snapshot_resource_id')
       end
+      it 'includes data_protection_advanced_ransomware when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(data_protection_advanced_ransomware: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
+        expect(config).to have_key('data_protection_advanced_ransomware')
+      end
+
+      it 'omits data_protection_advanced_ransomware when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
+        expect(config).not_to have_key('data_protection_advanced_ransomware')
+      end
       it 'includes data_protection_backup_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_netapp_volume('opt', required_attrs.merge(data_protection_backup_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(data_protection_backup_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
         expect(config).to have_key('data_protection_backup_policy')
@@ -185,7 +209,7 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
       it 'includes data_protection_replication when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_netapp_volume('opt', required_attrs.merge(data_protection_replication: [{ 'key1' => 'val1' }]))
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(data_protection_replication: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
         expect(config).to have_key('data_protection_replication')
@@ -202,7 +226,7 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
       it 'includes data_protection_snapshot_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_netapp_volume('opt', required_attrs.merge(data_protection_snapshot_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(data_protection_snapshot_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
         expect(config).to have_key('data_protection_snapshot_policy')
@@ -215,6 +239,23 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
         expect(config).not_to have_key('data_protection_snapshot_policy')
+      end
+      it 'includes encryption_key_source when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(encryption_key_source: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
+        expect(config).to have_key('encryption_key_source')
+      end
+
+      it 'omits encryption_key_source when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
+        expect(config).not_to have_key('encryption_key_source')
       end
       it 'includes export_policy_rule when provided' do
         synth = create_synthesizer
@@ -250,6 +291,23 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
         config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
         expect(config).not_to have_key('kerberos_enabled')
       end
+      it 'includes key_vault_private_endpoint_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(key_vault_private_endpoint_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
+        expect(config).to have_key('key_vault_private_endpoint_id')
+      end
+
+      it 'omits key_vault_private_endpoint_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
+        expect(config).not_to have_key('key_vault_private_endpoint_id')
+      end
       it 'includes large_volume_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -266,6 +324,57 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
         expect(config).not_to have_key('large_volume_enabled')
+      end
+      it 'includes network_features when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(network_features: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
+        expect(config).to have_key('network_features')
+      end
+
+      it 'omits network_features when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
+        expect(config).not_to have_key('network_features')
+      end
+      it 'includes protocols when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(protocols: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
+        expect(config).to have_key('protocols')
+      end
+
+      it 'omits protocols when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
+        expect(config).not_to have_key('protocols')
+      end
+      it 'includes security_style when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(security_style: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
+        expect(config).to have_key('security_style')
+      end
+
+      it 'omits security_style when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
+        expect(config).not_to have_key('security_style')
       end
       it 'includes smb3_protocol_encryption_enabled when provided' do
         synth = create_synthesizer
@@ -368,6 +477,23 @@ RSpec.describe Pangea::Resources::AzureNetappVolume do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes throughput_in_mibps when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('opt', required_attrs.merge(throughput_in_mibps: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'opt')
+        expect(config).to have_key('throughput_in_mibps')
+      end
+
+      it 'omits throughput_in_mibps when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_netapp_volume('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_netapp_volume', 'minimal')
+        expect(config).not_to have_key('throughput_in_mibps')
       end
       it 'includes zone when provided' do
         synth = create_synthesizer

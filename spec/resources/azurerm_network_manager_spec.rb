@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureNetworkManager do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', scope: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', scope: { 'key1' => 'val1' } } }
 
   describe ':azurerm_network_manager' do
     context 'with required attributes only' do
@@ -135,7 +135,7 @@ RSpec.describe Pangea::Resources::AzureNetworkManager do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['scope']).to be_a(Array)
+        expect(config['scope']).to be_a(Hash)
       end
     end
 
@@ -168,7 +168,7 @@ RSpec.describe Pangea::Resources::AzureNetworkManager do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_network_manager,
     method: :azurerm_network_manager,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', scope: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', scope: { 'key1' => 'val1' } },
     expected_outputs: [:id, :cross_tenant_scopes],
     sensitive_fields: [],
     immutable_fields: [],

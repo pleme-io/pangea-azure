@@ -1,0 +1,8 @@
+name: azurerm_machine_learning_datastore_datalake_gen2
+title: Manages a azurerm_machine_learning_datastore_datalake_gen2 resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

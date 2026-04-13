@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesFleetManager do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ hub_profile: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ hub_profile: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -60,7 +60,7 @@ RSpec.describe Pangea::Resources::AzureKubernetesFleetManager do
       it 'includes hub_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kubernetes_fleet_manager('opt', required_attrs.merge(hub_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kubernetes_fleet_manager('opt', required_attrs.merge(hub_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kubernetes_fleet_manager', 'opt')
         expect(config).to have_key('hub_profile')

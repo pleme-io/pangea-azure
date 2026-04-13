@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::LbOutboundRuleAttributes,
       outputs: { id: :id },
       map: [:backend_address_pool_id, :loadbalancer_id, :name, :protocol],
-      map_present: [:allocated_outbound_ports, :frontend_ip_configuration, :idle_timeout_in_minutes]
+      map_present: [:allocated_outbound_ports, :frontend_ip_configuration, :idle_timeout_in_minutes],
+      map_bool: [:enable_tcp_reset, :tcp_reset_enabled]
   end
   module Azure
     include AzureLbOutboundRule

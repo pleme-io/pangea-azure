@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureVirtualMachineRunCommand do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', source: [{ 'key1' => 'val1' }], virtual_machine_id: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', source: { 'key1' => 'val1' }, virtual_machine_id: 'test-value' } }
 
   describe ':azurerm_virtual_machine_run_command' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineRunCommand do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ error_blob_managed_identity: [{ 'key1' => 'val1' }], error_blob_uri: 'test-value', output_blob_managed_identity: [{ 'key1' => 'val1' }], output_blob_uri: 'test-value', parameter: [{ 'key1' => 'val1' }], protected_parameter: [{ 'key1' => 'val1' }], run_as_password: 'test-value', run_as_user: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ error_blob_managed_identity: { 'key1' => 'val1' }, error_blob_uri: 'test-value', output_blob_managed_identity: { 'key1' => 'val1' }, output_blob_uri: 'test-value', parameter: [{ 'key1' => 'val1' }], protected_parameter: [{ 'key1' => 'val1' }], run_as_password: 'test-value', run_as_user: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -80,7 +80,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineRunCommand do
       it 'includes error_blob_managed_identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_run_command('opt', required_attrs.merge(error_blob_managed_identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_run_command('opt', required_attrs.merge(error_blob_managed_identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_run_command', 'opt')
         expect(config).to have_key('error_blob_managed_identity')
@@ -114,7 +114,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineRunCommand do
       it 'includes output_blob_managed_identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_run_command('opt', required_attrs.merge(output_blob_managed_identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_run_command('opt', required_attrs.merge(output_blob_managed_identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_run_command', 'opt')
         expect(config).to have_key('output_blob_managed_identity')
@@ -249,7 +249,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineRunCommand do
         config = validate_resource_structure(result, 'azurerm_virtual_machine_run_command', 'typed')
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['source']).to be_a(Array)
+        expect(config['source']).to be_a(Hash)
         expect(config['virtual_machine_id']).to be_a(String)
       end
     end
@@ -283,7 +283,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineRunCommand do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_virtual_machine_run_command,
     method: :azurerm_virtual_machine_run_command,
-    required_attrs: { location: 'test-value', name: 'test-value', source: [{ 'key1' => 'val1' }], virtual_machine_id: 'test-value' },
+    required_attrs: { location: 'test-value', name: 'test-value', source: { 'key1' => 'val1' }, virtual_machine_id: 'test-value' },
     expected_outputs: [:id, :instance_view],
     sensitive_fields: [:run_as_password],
     immutable_fields: [],

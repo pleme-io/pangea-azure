@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', network_interface_ids: ['test-value'], os_disk: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', size: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', network_interface_ids: ['test-value'], os_disk: { 'key1' => 'val1' }, resource_group_name: 'test-value', size: 'test-value' } }
 
   describe ':azurerm_linux_virtual_machine' do
     context 'with required attributes only' do
@@ -81,7 +81,7 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_capabilities: [{ 'key1' => 'val1' }], admin_password: 'test-value', admin_ssh_key: [{ 'key1' => 'val1' }], admin_username: 'test-value', availability_set_id: 'test-value', boot_diagnostics: [{ 'key1' => 'val1' }], bypass_platform_safety_checks_on_user_schedule_enabled: true, capacity_reservation_group_id: 'test-value', custom_data: 'test-value', dedicated_host_group_id: 'test-value', dedicated_host_id: 'test-value', edge_zone: 'test-value', encryption_at_host_enabled: true, eviction_policy: 'test-value', extensions_time_budget: 'test-value', gallery_application: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], license_type: 'test-value', max_bid_price: 3.14, os_image_notification: [{ 'key1' => 'val1' }], plan: [{ 'key1' => 'val1' }], platform_fault_domain: 3.14, priority: 'test-value', proximity_placement_group_id: 'test-value', reboot_setting: 'test-value', secret: [{ 'key1' => 'val1' }], secure_boot_enabled: true, source_image_id: 'test-value', source_image_reference: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, termination_notification: [{ 'key1' => 'val1' }], user_data: 'test-value', virtual_machine_scale_set_id: 'test-value', vtpm_enabled: true, zone: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ additional_capabilities: { 'key1' => 'val1' }, admin_password: 'test-value', admin_ssh_key: [{ 'key1' => 'val1' }], admin_username: 'test-value', allow_extension_operations: true, availability_set_id: 'test-value', boot_diagnostics: { 'key1' => 'val1' }, bypass_platform_safety_checks_on_user_schedule_enabled: true, capacity_reservation_group_id: 'test-value', computer_name: 'test-value', custom_data: 'test-value', dedicated_host_group_id: 'test-value', dedicated_host_id: 'test-value', disable_password_authentication: true, disk_controller_type: 'test-value', edge_zone: 'test-value', encryption_at_host_enabled: true, eviction_policy: 'test-value', extensions_time_budget: 'test-value', gallery_application: [{ 'key1' => 'val1' }], identity: { 'key1' => 'val1' }, license_type: 'test-value', max_bid_price: 3.14, os_image_notification: { 'key1' => 'val1' }, os_managed_disk_id: 'test-value', patch_assessment_mode: 'test-value', patch_mode: 'test-value', plan: { 'key1' => 'val1' }, platform_fault_domain: 3.14, priority: 'test-value', provision_vm_agent: true, proximity_placement_group_id: 'test-value', reboot_setting: 'test-value', secret: [{ 'key1' => 'val1' }], secure_boot_enabled: true, source_image_id: 'test-value', source_image_reference: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, termination_notification: { 'key1' => 'val1' }, user_data: 'test-value', virtual_machine_scale_set_id: 'test-value', vm_agent_platform_updates_enabled: true, vtpm_enabled: true, zone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -94,13 +94,17 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         expect(config).to have_key('admin_password')
         expect(config).to have_key('admin_ssh_key')
         expect(config).to have_key('admin_username')
+        expect(config).to have_key('allow_extension_operations')
         expect(config).to have_key('availability_set_id')
         expect(config).to have_key('boot_diagnostics')
         expect(config).to have_key('bypass_platform_safety_checks_on_user_schedule_enabled')
         expect(config).to have_key('capacity_reservation_group_id')
+        expect(config).to have_key('computer_name')
         expect(config).to have_key('custom_data')
         expect(config).to have_key('dedicated_host_group_id')
         expect(config).to have_key('dedicated_host_id')
+        expect(config).to have_key('disable_password_authentication')
+        expect(config).to have_key('disk_controller_type')
         expect(config).to have_key('edge_zone')
         expect(config).to have_key('encryption_at_host_enabled')
         expect(config).to have_key('eviction_policy')
@@ -110,9 +114,13 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         expect(config).to have_key('license_type')
         expect(config).to have_key('max_bid_price')
         expect(config).to have_key('os_image_notification')
+        expect(config).to have_key('os_managed_disk_id')
+        expect(config).to have_key('patch_assessment_mode')
+        expect(config).to have_key('patch_mode')
         expect(config).to have_key('plan')
         expect(config).to have_key('platform_fault_domain')
         expect(config).to have_key('priority')
+        expect(config).to have_key('provision_vm_agent')
         expect(config).to have_key('proximity_placement_group_id')
         expect(config).to have_key('reboot_setting')
         expect(config).to have_key('secret')
@@ -123,6 +131,7 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         expect(config).to have_key('termination_notification')
         expect(config).to have_key('user_data')
         expect(config).to have_key('virtual_machine_scale_set_id')
+        expect(config).to have_key('vm_agent_platform_updates_enabled')
         expect(config).to have_key('vtpm_enabled')
         expect(config).to have_key('zone')
       end
@@ -132,7 +141,7 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
       it 'includes additional_capabilities when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(additional_capabilities: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(additional_capabilities: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
         expect(config).to have_key('additional_capabilities')
@@ -197,6 +206,23 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
         expect(config).not_to have_key('admin_username')
       end
+      it 'includes allow_extension_operations when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(allow_extension_operations: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
+        expect(config).to have_key('allow_extension_operations')
+      end
+
+      it 'omits allow_extension_operations when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
+        expect(config).not_to have_key('allow_extension_operations')
+      end
       it 'includes availability_set_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -217,7 +243,7 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
       it 'includes boot_diagnostics when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(boot_diagnostics: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(boot_diagnostics: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
         expect(config).to have_key('boot_diagnostics')
@@ -264,6 +290,23 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
         expect(config).not_to have_key('capacity_reservation_group_id')
+      end
+      it 'includes computer_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(computer_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
+        expect(config).to have_key('computer_name')
+      end
+
+      it 'omits computer_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
+        expect(config).not_to have_key('computer_name')
       end
       it 'includes custom_data when provided' do
         synth = create_synthesizer
@@ -315,6 +358,40 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
         expect(config).not_to have_key('dedicated_host_id')
+      end
+      it 'includes disable_password_authentication when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(disable_password_authentication: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
+        expect(config).to have_key('disable_password_authentication')
+      end
+
+      it 'omits disable_password_authentication when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
+        expect(config).not_to have_key('disable_password_authentication')
+      end
+      it 'includes disk_controller_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(disk_controller_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
+        expect(config).to have_key('disk_controller_type')
+      end
+
+      it 'omits disk_controller_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
+        expect(config).not_to have_key('disk_controller_type')
       end
       it 'includes edge_zone when provided' do
         synth = create_synthesizer
@@ -404,7 +481,7 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
         expect(config).to have_key('identity')
@@ -455,7 +532,7 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
       it 'includes os_image_notification when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(os_image_notification: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(os_image_notification: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
         expect(config).to have_key('os_image_notification')
@@ -469,10 +546,61 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
         expect(config).not_to have_key('os_image_notification')
       end
+      it 'includes os_managed_disk_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(os_managed_disk_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
+        expect(config).to have_key('os_managed_disk_id')
+      end
+
+      it 'omits os_managed_disk_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
+        expect(config).not_to have_key('os_managed_disk_id')
+      end
+      it 'includes patch_assessment_mode when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(patch_assessment_mode: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
+        expect(config).to have_key('patch_assessment_mode')
+      end
+
+      it 'omits patch_assessment_mode when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
+        expect(config).not_to have_key('patch_assessment_mode')
+      end
+      it 'includes patch_mode when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(patch_mode: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
+        expect(config).to have_key('patch_mode')
+      end
+
+      it 'omits patch_mode when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
+        expect(config).not_to have_key('patch_mode')
+      end
       it 'includes plan when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(plan: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(plan: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
         expect(config).to have_key('plan')
@@ -519,6 +647,23 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
         expect(config).not_to have_key('priority')
+      end
+      it 'includes provision_vm_agent when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(provision_vm_agent: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
+        expect(config).to have_key('provision_vm_agent')
+      end
+
+      it 'omits provision_vm_agent when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
+        expect(config).not_to have_key('provision_vm_agent')
       end
       it 'includes proximity_placement_group_id when provided' do
         synth = create_synthesizer
@@ -608,7 +753,7 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
       it 'includes source_image_reference when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(source_image_reference: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(source_image_reference: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
         expect(config).to have_key('source_image_reference')
@@ -642,7 +787,7 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
       it 'includes termination_notification when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(termination_notification: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(termination_notification: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
         expect(config).to have_key('termination_notification')
@@ -690,6 +835,23 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
         expect(config).not_to have_key('virtual_machine_scale_set_id')
       end
+      it 'includes vm_agent_platform_updates_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('opt', required_attrs.merge(vm_agent_platform_updates_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'opt')
+        expect(config).to have_key('vm_agent_platform_updates_enabled')
+      end
+
+      it 'omits vm_agent_platform_updates_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_virtual_machine('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', 'minimal')
+        expect(config).not_to have_key('vm_agent_platform_updates_enabled')
+      end
       it 'includes vtpm_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -736,6 +898,17 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
 
     context 'boolean fields' do
       [true, false].each do |val|
+        it "accepts allow_extension_operations=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(allow_extension_operations: val)
+          synth.azurerm_linux_virtual_machine("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', "bool_#{val}")
+          expect(config['allow_extension_operations']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
         it "accepts bypass_platform_safety_checks_on_user_schedule_enabled=#{val}" do
           synth = create_synthesizer
           synth.extend(described_class)
@@ -744,6 +917,17 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
           result = normalize_synthesis(synth.synthesis)
           config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', "bool_#{val}")
           expect(config['bypass_platform_safety_checks_on_user_schedule_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts disable_password_authentication=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(disable_password_authentication: val)
+          synth.azurerm_linux_virtual_machine("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', "bool_#{val}")
+          expect(config['disable_password_authentication']).to eq(val)
         end
       end
       [true, false].each do |val|
@@ -758,6 +942,17 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         end
       end
       [true, false].each do |val|
+        it "accepts provision_vm_agent=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(provision_vm_agent: val)
+          synth.azurerm_linux_virtual_machine("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', "bool_#{val}")
+          expect(config['provision_vm_agent']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
         it "accepts secure_boot_enabled=#{val}" do
           synth = create_synthesizer
           synth.extend(described_class)
@@ -766,6 +961,17 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
           result = normalize_synthesis(synth.synthesis)
           config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', "bool_#{val}")
           expect(config['secure_boot_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts vm_agent_platform_updates_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(vm_agent_platform_updates_enabled: val)
+          synth.azurerm_linux_virtual_machine("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_linux_virtual_machine', "bool_#{val}")
+          expect(config['vm_agent_platform_updates_enabled']).to eq(val)
         end
       end
       [true, false].each do |val|
@@ -792,7 +998,7 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['network_interface_ids']).to be_a(Array)
-        expect(config['os_disk']).to be_a(Array)
+        expect(config['os_disk']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['size']).to be_a(String)
       end
@@ -827,9 +1033,9 @@ RSpec.describe Pangea::Resources::AzureLinuxVirtualMachine do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_linux_virtual_machine,
     method: :azurerm_linux_virtual_machine,
-    required_attrs: { location: 'test-value', name: 'test-value', network_interface_ids: ['test-value'], os_disk: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', size: 'test-value' },
+    required_attrs: { location: 'test-value', name: 'test-value', network_interface_ids: ['test-value'], os_disk: { 'key1' => 'val1' }, resource_group_name: 'test-value', size: 'test-value' },
     expected_outputs: [:id, :allow_extension_operations, :computer_name, :disable_password_authentication, :disk_controller_type, :os_managed_disk_id, :patch_assessment_mode, :patch_mode, :private_ip_address, :private_ip_addresses, :provision_vm_agent, :public_ip_address, :public_ip_addresses, :virtual_machine_id, :vm_agent_platform_updates_enabled],
     sensitive_fields: [:admin_password, :custom_data],
     immutable_fields: [],
-    boolean_fields: [:bypass_platform_safety_checks_on_user_schedule_enabled, :encryption_at_host_enabled, :secure_boot_enabled, :vtpm_enabled]
+    boolean_fields: [:allow_extension_operations, :bypass_platform_safety_checks_on_user_schedule_enabled, :disable_password_authentication, :encryption_at_host_enabled, :provision_vm_agent, :secure_boot_enabled, :vm_agent_platform_updates_enabled, :vtpm_enabled]
 end

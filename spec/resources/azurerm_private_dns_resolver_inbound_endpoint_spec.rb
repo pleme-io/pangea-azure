@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzurePrivateDnsResolverInboundEndpoint do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { ip_configurations: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', private_dns_resolver_id: 'test-value' } }
+  let(:required_attrs) { { ip_configurations: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', private_dns_resolver_id: 'test-value' } }
 
   describe ':azurerm_private_dns_resolver_inbound_endpoint' do
     context 'with required attributes only' do
@@ -83,7 +83,7 @@ RSpec.describe Pangea::Resources::AzurePrivateDnsResolverInboundEndpoint do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_private_dns_resolver_inbound_endpoint', 'typed')
-        expect(config['ip_configurations']).to be_a(Array)
+        expect(config['ip_configurations']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['private_dns_resolver_id']).to be_a(String)
@@ -119,7 +119,7 @@ RSpec.describe Pangea::Resources::AzurePrivateDnsResolverInboundEndpoint do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_private_dns_resolver_inbound_endpoint,
     method: :azurerm_private_dns_resolver_inbound_endpoint,
-    required_attrs: { ip_configurations: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', private_dns_resolver_id: 'test-value' },
+    required_attrs: { ip_configurations: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', private_dns_resolver_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

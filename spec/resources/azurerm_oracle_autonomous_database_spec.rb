@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureOracleAutonomousDatabase do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ allowed_ips: ['test-value'], long_term_backup_schedule: [{ 'key1' => 'val1' }], subnet_id: 'test-value', tags: { 'key1' => 'val1' }, virtual_network_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ allowed_ips: ['test-value'], customer_contacts: ['test-value'], long_term_backup_schedule: { 'key1' => 'val1' }, subnet_id: 'test-value', tags: { 'key1' => 'val1' }, virtual_network_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -65,6 +65,7 @@ RSpec.describe Pangea::Resources::AzureOracleAutonomousDatabase do
 
         config = validate_resource_structure(result, 'azurerm_oracle_autonomous_database', 'full')
         expect(config).to have_key('allowed_ips')
+        expect(config).to have_key('customer_contacts')
         expect(config).to have_key('long_term_backup_schedule')
         expect(config).to have_key('subnet_id')
         expect(config).to have_key('tags')
@@ -90,10 +91,27 @@ RSpec.describe Pangea::Resources::AzureOracleAutonomousDatabase do
         config = validate_resource_structure(result, 'azurerm_oracle_autonomous_database', 'minimal')
         expect(config).not_to have_key('allowed_ips')
       end
+      it 'includes customer_contacts when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_autonomous_database('opt', required_attrs.merge(customer_contacts: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_autonomous_database', 'opt')
+        expect(config).to have_key('customer_contacts')
+      end
+
+      it 'omits customer_contacts when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_autonomous_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_autonomous_database', 'minimal')
+        expect(config).not_to have_key('customer_contacts')
+      end
       it 'includes long_term_backup_schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_oracle_autonomous_database('opt', required_attrs.merge(long_term_backup_schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_oracle_autonomous_database('opt', required_attrs.merge(long_term_backup_schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_oracle_autonomous_database', 'opt')
         expect(config).to have_key('long_term_backup_schedule')

@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureRoleManagementPolicy do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ activation_rules: [{ 'key1' => 'val1' }], active_assignment_rules: [{ 'key1' => 'val1' }], eligible_assignment_rules: [{ 'key1' => 'val1' }], notification_rules: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ activation_rules: { 'key1' => 'val1' }, active_assignment_rules: { 'key1' => 'val1' }, eligible_assignment_rules: { 'key1' => 'val1' }, notification_rules: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -77,7 +77,7 @@ RSpec.describe Pangea::Resources::AzureRoleManagementPolicy do
       it 'includes activation_rules when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_role_management_policy('opt', required_attrs.merge(activation_rules: [{ 'key1' => 'val1' }]))
+        synth.azurerm_role_management_policy('opt', required_attrs.merge(activation_rules: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_role_management_policy', 'opt')
         expect(config).to have_key('activation_rules')
@@ -94,7 +94,7 @@ RSpec.describe Pangea::Resources::AzureRoleManagementPolicy do
       it 'includes active_assignment_rules when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_role_management_policy('opt', required_attrs.merge(active_assignment_rules: [{ 'key1' => 'val1' }]))
+        synth.azurerm_role_management_policy('opt', required_attrs.merge(active_assignment_rules: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_role_management_policy', 'opt')
         expect(config).to have_key('active_assignment_rules')
@@ -111,7 +111,7 @@ RSpec.describe Pangea::Resources::AzureRoleManagementPolicy do
       it 'includes eligible_assignment_rules when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_role_management_policy('opt', required_attrs.merge(eligible_assignment_rules: [{ 'key1' => 'val1' }]))
+        synth.azurerm_role_management_policy('opt', required_attrs.merge(eligible_assignment_rules: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_role_management_policy', 'opt')
         expect(config).to have_key('eligible_assignment_rules')
@@ -128,7 +128,7 @@ RSpec.describe Pangea::Resources::AzureRoleManagementPolicy do
       it 'includes notification_rules when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_role_management_policy('opt', required_attrs.merge(notification_rules: [{ 'key1' => 'val1' }]))
+        synth.azurerm_role_management_policy('opt', required_attrs.merge(notification_rules: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_role_management_policy', 'opt')
         expect(config).to have_key('notification_rules')

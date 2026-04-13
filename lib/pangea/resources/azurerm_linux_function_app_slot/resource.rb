@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::LinuxFunctionAppSlotAttributes,
       outputs: { id: :id },
       map: [:function_app_id, :name, :site_config],
-      map_present: [:app_settings, :auth_settings, :auth_settings_v2, :backup, :client_certificate_exclusion_paths, :client_certificate_mode, :connection_string, :daily_memory_time_quota, :functions_extension_version, :identity, :service_plan_id, :storage_account, :storage_account_access_key, :storage_account_name, :storage_key_vault_secret_id, :tags, :virtual_network_subnet_id],
+      map_present: [:app_settings, :auth_settings, :auth_settings_v2, :backup, :client_certificate_exclusion_paths, :client_certificate_mode, :connection_string, :daily_memory_time_quota, :functions_extension_version, :identity, :key_vault_reference_identity_id, :service_plan_id, :storage_account, :storage_account_access_key, :storage_account_name, :storage_key_vault_secret_id, :tags, :virtual_network_subnet_id],
       map_bool: [:builtin_logging_enabled, :client_certificate_enabled, :content_share_force_disabled, :enabled, :ftp_publish_basic_authentication_enabled, :https_only, :public_network_access_enabled, :storage_uses_managed_identity, :virtual_network_backup_restore_enabled, :vnet_image_pull_enabled, :webdeploy_publish_basic_authentication_enabled]
   end
   module Azure

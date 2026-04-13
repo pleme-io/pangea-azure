@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::KustoEventhubDataConnectionAttributes,
       outputs: { id: :id },
       map: [:cluster_name, :consumer_group, :database_name, :eventhub_id, :location, :name, :resource_group_name],
-      map_present: [:compression, :data_format, :database_routing_type, :identity_id, :mapping_rule_name, :table_name]
+      map_present: [:compression, :data_format, :database_routing_type, :event_system_properties, :identity_id, :mapping_rule_name, :retrieval_start_date, :table_name]
   end
   module Azure
     include AzureKustoEventhubDataConnection

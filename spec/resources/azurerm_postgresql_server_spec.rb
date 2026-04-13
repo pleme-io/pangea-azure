@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzurePostgresqlServer do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ administrator_login_password: 'test-value', administrator_login_password_wo: 'test-value', administrator_login_password_wo_version: 3.14, auto_grow_enabled: true, create_mode: 'test-value', creation_source_server_id: 'test-value', geo_redundant_backup_enabled: true, identity: [{ 'key1' => 'val1' }], infrastructure_encryption_enabled: true, public_network_access_enabled: true, restore_point_in_time: 'test-value', ssl_minimal_tls_version_enforced: 'test-value', tags: { 'key1' => 'val1' }, threat_detection_policy: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ administrator_login: 'test-value', administrator_login_password: 'test-value', administrator_login_password_wo: 'test-value', administrator_login_password_wo_version: 3.14, auto_grow_enabled: true, backup_retention_days: 3.14, create_mode: 'test-value', creation_source_server_id: 'test-value', geo_redundant_backup_enabled: true, identity: { 'key1' => 'val1' }, infrastructure_encryption_enabled: true, public_network_access_enabled: true, restore_point_in_time: 'test-value', ssl_minimal_tls_version_enforced: 'test-value', storage_mb: 3.14, tags: { 'key1' => 'val1' }, threat_detection_policy: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,10 +70,12 @@ RSpec.describe Pangea::Resources::AzurePostgresqlServer do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_postgresql_server', 'full')
+        expect(config).to have_key('administrator_login')
         expect(config).to have_key('administrator_login_password')
         expect(config).to have_key('administrator_login_password_wo')
         expect(config).to have_key('administrator_login_password_wo_version')
         expect(config).to have_key('auto_grow_enabled')
+        expect(config).to have_key('backup_retention_days')
         expect(config).to have_key('create_mode')
         expect(config).to have_key('creation_source_server_id')
         expect(config).to have_key('geo_redundant_backup_enabled')
@@ -82,12 +84,30 @@ RSpec.describe Pangea::Resources::AzurePostgresqlServer do
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('restore_point_in_time')
         expect(config).to have_key('ssl_minimal_tls_version_enforced')
+        expect(config).to have_key('storage_mb')
         expect(config).to have_key('tags')
         expect(config).to have_key('threat_detection_policy')
       end
     end
 
     context 'optional attributes' do
+      it 'includes administrator_login when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_server('opt', required_attrs.merge(administrator_login: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_server', 'opt')
+        expect(config).to have_key('administrator_login')
+      end
+
+      it 'omits administrator_login when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_server', 'minimal')
+        expect(config).not_to have_key('administrator_login')
+      end
       it 'includes administrator_login_password when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -156,6 +176,23 @@ RSpec.describe Pangea::Resources::AzurePostgresqlServer do
         config = validate_resource_structure(result, 'azurerm_postgresql_server', 'minimal')
         expect(config).not_to have_key('auto_grow_enabled')
       end
+      it 'includes backup_retention_days when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_server('opt', required_attrs.merge(backup_retention_days: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_server', 'opt')
+        expect(config).to have_key('backup_retention_days')
+      end
+
+      it 'omits backup_retention_days when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_server', 'minimal')
+        expect(config).not_to have_key('backup_retention_days')
+      end
       it 'includes create_mode when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -210,7 +247,7 @@ RSpec.describe Pangea::Resources::AzurePostgresqlServer do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_postgresql_server('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_postgresql_server('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_server', 'opt')
         expect(config).to have_key('identity')
@@ -292,6 +329,23 @@ RSpec.describe Pangea::Resources::AzurePostgresqlServer do
         config = validate_resource_structure(result, 'azurerm_postgresql_server', 'minimal')
         expect(config).not_to have_key('ssl_minimal_tls_version_enforced')
       end
+      it 'includes storage_mb when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_server('opt', required_attrs.merge(storage_mb: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_server', 'opt')
+        expect(config).to have_key('storage_mb')
+      end
+
+      it 'omits storage_mb when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_server', 'minimal')
+        expect(config).not_to have_key('storage_mb')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -312,7 +366,7 @@ RSpec.describe Pangea::Resources::AzurePostgresqlServer do
       it 'includes threat_detection_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_postgresql_server('opt', required_attrs.merge(threat_detection_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_postgresql_server('opt', required_attrs.merge(threat_detection_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_server', 'opt')
         expect(config).to have_key('threat_detection_policy')

@@ -1,0 +1,8 @@
+name: azurerm_vmware_netapp_volume_attachment
+title: Manages a azurerm_vmware_netapp_volume_attachment resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

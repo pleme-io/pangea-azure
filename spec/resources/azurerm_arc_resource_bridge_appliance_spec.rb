@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureArcResourceBridgeAppliance do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { distro: 'test-value', identity: [{ 'key1' => 'val1' }], infrastructure_provider: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { distro: 'test-value', identity: { 'key1' => 'val1' }, infrastructure_provider: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_arc_resource_bridge_appliance' do
     context 'with required attributes only' do
@@ -102,7 +102,7 @@ RSpec.describe Pangea::Resources::AzureArcResourceBridgeAppliance do
 
         config = validate_resource_structure(result, 'azurerm_arc_resource_bridge_appliance', 'typed')
         expect(config['distro']).to be_a(String)
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['infrastructure_provider']).to be_a(String)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
@@ -139,7 +139,7 @@ RSpec.describe Pangea::Resources::AzureArcResourceBridgeAppliance do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_arc_resource_bridge_appliance,
     method: :azurerm_arc_resource_bridge_appliance,
-    required_attrs: { distro: 'test-value', identity: [{ 'key1' => 'val1' }], infrastructure_provider: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { distro: 'test-value', identity: { 'key1' => 'val1' }, infrastructure_provider: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

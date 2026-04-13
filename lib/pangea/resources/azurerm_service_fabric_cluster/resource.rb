@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ServiceFabricClusterAttributes,
       outputs: { id: :id },
       map: [:location, :management_endpoint, :name, :node_type, :reliability_level, :resource_group_name, :upgrade_mode, :vm_image],
-      map_present: [:add_on_features, :azure_active_directory, :certificate, :certificate_common_names, :client_certificate_common_name, :client_certificate_thumbprint, :diagnostics_config, :fabric_settings, :reverse_proxy_certificate, :reverse_proxy_certificate_common_names, :service_fabric_zonal_upgrade_mode, :tags, :upgrade_policy, :vmss_zonal_upgrade_mode]
+      map_present: [:add_on_features, :azure_active_directory, :certificate, :certificate_common_names, :client_certificate_common_name, :client_certificate_thumbprint, :cluster_code_version, :diagnostics_config, :fabric_settings, :reverse_proxy_certificate, :reverse_proxy_certificate_common_names, :service_fabric_zonal_upgrade_mode, :tags, :upgrade_policy, :vmss_zonal_upgrade_mode]
   end
   module Azure
     include AzureServiceFabricCluster

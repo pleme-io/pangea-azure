@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_cosmosdb_sql_role_assignment,
       attributes_class: Azure::Types::CosmosdbSqlRoleAssignmentAttributes,
       outputs: { id: :id },
-      map: [:account_name, :principal_id, :resource_group_name, :role_definition_id, :scope]
+      map: [:account_name, :principal_id, :resource_group_name, :role_definition_id, :scope],
+      map_present: [:name]
   end
   module Azure
     include AzureCosmosdbSqlRoleAssignment

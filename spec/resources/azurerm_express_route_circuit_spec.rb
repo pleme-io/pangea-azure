@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureExpressRouteCircuit do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } } }
 
   describe ':azurerm_express_route_circuit' do
     context 'with required attributes only' do
@@ -278,7 +278,7 @@ RSpec.describe Pangea::Resources::AzureExpressRouteCircuit do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
       end
     end
 
@@ -311,7 +311,7 @@ RSpec.describe Pangea::Resources::AzureExpressRouteCircuit do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_express_route_circuit,
     method: :azurerm_express_route_circuit,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } },
     expected_outputs: [:id, :service_key, :service_provider_provisioning_state],
     sensitive_fields: [:authorization_key, :service_key],
     immutable_fields: [],

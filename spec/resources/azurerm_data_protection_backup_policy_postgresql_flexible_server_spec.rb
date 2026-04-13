@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDataProtectionBackupPolicyPostgresqlFlexibleServer do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { backup_repeating_time_intervals: ['test-value'], default_retention_rule: [{ 'key1' => 'val1' }], name: 'test-value', vault_id: 'test-value' } }
+  let(:required_attrs) { { backup_repeating_time_intervals: ['test-value'], default_retention_rule: { 'key1' => 'val1' }, name: 'test-value', vault_id: 'test-value' } }
 
   describe ':azurerm_data_protection_backup_policy_postgresql_flexible_server' do
     context 'with required attributes only' do
@@ -102,7 +102,7 @@ RSpec.describe Pangea::Resources::AzureDataProtectionBackupPolicyPostgresqlFlexi
 
         config = validate_resource_structure(result, 'azurerm_data_protection_backup_policy_postgresql_flexible_server', 'typed')
         expect(config['backup_repeating_time_intervals']).to be_a(Array)
-        expect(config['default_retention_rule']).to be_a(Array)
+        expect(config['default_retention_rule']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['vault_id']).to be_a(String)
       end
@@ -137,7 +137,7 @@ RSpec.describe Pangea::Resources::AzureDataProtectionBackupPolicyPostgresqlFlexi
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_data_protection_backup_policy_postgresql_flexible_server,
     method: :azurerm_data_protection_backup_policy_postgresql_flexible_server,
-    required_attrs: { backup_repeating_time_intervals: ['test-value'], default_retention_rule: [{ 'key1' => 'val1' }], name: 'test-value', vault_id: 'test-value' },
+    required_attrs: { backup_repeating_time_intervals: ['test-value'], default_retention_rule: { 'key1' => 'val1' }, name: 'test-value', vault_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

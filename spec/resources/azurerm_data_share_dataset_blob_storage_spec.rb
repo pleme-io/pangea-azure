@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDataShareDatasetBlobStorage do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { container_name: 'test-value', data_share_id: 'test-value', name: 'test-value', storage_account: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { container_name: 'test-value', data_share_id: 'test-value', name: 'test-value', storage_account: { 'key1' => 'val1' } } }
 
   describe ':azurerm_data_share_dataset_blob_storage' do
     context 'with required attributes only' do
@@ -117,7 +117,7 @@ RSpec.describe Pangea::Resources::AzureDataShareDatasetBlobStorage do
         expect(config['container_name']).to be_a(String)
         expect(config['data_share_id']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['storage_account']).to be_a(Array)
+        expect(config['storage_account']).to be_a(Hash)
       end
     end
 
@@ -150,7 +150,7 @@ RSpec.describe Pangea::Resources::AzureDataShareDatasetBlobStorage do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_data_share_dataset_blob_storage,
     method: :azurerm_data_share_dataset_blob_storage,
-    required_attrs: { container_name: 'test-value', data_share_id: 'test-value', name: 'test-value', storage_account: [{ 'key1' => 'val1' }] },
+    required_attrs: { container_name: 'test-value', data_share_id: 'test-value', name: 'test-value', storage_account: { 'key1' => 'val1' } },
     expected_outputs: [:id, :display_name],
     sensitive_fields: [],
     immutable_fields: [],

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ApiManagementApiAttributes,
       outputs: { id: :id },
       map: [:api_management_name, :name, :resource_group_name, :revision],
-      map_present: [:contact, :description, :import, :license, :oauth2_authorization, :openid_authentication, :revision_description, :source_api_id, :subscription_key_parameter_names, :terms_of_service_url, :version_description],
+      map_present: [:api_type, :contact, :description, :display_name, :import, :license, :oauth2_authorization, :openid_authentication, :path, :protocols, :revision_description, :service_url, :source_api_id, :subscription_key_parameter_names, :terms_of_service_url, :version, :version_description, :version_set_id],
       map_bool: [:subscription_required]
   end
   module Azure

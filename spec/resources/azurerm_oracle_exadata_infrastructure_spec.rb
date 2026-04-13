@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureOracleExadataInfrastructure do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ maintenance_window: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ customer_contacts: ['test-value'], database_server_type: 'test-value', maintenance_window: [{ 'key1' => 'val1' }], storage_server_type: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,12 +68,49 @@ RSpec.describe Pangea::Resources::AzureOracleExadataInfrastructure do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_oracle_exadata_infrastructure', 'full')
+        expect(config).to have_key('customer_contacts')
+        expect(config).to have_key('database_server_type')
         expect(config).to have_key('maintenance_window')
+        expect(config).to have_key('storage_server_type')
         expect(config).to have_key('tags')
       end
     end
 
     context 'optional attributes' do
+      it 'includes customer_contacts when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_exadata_infrastructure('opt', required_attrs.merge(customer_contacts: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_exadata_infrastructure', 'opt')
+        expect(config).to have_key('customer_contacts')
+      end
+
+      it 'omits customer_contacts when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_exadata_infrastructure('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_exadata_infrastructure', 'minimal')
+        expect(config).not_to have_key('customer_contacts')
+      end
+      it 'includes database_server_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_exadata_infrastructure('opt', required_attrs.merge(database_server_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_exadata_infrastructure', 'opt')
+        expect(config).to have_key('database_server_type')
+      end
+
+      it 'omits database_server_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_exadata_infrastructure('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_exadata_infrastructure', 'minimal')
+        expect(config).not_to have_key('database_server_type')
+      end
       it 'includes maintenance_window when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -90,6 +127,23 @@ RSpec.describe Pangea::Resources::AzureOracleExadataInfrastructure do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_oracle_exadata_infrastructure', 'minimal')
         expect(config).not_to have_key('maintenance_window')
+      end
+      it 'includes storage_server_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_exadata_infrastructure('opt', required_attrs.merge(storage_server_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_exadata_infrastructure', 'opt')
+        expect(config).to have_key('storage_server_type')
+      end
+
+      it 'omits storage_server_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_exadata_infrastructure('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_exadata_infrastructure', 'minimal')
+        expect(config).not_to have_key('storage_server_type')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer

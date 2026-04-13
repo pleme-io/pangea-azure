@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::DatabricksWorkspaceAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku],
-      map_present: [:access_connector_id, :custom_parameters, :enhanced_security_compliance, :load_balancer_backend_address_pool_id, :managed_disk_cmk_key_vault_id, :managed_disk_cmk_key_vault_key_id, :managed_services_cmk_key_vault_id, :managed_services_cmk_key_vault_key_id, :network_security_group_rules_required, :tags],
+      map_present: [:access_connector_id, :custom_parameters, :enhanced_security_compliance, :load_balancer_backend_address_pool_id, :managed_disk_cmk_key_vault_id, :managed_disk_cmk_key_vault_key_id, :managed_resource_group_name, :managed_services_cmk_key_vault_id, :managed_services_cmk_key_vault_key_id, :network_security_group_rules_required, :tags],
       map_bool: [:customer_managed_key_enabled, :default_storage_firewall_enabled, :infrastructure_encryption_enabled, :managed_disk_cmk_rotation_to_latest_version_enabled, :public_network_access_enabled]
   end
   module Azure

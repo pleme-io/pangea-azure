@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineExtension do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_upgrade_minor_version: true, automatic_upgrade_enabled: true, failure_suppression_enabled: true, protected_settings: 'test-value', protected_settings_from_key_vault: [{ 'key1' => 'val1' }], provision_after_extensions: ['test-value'], settings: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ auto_upgrade_minor_version: true, automatic_upgrade_enabled: true, failure_suppression_enabled: true, protected_settings: 'test-value', protected_settings_from_key_vault: { 'key1' => 'val1' }, provision_after_extensions: ['test-value'], settings: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -134,7 +134,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineExtension do
       it 'includes protected_settings_from_key_vault when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_extension('opt', required_attrs.merge(protected_settings_from_key_vault: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_extension('opt', required_attrs.merge(protected_settings_from_key_vault: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_extension', 'opt')
         expect(config).to have_key('protected_settings_from_key_vault')

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::PostgresqlFlexibleServerAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:administrator_password, :administrator_password_wo, :administrator_password_wo_version, :authentication, :cluster, :create_mode, :customer_managed_key, :delegated_subnet_id, :high_availability, :identity, :maintenance_window, :point_in_time_restore_time_in_utc, :replication_role, :source_server_id, :tags, :zone],
+      map_present: [:administrator_login, :administrator_password, :administrator_password_wo, :administrator_password_wo_version, :authentication, :backup_retention_days, :cluster, :create_mode, :customer_managed_key, :delegated_subnet_id, :high_availability, :identity, :maintenance_window, :point_in_time_restore_time_in_utc, :private_dns_zone_id, :replication_role, :sku_name, :source_server_id, :storage_mb, :storage_tier, :tags, :version, :zone],
       map_bool: [:auto_grow_enabled, :geo_redundant_backup_enabled, :public_network_access_enabled]
   end
   module Azure

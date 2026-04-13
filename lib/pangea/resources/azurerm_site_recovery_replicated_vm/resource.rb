@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SiteRecoveryReplicatedVmAttributes,
       outputs: { id: :id },
       map: [:name, :recovery_replication_policy_id, :recovery_vault_name, :resource_group_name, :source_recovery_fabric_name, :source_recovery_protection_container_name, :source_vm_id, :target_recovery_fabric_id, :target_recovery_protection_container_id, :target_resource_group_id],
-      map_present: [:multi_vm_group_name, :target_availability_set_id, :target_boot_diagnostic_storage_account_id, :target_capacity_reservation_group_id, :target_edge_zone, :target_proximity_placement_group_id, :target_virtual_machine_scale_set_id, :target_zone]
+      map_present: [:managed_disk, :multi_vm_group_name, :network_interface, :target_availability_set_id, :target_boot_diagnostic_storage_account_id, :target_capacity_reservation_group_id, :target_edge_zone, :target_network_id, :target_proximity_placement_group_id, :target_virtual_machine_scale_set_id, :target_virtual_machine_size, :target_zone, :test_network_id, :unmanaged_disk]
   end
   module Azure
     include AzureSiteRecoveryReplicatedVm

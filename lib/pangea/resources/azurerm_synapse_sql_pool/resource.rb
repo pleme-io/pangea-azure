@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SynapseSqlPoolAttributes,
       outputs: { id: :id },
       map: [:name, :sku_name, :storage_account_type, :synapse_workspace_id],
-      map_present: [:create_mode, :recovery_database_id, :restore, :tags],
+      map_present: [:collation, :create_mode, :recovery_database_id, :restore, :tags],
       map_bool: [:data_encrypted, :geo_backup_policy_enabled]
   end
   module Azure

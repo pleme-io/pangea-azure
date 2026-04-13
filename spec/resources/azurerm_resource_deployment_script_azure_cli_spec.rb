@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureResourceDeploymentScriptAzureCli do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ cleanup_preference: 'test-value', command_line: 'test-value', container: [{ 'key1' => 'val1' }], environment_variable: [{ 'key1' => 'val1' }], force_update_tag: 'test-value', identity: [{ 'key1' => 'val1' }], primary_script_uri: 'test-value', script_content: 'test-value', storage_account: [{ 'key1' => 'val1' }], supporting_script_uris: ['test-value'], tags: { 'key1' => 'val1' }, timeout: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ cleanup_preference: 'test-value', command_line: 'test-value', container: { 'key1' => 'val1' }, environment_variable: [{ 'key1' => 'val1' }], force_update_tag: 'test-value', identity: { 'key1' => 'val1' }, primary_script_uri: 'test-value', script_content: 'test-value', storage_account: { 'key1' => 'val1' }, supporting_script_uris: ['test-value'], tags: { 'key1' => 'val1' }, timeout: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -117,7 +117,7 @@ RSpec.describe Pangea::Resources::AzureResourceDeploymentScriptAzureCli do
       it 'includes container when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_resource_deployment_script_azure_cli('opt', required_attrs.merge(container: [{ 'key1' => 'val1' }]))
+        synth.azurerm_resource_deployment_script_azure_cli('opt', required_attrs.merge(container: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_resource_deployment_script_azure_cli', 'opt')
         expect(config).to have_key('container')
@@ -168,7 +168,7 @@ RSpec.describe Pangea::Resources::AzureResourceDeploymentScriptAzureCli do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_resource_deployment_script_azure_cli('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_resource_deployment_script_azure_cli('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_resource_deployment_script_azure_cli', 'opt')
         expect(config).to have_key('identity')
@@ -219,7 +219,7 @@ RSpec.describe Pangea::Resources::AzureResourceDeploymentScriptAzureCli do
       it 'includes storage_account when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_resource_deployment_script_azure_cli('opt', required_attrs.merge(storage_account: [{ 'key1' => 'val1' }]))
+        synth.azurerm_resource_deployment_script_azure_cli('opt', required_attrs.merge(storage_account: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_resource_deployment_script_azure_cli', 'opt')
         expect(config).to have_key('storage_account')

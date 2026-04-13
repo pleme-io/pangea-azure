@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureKeyVaultManagedHardwareSecurityModule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ network_acls: [{ 'key1' => 'val1' }], public_network_access_enabled: true, purge_protection_enabled: true, security_domain_key_vault_certificate_ids: ['test-value'], security_domain_quorum: 3.14, soft_delete_retention_days: 3.14, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ network_acls: { 'key1' => 'val1' }, public_network_access_enabled: true, purge_protection_enabled: true, security_domain_key_vault_certificate_ids: ['test-value'], security_domain_quorum: 3.14, soft_delete_retention_days: 3.14, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -80,7 +80,7 @@ RSpec.describe Pangea::Resources::AzureKeyVaultManagedHardwareSecurityModule do
       it 'includes network_acls when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_key_vault_managed_hardware_security_module('opt', required_attrs.merge(network_acls: [{ 'key1' => 'val1' }]))
+        synth.azurerm_key_vault_managed_hardware_security_module('opt', required_attrs.merge(network_acls: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_key_vault_managed_hardware_security_module', 'opt')
         expect(config).to have_key('network_acls')

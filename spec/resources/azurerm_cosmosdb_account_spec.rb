@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { consistency_policy: [{ 'key1' => 'val1' }], geo_location: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', offer_type: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { consistency_policy: { 'key1' => 'val1' }, geo_location: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', offer_type: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_cosmosdb_account' do
     context 'with required attributes only' do
@@ -87,7 +87,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ access_key_metadata_writes_enabled: true, analytical_storage: [{ 'key1' => 'val1' }], analytical_storage_enabled: true, automatic_failover_enabled: true, backup: [{ 'key1' => 'val1' }], burst_capacity_enabled: true, capabilities: [{ 'key1' => 'val1' }], capacity: [{ 'key1' => 'val1' }], cors_rule: [{ 'key1' => 'val1' }], default_identity_type: 'test-value', free_tier_enabled: true, identity: [{ 'key1' => 'val1' }], ip_range_filter: ['test-value'], is_virtual_network_filter_enabled: true, key_vault_key_id: 'test-value', kind: 'test-value', local_authentication_disabled: true, managed_hsm_key_id: 'test-value', minimal_tls_version: 'test-value', multiple_write_locations_enabled: true, network_acl_bypass_for_azure_services: true, network_acl_bypass_ids: ['test-value'], partition_merge_enabled: true, public_network_access_enabled: true, restore: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, virtual_network_rule: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ access_key_metadata_writes_enabled: true, analytical_storage: { 'key1' => 'val1' }, analytical_storage_enabled: true, automatic_failover_enabled: true, backup: { 'key1' => 'val1' }, burst_capacity_enabled: true, capabilities: [{ 'key1' => 'val1' }], capacity: { 'key1' => 'val1' }, cors_rule: { 'key1' => 'val1' }, create_mode: 'test-value', default_identity_type: 'test-value', free_tier_enabled: true, identity: { 'key1' => 'val1' }, ip_range_filter: ['test-value'], is_virtual_network_filter_enabled: true, key_vault_key_id: 'test-value', kind: 'test-value', local_authentication_disabled: true, managed_hsm_key_id: 'test-value', minimal_tls_version: 'test-value', mongo_server_version: 'test-value', multiple_write_locations_enabled: true, network_acl_bypass_for_azure_services: true, network_acl_bypass_ids: ['test-value'], partition_merge_enabled: true, public_network_access_enabled: true, restore: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, virtual_network_rule: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -105,6 +105,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
         expect(config).to have_key('capabilities')
         expect(config).to have_key('capacity')
         expect(config).to have_key('cors_rule')
+        expect(config).to have_key('create_mode')
         expect(config).to have_key('default_identity_type')
         expect(config).to have_key('free_tier_enabled')
         expect(config).to have_key('identity')
@@ -115,6 +116,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
         expect(config).to have_key('local_authentication_disabled')
         expect(config).to have_key('managed_hsm_key_id')
         expect(config).to have_key('minimal_tls_version')
+        expect(config).to have_key('mongo_server_version')
         expect(config).to have_key('multiple_write_locations_enabled')
         expect(config).to have_key('network_acl_bypass_for_azure_services')
         expect(config).to have_key('network_acl_bypass_ids')
@@ -147,7 +149,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
       it 'includes analytical_storage when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(analytical_storage: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(analytical_storage: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'opt')
         expect(config).to have_key('analytical_storage')
@@ -198,7 +200,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
       it 'includes backup when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(backup: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(backup: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'opt')
         expect(config).to have_key('backup')
@@ -249,7 +251,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
       it 'includes capacity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(capacity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(capacity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'opt')
         expect(config).to have_key('capacity')
@@ -266,7 +268,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
       it 'includes cors_rule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(cors_rule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(cors_rule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'opt')
         expect(config).to have_key('cors_rule')
@@ -279,6 +281,23 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'minimal')
         expect(config).not_to have_key('cors_rule')
+      end
+      it 'includes create_mode when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(create_mode: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'opt')
+        expect(config).to have_key('create_mode')
+      end
+
+      it 'omits create_mode when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_account('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'minimal')
+        expect(config).not_to have_key('create_mode')
       end
       it 'includes default_identity_type when provided' do
         synth = create_synthesizer
@@ -317,7 +336,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'opt')
         expect(config).to have_key('identity')
@@ -450,6 +469,23 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
         config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'minimal')
         expect(config).not_to have_key('minimal_tls_version')
       end
+      it 'includes mongo_server_version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(mongo_server_version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'opt')
+        expect(config).to have_key('mongo_server_version')
+      end
+
+      it 'omits mongo_server_version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_account('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'minimal')
+        expect(config).not_to have_key('mongo_server_version')
+      end
       it 'includes multiple_write_locations_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -538,7 +574,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
       it 'includes restore when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(restore: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_account('opt', required_attrs.merge(restore: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'opt')
         expect(config).to have_key('restore')
@@ -738,7 +774,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_cosmosdb_account', 'typed')
-        expect(config['consistency_policy']).to be_a(Array)
+        expect(config['consistency_policy']).to be_a(Hash)
         expect(config['geo_location']).to be_a(Array)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
@@ -776,7 +812,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbAccount do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_cosmosdb_account,
     method: :azurerm_cosmosdb_account,
-    required_attrs: { consistency_policy: [{ 'key1' => 'val1' }], geo_location: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', offer_type: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { consistency_policy: { 'key1' => 'val1' }, geo_location: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', offer_type: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id, :create_mode, :endpoint, :mongo_server_version, :primary_key, :primary_mongodb_connection_string, :primary_readonly_key, :primary_readonly_mongodb_connection_string, :primary_readonly_sql_connection_string, :primary_sql_connection_string, :read_endpoints, :secondary_key, :secondary_mongodb_connection_string, :secondary_readonly_key, :secondary_readonly_mongodb_connection_string, :secondary_readonly_sql_connection_string, :secondary_sql_connection_string, :write_endpoints],
     sensitive_fields: [:primary_key, :primary_mongodb_connection_string, :primary_readonly_key, :primary_readonly_mongodb_connection_string, :primary_readonly_sql_connection_string, :primary_sql_connection_string, :secondary_key, :secondary_mongodb_connection_string, :secondary_readonly_key, :secondary_readonly_mongodb_connection_string, :secondary_readonly_sql_connection_string, :secondary_sql_connection_string],
     immutable_fields: [],

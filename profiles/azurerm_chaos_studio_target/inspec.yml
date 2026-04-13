@@ -1,0 +1,8 @@
+name: azurerm_chaos_studio_target
+title: Manages a azurerm_chaos_studio_target resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

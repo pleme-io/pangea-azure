@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::MssqlDatabaseAttributes,
       outputs: { id: :id },
       map: [:name, :server_id],
-      map_present: [:create_mode, :elastic_pool_id, :identity, :import, :long_term_retention_policy, :recover_database_id, :recovery_point_id, :restore_dropped_database_id, :restore_long_term_retention_backup_id, :short_term_retention_policy, :storage_account_type, :tags, :threat_detection_policy, :transparent_data_encryption_key_vault_key_id],
-      map_bool: [:geo_backup_enabled, :transparent_data_encryption_enabled, :transparent_data_encryption_key_automatic_rotation_enabled]
+      map_present: [:auto_pause_delay_in_minutes, :collation, :create_mode, :creation_source_database_id, :elastic_pool_id, :enclave_type, :identity, :import, :license_type, :long_term_retention_policy, :maintenance_configuration_name, :max_size_gb, :min_capacity, :read_replica_count, :recover_database_id, :recovery_point_id, :restore_dropped_database_id, :restore_long_term_retention_backup_id, :restore_point_in_time, :sample_name, :secondary_type, :short_term_retention_policy, :sku_name, :storage_account_type, :tags, :threat_detection_policy, :transparent_data_encryption_key_vault_key_id],
+      map_bool: [:geo_backup_enabled, :ledger_enabled, :read_scale, :transparent_data_encryption_enabled, :transparent_data_encryption_key_automatic_rotation_enabled, :zone_redundant]
   end
   module Azure
     include AzureMssqlDatabase

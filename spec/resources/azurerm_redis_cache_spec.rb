@@ -73,7 +73,7 @@ RSpec.describe Pangea::Resources::AzureRedisCache do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ access_keys_authentication_enabled: true, identity: [{ 'key1' => 'val1' }], minimum_tls_version: 'test-value', non_ssl_port_enabled: true, patch_schedule: [{ 'key1' => 'val1' }], public_network_access_enabled: true, redis_configuration: [{ 'key1' => 'val1' }], redis_version: 'test-value', shard_count: 3.14, subnet_id: 'test-value', tags: { 'key1' => 'val1' }, tenant_settings: { 'key1' => 'val1' }, zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ access_keys_authentication_enabled: true, identity: { 'key1' => 'val1' }, minimum_tls_version: 'test-value', non_ssl_port_enabled: true, patch_schedule: [{ 'key1' => 'val1' }], private_static_ip_address: 'test-value', public_network_access_enabled: true, redis_configuration: { 'key1' => 'val1' }, redis_version: 'test-value', replicas_per_master: 3.14, replicas_per_primary: 3.14, shard_count: 3.14, subnet_id: 'test-value', tags: { 'key1' => 'val1' }, tenant_settings: { 'key1' => 'val1' }, zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -87,9 +87,12 @@ RSpec.describe Pangea::Resources::AzureRedisCache do
         expect(config).to have_key('minimum_tls_version')
         expect(config).to have_key('non_ssl_port_enabled')
         expect(config).to have_key('patch_schedule')
+        expect(config).to have_key('private_static_ip_address')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('redis_configuration')
         expect(config).to have_key('redis_version')
+        expect(config).to have_key('replicas_per_master')
+        expect(config).to have_key('replicas_per_primary')
         expect(config).to have_key('shard_count')
         expect(config).to have_key('subnet_id')
         expect(config).to have_key('tags')
@@ -119,7 +122,7 @@ RSpec.describe Pangea::Resources::AzureRedisCache do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_redis_cache('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_redis_cache('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_redis_cache', 'opt')
         expect(config).to have_key('identity')
@@ -184,6 +187,23 @@ RSpec.describe Pangea::Resources::AzureRedisCache do
         config = validate_resource_structure(result, 'azurerm_redis_cache', 'minimal')
         expect(config).not_to have_key('patch_schedule')
       end
+      it 'includes private_static_ip_address when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_redis_cache('opt', required_attrs.merge(private_static_ip_address: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_redis_cache', 'opt')
+        expect(config).to have_key('private_static_ip_address')
+      end
+
+      it 'omits private_static_ip_address when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_redis_cache('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_redis_cache', 'minimal')
+        expect(config).not_to have_key('private_static_ip_address')
+      end
       it 'includes public_network_access_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -204,7 +224,7 @@ RSpec.describe Pangea::Resources::AzureRedisCache do
       it 'includes redis_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_redis_cache('opt', required_attrs.merge(redis_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_redis_cache('opt', required_attrs.merge(redis_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_redis_cache', 'opt')
         expect(config).to have_key('redis_configuration')
@@ -234,6 +254,40 @@ RSpec.describe Pangea::Resources::AzureRedisCache do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_redis_cache', 'minimal')
         expect(config).not_to have_key('redis_version')
+      end
+      it 'includes replicas_per_master when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_redis_cache('opt', required_attrs.merge(replicas_per_master: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_redis_cache', 'opt')
+        expect(config).to have_key('replicas_per_master')
+      end
+
+      it 'omits replicas_per_master when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_redis_cache('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_redis_cache', 'minimal')
+        expect(config).not_to have_key('replicas_per_master')
+      end
+      it 'includes replicas_per_primary when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_redis_cache('opt', required_attrs.merge(replicas_per_primary: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_redis_cache', 'opt')
+        expect(config).to have_key('replicas_per_primary')
+      end
+
+      it 'omits replicas_per_primary when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_redis_cache('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_redis_cache', 'minimal')
+        expect(config).not_to have_key('replicas_per_primary')
       end
       it 'includes shard_count when provided' do
         synth = create_synthesizer

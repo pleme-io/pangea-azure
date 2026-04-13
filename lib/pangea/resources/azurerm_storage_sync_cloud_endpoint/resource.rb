@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_storage_sync_cloud_endpoint,
       attributes_class: Azure::Types::StorageSyncCloudEndpointAttributes,
       outputs: { id: :id },
-      map: [:file_share_name, :name, :storage_account_id, :storage_sync_group_id]
+      map: [:file_share_name, :name, :storage_account_id, :storage_sync_group_id],
+      map_present: [:storage_account_tenant_id]
   end
   module Azure
     include AzureStorageSyncCloudEndpoint

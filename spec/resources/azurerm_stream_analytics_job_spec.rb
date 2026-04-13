@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsJob do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ content_storage_policy: 'test-value', data_locale: 'test-value', events_late_arrival_max_delay_in_seconds: 3.14, events_out_of_order_max_delay_in_seconds: 3.14, events_out_of_order_policy: 'test-value', identity: [{ 'key1' => 'val1' }], job_storage_account: [{ 'key1' => 'val1' }], output_error_policy: 'test-value', sku_name: 'test-value', stream_analytics_cluster_id: 'test-value', streaming_units: 3.14, tags: { 'key1' => 'val1' }, type: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ compatibility_level: 'test-value', content_storage_policy: 'test-value', data_locale: 'test-value', events_late_arrival_max_delay_in_seconds: 3.14, events_out_of_order_max_delay_in_seconds: 3.14, events_out_of_order_policy: 'test-value', identity: { 'key1' => 'val1' }, job_storage_account: { 'key1' => 'val1' }, output_error_policy: 'test-value', sku_name: 'test-value', stream_analytics_cluster_id: 'test-value', streaming_units: 3.14, tags: { 'key1' => 'val1' }, type: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,6 +66,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsJob do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_stream_analytics_job', 'full')
+        expect(config).to have_key('compatibility_level')
         expect(config).to have_key('content_storage_policy')
         expect(config).to have_key('data_locale')
         expect(config).to have_key('events_late_arrival_max_delay_in_seconds')
@@ -83,6 +84,23 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsJob do
     end
 
     context 'optional attributes' do
+      it 'includes compatibility_level when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_stream_analytics_job('opt', required_attrs.merge(compatibility_level: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_stream_analytics_job', 'opt')
+        expect(config).to have_key('compatibility_level')
+      end
+
+      it 'omits compatibility_level when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_stream_analytics_job('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_stream_analytics_job', 'minimal')
+        expect(config).not_to have_key('compatibility_level')
+      end
       it 'includes content_storage_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -171,7 +189,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsJob do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_stream_analytics_job('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_stream_analytics_job('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_stream_analytics_job', 'opt')
         expect(config).to have_key('identity')
@@ -188,7 +206,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsJob do
       it 'includes job_storage_account when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_stream_analytics_job('opt', required_attrs.merge(job_storage_account: [{ 'key1' => 'val1' }]))
+        synth.azurerm_stream_analytics_job('opt', required_attrs.merge(job_storage_account: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_stream_analytics_job', 'opt')
         expect(config).to have_key('job_storage_account')

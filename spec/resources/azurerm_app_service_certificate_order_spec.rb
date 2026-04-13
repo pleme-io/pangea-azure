@@ -75,7 +75,7 @@ RSpec.describe Pangea::Resources::AzureAppServiceCertificateOrder do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_renew: true, key_size: 3.14, product_type: 'test-value', tags: { 'key1' => 'val1' }, validity_in_years: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ auto_renew: true, csr: 'test-value', distinguished_name: 'test-value', key_size: 3.14, product_type: 'test-value', tags: { 'key1' => 'val1' }, validity_in_years: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -85,6 +85,8 @@ RSpec.describe Pangea::Resources::AzureAppServiceCertificateOrder do
 
         config = validate_resource_structure(result, 'azurerm_app_service_certificate_order', 'full')
         expect(config).to have_key('auto_renew')
+        expect(config).to have_key('csr')
+        expect(config).to have_key('distinguished_name')
         expect(config).to have_key('key_size')
         expect(config).to have_key('product_type')
         expect(config).to have_key('tags')
@@ -109,6 +111,40 @@ RSpec.describe Pangea::Resources::AzureAppServiceCertificateOrder do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_certificate_order', 'minimal')
         expect(config).not_to have_key('auto_renew')
+      end
+      it 'includes csr when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_certificate_order('opt', required_attrs.merge(csr: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_certificate_order', 'opt')
+        expect(config).to have_key('csr')
+      end
+
+      it 'omits csr when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_certificate_order('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_certificate_order', 'minimal')
+        expect(config).not_to have_key('csr')
+      end
+      it 'includes distinguished_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_certificate_order('opt', required_attrs.merge(distinguished_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_certificate_order', 'opt')
+        expect(config).to have_key('distinguished_name')
+      end
+
+      it 'omits distinguished_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_certificate_order('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_certificate_order', 'minimal')
+        expect(config).not_to have_key('distinguished_name')
       end
       it 'includes key_size when provided' do
         synth = create_synthesizer

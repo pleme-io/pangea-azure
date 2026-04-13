@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureMongoCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ administrator_password: 'test-value', administrator_username: 'test-value', compute_tier: 'test-value', create_mode: 'test-value', customer_managed_key: [{ 'key1' => 'val1' }], data_api_mode_enabled: true, high_availability_mode: 'test-value', identity: [{ 'key1' => 'val1' }], preview_features: ['test-value'], public_network_access: 'test-value', restore: [{ 'key1' => 'val1' }], shard_count: 3.14, source_location: 'test-value', source_server_id: 'test-value', storage_size_in_gb: 3.14, storage_type: 'test-value', tags: { 'key1' => 'val1' }, version: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ administrator_password: 'test-value', administrator_username: 'test-value', authentication_methods: ['test-value'], compute_tier: 'test-value', create_mode: 'test-value', customer_managed_key: { 'key1' => 'val1' }, data_api_mode_enabled: true, high_availability_mode: 'test-value', identity: { 'key1' => 'val1' }, preview_features: ['test-value'], public_network_access: 'test-value', restore: { 'key1' => 'val1' }, shard_count: 3.14, source_location: 'test-value', source_server_id: 'test-value', storage_size_in_gb: 3.14, storage_type: 'test-value', tags: { 'key1' => 'val1' }, version: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,6 +68,7 @@ RSpec.describe Pangea::Resources::AzureMongoCluster do
         config = validate_resource_structure(result, 'azurerm_mongo_cluster', 'full')
         expect(config).to have_key('administrator_password')
         expect(config).to have_key('administrator_username')
+        expect(config).to have_key('authentication_methods')
         expect(config).to have_key('compute_tier')
         expect(config).to have_key('create_mode')
         expect(config).to have_key('customer_managed_key')
@@ -122,6 +123,23 @@ RSpec.describe Pangea::Resources::AzureMongoCluster do
         config = validate_resource_structure(result, 'azurerm_mongo_cluster', 'minimal')
         expect(config).not_to have_key('administrator_username')
       end
+      it 'includes authentication_methods when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mongo_cluster('opt', required_attrs.merge(authentication_methods: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mongo_cluster', 'opt')
+        expect(config).to have_key('authentication_methods')
+      end
+
+      it 'omits authentication_methods when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mongo_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mongo_cluster', 'minimal')
+        expect(config).not_to have_key('authentication_methods')
+      end
       it 'includes compute_tier when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -159,7 +177,7 @@ RSpec.describe Pangea::Resources::AzureMongoCluster do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mongo_cluster('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mongo_cluster('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mongo_cluster', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -210,7 +228,7 @@ RSpec.describe Pangea::Resources::AzureMongoCluster do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mongo_cluster('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mongo_cluster('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mongo_cluster', 'opt')
         expect(config).to have_key('identity')
@@ -261,7 +279,7 @@ RSpec.describe Pangea::Resources::AzureMongoCluster do
       it 'includes restore when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mongo_cluster('opt', required_attrs.merge(restore: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mongo_cluster('opt', required_attrs.merge(restore: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mongo_cluster', 'opt')
         expect(config).to have_key('restore')

@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzurePaloAltoNextGenerationFirewallVirtualNetworkPanorama do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', network_profile: [{ 'key1' => 'val1' }], panorama_base64_config: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', network_profile: { 'key1' => 'val1' }, panorama_base64_config: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_palo_alto_next_generation_firewall_virtual_network_panorama' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzurePaloAltoNextGenerationFirewallVirtualNetw
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ destination_nat: [{ 'key1' => 'val1' }], dns_settings: [{ 'key1' => 'val1' }], marketplace_offer_id: 'test-value', plan_id: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ destination_nat: [{ 'key1' => 'val1' }], dns_settings: { 'key1' => 'val1' }, marketplace_offer_id: 'test-value', plan_id: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -93,7 +93,7 @@ RSpec.describe Pangea::Resources::AzurePaloAltoNextGenerationFirewallVirtualNetw
       it 'includes dns_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_palo_alto_next_generation_firewall_virtual_network_panorama('opt', required_attrs.merge(dns_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_palo_alto_next_generation_firewall_virtual_network_panorama('opt', required_attrs.merge(dns_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_palo_alto_next_generation_firewall_virtual_network_panorama', 'opt')
         expect(config).to have_key('dns_settings')
@@ -170,7 +170,7 @@ RSpec.describe Pangea::Resources::AzurePaloAltoNextGenerationFirewallVirtualNetw
         config = validate_resource_structure(result, 'azurerm_palo_alto_next_generation_firewall_virtual_network_panorama', 'typed')
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['network_profile']).to be_a(Array)
+        expect(config['network_profile']).to be_a(Hash)
         expect(config['panorama_base64_config']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
       end
@@ -205,7 +205,7 @@ RSpec.describe Pangea::Resources::AzurePaloAltoNextGenerationFirewallVirtualNetw
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_palo_alto_next_generation_firewall_virtual_network_panorama,
     method: :azurerm_palo_alto_next_generation_firewall_virtual_network_panorama,
-    required_attrs: { location: 'test-value', name: 'test-value', network_profile: [{ 'key1' => 'val1' }], panorama_base64_config: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { location: 'test-value', name: 'test-value', network_profile: { 'key1' => 'val1' }, panorama_base64_config: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id, :panorama],
     sensitive_fields: [],
     immutable_fields: [],

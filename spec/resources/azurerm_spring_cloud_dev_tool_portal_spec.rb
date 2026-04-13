@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudDevToolPortal do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ public_network_access_enabled: true, sso: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ application_accelerator_enabled: true, application_live_view_enabled: true, public_network_access_enabled: true, sso: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,12 +66,48 @@ RSpec.describe Pangea::Resources::AzureSpringCloudDevToolPortal do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_spring_cloud_dev_tool_portal', 'full')
+        expect(config).to have_key('application_accelerator_enabled')
+        expect(config).to have_key('application_live_view_enabled')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('sso')
       end
     end
 
     context 'optional attributes' do
+      it 'includes application_accelerator_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_dev_tool_portal('opt', required_attrs.merge(application_accelerator_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_dev_tool_portal', 'opt')
+        expect(config).to have_key('application_accelerator_enabled')
+      end
+
+      it 'omits application_accelerator_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_dev_tool_portal('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_dev_tool_portal', 'minimal')
+        expect(config).not_to have_key('application_accelerator_enabled')
+      end
+      it 'includes application_live_view_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_dev_tool_portal('opt', required_attrs.merge(application_live_view_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_dev_tool_portal', 'opt')
+        expect(config).to have_key('application_live_view_enabled')
+      end
+
+      it 'omits application_live_view_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_dev_tool_portal('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_dev_tool_portal', 'minimal')
+        expect(config).not_to have_key('application_live_view_enabled')
+      end
       it 'includes public_network_access_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -92,7 +128,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudDevToolPortal do
       it 'includes sso when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_dev_tool_portal('opt', required_attrs.merge(sso: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_dev_tool_portal('opt', required_attrs.merge(sso: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_dev_tool_portal', 'opt')
         expect(config).to have_key('sso')
@@ -109,6 +145,28 @@ RSpec.describe Pangea::Resources::AzureSpringCloudDevToolPortal do
     end
 
     context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts application_accelerator_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(application_accelerator_enabled: val)
+          synth.azurerm_spring_cloud_dev_tool_portal("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_spring_cloud_dev_tool_portal', "bool_#{val}")
+          expect(config['application_accelerator_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts application_live_view_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(application_live_view_enabled: val)
+          synth.azurerm_spring_cloud_dev_tool_portal("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_spring_cloud_dev_tool_portal', "bool_#{val}")
+          expect(config['application_live_view_enabled']).to eq(val)
+        end
+      end
       [true, false].each do |val|
         it "accepts public_network_access_enabled=#{val}" do
           synth = create_synthesizer
@@ -168,5 +226,5 @@ RSpec.describe Pangea::Resources::AzureSpringCloudDevToolPortal do
     expected_outputs: [:id, :application_accelerator_enabled, :application_live_view_enabled],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: [:public_network_access_enabled]
+    boolean_fields: [:application_accelerator_enabled, :application_live_view_enabled, :public_network_access_enabled]
 end

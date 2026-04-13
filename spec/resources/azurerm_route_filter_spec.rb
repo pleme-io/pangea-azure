@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureRouteFilter do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ rule: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,11 +64,29 @@ RSpec.describe Pangea::Resources::AzureRouteFilter do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_route_filter', 'full')
+        expect(config).to have_key('rule')
         expect(config).to have_key('tags')
       end
     end
 
     context 'optional attributes' do
+      it 'includes rule when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_route_filter('opt', required_attrs.merge(rule: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_route_filter', 'opt')
+        expect(config).to have_key('rule')
+      end
+
+      it 'omits rule when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_route_filter('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_route_filter', 'minimal')
+        expect(config).not_to have_key('rule')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

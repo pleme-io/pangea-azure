@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureBillingAccountCostManagementExport do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { billing_account_id: 'test-value', export_data_options: [{ 'key1' => 'val1' }], export_data_storage_location: [{ 'key1' => 'val1' }], name: 'test-value', recurrence_period_end_date: 'test-value', recurrence_period_start_date: 'test-value', recurrence_type: 'test-value' } }
+  let(:required_attrs) { { billing_account_id: 'test-value', export_data_options: { 'key1' => 'val1' }, export_data_storage_location: { 'key1' => 'val1' }, name: 'test-value', recurrence_period_end_date: 'test-value', recurrence_period_start_date: 'test-value', recurrence_type: 'test-value' } }
 
   describe ':azurerm_billing_account_cost_management_export' do
     context 'with required attributes only' do
@@ -116,8 +116,8 @@ RSpec.describe Pangea::Resources::AzureBillingAccountCostManagementExport do
 
         config = validate_resource_structure(result, 'azurerm_billing_account_cost_management_export', 'typed')
         expect(config['billing_account_id']).to be_a(String)
-        expect(config['export_data_options']).to be_a(Array)
-        expect(config['export_data_storage_location']).to be_a(Array)
+        expect(config['export_data_options']).to be_a(Hash)
+        expect(config['export_data_storage_location']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['recurrence_period_end_date']).to be_a(String)
         expect(config['recurrence_period_start_date']).to be_a(String)
@@ -154,7 +154,7 @@ RSpec.describe Pangea::Resources::AzureBillingAccountCostManagementExport do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_billing_account_cost_management_export,
     method: :azurerm_billing_account_cost_management_export,
-    required_attrs: { billing_account_id: 'test-value', export_data_options: [{ 'key1' => 'val1' }], export_data_storage_location: [{ 'key1' => 'val1' }], name: 'test-value', recurrence_period_end_date: 'test-value', recurrence_period_start_date: 'test-value', recurrence_type: 'test-value' },
+    required_attrs: { billing_account_id: 'test-value', export_data_options: { 'key1' => 'val1' }, export_data_storage_location: { 'key1' => 'val1' }, name: 'test-value', recurrence_period_end_date: 'test-value', recurrence_period_start_date: 'test-value', recurrence_type: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

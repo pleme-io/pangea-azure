@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureIotcentralApplication do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ identity: [{ 'key1' => 'val1' }], public_network_access_enabled: true, sku: 'test-value', tags: { 'key1' => 'val1' }, template: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ display_name: 'test-value', identity: { 'key1' => 'val1' }, public_network_access_enabled: true, sku: 'test-value', tags: { 'key1' => 'val1' }, template: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,6 +64,7 @@ RSpec.describe Pangea::Resources::AzureIotcentralApplication do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_iotcentral_application', 'full')
+        expect(config).to have_key('display_name')
         expect(config).to have_key('identity')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('sku')
@@ -73,10 +74,27 @@ RSpec.describe Pangea::Resources::AzureIotcentralApplication do
     end
 
     context 'optional attributes' do
+      it 'includes display_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iotcentral_application('opt', required_attrs.merge(display_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iotcentral_application', 'opt')
+        expect(config).to have_key('display_name')
+      end
+
+      it 'omits display_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iotcentral_application('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iotcentral_application', 'minimal')
+        expect(config).not_to have_key('display_name')
+      end
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_iotcentral_application('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_iotcentral_application('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iotcentral_application', 'opt')
         expect(config).to have_key('identity')

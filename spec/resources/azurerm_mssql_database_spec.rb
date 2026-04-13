@@ -85,7 +85,7 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ create_mode: 'test-value', elastic_pool_id: 'test-value', geo_backup_enabled: true, identity: [{ 'key1' => 'val1' }], import: [{ 'key1' => 'val1' }], long_term_retention_policy: [{ 'key1' => 'val1' }], recover_database_id: 'test-value', recovery_point_id: 'test-value', restore_dropped_database_id: 'test-value', restore_long_term_retention_backup_id: 'test-value', short_term_retention_policy: [{ 'key1' => 'val1' }], storage_account_type: 'test-value', tags: { 'key1' => 'val1' }, threat_detection_policy: [{ 'key1' => 'val1' }], transparent_data_encryption_enabled: true, transparent_data_encryption_key_automatic_rotation_enabled: true, transparent_data_encryption_key_vault_key_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ auto_pause_delay_in_minutes: 3.14, collation: 'test-value', create_mode: 'test-value', creation_source_database_id: 'test-value', elastic_pool_id: 'test-value', enclave_type: 'test-value', geo_backup_enabled: true, identity: { 'key1' => 'val1' }, import: { 'key1' => 'val1' }, ledger_enabled: true, license_type: 'test-value', long_term_retention_policy: { 'key1' => 'val1' }, maintenance_configuration_name: 'test-value', max_size_gb: 3.14, min_capacity: 3.14, read_replica_count: 3.14, read_scale: true, recover_database_id: 'test-value', recovery_point_id: 'test-value', restore_dropped_database_id: 'test-value', restore_long_term_retention_backup_id: 'test-value', restore_point_in_time: 'test-value', sample_name: 'test-value', secondary_type: 'test-value', short_term_retention_policy: { 'key1' => 'val1' }, sku_name: 'test-value', storage_account_type: 'test-value', tags: { 'key1' => 'val1' }, threat_detection_policy: { 'key1' => 'val1' }, transparent_data_encryption_enabled: true, transparent_data_encryption_key_automatic_rotation_enabled: true, transparent_data_encryption_key_vault_key_id: 'test-value', zone_redundant: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -94,27 +94,77 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'full')
+        expect(config).to have_key('auto_pause_delay_in_minutes')
+        expect(config).to have_key('collation')
         expect(config).to have_key('create_mode')
+        expect(config).to have_key('creation_source_database_id')
         expect(config).to have_key('elastic_pool_id')
+        expect(config).to have_key('enclave_type')
         expect(config).to have_key('geo_backup_enabled')
         expect(config).to have_key('identity')
         expect(config).to have_key('import')
+        expect(config).to have_key('ledger_enabled')
+        expect(config).to have_key('license_type')
         expect(config).to have_key('long_term_retention_policy')
+        expect(config).to have_key('maintenance_configuration_name')
+        expect(config).to have_key('max_size_gb')
+        expect(config).to have_key('min_capacity')
+        expect(config).to have_key('read_replica_count')
+        expect(config).to have_key('read_scale')
         expect(config).to have_key('recover_database_id')
         expect(config).to have_key('recovery_point_id')
         expect(config).to have_key('restore_dropped_database_id')
         expect(config).to have_key('restore_long_term_retention_backup_id')
+        expect(config).to have_key('restore_point_in_time')
+        expect(config).to have_key('sample_name')
+        expect(config).to have_key('secondary_type')
         expect(config).to have_key('short_term_retention_policy')
+        expect(config).to have_key('sku_name')
         expect(config).to have_key('storage_account_type')
         expect(config).to have_key('tags')
         expect(config).to have_key('threat_detection_policy')
         expect(config).to have_key('transparent_data_encryption_enabled')
         expect(config).to have_key('transparent_data_encryption_key_automatic_rotation_enabled')
         expect(config).to have_key('transparent_data_encryption_key_vault_key_id')
+        expect(config).to have_key('zone_redundant')
       end
     end
 
     context 'optional attributes' do
+      it 'includes auto_pause_delay_in_minutes when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(auto_pause_delay_in_minutes: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('auto_pause_delay_in_minutes')
+      end
+
+      it 'omits auto_pause_delay_in_minutes when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('auto_pause_delay_in_minutes')
+      end
+      it 'includes collation when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(collation: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('collation')
+      end
+
+      it 'omits collation when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('collation')
+      end
       it 'includes create_mode when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -132,6 +182,23 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
         expect(config).not_to have_key('create_mode')
       end
+      it 'includes creation_source_database_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(creation_source_database_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('creation_source_database_id')
+      end
+
+      it 'omits creation_source_database_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('creation_source_database_id')
+      end
       it 'includes elastic_pool_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -148,6 +215,23 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
         expect(config).not_to have_key('elastic_pool_id')
+      end
+      it 'includes enclave_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(enclave_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('enclave_type')
+      end
+
+      it 'omits enclave_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('enclave_type')
       end
       it 'includes geo_backup_enabled when provided' do
         synth = create_synthesizer
@@ -169,7 +253,7 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_database('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_database('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
         expect(config).to have_key('identity')
@@ -186,7 +270,7 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
       it 'includes import when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_database('opt', required_attrs.merge(import: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_database('opt', required_attrs.merge(import: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
         expect(config).to have_key('import')
@@ -200,10 +284,44 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
         expect(config).not_to have_key('import')
       end
+      it 'includes ledger_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(ledger_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('ledger_enabled')
+      end
+
+      it 'omits ledger_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('ledger_enabled')
+      end
+      it 'includes license_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(license_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('license_type')
+      end
+
+      it 'omits license_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('license_type')
+      end
       it 'includes long_term_retention_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_database('opt', required_attrs.merge(long_term_retention_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_database('opt', required_attrs.merge(long_term_retention_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
         expect(config).to have_key('long_term_retention_policy')
@@ -216,6 +334,91 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
         expect(config).not_to have_key('long_term_retention_policy')
+      end
+      it 'includes maintenance_configuration_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(maintenance_configuration_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('maintenance_configuration_name')
+      end
+
+      it 'omits maintenance_configuration_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('maintenance_configuration_name')
+      end
+      it 'includes max_size_gb when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(max_size_gb: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('max_size_gb')
+      end
+
+      it 'omits max_size_gb when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('max_size_gb')
+      end
+      it 'includes min_capacity when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(min_capacity: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('min_capacity')
+      end
+
+      it 'omits min_capacity when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('min_capacity')
+      end
+      it 'includes read_replica_count when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(read_replica_count: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('read_replica_count')
+      end
+
+      it 'omits read_replica_count when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('read_replica_count')
+      end
+      it 'includes read_scale when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(read_scale: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('read_scale')
+      end
+
+      it 'omits read_scale when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('read_scale')
       end
       it 'includes recover_database_id when provided' do
         synth = create_synthesizer
@@ -285,10 +488,61 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
         expect(config).not_to have_key('restore_long_term_retention_backup_id')
       end
+      it 'includes restore_point_in_time when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(restore_point_in_time: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('restore_point_in_time')
+      end
+
+      it 'omits restore_point_in_time when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('restore_point_in_time')
+      end
+      it 'includes sample_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(sample_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('sample_name')
+      end
+
+      it 'omits sample_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('sample_name')
+      end
+      it 'includes secondary_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(secondary_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('secondary_type')
+      end
+
+      it 'omits secondary_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('secondary_type')
+      end
       it 'includes short_term_retention_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_database('opt', required_attrs.merge(short_term_retention_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_database('opt', required_attrs.merge(short_term_retention_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
         expect(config).to have_key('short_term_retention_policy')
@@ -301,6 +555,23 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
         expect(config).not_to have_key('short_term_retention_policy')
+      end
+      it 'includes sku_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(sku_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('sku_name')
+      end
+
+      it 'omits sku_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('sku_name')
       end
       it 'includes storage_account_type when provided' do
         synth = create_synthesizer
@@ -339,7 +610,7 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
       it 'includes threat_detection_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_database('opt', required_attrs.merge(threat_detection_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_database('opt', required_attrs.merge(threat_detection_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
         expect(config).to have_key('threat_detection_policy')
@@ -404,6 +675,23 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
         config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
         expect(config).not_to have_key('transparent_data_encryption_key_vault_key_id')
       end
+      it 'includes zone_redundant when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('opt', required_attrs.merge(zone_redundant: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'opt')
+        expect(config).to have_key('zone_redundant')
+      end
+
+      it 'omits zone_redundant when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_database('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_database', 'minimal')
+        expect(config).not_to have_key('zone_redundant')
+      end
     end
 
     context 'boolean fields' do
@@ -416,6 +704,28 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
           result = normalize_synthesis(synth.synthesis)
           config = validate_resource_structure(result, 'azurerm_mssql_database', "bool_#{val}")
           expect(config['geo_backup_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts ledger_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(ledger_enabled: val)
+          synth.azurerm_mssql_database("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_mssql_database', "bool_#{val}")
+          expect(config['ledger_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts read_scale=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(read_scale: val)
+          synth.azurerm_mssql_database("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_mssql_database', "bool_#{val}")
+          expect(config['read_scale']).to eq(val)
         end
       end
       [true, false].each do |val|
@@ -438,6 +748,17 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
           result = normalize_synthesis(synth.synthesis)
           config = validate_resource_structure(result, 'azurerm_mssql_database', "bool_#{val}")
           expect(config['transparent_data_encryption_key_automatic_rotation_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts zone_redundant=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(zone_redundant: val)
+          synth.azurerm_mssql_database("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_mssql_database', "bool_#{val}")
+          expect(config['zone_redundant']).to eq(val)
         end
       end
     end
@@ -488,5 +809,5 @@ RSpec.describe Pangea::Resources::AzureMssqlDatabase do
     expected_outputs: [:id, :auto_pause_delay_in_minutes, :collation, :creation_source_database_id, :enclave_type, :ledger_enabled, :license_type, :maintenance_configuration_name, :max_size_gb, :min_capacity, :read_replica_count, :read_scale, :restore_point_in_time, :sample_name, :secondary_type, :sku_name, :zone_redundant],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: [:geo_backup_enabled, :transparent_data_encryption_enabled, :transparent_data_encryption_key_automatic_rotation_enabled]
+    boolean_fields: [:geo_backup_enabled, :ledger_enabled, :read_scale, :transparent_data_encryption_enabled, :transparent_data_encryption_key_automatic_rotation_enabled, :zone_redundant]
 end

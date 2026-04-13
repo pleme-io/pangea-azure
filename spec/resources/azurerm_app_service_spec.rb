@@ -73,7 +73,7 @@ RSpec.describe Pangea::Resources::AzureAppService do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auth_settings: [{ 'key1' => 'val1' }], backup: [{ 'key1' => 'val1' }], client_affinity_enabled: true, client_cert_enabled: true, connection_string: [{ 'key1' => 'val1' }], enabled: true, https_only: true, identity: [{ 'key1' => 'val1' }], logs: [{ 'key1' => 'val1' }], site_config: [{ 'key1' => 'val1' }], source_control: [{ 'key1' => 'val1' }], storage_account: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: { 'key1' => 'val1' }, backup: { 'key1' => 'val1' }, client_affinity_enabled: true, client_cert_enabled: true, client_cert_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], enabled: true, https_only: true, identity: { 'key1' => 'val1' }, key_vault_reference_identity_id: 'test-value', logs: { 'key1' => 'val1' }, site_config: { 'key1' => 'val1' }, source_control: { 'key1' => 'val1' }, storage_account: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -82,14 +82,17 @@ RSpec.describe Pangea::Resources::AzureAppService do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_app_service', 'full')
+        expect(config).to have_key('app_settings')
         expect(config).to have_key('auth_settings')
         expect(config).to have_key('backup')
         expect(config).to have_key('client_affinity_enabled')
         expect(config).to have_key('client_cert_enabled')
+        expect(config).to have_key('client_cert_mode')
         expect(config).to have_key('connection_string')
         expect(config).to have_key('enabled')
         expect(config).to have_key('https_only')
         expect(config).to have_key('identity')
+        expect(config).to have_key('key_vault_reference_identity_id')
         expect(config).to have_key('logs')
         expect(config).to have_key('site_config')
         expect(config).to have_key('source_control')
@@ -99,10 +102,27 @@ RSpec.describe Pangea::Resources::AzureAppService do
     end
 
     context 'optional attributes' do
+      it 'includes app_settings when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service('opt', required_attrs.merge(app_settings: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service', 'opt')
+        expect(config).to have_key('app_settings')
+      end
+
+      it 'omits app_settings when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service', 'minimal')
+        expect(config).not_to have_key('app_settings')
+      end
       it 'includes auth_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service('opt', required_attrs.merge(auth_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service('opt', required_attrs.merge(auth_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service', 'opt')
         expect(config).to have_key('auth_settings')
@@ -119,7 +139,7 @@ RSpec.describe Pangea::Resources::AzureAppService do
       it 'includes backup when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service('opt', required_attrs.merge(backup: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service('opt', required_attrs.merge(backup: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service', 'opt')
         expect(config).to have_key('backup')
@@ -166,6 +186,23 @@ RSpec.describe Pangea::Resources::AzureAppService do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service', 'minimal')
         expect(config).not_to have_key('client_cert_enabled')
+      end
+      it 'includes client_cert_mode when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service('opt', required_attrs.merge(client_cert_mode: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service', 'opt')
+        expect(config).to have_key('client_cert_mode')
+      end
+
+      it 'omits client_cert_mode when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service', 'minimal')
+        expect(config).not_to have_key('client_cert_mode')
       end
       it 'includes connection_string when provided' do
         synth = create_synthesizer
@@ -221,7 +258,7 @@ RSpec.describe Pangea::Resources::AzureAppService do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service', 'opt')
         expect(config).to have_key('identity')
@@ -235,10 +272,27 @@ RSpec.describe Pangea::Resources::AzureAppService do
         config = validate_resource_structure(result, 'azurerm_app_service', 'minimal')
         expect(config).not_to have_key('identity')
       end
+      it 'includes key_vault_reference_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service('opt', required_attrs.merge(key_vault_reference_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service', 'opt')
+        expect(config).to have_key('key_vault_reference_identity_id')
+      end
+
+      it 'omits key_vault_reference_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service', 'minimal')
+        expect(config).not_to have_key('key_vault_reference_identity_id')
+      end
       it 'includes logs when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service('opt', required_attrs.merge(logs: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service('opt', required_attrs.merge(logs: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service', 'opt')
         expect(config).to have_key('logs')
@@ -255,7 +309,7 @@ RSpec.describe Pangea::Resources::AzureAppService do
       it 'includes site_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service('opt', required_attrs.merge(site_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service('opt', required_attrs.merge(site_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service', 'opt')
         expect(config).to have_key('site_config')
@@ -272,7 +326,7 @@ RSpec.describe Pangea::Resources::AzureAppService do
       it 'includes source_control when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service('opt', required_attrs.merge(source_control: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service('opt', required_attrs.merge(source_control: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service', 'opt')
         expect(config).to have_key('source_control')

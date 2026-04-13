@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_sentinel_watchlist_item,
       attributes_class: Azure::Types::SentinelWatchlistItemAttributes,
       outputs: { id: :id },
-      map: [:properties, :watchlist_id]
+      map: [:properties, :watchlist_id],
+      map_present: [:name]
   end
   module Azure
     include AzureSentinelWatchlistItem

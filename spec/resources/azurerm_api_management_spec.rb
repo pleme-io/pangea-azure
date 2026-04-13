@@ -71,7 +71,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_location: [{ 'key1' => 'val1' }], certificate: [{ 'key1' => 'val1' }], client_certificate_enabled: true, delegation: [{ 'key1' => 'val1' }], gateway_disabled: true, hostname_configuration: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], min_api_version: 'test-value', protocols: [{ 'key1' => 'val1' }], public_ip_address_id: 'test-value', public_network_access_enabled: true, security: [{ 'key1' => 'val1' }], sign_in: [{ 'key1' => 'val1' }], sign_up: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, tenant_access: [{ 'key1' => 'val1' }], virtual_network_configuration: [{ 'key1' => 'val1' }], virtual_network_type: 'test-value', zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ additional_location: [{ 'key1' => 'val1' }], certificate: [{ 'key1' => 'val1' }], client_certificate_enabled: true, delegation: { 'key1' => 'val1' }, gateway_disabled: true, hostname_configuration: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, min_api_version: 'test-value', notification_sender_email: 'test-value', protocols: { 'key1' => 'val1' }, public_ip_address_id: 'test-value', public_network_access_enabled: true, security: { 'key1' => 'val1' }, sign_in: { 'key1' => 'val1' }, sign_up: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, tenant_access: { 'key1' => 'val1' }, virtual_network_configuration: { 'key1' => 'val1' }, virtual_network_type: 'test-value', zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -88,6 +88,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
         expect(config).to have_key('hostname_configuration')
         expect(config).to have_key('identity')
         expect(config).to have_key('min_api_version')
+        expect(config).to have_key('notification_sender_email')
         expect(config).to have_key('protocols')
         expect(config).to have_key('public_ip_address_id')
         expect(config).to have_key('public_network_access_enabled')
@@ -157,7 +158,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
       it 'includes delegation when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management('opt', required_attrs.merge(delegation: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management('opt', required_attrs.merge(delegation: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
         expect(config).to have_key('delegation')
@@ -191,7 +192,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
       it 'includes hostname_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management('opt', required_attrs.merge(hostname_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management('opt', required_attrs.merge(hostname_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
         expect(config).to have_key('hostname_configuration')
@@ -208,7 +209,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
         expect(config).to have_key('identity')
@@ -239,10 +240,27 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
         config = validate_resource_structure(result, 'azurerm_api_management', 'minimal')
         expect(config).not_to have_key('min_api_version')
       end
+      it 'includes notification_sender_email when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management('opt', required_attrs.merge(notification_sender_email: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
+        expect(config).to have_key('notification_sender_email')
+      end
+
+      it 'omits notification_sender_email when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management', 'minimal')
+        expect(config).not_to have_key('notification_sender_email')
+      end
       it 'includes protocols when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management('opt', required_attrs.merge(protocols: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management('opt', required_attrs.merge(protocols: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
         expect(config).to have_key('protocols')
@@ -293,7 +311,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
       it 'includes security when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management('opt', required_attrs.merge(security: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management('opt', required_attrs.merge(security: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
         expect(config).to have_key('security')
@@ -310,7 +328,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
       it 'includes sign_in when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management('opt', required_attrs.merge(sign_in: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management('opt', required_attrs.merge(sign_in: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
         expect(config).to have_key('sign_in')
@@ -327,7 +345,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
       it 'includes sign_up when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management('opt', required_attrs.merge(sign_up: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management('opt', required_attrs.merge(sign_up: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
         expect(config).to have_key('sign_up')
@@ -361,7 +379,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
       it 'includes tenant_access when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management('opt', required_attrs.merge(tenant_access: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management('opt', required_attrs.merge(tenant_access: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
         expect(config).to have_key('tenant_access')
@@ -378,7 +396,7 @@ RSpec.describe Pangea::Resources::AzureApiManagement do
       it 'includes virtual_network_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management('opt', required_attrs.merge(virtual_network_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management('opt', required_attrs.merge(virtual_network_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management', 'opt')
         expect(config).to have_key('virtual_network_configuration')

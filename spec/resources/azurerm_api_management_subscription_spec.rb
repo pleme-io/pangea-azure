@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementSubscription do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ allow_tracing: true, api_id: 'test-value', product_id: 'test-value', state: 'test-value', user_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ allow_tracing: true, api_id: 'test-value', primary_key: 'test-value', product_id: 'test-value', secondary_key: 'test-value', state: 'test-value', subscription_id: 'test-value', user_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,8 +70,11 @@ RSpec.describe Pangea::Resources::AzureApiManagementSubscription do
         config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'full')
         expect(config).to have_key('allow_tracing')
         expect(config).to have_key('api_id')
+        expect(config).to have_key('primary_key')
         expect(config).to have_key('product_id')
+        expect(config).to have_key('secondary_key')
         expect(config).to have_key('state')
+        expect(config).to have_key('subscription_id')
         expect(config).to have_key('user_id')
       end
     end
@@ -111,6 +114,23 @@ RSpec.describe Pangea::Resources::AzureApiManagementSubscription do
         config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'minimal')
         expect(config).not_to have_key('api_id')
       end
+      it 'includes primary_key when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_subscription('opt', required_attrs.merge(primary_key: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'opt')
+        expect(config).to have_key('primary_key')
+      end
+
+      it 'omits primary_key when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_subscription('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'minimal')
+        expect(config).not_to have_key('primary_key')
+      end
       it 'includes product_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -128,6 +148,23 @@ RSpec.describe Pangea::Resources::AzureApiManagementSubscription do
         config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'minimal')
         expect(config).not_to have_key('product_id')
       end
+      it 'includes secondary_key when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_subscription('opt', required_attrs.merge(secondary_key: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'opt')
+        expect(config).to have_key('secondary_key')
+      end
+
+      it 'omits secondary_key when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_subscription('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'minimal')
+        expect(config).not_to have_key('secondary_key')
+      end
       it 'includes state when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -144,6 +181,23 @@ RSpec.describe Pangea::Resources::AzureApiManagementSubscription do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'minimal')
         expect(config).not_to have_key('state')
+      end
+      it 'includes subscription_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_subscription('opt', required_attrs.merge(subscription_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'opt')
+        expect(config).to have_key('subscription_id')
+      end
+
+      it 'omits subscription_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_subscription('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_subscription', 'minimal')
+        expect(config).not_to have_key('subscription_id')
       end
       it 'includes user_id when provided' do
         synth = create_synthesizer

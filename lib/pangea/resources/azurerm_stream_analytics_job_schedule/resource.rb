@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_stream_analytics_job_schedule,
       attributes_class: Azure::Types::StreamAnalyticsJobScheduleAttributes,
       outputs: { id: :id },
-      map: [:start_mode, :stream_analytics_job_id]
+      map: [:start_mode, :stream_analytics_job_id],
+      map_present: [:start_time]
   end
   module Azure
     include AzureStreamAnalyticsJobSchedule

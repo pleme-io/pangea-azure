@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureStorageShare do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ acl: [{ 'key1' => 'val1' }], enabled_protocol: 'test-value', storage_account_id: 'test-value', storage_account_name: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ access_tier: 'test-value', acl: [{ 'key1' => 'val1' }], enabled_protocol: 'test-value', metadata: { 'key1' => 'val1' }, storage_account_id: 'test-value', storage_account_name: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,14 +70,33 @@ RSpec.describe Pangea::Resources::AzureStorageShare do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_storage_share', 'full')
+        expect(config).to have_key('access_tier')
         expect(config).to have_key('acl')
         expect(config).to have_key('enabled_protocol')
+        expect(config).to have_key('metadata')
         expect(config).to have_key('storage_account_id')
         expect(config).to have_key('storage_account_name')
       end
     end
 
     context 'optional attributes' do
+      it 'includes access_tier when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_share('opt', required_attrs.merge(access_tier: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_share', 'opt')
+        expect(config).to have_key('access_tier')
+      end
+
+      it 'omits access_tier when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_share('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_share', 'minimal')
+        expect(config).not_to have_key('access_tier')
+      end
       it 'includes acl when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -111,6 +130,23 @@ RSpec.describe Pangea::Resources::AzureStorageShare do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_share', 'minimal')
         expect(config).not_to have_key('enabled_protocol')
+      end
+      it 'includes metadata when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_share('opt', required_attrs.merge(metadata: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_share', 'opt')
+        expect(config).to have_key('metadata')
+      end
+
+      it 'omits metadata when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_share('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_share', 'minimal')
+        expect(config).not_to have_key('metadata')
       end
       it 'includes storage_account_id when provided' do
         synth = create_synthesizer

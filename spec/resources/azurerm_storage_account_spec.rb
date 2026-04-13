@@ -201,7 +201,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ account_kind: 'test-value', allow_nested_items_to_be_public: true, allowed_copy_scope: 'test-value', azure_files_authentication: [{ 'key1' => 'val1' }], blob_properties: [{ 'key1' => 'val1' }], cross_tenant_replication_enabled: true, custom_domain: [{ 'key1' => 'val1' }], customer_managed_key: [{ 'key1' => 'val1' }], default_to_oauth_authentication: true, dns_endpoint_type: 'test-value', edge_zone: 'test-value', https_traffic_only_enabled: true, identity: [{ 'key1' => 'val1' }], immutability_policy: [{ 'key1' => 'val1' }], infrastructure_encryption_enabled: true, is_hns_enabled: true, local_user_enabled: true, min_tls_version: 'test-value', network_rules: [{ 'key1' => 'val1' }], nfsv3_enabled: true, provisioned_billing_model_version: 'test-value', public_network_access_enabled: true, queue_encryption_key_type: 'test-value', queue_properties: [{ 'key1' => 'val1' }], routing: [{ 'key1' => 'val1' }], sas_policy: [{ 'key1' => 'val1' }], sftp_enabled: true, share_properties: [{ 'key1' => 'val1' }], shared_access_key_enabled: true, static_website: [{ 'key1' => 'val1' }], table_encryption_key_type: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ access_tier: 'test-value', account_kind: 'test-value', allow_nested_items_to_be_public: true, allowed_copy_scope: 'test-value', azure_files_authentication: { 'key1' => 'val1' }, blob_properties: { 'key1' => 'val1' }, cross_tenant_replication_enabled: true, custom_domain: { 'key1' => 'val1' }, customer_managed_key: { 'key1' => 'val1' }, default_to_oauth_authentication: true, dns_endpoint_type: 'test-value', edge_zone: 'test-value', https_traffic_only_enabled: true, identity: { 'key1' => 'val1' }, immutability_policy: { 'key1' => 'val1' }, infrastructure_encryption_enabled: true, is_hns_enabled: true, large_file_share_enabled: true, local_user_enabled: true, min_tls_version: 'test-value', network_rules: { 'key1' => 'val1' }, nfsv3_enabled: true, provisioned_billing_model_version: 'test-value', public_network_access_enabled: true, queue_encryption_key_type: 'test-value', queue_properties: { 'key1' => 'val1' }, routing: { 'key1' => 'val1' }, sas_policy: { 'key1' => 'val1' }, sftp_enabled: true, share_properties: { 'key1' => 'val1' }, shared_access_key_enabled: true, static_website: { 'key1' => 'val1' }, table_encryption_key_type: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -210,6 +210,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_storage_account', 'full')
+        expect(config).to have_key('access_tier')
         expect(config).to have_key('account_kind')
         expect(config).to have_key('allow_nested_items_to_be_public')
         expect(config).to have_key('allowed_copy_scope')
@@ -226,6 +227,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
         expect(config).to have_key('immutability_policy')
         expect(config).to have_key('infrastructure_encryption_enabled')
         expect(config).to have_key('is_hns_enabled')
+        expect(config).to have_key('large_file_share_enabled')
         expect(config).to have_key('local_user_enabled')
         expect(config).to have_key('min_tls_version')
         expect(config).to have_key('network_rules')
@@ -246,6 +248,23 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
     end
 
     context 'optional attributes' do
+      it 'includes access_tier when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account('opt', required_attrs.merge(access_tier: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
+        expect(config).to have_key('access_tier')
+      end
+
+      it 'omits access_tier when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account', 'minimal')
+        expect(config).not_to have_key('access_tier')
+      end
       it 'includes account_kind when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -300,7 +319,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes azure_files_authentication when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(azure_files_authentication: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(azure_files_authentication: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('azure_files_authentication')
@@ -317,7 +336,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes blob_properties when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(blob_properties: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(blob_properties: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('blob_properties')
@@ -351,7 +370,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes custom_domain when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(custom_domain: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(custom_domain: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('custom_domain')
@@ -368,7 +387,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -453,7 +472,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('identity')
@@ -470,7 +489,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes immutability_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(immutability_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(immutability_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('immutability_policy')
@@ -518,6 +537,23 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
         config = validate_resource_structure(result, 'azurerm_storage_account', 'minimal')
         expect(config).not_to have_key('is_hns_enabled')
       end
+      it 'includes large_file_share_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account('opt', required_attrs.merge(large_file_share_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
+        expect(config).to have_key('large_file_share_enabled')
+      end
+
+      it 'omits large_file_share_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account', 'minimal')
+        expect(config).not_to have_key('large_file_share_enabled')
+      end
       it 'includes local_user_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -555,7 +591,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes network_rules when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(network_rules: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(network_rules: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('network_rules')
@@ -640,7 +676,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes queue_properties when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(queue_properties: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(queue_properties: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('queue_properties')
@@ -657,7 +693,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes routing when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(routing: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(routing: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('routing')
@@ -674,7 +710,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes sas_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(sas_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(sas_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('sas_policy')
@@ -708,7 +744,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes share_properties when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(share_properties: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(share_properties: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('share_properties')
@@ -742,7 +778,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
       it 'includes static_website when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account('opt', required_attrs.merge(static_website: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account('opt', required_attrs.merge(static_website: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account', 'opt')
         expect(config).to have_key('static_website')
@@ -872,6 +908,17 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
         end
       end
       [true, false].each do |val|
+        it "accepts large_file_share_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(large_file_share_enabled: val)
+          synth.azurerm_storage_account("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_storage_account', "bool_#{val}")
+          expect(config['large_file_share_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
         it "accepts local_user_enabled=#{val}" do
           synth = create_synthesizer
           synth.extend(described_class)
@@ -977,5 +1024,5 @@ RSpec.describe Pangea::Resources::AzureStorageAccount do
     expected_outputs: [:id, :access_tier, :large_file_share_enabled, :primary_access_key, :primary_blob_connection_string, :primary_blob_endpoint, :primary_blob_host, :primary_blob_internet_endpoint, :primary_blob_internet_host, :primary_blob_microsoft_endpoint, :primary_blob_microsoft_host, :primary_connection_string, :primary_dfs_endpoint, :primary_dfs_host, :primary_dfs_internet_endpoint, :primary_dfs_internet_host, :primary_dfs_microsoft_endpoint, :primary_dfs_microsoft_host, :primary_file_endpoint, :primary_file_host, :primary_file_internet_endpoint, :primary_file_internet_host, :primary_file_microsoft_endpoint, :primary_file_microsoft_host, :primary_location, :primary_queue_endpoint, :primary_queue_host, :primary_queue_microsoft_endpoint, :primary_queue_microsoft_host, :primary_table_endpoint, :primary_table_host, :primary_table_microsoft_endpoint, :primary_table_microsoft_host, :primary_web_endpoint, :primary_web_host, :primary_web_internet_endpoint, :primary_web_internet_host, :primary_web_microsoft_endpoint, :primary_web_microsoft_host, :secondary_access_key, :secondary_blob_connection_string, :secondary_blob_endpoint, :secondary_blob_host, :secondary_blob_internet_endpoint, :secondary_blob_internet_host, :secondary_blob_microsoft_endpoint, :secondary_blob_microsoft_host, :secondary_connection_string, :secondary_dfs_endpoint, :secondary_dfs_host, :secondary_dfs_internet_endpoint, :secondary_dfs_internet_host, :secondary_dfs_microsoft_endpoint, :secondary_dfs_microsoft_host, :secondary_file_endpoint, :secondary_file_host, :secondary_file_internet_endpoint, :secondary_file_internet_host, :secondary_file_microsoft_endpoint, :secondary_file_microsoft_host, :secondary_location, :secondary_queue_endpoint, :secondary_queue_host, :secondary_queue_microsoft_endpoint, :secondary_queue_microsoft_host, :secondary_table_endpoint, :secondary_table_host, :secondary_table_microsoft_endpoint, :secondary_table_microsoft_host, :secondary_web_endpoint, :secondary_web_host, :secondary_web_internet_endpoint, :secondary_web_internet_host, :secondary_web_microsoft_endpoint, :secondary_web_microsoft_host],
     sensitive_fields: [:primary_access_key, :primary_blob_connection_string, :primary_connection_string, :secondary_access_key, :secondary_blob_connection_string, :secondary_connection_string],
     immutable_fields: [],
-    boolean_fields: [:allow_nested_items_to_be_public, :cross_tenant_replication_enabled, :default_to_oauth_authentication, :https_traffic_only_enabled, :infrastructure_encryption_enabled, :is_hns_enabled, :local_user_enabled, :nfsv3_enabled, :public_network_access_enabled, :sftp_enabled, :shared_access_key_enabled]
+    boolean_fields: [:allow_nested_items_to_be_public, :cross_tenant_replication_enabled, :default_to_oauth_authentication, :https_traffic_only_enabled, :infrastructure_encryption_enabled, :is_hns_enabled, :large_file_share_enabled, :local_user_enabled, :nfsv3_enabled, :public_network_access_enabled, :sftp_enabled, :shared_access_key_enabled]
 end

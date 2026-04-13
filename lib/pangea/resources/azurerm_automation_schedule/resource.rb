@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AutomationScheduleAttributes,
       outputs: { id: :id },
       map: [:automation_account_name, :frequency, :name, :resource_group_name],
-      map_present: [:description, :month_days, :monthly_occurrence, :timezone, :week_days]
+      map_present: [:description, :expiry_time, :interval, :month_days, :monthly_occurrence, :start_time, :timezone, :week_days]
   end
   module Azure
     include AzureAutomationSchedule

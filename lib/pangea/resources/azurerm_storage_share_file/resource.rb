@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StorageShareFileAttributes,
       outputs: { id: :id },
       map: [:name],
-      map_present: [:content_disposition, :content_encoding, :content_md5, :content_type, :metadata, :path, :source]
+      map_present: [:content_disposition, :content_encoding, :content_md5, :content_type, :metadata, :path, :source, :storage_share_id, :storage_share_url]
   end
   module Azure
     include AzureStorageShareFile

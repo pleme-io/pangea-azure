@@ -1,0 +1,8 @@
+name: azurerm_traffic_manager_nested_endpoint
+title: Manages a azurerm_traffic_manager_nested_endpoint resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

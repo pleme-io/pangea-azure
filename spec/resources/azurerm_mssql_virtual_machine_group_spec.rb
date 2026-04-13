@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMssqlVirtualMachineGroup do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sql_image_offer: 'test-value', sql_image_sku: 'test-value', wsfc_domain_profile: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sql_image_offer: 'test-value', sql_image_sku: 'test-value', wsfc_domain_profile: { 'key1' => 'val1' } } }
 
   describe ':azurerm_mssql_virtual_machine_group' do
     context 'with required attributes only' do
@@ -88,7 +88,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachineGroup do
         expect(config['resource_group_name']).to be_a(String)
         expect(config['sql_image_offer']).to be_a(String)
         expect(config['sql_image_sku']).to be_a(String)
-        expect(config['wsfc_domain_profile']).to be_a(Array)
+        expect(config['wsfc_domain_profile']).to be_a(Hash)
       end
     end
 
@@ -121,7 +121,7 @@ RSpec.describe Pangea::Resources::AzureMssqlVirtualMachineGroup do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_mssql_virtual_machine_group,
     method: :azurerm_mssql_virtual_machine_group,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sql_image_offer: 'test-value', sql_image_sku: 'test-value', wsfc_domain_profile: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sql_image_offer: 'test-value', sql_image_sku: 'test-value', wsfc_domain_profile: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

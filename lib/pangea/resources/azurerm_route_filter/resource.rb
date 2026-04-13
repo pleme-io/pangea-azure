@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::RouteFilterAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:tags]
+      map_present: [:rule, :tags]
   end
   module Azure
     include AzureRouteFilter

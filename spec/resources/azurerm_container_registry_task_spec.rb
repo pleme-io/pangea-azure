@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTask do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ agent_pool_name: 'test-value', agent_setting: [{ 'key1' => 'val1' }], base_image_trigger: [{ 'key1' => 'val1' }], docker_step: [{ 'key1' => 'val1' }], enabled: true, encoded_step: [{ 'key1' => 'val1' }], file_step: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], is_system_task: true, log_template: 'test-value', platform: [{ 'key1' => 'val1' }], registry_credential: [{ 'key1' => 'val1' }], source_trigger: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, timeout_in_seconds: 3.14, timer_trigger: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ agent_pool_name: 'test-value', agent_setting: { 'key1' => 'val1' }, base_image_trigger: { 'key1' => 'val1' }, docker_step: { 'key1' => 'val1' }, enabled: true, encoded_step: { 'key1' => 'val1' }, file_step: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, is_system_task: true, log_template: 'test-value', platform: { 'key1' => 'val1' }, registry_credential: { 'key1' => 'val1' }, source_trigger: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, timeout_in_seconds: 3.14, timer_trigger: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -91,7 +91,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTask do
       it 'includes agent_setting when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry_task('opt', required_attrs.merge(agent_setting: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry_task('opt', required_attrs.merge(agent_setting: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry_task', 'opt')
         expect(config).to have_key('agent_setting')
@@ -108,7 +108,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTask do
       it 'includes base_image_trigger when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry_task('opt', required_attrs.merge(base_image_trigger: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry_task('opt', required_attrs.merge(base_image_trigger: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry_task', 'opt')
         expect(config).to have_key('base_image_trigger')
@@ -125,7 +125,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTask do
       it 'includes docker_step when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry_task('opt', required_attrs.merge(docker_step: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry_task('opt', required_attrs.merge(docker_step: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry_task', 'opt')
         expect(config).to have_key('docker_step')
@@ -159,7 +159,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTask do
       it 'includes encoded_step when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry_task('opt', required_attrs.merge(encoded_step: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry_task('opt', required_attrs.merge(encoded_step: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry_task', 'opt')
         expect(config).to have_key('encoded_step')
@@ -176,7 +176,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTask do
       it 'includes file_step when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry_task('opt', required_attrs.merge(file_step: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry_task('opt', required_attrs.merge(file_step: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry_task', 'opt')
         expect(config).to have_key('file_step')
@@ -193,7 +193,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTask do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry_task('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry_task('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry_task', 'opt')
         expect(config).to have_key('identity')
@@ -244,7 +244,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTask do
       it 'includes platform when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry_task('opt', required_attrs.merge(platform: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry_task('opt', required_attrs.merge(platform: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry_task', 'opt')
         expect(config).to have_key('platform')
@@ -261,7 +261,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryTask do
       it 'includes registry_credential when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry_task('opt', required_attrs.merge(registry_credential: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry_task('opt', required_attrs.merge(registry_credential: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry_task', 'opt')
         expect(config).to have_key('registry_credential')

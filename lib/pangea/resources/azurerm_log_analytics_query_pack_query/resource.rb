@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::LogAnalyticsQueryPackQueryAttributes,
       outputs: { id: :id },
       map: [:body, :display_name, :query_pack_id],
-      map_present: [:additional_settings_json, :categories, :description, :resource_types, :solutions, :tags]
+      map_present: [:additional_settings_json, :categories, :description, :name, :resource_types, :solutions, :tags]
   end
   module Azure
     include AzureLogAnalyticsQueryPackQuery

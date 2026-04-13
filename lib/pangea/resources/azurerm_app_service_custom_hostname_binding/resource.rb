@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_app_service_custom_hostname_binding,
       attributes_class: Azure::Types::AppServiceCustomHostnameBindingAttributes,
       outputs: { id: :id },
-      map: [:app_service_name, :hostname, :resource_group_name]
+      map: [:app_service_name, :hostname, :resource_group_name],
+      map_present: [:ssl_state, :thumbprint]
   end
   module Azure
     include AzureAppServiceCustomHostnameBinding

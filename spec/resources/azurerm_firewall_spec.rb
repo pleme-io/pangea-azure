@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureFirewall do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ dns_servers: ['test-value'], firewall_policy_id: 'test-value', ip_configuration: [{ 'key1' => 'val1' }], management_ip_configuration: [{ 'key1' => 'val1' }], private_ip_ranges: ['test-value'], tags: { 'key1' => 'val1' }, virtual_hub: [{ 'key1' => 'val1' }], zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ dns_proxy_enabled: true, dns_servers: ['test-value'], firewall_policy_id: 'test-value', ip_configuration: [{ 'key1' => 'val1' }], management_ip_configuration: { 'key1' => 'val1' }, private_ip_ranges: ['test-value'], tags: { 'key1' => 'val1' }, threat_intel_mode: 'test-value', virtual_hub: { 'key1' => 'val1' }, zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,18 +66,37 @@ RSpec.describe Pangea::Resources::AzureFirewall do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_firewall', 'full')
+        expect(config).to have_key('dns_proxy_enabled')
         expect(config).to have_key('dns_servers')
         expect(config).to have_key('firewall_policy_id')
         expect(config).to have_key('ip_configuration')
         expect(config).to have_key('management_ip_configuration')
         expect(config).to have_key('private_ip_ranges')
         expect(config).to have_key('tags')
+        expect(config).to have_key('threat_intel_mode')
         expect(config).to have_key('virtual_hub')
         expect(config).to have_key('zones')
       end
     end
 
     context 'optional attributes' do
+      it 'includes dns_proxy_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_firewall('opt', required_attrs.merge(dns_proxy_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_firewall', 'opt')
+        expect(config).to have_key('dns_proxy_enabled')
+      end
+
+      it 'omits dns_proxy_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_firewall('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_firewall', 'minimal')
+        expect(config).not_to have_key('dns_proxy_enabled')
+      end
       it 'includes dns_servers when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -132,7 +151,7 @@ RSpec.describe Pangea::Resources::AzureFirewall do
       it 'includes management_ip_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_firewall('opt', required_attrs.merge(management_ip_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_firewall('opt', required_attrs.merge(management_ip_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall', 'opt')
         expect(config).to have_key('management_ip_configuration')
@@ -180,10 +199,27 @@ RSpec.describe Pangea::Resources::AzureFirewall do
         config = validate_resource_structure(result, 'azurerm_firewall', 'minimal')
         expect(config).not_to have_key('tags')
       end
+      it 'includes threat_intel_mode when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_firewall('opt', required_attrs.merge(threat_intel_mode: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_firewall', 'opt')
+        expect(config).to have_key('threat_intel_mode')
+      end
+
+      it 'omits threat_intel_mode when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_firewall('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_firewall', 'minimal')
+        expect(config).not_to have_key('threat_intel_mode')
+      end
       it 'includes virtual_hub when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_firewall('opt', required_attrs.merge(virtual_hub: [{ 'key1' => 'val1' }]))
+        synth.azurerm_firewall('opt', required_attrs.merge(virtual_hub: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall', 'opt')
         expect(config).to have_key('virtual_hub')
@@ -213,6 +249,20 @@ RSpec.describe Pangea::Resources::AzureFirewall do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall', 'minimal')
         expect(config).not_to have_key('zones')
+      end
+    end
+
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts dns_proxy_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(dns_proxy_enabled: val)
+          synth.azurerm_firewall("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_firewall', "bool_#{val}")
+          expect(config['dns_proxy_enabled']).to eq(val)
+        end
       end
     end
 
@@ -265,5 +315,5 @@ RSpec.describe Pangea::Resources::AzureFirewall do
     expected_outputs: [:id, :dns_proxy_enabled, :threat_intel_mode],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:dns_proxy_enabled]
 end

@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppWorkflow do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ access_control: [{ 'key1' => 'val1' }], enabled: true, identity: [{ 'key1' => 'val1' }], integration_service_environment_id: 'test-value', logic_app_integration_account_id: 'test-value', parameters: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, workflow_parameters: { 'key1' => 'val1' }, workflow_schema: 'test-value', workflow_version: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ access_control: { 'key1' => 'val1' }, enabled: true, identity: { 'key1' => 'val1' }, integration_service_environment_id: 'test-value', logic_app_integration_account_id: 'test-value', parameters: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, workflow_parameters: { 'key1' => 'val1' }, workflow_schema: 'test-value', workflow_version: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -89,7 +89,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppWorkflow do
       it 'includes access_control when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_logic_app_workflow('opt', required_attrs.merge(access_control: [{ 'key1' => 'val1' }]))
+        synth.azurerm_logic_app_workflow('opt', required_attrs.merge(access_control: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_workflow', 'opt')
         expect(config).to have_key('access_control')
@@ -123,7 +123,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppWorkflow do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_logic_app_workflow('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_logic_app_workflow('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_logic_app_workflow', 'opt')
         expect(config).to have_key('identity')

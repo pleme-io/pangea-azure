@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureSnapshot do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ disk_access_id: 'test-value', encryption_settings: [{ 'key1' => 'val1' }], incremental_enabled: true, network_access_policy: 'test-value', public_network_access_enabled: true, source_resource_id: 'test-value', source_uri: 'test-value', storage_account_id: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ disk_access_id: 'test-value', disk_size_gb: 3.14, encryption_settings: { 'key1' => 'val1' }, incremental_enabled: true, network_access_policy: 'test-value', public_network_access_enabled: true, source_resource_id: 'test-value', source_uri: 'test-value', storage_account_id: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureSnapshot do
 
         config = validate_resource_structure(result, 'azurerm_snapshot', 'full')
         expect(config).to have_key('disk_access_id')
+        expect(config).to have_key('disk_size_gb')
         expect(config).to have_key('encryption_settings')
         expect(config).to have_key('incremental_enabled')
         expect(config).to have_key('network_access_policy')
@@ -96,10 +97,27 @@ RSpec.describe Pangea::Resources::AzureSnapshot do
         config = validate_resource_structure(result, 'azurerm_snapshot', 'minimal')
         expect(config).not_to have_key('disk_access_id')
       end
+      it 'includes disk_size_gb when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_snapshot('opt', required_attrs.merge(disk_size_gb: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_snapshot', 'opt')
+        expect(config).to have_key('disk_size_gb')
+      end
+
+      it 'omits disk_size_gb when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_snapshot('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_snapshot', 'minimal')
+        expect(config).not_to have_key('disk_size_gb')
+      end
       it 'includes encryption_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_snapshot('opt', required_attrs.merge(encryption_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_snapshot('opt', required_attrs.merge(encryption_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_snapshot', 'opt')
         expect(config).to have_key('encryption_settings')

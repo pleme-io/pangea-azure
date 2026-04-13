@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SentinelThreatIntelligenceIndicatorAttributes,
       outputs: { id: :id },
       map: [:display_name, :pattern, :pattern_type, :source, :validate_from_utc, :workspace_id],
-      map_present: [:confidence, :created_by, :description, :external_reference, :granular_marking, :kill_chain_phase, :language, :object_marking_refs, :pattern_version, :tags, :threat_types, :validate_until_utc],
+      map_present: [:confidence, :created_by, :description, :extension, :external_reference, :granular_marking, :kill_chain_phase, :language, :object_marking_refs, :pattern_version, :tags, :threat_types, :validate_until_utc],
       map_bool: [:revoked]
   end
   module Azure

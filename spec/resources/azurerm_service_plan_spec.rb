@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureServicePlan do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ app_service_environment_id: 'test-value', per_site_scaling_enabled: true, premium_plan_auto_scale_enabled: true, tags: { 'key1' => 'val1' }, zone_balancing_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ app_service_environment_id: 'test-value', maximum_elastic_worker_count: 3.14, per_site_scaling_enabled: true, premium_plan_auto_scale_enabled: true, tags: { 'key1' => 'val1' }, worker_count: 3.14, zone_balancing_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -71,9 +71,11 @@ RSpec.describe Pangea::Resources::AzureServicePlan do
 
         config = validate_resource_structure(result, 'azurerm_service_plan', 'full')
         expect(config).to have_key('app_service_environment_id')
+        expect(config).to have_key('maximum_elastic_worker_count')
         expect(config).to have_key('per_site_scaling_enabled')
         expect(config).to have_key('premium_plan_auto_scale_enabled')
         expect(config).to have_key('tags')
+        expect(config).to have_key('worker_count')
         expect(config).to have_key('zone_balancing_enabled')
       end
     end
@@ -95,6 +97,23 @@ RSpec.describe Pangea::Resources::AzureServicePlan do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_plan', 'minimal')
         expect(config).not_to have_key('app_service_environment_id')
+      end
+      it 'includes maximum_elastic_worker_count when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_service_plan('opt', required_attrs.merge(maximum_elastic_worker_count: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_service_plan', 'opt')
+        expect(config).to have_key('maximum_elastic_worker_count')
+      end
+
+      it 'omits maximum_elastic_worker_count when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_service_plan('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_service_plan', 'minimal')
+        expect(config).not_to have_key('maximum_elastic_worker_count')
       end
       it 'includes per_site_scaling_enabled when provided' do
         synth = create_synthesizer
@@ -146,6 +165,23 @@ RSpec.describe Pangea::Resources::AzureServicePlan do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_plan', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes worker_count when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_service_plan('opt', required_attrs.merge(worker_count: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_service_plan', 'opt')
+        expect(config).to have_key('worker_count')
+      end
+
+      it 'omits worker_count when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_service_plan('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_service_plan', 'minimal')
+        expect(config).not_to have_key('worker_count')
       end
       it 'includes zone_balancing_enabled when provided' do
         synth = create_synthesizer

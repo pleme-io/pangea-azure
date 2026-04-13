@@ -67,7 +67,7 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsWorkspace do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ allow_resource_only_permissions: true, cmk_for_query_forced: true, daily_quota_gb: 3.14, data_collection_rule_id: 'test-value', identity: [{ 'key1' => 'val1' }], immediate_data_purge_on_30_days_enabled: true, internet_ingestion_enabled: true, internet_query_enabled: true, reservation_capacity_in_gb_per_day: 3.14, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ allow_resource_only_permissions: true, cmk_for_query_forced: true, daily_quota_gb: 3.14, data_collection_rule_id: 'test-value', identity: { 'key1' => 'val1' }, immediate_data_purge_on_30_days_enabled: true, internet_ingestion_enabled: true, internet_query_enabled: true, local_authentication_disabled: true, local_authentication_enabled: true, reservation_capacity_in_gb_per_day: 3.14, retention_in_days: 3.14, sku: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -84,7 +84,11 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsWorkspace do
         expect(config).to have_key('immediate_data_purge_on_30_days_enabled')
         expect(config).to have_key('internet_ingestion_enabled')
         expect(config).to have_key('internet_query_enabled')
+        expect(config).to have_key('local_authentication_disabled')
+        expect(config).to have_key('local_authentication_enabled')
         expect(config).to have_key('reservation_capacity_in_gb_per_day')
+        expect(config).to have_key('retention_in_days')
+        expect(config).to have_key('sku')
         expect(config).to have_key('tags')
       end
     end
@@ -161,7 +165,7 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsWorkspace do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_log_analytics_workspace('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_log_analytics_workspace('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'opt')
         expect(config).to have_key('identity')
@@ -226,6 +230,40 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsWorkspace do
         config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'minimal')
         expect(config).not_to have_key('internet_query_enabled')
       end
+      it 'includes local_authentication_disabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_workspace('opt', required_attrs.merge(local_authentication_disabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'opt')
+        expect(config).to have_key('local_authentication_disabled')
+      end
+
+      it 'omits local_authentication_disabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_workspace('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'minimal')
+        expect(config).not_to have_key('local_authentication_disabled')
+      end
+      it 'includes local_authentication_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_workspace('opt', required_attrs.merge(local_authentication_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'opt')
+        expect(config).to have_key('local_authentication_enabled')
+      end
+
+      it 'omits local_authentication_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_workspace('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'minimal')
+        expect(config).not_to have_key('local_authentication_enabled')
+      end
       it 'includes reservation_capacity_in_gb_per_day when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -242,6 +280,40 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsWorkspace do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'minimal')
         expect(config).not_to have_key('reservation_capacity_in_gb_per_day')
+      end
+      it 'includes retention_in_days when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_workspace('opt', required_attrs.merge(retention_in_days: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'opt')
+        expect(config).to have_key('retention_in_days')
+      end
+
+      it 'omits retention_in_days when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_workspace('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'minimal')
+        expect(config).not_to have_key('retention_in_days')
+      end
+      it 'includes sku when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_workspace('opt', required_attrs.merge(sku: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'opt')
+        expect(config).to have_key('sku')
+      end
+
+      it 'omits sku when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_workspace('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', 'minimal')
+        expect(config).not_to have_key('sku')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer
@@ -326,6 +398,28 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsWorkspace do
           expect(config['internet_query_enabled']).to eq(val)
         end
       end
+      [true, false].each do |val|
+        it "accepts local_authentication_disabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(local_authentication_disabled: val)
+          synth.azurerm_log_analytics_workspace("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', "bool_#{val}")
+          expect(config['local_authentication_disabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts local_authentication_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(local_authentication_enabled: val)
+          synth.azurerm_log_analytics_workspace("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_log_analytics_workspace', "bool_#{val}")
+          expect(config['local_authentication_enabled']).to eq(val)
+        end
+      end
     end
 
     context 'attribute types' do
@@ -375,5 +469,5 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsWorkspace do
     expected_outputs: [:id, :local_authentication_disabled, :local_authentication_enabled, :primary_shared_key, :retention_in_days, :secondary_shared_key, :sku, :workspace_id],
     sensitive_fields: [:primary_shared_key, :secondary_shared_key],
     immutable_fields: [],
-    boolean_fields: [:allow_resource_only_permissions, :cmk_for_query_forced, :immediate_data_purge_on_30_days_enabled, :internet_ingestion_enabled, :internet_query_enabled]
+    boolean_fields: [:allow_resource_only_permissions, :cmk_for_query_forced, :immediate_data_purge_on_30_days_enabled, :internet_ingestion_enabled, :internet_query_enabled, :local_authentication_disabled, :local_authentication_enabled]
 end

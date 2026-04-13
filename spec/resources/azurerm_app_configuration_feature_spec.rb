@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureAppConfigurationFeature do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', enabled: true, label: 'test-value', locked: true, percentage_filter_value: 3.14, tags: { 'key1' => 'val1' }, targeting_filter: [{ 'key1' => 'val1' }], timewindow_filter: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ custom_filter: [{ 'key1' => 'val1' }], description: 'test-value', enabled: true, etag: 'test-value', key: 'test-value', label: 'test-value', locked: true, percentage_filter_value: 3.14, tags: { 'key1' => 'val1' }, targeting_filter: [{ 'key1' => 'val1' }], timewindow_filter: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,8 +66,11 @@ RSpec.describe Pangea::Resources::AzureAppConfigurationFeature do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_app_configuration_feature', 'full')
+        expect(config).to have_key('custom_filter')
         expect(config).to have_key('description')
         expect(config).to have_key('enabled')
+        expect(config).to have_key('etag')
+        expect(config).to have_key('key')
         expect(config).to have_key('label')
         expect(config).to have_key('locked')
         expect(config).to have_key('percentage_filter_value')
@@ -78,6 +81,23 @@ RSpec.describe Pangea::Resources::AzureAppConfigurationFeature do
     end
 
     context 'optional attributes' do
+      it 'includes custom_filter when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_configuration_feature('opt', required_attrs.merge(custom_filter: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_configuration_feature', 'opt')
+        expect(config).to have_key('custom_filter')
+      end
+
+      it 'omits custom_filter when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_configuration_feature('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_configuration_feature', 'minimal')
+        expect(config).not_to have_key('custom_filter')
+      end
       it 'includes description when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -111,6 +131,40 @@ RSpec.describe Pangea::Resources::AzureAppConfigurationFeature do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_configuration_feature', 'minimal')
         expect(config).not_to have_key('enabled')
+      end
+      it 'includes etag when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_configuration_feature('opt', required_attrs.merge(etag: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_configuration_feature', 'opt')
+        expect(config).to have_key('etag')
+      end
+
+      it 'omits etag when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_configuration_feature('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_configuration_feature', 'minimal')
+        expect(config).not_to have_key('etag')
+      end
+      it 'includes key when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_configuration_feature('opt', required_attrs.merge(key: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_configuration_feature', 'opt')
+        expect(config).to have_key('key')
+      end
+
+      it 'omits key when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_configuration_feature('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_configuration_feature', 'minimal')
+        expect(config).not_to have_key('key')
       end
       it 'includes label when provided' do
         synth = create_synthesizer

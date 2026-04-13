@@ -12,7 +12,8 @@ module Pangea::Resources
 
     define_resource :azurerm_management_group,
       attributes_class: Azure::Types::ManagementGroupAttributes,
-      outputs: { id: :id }
+      outputs: { id: :id },
+      map_present: [:display_name, :name, :parent_management_group_id, :subscription_ids]
   end
   module Azure
     include AzureManagementGroup

@@ -1,0 +1,8 @@
+name: azurerm_bot_service_azure_bot
+title: Manages a azurerm_bot_service_azure_bot resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

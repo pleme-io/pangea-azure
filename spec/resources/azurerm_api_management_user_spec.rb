@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementUser do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ confirmation: 'test-value', note: 'test-value', password: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ confirmation: 'test-value', note: 'test-value', password: 'test-value', state: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementUser do
         expect(config).to have_key('confirmation')
         expect(config).to have_key('note')
         expect(config).to have_key('password')
+        expect(config).to have_key('state')
       end
     end
 
@@ -121,6 +122,23 @@ RSpec.describe Pangea::Resources::AzureApiManagementUser do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_user', 'minimal')
         expect(config).not_to have_key('password')
+      end
+      it 'includes state when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_user('opt', required_attrs.merge(state: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_user', 'opt')
+        expect(config).to have_key('state')
+      end
+
+      it 'omits state when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_user('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_user', 'minimal')
+        expect(config).not_to have_key('state')
       end
     end
 

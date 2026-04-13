@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureActiveDirectoryDomainService do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { domain_name: 'test-value', initial_replica_set: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: 'test-value' } }
+  let(:required_attrs) { { domain_name: 'test-value', initial_replica_set: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: 'test-value' } }
 
   describe ':azurerm_active_directory_domain_service' do
     context 'with required attributes only' do
@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureActiveDirectoryDomainService do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ domain_configuration_type: 'test-value', filtered_sync_enabled: true, notifications: [{ 'key1' => 'val1' }], secure_ldap: [{ 'key1' => 'val1' }], security: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ domain_configuration_type: 'test-value', filtered_sync_enabled: true, notifications: { 'key1' => 'val1' }, secure_ldap: { 'key1' => 'val1' }, security: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -119,7 +119,7 @@ RSpec.describe Pangea::Resources::AzureActiveDirectoryDomainService do
       it 'includes notifications when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_active_directory_domain_service('opt', required_attrs.merge(notifications: [{ 'key1' => 'val1' }]))
+        synth.azurerm_active_directory_domain_service('opt', required_attrs.merge(notifications: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_active_directory_domain_service', 'opt')
         expect(config).to have_key('notifications')
@@ -136,7 +136,7 @@ RSpec.describe Pangea::Resources::AzureActiveDirectoryDomainService do
       it 'includes secure_ldap when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_active_directory_domain_service('opt', required_attrs.merge(secure_ldap: [{ 'key1' => 'val1' }]))
+        synth.azurerm_active_directory_domain_service('opt', required_attrs.merge(secure_ldap: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_active_directory_domain_service', 'opt')
         expect(config).to have_key('secure_ldap')
@@ -153,7 +153,7 @@ RSpec.describe Pangea::Resources::AzureActiveDirectoryDomainService do
       it 'includes security when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_active_directory_domain_service('opt', required_attrs.merge(security: [{ 'key1' => 'val1' }]))
+        synth.azurerm_active_directory_domain_service('opt', required_attrs.merge(security: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_active_directory_domain_service', 'opt')
         expect(config).to have_key('security')
@@ -209,7 +209,7 @@ RSpec.describe Pangea::Resources::AzureActiveDirectoryDomainService do
 
         config = validate_resource_structure(result, 'azurerm_active_directory_domain_service', 'typed')
         expect(config['domain_name']).to be_a(String)
-        expect(config['initial_replica_set']).to be_a(Array)
+        expect(config['initial_replica_set']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -246,7 +246,7 @@ RSpec.describe Pangea::Resources::AzureActiveDirectoryDomainService do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_active_directory_domain_service,
     method: :azurerm_active_directory_domain_service,
-    required_attrs: { domain_name: 'test-value', initial_replica_set: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: 'test-value' },
+    required_attrs: { domain_name: 'test-value', initial_replica_set: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: 'test-value' },
     expected_outputs: [:id, :deployment_id, :resource_id, :sync_owner, :tenant_id, :version],
     sensitive_fields: [],
     immutable_fields: [],

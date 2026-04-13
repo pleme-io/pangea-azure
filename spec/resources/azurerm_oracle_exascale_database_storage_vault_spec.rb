@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureOracleExascaleDatabaseStorageVault do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { additional_flash_cache_percentage: 3.14, display_name: 'test-value', high_capacity_database_storage: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', zones: ['test-value'] } }
+  let(:required_attrs) { { additional_flash_cache_percentage: 3.14, display_name: 'test-value', high_capacity_database_storage: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', zones: ['test-value'] } }
 
   describe ':azurerm_oracle_exascale_database_storage_vault' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureOracleExascaleDatabaseStorageVault do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ tags: { 'key1' => 'val1' }, time_zone: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', tags: { 'key1' => 'val1' }, time_zone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,12 +64,30 @@ RSpec.describe Pangea::Resources::AzureOracleExascaleDatabaseStorageVault do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_oracle_exascale_database_storage_vault', 'full')
+        expect(config).to have_key('description')
         expect(config).to have_key('tags')
         expect(config).to have_key('time_zone')
       end
     end
 
     context 'optional attributes' do
+      it 'includes description when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_exascale_database_storage_vault('opt', required_attrs.merge(description: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_exascale_database_storage_vault', 'opt')
+        expect(config).to have_key('description')
+      end
+
+      it 'omits description when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_oracle_exascale_database_storage_vault('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_oracle_exascale_database_storage_vault', 'minimal')
+        expect(config).not_to have_key('description')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -116,7 +134,7 @@ RSpec.describe Pangea::Resources::AzureOracleExascaleDatabaseStorageVault do
         config = validate_resource_structure(result, 'azurerm_oracle_exascale_database_storage_vault', 'typed')
         expect(config['additional_flash_cache_percentage']).to be_a(Float)
         expect(config['display_name']).to be_a(String)
-        expect(config['high_capacity_database_storage']).to be_a(Array)
+        expect(config['high_capacity_database_storage']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -153,7 +171,7 @@ RSpec.describe Pangea::Resources::AzureOracleExascaleDatabaseStorageVault do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_oracle_exascale_database_storage_vault,
     method: :azurerm_oracle_exascale_database_storage_vault,
-    required_attrs: { additional_flash_cache_percentage: 3.14, display_name: 'test-value', high_capacity_database_storage: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', zones: ['test-value'] },
+    required_attrs: { additional_flash_cache_percentage: 3.14, display_name: 'test-value', high_capacity_database_storage: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', zones: ['test-value'] },
     expected_outputs: [:id, :description],
     sensitive_fields: [],
     immutable_fields: [],

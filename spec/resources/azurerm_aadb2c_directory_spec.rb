@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureAadb2cDirectory do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ country_code: 'test-value', display_name: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -72,11 +72,47 @@ RSpec.describe Pangea::Resources::AzureAadb2cDirectory do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_aadb2c_directory', 'full')
+        expect(config).to have_key('country_code')
+        expect(config).to have_key('display_name')
         expect(config).to have_key('tags')
       end
     end
 
     context 'optional attributes' do
+      it 'includes country_code when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_aadb2c_directory('opt', required_attrs.merge(country_code: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_aadb2c_directory', 'opt')
+        expect(config).to have_key('country_code')
+      end
+
+      it 'omits country_code when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_aadb2c_directory('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_aadb2c_directory', 'minimal')
+        expect(config).not_to have_key('country_code')
+      end
+      it 'includes display_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_aadb2c_directory('opt', required_attrs.merge(display_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_aadb2c_directory', 'opt')
+        expect(config).to have_key('display_name')
+      end
+
+      it 'omits display_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_aadb2c_directory('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_aadb2c_directory', 'minimal')
+        expect(config).not_to have_key('display_name')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

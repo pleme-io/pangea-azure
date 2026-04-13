@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::NetworkSecurityGroupAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:tags]
+      map_present: [:security_rule, :tags]
   end
   module Azure
     include AzureNetworkSecurityGroup

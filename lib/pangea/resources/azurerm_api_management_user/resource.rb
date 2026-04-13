@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ApiManagementUserAttributes,
       outputs: { id: :id },
       map: [:api_management_name, :email, :first_name, :last_name, :resource_group_name, :user_id],
-      map_present: [:confirmation, :note, :password]
+      map_present: [:confirmation, :note, :password, :state]
   end
   module Azure
     include AzureApiManagementUser

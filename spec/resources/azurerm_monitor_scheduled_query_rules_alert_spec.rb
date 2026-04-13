@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMonitorScheduledQueryRulesAlert do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { action: [{ 'key1' => 'val1' }], data_source_id: 'test-value', frequency: 3.14, location: 'test-value', name: 'test-value', query: 'test-value', resource_group_name: 'test-value', time_window: 3.14, trigger: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { action: { 'key1' => 'val1' }, data_source_id: 'test-value', frequency: 3.14, location: 'test-value', name: 'test-value', query: 'test-value', resource_group_name: 'test-value', time_window: 3.14, trigger: { 'key1' => 'val1' } } }
 
   describe ':azurerm_monitor_scheduled_query_rules_alert' do
     context 'with required attributes only' do
@@ -234,7 +234,7 @@ RSpec.describe Pangea::Resources::AzureMonitorScheduledQueryRulesAlert do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_monitor_scheduled_query_rules_alert', 'typed')
-        expect(config['action']).to be_a(Array)
+        expect(config['action']).to be_a(Hash)
         expect(config['data_source_id']).to be_a(String)
         expect(config['frequency']).to be_a(Float)
         expect(config['location']).to be_a(String)
@@ -242,7 +242,7 @@ RSpec.describe Pangea::Resources::AzureMonitorScheduledQueryRulesAlert do
         expect(config['query']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['time_window']).to be_a(Float)
-        expect(config['trigger']).to be_a(Array)
+        expect(config['trigger']).to be_a(Hash)
       end
     end
 
@@ -275,7 +275,7 @@ RSpec.describe Pangea::Resources::AzureMonitorScheduledQueryRulesAlert do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_monitor_scheduled_query_rules_alert,
     method: :azurerm_monitor_scheduled_query_rules_alert,
-    required_attrs: { action: [{ 'key1' => 'val1' }], data_source_id: 'test-value', frequency: 3.14, location: 'test-value', name: 'test-value', query: 'test-value', resource_group_name: 'test-value', time_window: 3.14, trigger: [{ 'key1' => 'val1' }] },
+    required_attrs: { action: { 'key1' => 'val1' }, data_source_id: 'test-value', frequency: 3.14, location: 'test-value', name: 'test-value', query: 'test-value', resource_group_name: 'test-value', time_window: 3.14, trigger: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

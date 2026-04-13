@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureIotSecurityDeviceGroup do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ allow_rule: [{ 'key1' => 'val1' }], range_rule: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ allow_rule: { 'key1' => 'val1' }, range_rule: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -60,7 +60,7 @@ RSpec.describe Pangea::Resources::AzureIotSecurityDeviceGroup do
       it 'includes allow_rule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_iot_security_device_group('opt', required_attrs.merge(allow_rule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_iot_security_device_group('opt', required_attrs.merge(allow_rule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iot_security_device_group', 'opt')
         expect(config).to have_key('allow_rule')

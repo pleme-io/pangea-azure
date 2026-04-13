@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::NginxDeploymentAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku],
-      map_present: [:auto_scale_profile, :automatic_upgrade_channel, :capacity, :email, :frontend_private, :frontend_public, :identity, :logging_storage_account, :network_interface, :tags, :web_application_firewall],
+      map_present: [:auto_scale_profile, :automatic_upgrade_channel, :capacity, :email, :frontend_private, :frontend_public, :identity, :logging_storage_account, :managed_resource_group, :network_interface, :tags, :web_application_firewall],
       map_bool: [:diagnose_support_enabled]
   end
   module Azure

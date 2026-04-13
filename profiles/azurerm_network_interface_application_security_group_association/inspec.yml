@@ -1,0 +1,8 @@
+name: azurerm_network_interface_application_security_group_association
+title: Manages a azurerm_network_interface_application_security_group_association resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

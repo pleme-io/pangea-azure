@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceAzureBlobStorage 
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], connection_string: 'test-value', connection_string_insecure: 'test-value', description: 'test-value', integration_runtime_name: 'test-value', key_vault_sas_token: [{ 'key1' => 'val1' }], parameters: { 'key1' => 'val1' }, sas_token_linked_key_vault_key: [{ 'key1' => 'val1' }], sas_uri: 'test-value', service_endpoint: 'test-value', service_principal_id: 'test-value', service_principal_key: 'test-value', service_principal_linked_key_vault_key: [{ 'key1' => 'val1' }], storage_kind: 'test-value', tenant_id: 'test-value', use_managed_identity: true }) }
+      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], connection_string: 'test-value', connection_string_insecure: 'test-value', description: 'test-value', integration_runtime_name: 'test-value', key_vault_sas_token: { 'key1' => 'val1' }, parameters: { 'key1' => 'val1' }, sas_token_linked_key_vault_key: { 'key1' => 'val1' }, sas_uri: 'test-value', service_endpoint: 'test-value', service_principal_id: 'test-value', service_principal_key: 'test-value', service_principal_linked_key_vault_key: { 'key1' => 'val1' }, storage_kind: 'test-value', tenant_id: 'test-value', use_managed_identity: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -177,7 +177,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceAzureBlobStorage 
       it 'includes key_vault_sas_token when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_azure_blob_storage('opt', required_attrs.merge(key_vault_sas_token: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_azure_blob_storage('opt', required_attrs.merge(key_vault_sas_token: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_blob_storage', 'opt')
         expect(config).to have_key('key_vault_sas_token')
@@ -211,7 +211,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceAzureBlobStorage 
       it 'includes sas_token_linked_key_vault_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_azure_blob_storage('opt', required_attrs.merge(sas_token_linked_key_vault_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_azure_blob_storage('opt', required_attrs.merge(sas_token_linked_key_vault_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_blob_storage', 'opt')
         expect(config).to have_key('sas_token_linked_key_vault_key')
@@ -296,7 +296,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryLinkedServiceAzureBlobStorage 
       it 'includes service_principal_linked_key_vault_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_linked_service_azure_blob_storage('opt', required_attrs.merge(service_principal_linked_key_vault_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_linked_service_azure_blob_storage('opt', required_attrs.merge(service_principal_linked_key_vault_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_linked_service_azure_blob_storage', 'opt')
         expect(config).to have_key('service_principal_linked_key_vault_key')

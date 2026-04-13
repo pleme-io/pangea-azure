@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureMonitorAlertProcessingRuleSuppression do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ condition: [{ 'key1' => 'val1' }], description: 'test-value', enabled: true, schedule: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ condition: { 'key1' => 'val1' }, description: 'test-value', enabled: true, schedule: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureMonitorAlertProcessingRuleSuppression do
       it 'includes condition when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_alert_processing_rule_suppression('opt', required_attrs.merge(condition: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_alert_processing_rule_suppression('opt', required_attrs.merge(condition: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_alert_processing_rule_suppression', 'opt')
         expect(config).to have_key('condition')
@@ -114,7 +114,7 @@ RSpec.describe Pangea::Resources::AzureMonitorAlertProcessingRuleSuppression do
       it 'includes schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_alert_processing_rule_suppression('opt', required_attrs.merge(schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_alert_processing_rule_suppression('opt', required_attrs.merge(schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_alert_processing_rule_suppression', 'opt')
         expect(config).to have_key('schedule')

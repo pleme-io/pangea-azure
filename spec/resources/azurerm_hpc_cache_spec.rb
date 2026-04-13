@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureHpcCache do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ automatically_rotate_key_to_latest_enabled: true, default_access_policy: [{ 'key1' => 'val1' }], directory_active_directory: [{ 'key1' => 'val1' }], directory_flat_file: [{ 'key1' => 'val1' }], directory_ldap: [{ 'key1' => 'val1' }], dns: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], key_vault_key_id: 'test-value', mtu: 3.14, ntp_server: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ automatically_rotate_key_to_latest_enabled: true, default_access_policy: { 'key1' => 'val1' }, directory_active_directory: { 'key1' => 'val1' }, directory_flat_file: { 'key1' => 'val1' }, directory_ldap: { 'key1' => 'val1' }, dns: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, key_vault_key_id: 'test-value', mtu: 3.14, ntp_server: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -99,7 +99,7 @@ RSpec.describe Pangea::Resources::AzureHpcCache do
       it 'includes default_access_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hpc_cache('opt', required_attrs.merge(default_access_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hpc_cache('opt', required_attrs.merge(default_access_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hpc_cache', 'opt')
         expect(config).to have_key('default_access_policy')
@@ -116,7 +116,7 @@ RSpec.describe Pangea::Resources::AzureHpcCache do
       it 'includes directory_active_directory when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hpc_cache('opt', required_attrs.merge(directory_active_directory: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hpc_cache('opt', required_attrs.merge(directory_active_directory: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hpc_cache', 'opt')
         expect(config).to have_key('directory_active_directory')
@@ -133,7 +133,7 @@ RSpec.describe Pangea::Resources::AzureHpcCache do
       it 'includes directory_flat_file when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hpc_cache('opt', required_attrs.merge(directory_flat_file: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hpc_cache('opt', required_attrs.merge(directory_flat_file: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hpc_cache', 'opt')
         expect(config).to have_key('directory_flat_file')
@@ -150,7 +150,7 @@ RSpec.describe Pangea::Resources::AzureHpcCache do
       it 'includes directory_ldap when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hpc_cache('opt', required_attrs.merge(directory_ldap: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hpc_cache('opt', required_attrs.merge(directory_ldap: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hpc_cache', 'opt')
         expect(config).to have_key('directory_ldap')
@@ -167,7 +167,7 @@ RSpec.describe Pangea::Resources::AzureHpcCache do
       it 'includes dns when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hpc_cache('opt', required_attrs.merge(dns: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hpc_cache('opt', required_attrs.merge(dns: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hpc_cache', 'opt')
         expect(config).to have_key('dns')
@@ -184,7 +184,7 @@ RSpec.describe Pangea::Resources::AzureHpcCache do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hpc_cache('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hpc_cache('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hpc_cache', 'opt')
         expect(config).to have_key('identity')

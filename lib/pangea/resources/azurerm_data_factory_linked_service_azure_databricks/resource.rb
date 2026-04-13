@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::DataFactoryLinkedServiceAzureDatabricksAttributes,
       outputs: { id: :id },
       map: [:adb_domain, :data_factory_id, :name],
-      map_present: [:access_token, :additional_properties, :annotations, :description, :existing_cluster_id, :instance_pool, :integration_runtime_name, :key_vault_password, :new_cluster_config, :parameters]
+      map_present: [:access_token, :additional_properties, :annotations, :description, :existing_cluster_id, :instance_pool, :integration_runtime_name, :key_vault_password, :msi_work_space_resource_id, :msi_workspace_id, :new_cluster_config, :parameters]
   end
   module Azure
     include AzureDataFactoryLinkedServiceAzureDatabricks

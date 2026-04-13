@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureBackupPolicyFileShare do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { backup: [{ 'key1' => 'val1' }], name: 'test-value', recovery_vault_name: 'test-value', resource_group_name: 'test-value', retention_daily: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { backup: { 'key1' => 'val1' }, name: 'test-value', recovery_vault_name: 'test-value', resource_group_name: 'test-value', retention_daily: { 'key1' => 'val1' } } }
 
   describe ':azurerm_backup_policy_file_share' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyFileShare do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ backup_tier: 'test-value', retention_monthly: [{ 'key1' => 'val1' }], retention_weekly: [{ 'key1' => 'val1' }], retention_yearly: [{ 'key1' => 'val1' }], snapshot_retention_in_days: 3.14, timezone: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ backup_tier: 'test-value', retention_monthly: { 'key1' => 'val1' }, retention_weekly: { 'key1' => 'val1' }, retention_yearly: { 'key1' => 'val1' }, snapshot_retention_in_days: 3.14, timezone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -81,7 +81,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyFileShare do
       it 'includes retention_monthly when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_backup_policy_file_share('opt', required_attrs.merge(retention_monthly: [{ 'key1' => 'val1' }]))
+        synth.azurerm_backup_policy_file_share('opt', required_attrs.merge(retention_monthly: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_file_share', 'opt')
         expect(config).to have_key('retention_monthly')
@@ -98,7 +98,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyFileShare do
       it 'includes retention_weekly when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_backup_policy_file_share('opt', required_attrs.merge(retention_weekly: [{ 'key1' => 'val1' }]))
+        synth.azurerm_backup_policy_file_share('opt', required_attrs.merge(retention_weekly: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_file_share', 'opt')
         expect(config).to have_key('retention_weekly')
@@ -115,7 +115,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyFileShare do
       it 'includes retention_yearly when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_backup_policy_file_share('opt', required_attrs.merge(retention_yearly: [{ 'key1' => 'val1' }]))
+        synth.azurerm_backup_policy_file_share('opt', required_attrs.merge(retention_yearly: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_file_share', 'opt')
         expect(config).to have_key('retention_yearly')
@@ -173,11 +173,11 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyFileShare do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_backup_policy_file_share', 'typed')
-        expect(config['backup']).to be_a(Array)
+        expect(config['backup']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['recovery_vault_name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['retention_daily']).to be_a(Array)
+        expect(config['retention_daily']).to be_a(Hash)
       end
     end
 
@@ -210,7 +210,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyFileShare do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_backup_policy_file_share,
     method: :azurerm_backup_policy_file_share,
-    required_attrs: { backup: [{ 'key1' => 'val1' }], name: 'test-value', recovery_vault_name: 'test-value', resource_group_name: 'test-value', retention_daily: [{ 'key1' => 'val1' }] },
+    required_attrs: { backup: { 'key1' => 'val1' }, name: 'test-value', recovery_vault_name: 'test-value', resource_group_name: 'test-value', retention_daily: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

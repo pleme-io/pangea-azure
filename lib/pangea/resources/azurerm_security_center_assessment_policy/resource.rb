@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SecurityCenterAssessmentPolicyAttributes,
       outputs: { id: :id },
       map: [:description, :display_name],
-      map_present: [:implementation_effort, :remediation_description, :severity, :threats, :user_impact]
+      map_present: [:categories, :implementation_effort, :remediation_description, :severity, :threats, :user_impact]
   end
   module Azure
     include AzureSecurityCenterAssessmentPolicy

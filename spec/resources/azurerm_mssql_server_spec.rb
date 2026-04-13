@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureMssqlServer do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ administrator_login_password: 'test-value', administrator_login_password_wo: 'test-value', administrator_login_password_wo_version: 3.14, azuread_administrator: [{ 'key1' => 'val1' }], connection_policy: 'test-value', express_vulnerability_assessment_enabled: true, identity: [{ 'key1' => 'val1' }], minimum_tls_version: 'test-value', outbound_network_restriction_enabled: true, public_network_access_enabled: true, tags: { 'key1' => 'val1' }, transparent_data_encryption_key_vault_key_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ administrator_login: 'test-value', administrator_login_password: 'test-value', administrator_login_password_wo: 'test-value', administrator_login_password_wo_version: 3.14, azuread_administrator: { 'key1' => 'val1' }, connection_policy: 'test-value', express_vulnerability_assessment_enabled: true, identity: { 'key1' => 'val1' }, minimum_tls_version: 'test-value', outbound_network_restriction_enabled: true, primary_user_assigned_identity_id: 'test-value', public_network_access_enabled: true, tags: { 'key1' => 'val1' }, transparent_data_encryption_key_vault_key_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,6 +70,7 @@ RSpec.describe Pangea::Resources::AzureMssqlServer do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_mssql_server', 'full')
+        expect(config).to have_key('administrator_login')
         expect(config).to have_key('administrator_login_password')
         expect(config).to have_key('administrator_login_password_wo')
         expect(config).to have_key('administrator_login_password_wo_version')
@@ -79,6 +80,7 @@ RSpec.describe Pangea::Resources::AzureMssqlServer do
         expect(config).to have_key('identity')
         expect(config).to have_key('minimum_tls_version')
         expect(config).to have_key('outbound_network_restriction_enabled')
+        expect(config).to have_key('primary_user_assigned_identity_id')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('tags')
         expect(config).to have_key('transparent_data_encryption_key_vault_key_id')
@@ -86,6 +88,23 @@ RSpec.describe Pangea::Resources::AzureMssqlServer do
     end
 
     context 'optional attributes' do
+      it 'includes administrator_login when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_server('opt', required_attrs.merge(administrator_login: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_server', 'opt')
+        expect(config).to have_key('administrator_login')
+      end
+
+      it 'omits administrator_login when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_server', 'minimal')
+        expect(config).not_to have_key('administrator_login')
+      end
       it 'includes administrator_login_password when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -140,7 +159,7 @@ RSpec.describe Pangea::Resources::AzureMssqlServer do
       it 'includes azuread_administrator when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_server('opt', required_attrs.merge(azuread_administrator: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_server('opt', required_attrs.merge(azuread_administrator: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_server', 'opt')
         expect(config).to have_key('azuread_administrator')
@@ -191,7 +210,7 @@ RSpec.describe Pangea::Resources::AzureMssqlServer do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_mssql_server('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_mssql_server('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_server', 'opt')
         expect(config).to have_key('identity')
@@ -238,6 +257,23 @@ RSpec.describe Pangea::Resources::AzureMssqlServer do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_mssql_server', 'minimal')
         expect(config).not_to have_key('outbound_network_restriction_enabled')
+      end
+      it 'includes primary_user_assigned_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_server('opt', required_attrs.merge(primary_user_assigned_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_server', 'opt')
+        expect(config).to have_key('primary_user_assigned_identity_id')
+      end
+
+      it 'omits primary_user_assigned_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_server', 'minimal')
+        expect(config).not_to have_key('primary_user_assigned_identity_id')
       end
       it 'includes public_network_access_enabled when provided' do
         synth = create_synthesizer

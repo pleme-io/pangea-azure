@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureSpringCloudBuilder do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { build_pack_group: [{ 'key1' => 'val1' }], name: 'test-value', spring_cloud_service_id: 'test-value', stack: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { build_pack_group: [{ 'key1' => 'val1' }], name: 'test-value', spring_cloud_service_id: 'test-value', stack: { 'key1' => 'val1' } } }
 
   describe ':azurerm_spring_cloud_builder' do
     context 'with required attributes only' do
@@ -52,7 +52,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudBuilder do
         expect(config['build_pack_group']).to be_a(Array)
         expect(config['name']).to be_a(String)
         expect(config['spring_cloud_service_id']).to be_a(String)
-        expect(config['stack']).to be_a(Array)
+        expect(config['stack']).to be_a(Hash)
       end
     end
 
@@ -85,7 +85,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudBuilder do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_spring_cloud_builder,
     method: :azurerm_spring_cloud_builder,
-    required_attrs: { build_pack_group: [{ 'key1' => 'val1' }], name: 'test-value', spring_cloud_service_id: 'test-value', stack: [{ 'key1' => 'val1' }] },
+    required_attrs: { build_pack_group: [{ 'key1' => 'val1' }], name: 'test-value', spring_cloud_service_id: 'test-value', stack: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

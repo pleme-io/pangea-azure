@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::KubernetesClusterExtensionAttributes,
       outputs: { id: :id },
       map: [:cluster_id, :extension_type, :name],
-      map_present: [:configuration_protected_settings, :configuration_settings, :plan, :version]
+      map_present: [:configuration_protected_settings, :configuration_settings, :plan, :release_namespace, :release_train, :target_namespace, :version]
   end
   module Azure
     include AzureKubernetesClusterExtension

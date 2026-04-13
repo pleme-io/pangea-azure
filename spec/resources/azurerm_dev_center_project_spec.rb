@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureDevCenterProject do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', identity: [{ 'key1' => 'val1' }], maximum_dev_boxes_per_user: 3.14, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', identity: { 'key1' => 'val1' }, maximum_dev_boxes_per_user: 3.14, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -92,7 +92,7 @@ RSpec.describe Pangea::Resources::AzureDevCenterProject do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dev_center_project('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dev_center_project('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dev_center_project', 'opt')
         expect(config).to have_key('identity')

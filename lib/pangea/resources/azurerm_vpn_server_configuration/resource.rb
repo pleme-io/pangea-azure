@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::VpnServerConfigurationAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :vpn_authentication_types],
-      map_present: [:azure_active_directory_authentication, :client_revoked_certificate, :client_root_certificate, :ipsec_policy, :radius, :tags]
+      map_present: [:azure_active_directory_authentication, :client_revoked_certificate, :client_root_certificate, :ipsec_policy, :radius, :tags, :vpn_protocols]
   end
   module Azure
     include AzureVpnServerConfiguration

@@ -69,7 +69,7 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ administrator_password: 'test-value', administrator_password_wo: 'test-value', administrator_password_wo_version: 3.14, authentication: [{ 'key1' => 'val1' }], auto_grow_enabled: true, cluster: [{ 'key1' => 'val1' }], create_mode: 'test-value', customer_managed_key: [{ 'key1' => 'val1' }], delegated_subnet_id: 'test-value', geo_redundant_backup_enabled: true, high_availability: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], maintenance_window: [{ 'key1' => 'val1' }], point_in_time_restore_time_in_utc: 'test-value', public_network_access_enabled: true, replication_role: 'test-value', source_server_id: 'test-value', tags: { 'key1' => 'val1' }, zone: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ administrator_login: 'test-value', administrator_password: 'test-value', administrator_password_wo: 'test-value', administrator_password_wo_version: 3.14, authentication: { 'key1' => 'val1' }, auto_grow_enabled: true, backup_retention_days: 3.14, cluster: { 'key1' => 'val1' }, create_mode: 'test-value', customer_managed_key: { 'key1' => 'val1' }, delegated_subnet_id: 'test-value', geo_redundant_backup_enabled: true, high_availability: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, maintenance_window: { 'key1' => 'val1' }, point_in_time_restore_time_in_utc: 'test-value', private_dns_zone_id: 'test-value', public_network_access_enabled: true, replication_role: 'test-value', sku_name: 'test-value', source_server_id: 'test-value', storage_mb: 3.14, storage_tier: 'test-value', tags: { 'key1' => 'val1' }, version: 'test-value', zone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -78,11 +78,13 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'full')
+        expect(config).to have_key('administrator_login')
         expect(config).to have_key('administrator_password')
         expect(config).to have_key('administrator_password_wo')
         expect(config).to have_key('administrator_password_wo_version')
         expect(config).to have_key('authentication')
         expect(config).to have_key('auto_grow_enabled')
+        expect(config).to have_key('backup_retention_days')
         expect(config).to have_key('cluster')
         expect(config).to have_key('create_mode')
         expect(config).to have_key('customer_managed_key')
@@ -92,15 +94,37 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
         expect(config).to have_key('identity')
         expect(config).to have_key('maintenance_window')
         expect(config).to have_key('point_in_time_restore_time_in_utc')
+        expect(config).to have_key('private_dns_zone_id')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('replication_role')
+        expect(config).to have_key('sku_name')
         expect(config).to have_key('source_server_id')
+        expect(config).to have_key('storage_mb')
+        expect(config).to have_key('storage_tier')
         expect(config).to have_key('tags')
+        expect(config).to have_key('version')
         expect(config).to have_key('zone')
       end
     end
 
     context 'optional attributes' do
+      it 'includes administrator_login when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(administrator_login: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
+        expect(config).to have_key('administrator_login')
+      end
+
+      it 'omits administrator_login when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
+        expect(config).not_to have_key('administrator_login')
+      end
       it 'includes administrator_password when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -155,7 +179,7 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
       it 'includes authentication when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(authentication: [{ 'key1' => 'val1' }]))
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(authentication: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
         expect(config).to have_key('authentication')
@@ -186,10 +210,27 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
         expect(config).not_to have_key('auto_grow_enabled')
       end
+      it 'includes backup_retention_days when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(backup_retention_days: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
+        expect(config).to have_key('backup_retention_days')
+      end
+
+      it 'omits backup_retention_days when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
+        expect(config).not_to have_key('backup_retention_days')
+      end
       it 'includes cluster when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(cluster: [{ 'key1' => 'val1' }]))
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(cluster: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
         expect(config).to have_key('cluster')
@@ -223,7 +264,7 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
       it 'includes customer_managed_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(customer_managed_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(customer_managed_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
         expect(config).to have_key('customer_managed_key')
@@ -274,7 +315,7 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
       it 'includes high_availability when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(high_availability: [{ 'key1' => 'val1' }]))
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(high_availability: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
         expect(config).to have_key('high_availability')
@@ -291,7 +332,7 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
         expect(config).to have_key('identity')
@@ -308,7 +349,7 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
       it 'includes maintenance_window when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(maintenance_window: [{ 'key1' => 'val1' }]))
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(maintenance_window: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
         expect(config).to have_key('maintenance_window')
@@ -338,6 +379,23 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
         expect(config).not_to have_key('point_in_time_restore_time_in_utc')
+      end
+      it 'includes private_dns_zone_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(private_dns_zone_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
+        expect(config).to have_key('private_dns_zone_id')
+      end
+
+      it 'omits private_dns_zone_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
+        expect(config).not_to have_key('private_dns_zone_id')
       end
       it 'includes public_network_access_enabled when provided' do
         synth = create_synthesizer
@@ -373,6 +431,23 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
         expect(config).not_to have_key('replication_role')
       end
+      it 'includes sku_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(sku_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
+        expect(config).to have_key('sku_name')
+      end
+
+      it 'omits sku_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
+        expect(config).not_to have_key('sku_name')
+      end
       it 'includes source_server_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -390,6 +465,40 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
         expect(config).not_to have_key('source_server_id')
       end
+      it 'includes storage_mb when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(storage_mb: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
+        expect(config).to have_key('storage_mb')
+      end
+
+      it 'omits storage_mb when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
+        expect(config).not_to have_key('storage_mb')
+      end
+      it 'includes storage_tier when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(storage_tier: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
+        expect(config).to have_key('storage_tier')
+      end
+
+      it 'omits storage_tier when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
+        expect(config).not_to have_key('storage_tier')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -406,6 +515,23 @@ RSpec.describe Pangea::Resources::AzurePostgresqlFlexibleServer do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
         expect(config).not_to have_key('tags')
+      end
+      it 'includes version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('opt', required_attrs.merge(version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'opt')
+        expect(config).to have_key('version')
+      end
+
+      it 'omits version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_postgresql_flexible_server('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_postgresql_flexible_server', 'minimal')
+        expect(config).not_to have_key('version')
       end
       it 'includes zone when provided' do
         synth = create_synthesizer

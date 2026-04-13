@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureKustoAttachedDatabaseConfiguration do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ default_principal_modification_kind: 'test-value', sharing: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ cluster_id: 'test-value', cluster_resource_id: 'test-value', database_name_override: 'test-value', database_name_prefix: 'test-value', default_principal_modification_kind: 'test-value', sharing: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,12 +68,84 @@ RSpec.describe Pangea::Resources::AzureKustoAttachedDatabaseConfiguration do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'full')
+        expect(config).to have_key('cluster_id')
+        expect(config).to have_key('cluster_resource_id')
+        expect(config).to have_key('database_name_override')
+        expect(config).to have_key('database_name_prefix')
         expect(config).to have_key('default_principal_modification_kind')
         expect(config).to have_key('sharing')
       end
     end
 
     context 'optional attributes' do
+      it 'includes cluster_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_attached_database_configuration('opt', required_attrs.merge(cluster_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'opt')
+        expect(config).to have_key('cluster_id')
+      end
+
+      it 'omits cluster_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_attached_database_configuration('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'minimal')
+        expect(config).not_to have_key('cluster_id')
+      end
+      it 'includes cluster_resource_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_attached_database_configuration('opt', required_attrs.merge(cluster_resource_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'opt')
+        expect(config).to have_key('cluster_resource_id')
+      end
+
+      it 'omits cluster_resource_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_attached_database_configuration('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'minimal')
+        expect(config).not_to have_key('cluster_resource_id')
+      end
+      it 'includes database_name_override when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_attached_database_configuration('opt', required_attrs.merge(database_name_override: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'opt')
+        expect(config).to have_key('database_name_override')
+      end
+
+      it 'omits database_name_override when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_attached_database_configuration('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'minimal')
+        expect(config).not_to have_key('database_name_override')
+      end
+      it 'includes database_name_prefix when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_attached_database_configuration('opt', required_attrs.merge(database_name_prefix: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'opt')
+        expect(config).to have_key('database_name_prefix')
+      end
+
+      it 'omits database_name_prefix when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_attached_database_configuration('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'minimal')
+        expect(config).not_to have_key('database_name_prefix')
+      end
       it 'includes default_principal_modification_kind when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -94,7 +166,7 @@ RSpec.describe Pangea::Resources::AzureKustoAttachedDatabaseConfiguration do
       it 'includes sharing when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_kusto_attached_database_configuration('opt', required_attrs.merge(sharing: [{ 'key1' => 'val1' }]))
+        synth.azurerm_kusto_attached_database_configuration('opt', required_attrs.merge(sharing: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kusto_attached_database_configuration', 'opt')
         expect(config).to have_key('sharing')

@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_sentinel_data_connector_azure_security_center,
       attributes_class: Azure::Types::SentinelDataConnectorAzureSecurityCenterAttributes,
       outputs: { id: :id },
-      map: [:log_analytics_workspace_id, :name]
+      map: [:log_analytics_workspace_id, :name],
+      map_present: [:subscription_id]
   end
   module Azure
     include AzureSentinelDataConnectorAzureSecurityCenter

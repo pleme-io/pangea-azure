@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicationRecoveryPlan do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { boot_recovery_group: [{ 'key1' => 'val1' }], failover_recovery_group: [{ 'key1' => 'val1' }], name: 'test-value', recovery_vault_id: 'test-value', shutdown_recovery_group: [{ 'key1' => 'val1' }], source_recovery_fabric_id: 'test-value', target_recovery_fabric_id: 'test-value' } }
+  let(:required_attrs) { { boot_recovery_group: [{ 'key1' => 'val1' }], failover_recovery_group: { 'key1' => 'val1' }, name: 'test-value', recovery_vault_id: 'test-value', shutdown_recovery_group: { 'key1' => 'val1' }, source_recovery_fabric_id: 'test-value', target_recovery_fabric_id: 'test-value' } }
 
   describe ':azurerm_site_recovery_replication_recovery_plan' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicationRecoveryPlan do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ azure_to_azure_settings: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ azure_to_azure_settings: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicationRecoveryPlan do
       it 'includes azure_to_azure_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_site_recovery_replication_recovery_plan('opt', required_attrs.merge(azure_to_azure_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_site_recovery_replication_recovery_plan('opt', required_attrs.merge(azure_to_azure_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_site_recovery_replication_recovery_plan', 'opt')
         expect(config).to have_key('azure_to_azure_settings')
@@ -84,10 +84,10 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicationRecoveryPlan do
 
         config = validate_resource_structure(result, 'azurerm_site_recovery_replication_recovery_plan', 'typed')
         expect(config['boot_recovery_group']).to be_a(Array)
-        expect(config['failover_recovery_group']).to be_a(Array)
+        expect(config['failover_recovery_group']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['recovery_vault_id']).to be_a(String)
-        expect(config['shutdown_recovery_group']).to be_a(Array)
+        expect(config['shutdown_recovery_group']).to be_a(Hash)
         expect(config['source_recovery_fabric_id']).to be_a(String)
         expect(config['target_recovery_fabric_id']).to be_a(String)
       end
@@ -122,7 +122,7 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryReplicationRecoveryPlan do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_site_recovery_replication_recovery_plan,
     method: :azurerm_site_recovery_replication_recovery_plan,
-    required_attrs: { boot_recovery_group: [{ 'key1' => 'val1' }], failover_recovery_group: [{ 'key1' => 'val1' }], name: 'test-value', recovery_vault_id: 'test-value', shutdown_recovery_group: [{ 'key1' => 'val1' }], source_recovery_fabric_id: 'test-value', target_recovery_fabric_id: 'test-value' },
+    required_attrs: { boot_recovery_group: [{ 'key1' => 'val1' }], failover_recovery_group: { 'key1' => 'val1' }, name: 'test-value', recovery_vault_id: 'test-value', shutdown_recovery_group: { 'key1' => 'val1' }, source_recovery_fabric_id: 'test-value', target_recovery_fabric_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

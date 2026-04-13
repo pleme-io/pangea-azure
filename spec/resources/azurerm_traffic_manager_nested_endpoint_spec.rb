@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureTrafficManagerNestedEndpoint do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ custom_header: [{ 'key1' => 'val1' }], enabled: true, geo_mappings: ['test-value'], minimum_required_child_endpoints_ipv4: 3.14, minimum_required_child_endpoints_ipv6: 3.14, subnet: [{ 'key1' => 'val1' }], weight: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ custom_header: [{ 'key1' => 'val1' }], enabled: true, endpoint_location: 'test-value', geo_mappings: ['test-value'], minimum_required_child_endpoints_ipv4: 3.14, minimum_required_child_endpoints_ipv6: 3.14, priority: 3.14, subnet: [{ 'key1' => 'val1' }], weight: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,9 +68,11 @@ RSpec.describe Pangea::Resources::AzureTrafficManagerNestedEndpoint do
         config = validate_resource_structure(result, 'azurerm_traffic_manager_nested_endpoint', 'full')
         expect(config).to have_key('custom_header')
         expect(config).to have_key('enabled')
+        expect(config).to have_key('endpoint_location')
         expect(config).to have_key('geo_mappings')
         expect(config).to have_key('minimum_required_child_endpoints_ipv4')
         expect(config).to have_key('minimum_required_child_endpoints_ipv6')
+        expect(config).to have_key('priority')
         expect(config).to have_key('subnet')
         expect(config).to have_key('weight')
       end
@@ -110,6 +112,23 @@ RSpec.describe Pangea::Resources::AzureTrafficManagerNestedEndpoint do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_traffic_manager_nested_endpoint', 'minimal')
         expect(config).not_to have_key('enabled')
+      end
+      it 'includes endpoint_location when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_traffic_manager_nested_endpoint('opt', required_attrs.merge(endpoint_location: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_traffic_manager_nested_endpoint', 'opt')
+        expect(config).to have_key('endpoint_location')
+      end
+
+      it 'omits endpoint_location when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_traffic_manager_nested_endpoint('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_traffic_manager_nested_endpoint', 'minimal')
+        expect(config).not_to have_key('endpoint_location')
       end
       it 'includes geo_mappings when provided' do
         synth = create_synthesizer
@@ -161,6 +180,23 @@ RSpec.describe Pangea::Resources::AzureTrafficManagerNestedEndpoint do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_traffic_manager_nested_endpoint', 'minimal')
         expect(config).not_to have_key('minimum_required_child_endpoints_ipv6')
+      end
+      it 'includes priority when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_traffic_manager_nested_endpoint('opt', required_attrs.merge(priority: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_traffic_manager_nested_endpoint', 'opt')
+        expect(config).to have_key('priority')
+      end
+
+      it 'omits priority when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_traffic_manager_nested_endpoint('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_traffic_manager_nested_endpoint', 'minimal')
+        expect(config).not_to have_key('priority')
       end
       it 'includes subnet when provided' do
         synth = create_synthesizer

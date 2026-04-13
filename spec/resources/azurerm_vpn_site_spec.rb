@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureVpnSite do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ address_cidrs: ['test-value'], device_model: 'test-value', device_vendor: 'test-value', link: [{ 'key1' => 'val1' }], o365_policy: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ address_cidrs: ['test-value'], device_model: 'test-value', device_vendor: 'test-value', link: [{ 'key1' => 'val1' }], o365_policy: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -132,7 +132,7 @@ RSpec.describe Pangea::Resources::AzureVpnSite do
       it 'includes o365_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_vpn_site('opt', required_attrs.merge(o365_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_vpn_site('opt', required_attrs.merge(o365_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_vpn_site', 'opt')
         expect(config).to have_key('o365_policy')

@@ -71,7 +71,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ contact: [{ 'key1' => 'val1' }], description: 'test-value', import: [{ 'key1' => 'val1' }], license: [{ 'key1' => 'val1' }], oauth2_authorization: [{ 'key1' => 'val1' }], openid_authentication: [{ 'key1' => 'val1' }], revision_description: 'test-value', source_api_id: 'test-value', subscription_key_parameter_names: [{ 'key1' => 'val1' }], subscription_required: true, terms_of_service_url: 'test-value', version_description: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ api_type: 'test-value', contact: { 'key1' => 'val1' }, description: 'test-value', display_name: 'test-value', import: { 'key1' => 'val1' }, license: { 'key1' => 'val1' }, oauth2_authorization: { 'key1' => 'val1' }, openid_authentication: { 'key1' => 'val1' }, path: 'test-value', protocols: ['test-value'], revision_description: 'test-value', service_url: 'test-value', source_api_id: 'test-value', subscription_key_parameter_names: { 'key1' => 'val1' }, subscription_required: true, terms_of_service_url: 'test-value', version: 'test-value', version_description: 'test-value', version_set_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -80,26 +80,50 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'full')
+        expect(config).to have_key('api_type')
         expect(config).to have_key('contact')
         expect(config).to have_key('description')
+        expect(config).to have_key('display_name')
         expect(config).to have_key('import')
         expect(config).to have_key('license')
         expect(config).to have_key('oauth2_authorization')
         expect(config).to have_key('openid_authentication')
+        expect(config).to have_key('path')
+        expect(config).to have_key('protocols')
         expect(config).to have_key('revision_description')
+        expect(config).to have_key('service_url')
         expect(config).to have_key('source_api_id')
         expect(config).to have_key('subscription_key_parameter_names')
         expect(config).to have_key('subscription_required')
         expect(config).to have_key('terms_of_service_url')
+        expect(config).to have_key('version')
         expect(config).to have_key('version_description')
+        expect(config).to have_key('version_set_id')
       end
     end
 
     context 'optional attributes' do
+      it 'includes api_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('opt', required_attrs.merge(api_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
+        expect(config).to have_key('api_type')
+      end
+
+      it 'omits api_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
+        expect(config).not_to have_key('api_type')
+      end
       it 'includes contact when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api('opt', required_attrs.merge(contact: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api('opt', required_attrs.merge(contact: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
         expect(config).to have_key('contact')
@@ -130,10 +154,27 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
         expect(config).not_to have_key('description')
       end
+      it 'includes display_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('opt', required_attrs.merge(display_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
+        expect(config).to have_key('display_name')
+      end
+
+      it 'omits display_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
+        expect(config).not_to have_key('display_name')
+      end
       it 'includes import when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api('opt', required_attrs.merge(import: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api('opt', required_attrs.merge(import: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
         expect(config).to have_key('import')
@@ -150,7 +191,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
       it 'includes license when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api('opt', required_attrs.merge(license: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api('opt', required_attrs.merge(license: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
         expect(config).to have_key('license')
@@ -167,7 +208,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
       it 'includes oauth2_authorization when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api('opt', required_attrs.merge(oauth2_authorization: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api('opt', required_attrs.merge(oauth2_authorization: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
         expect(config).to have_key('oauth2_authorization')
@@ -184,7 +225,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
       it 'includes openid_authentication when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api('opt', required_attrs.merge(openid_authentication: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api('opt', required_attrs.merge(openid_authentication: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
         expect(config).to have_key('openid_authentication')
@@ -197,6 +238,40 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
         expect(config).not_to have_key('openid_authentication')
+      end
+      it 'includes path when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('opt', required_attrs.merge(path: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
+        expect(config).to have_key('path')
+      end
+
+      it 'omits path when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
+        expect(config).not_to have_key('path')
+      end
+      it 'includes protocols when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('opt', required_attrs.merge(protocols: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
+        expect(config).to have_key('protocols')
+      end
+
+      it 'omits protocols when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
+        expect(config).not_to have_key('protocols')
       end
       it 'includes revision_description when provided' do
         synth = create_synthesizer
@@ -214,6 +289,23 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
         expect(config).not_to have_key('revision_description')
+      end
+      it 'includes service_url when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('opt', required_attrs.merge(service_url: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
+        expect(config).to have_key('service_url')
+      end
+
+      it 'omits service_url when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
+        expect(config).not_to have_key('service_url')
       end
       it 'includes source_api_id when provided' do
         synth = create_synthesizer
@@ -235,7 +327,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
       it 'includes subscription_key_parameter_names when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_api('opt', required_attrs.merge(subscription_key_parameter_names: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_api('opt', required_attrs.merge(subscription_key_parameter_names: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
         expect(config).to have_key('subscription_key_parameter_names')
@@ -283,6 +375,23 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
         expect(config).not_to have_key('terms_of_service_url')
       end
+      it 'includes version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('opt', required_attrs.merge(version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
+        expect(config).to have_key('version')
+      end
+
+      it 'omits version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
+        expect(config).not_to have_key('version')
+      end
       it 'includes version_description when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -299,6 +408,23 @@ RSpec.describe Pangea::Resources::AzureApiManagementApi do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
         expect(config).not_to have_key('version_description')
+      end
+      it 'includes version_set_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('opt', required_attrs.merge(version_set_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'opt')
+        expect(config).to have_key('version_set_id')
+      end
+
+      it 'omits version_set_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_api('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_api', 'minimal')
+        expect(config).not_to have_key('version_set_id')
       end
     end
 

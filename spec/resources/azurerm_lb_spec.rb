@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureLb do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ edge_zone: 'test-value', frontend_ip_configuration: [{ 'key1' => 'val1' }], sku: 'test-value', sku_tier: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ edge_zone: 'test-value', frontend_ip_configuration: [{ 'key1' => 'val1' }], public_ip_address_id: 'test-value', sku: 'test-value', sku_tier: 'test-value', subnet_id: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -72,8 +72,10 @@ RSpec.describe Pangea::Resources::AzureLb do
         config = validate_resource_structure(result, 'azurerm_lb', 'full')
         expect(config).to have_key('edge_zone')
         expect(config).to have_key('frontend_ip_configuration')
+        expect(config).to have_key('public_ip_address_id')
         expect(config).to have_key('sku')
         expect(config).to have_key('sku_tier')
+        expect(config).to have_key('subnet_id')
         expect(config).to have_key('tags')
       end
     end
@@ -113,6 +115,23 @@ RSpec.describe Pangea::Resources::AzureLb do
         config = validate_resource_structure(result, 'azurerm_lb', 'minimal')
         expect(config).not_to have_key('frontend_ip_configuration')
       end
+      it 'includes public_ip_address_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb('opt', required_attrs.merge(public_ip_address_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb', 'opt')
+        expect(config).to have_key('public_ip_address_id')
+      end
+
+      it 'omits public_ip_address_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb', 'minimal')
+        expect(config).not_to have_key('public_ip_address_id')
+      end
       it 'includes sku when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -146,6 +165,23 @@ RSpec.describe Pangea::Resources::AzureLb do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_lb', 'minimal')
         expect(config).not_to have_key('sku_tier')
+      end
+      it 'includes subnet_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb('opt', required_attrs.merge(subnet_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb', 'opt')
+        expect(config).to have_key('subnet_id')
+      end
+
+      it 'omits subnet_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb', 'minimal')
+        expect(config).not_to have_key('subnet_id')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer

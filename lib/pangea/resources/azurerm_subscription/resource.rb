@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SubscriptionAttributes,
       outputs: { id: :id },
       map: [:subscription_name],
-      map_present: [:billing_scope_id, :tags, :workload]
+      map_present: [:alias, :billing_scope_id, :subscription_id, :tags, :workload]
   end
   module Azure
     include AzureSubscription

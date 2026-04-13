@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryCredentialServicePrincipal do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ annotations: ['test-value'], description: 'test-value', service_principal_key: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ annotations: ['test-value'], description: 'test-value', service_principal_key: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -95,7 +95,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryCredentialServicePrincipal do
       it 'includes service_principal_key when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_credential_service_principal('opt', required_attrs.merge(service_principal_key: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_credential_service_principal('opt', required_attrs.merge(service_principal_key: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_credential_service_principal', 'opt')
         expect(config).to have_key('service_principal_key')

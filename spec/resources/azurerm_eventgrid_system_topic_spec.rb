@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureEventgridSystemTopic do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ identity: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ identity: { 'key1' => 'val1' }, source_arm_resource_id: 'test-value', source_resource_id: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -71,6 +71,8 @@ RSpec.describe Pangea::Resources::AzureEventgridSystemTopic do
 
         config = validate_resource_structure(result, 'azurerm_eventgrid_system_topic', 'full')
         expect(config).to have_key('identity')
+        expect(config).to have_key('source_arm_resource_id')
+        expect(config).to have_key('source_resource_id')
         expect(config).to have_key('tags')
       end
     end
@@ -79,7 +81,7 @@ RSpec.describe Pangea::Resources::AzureEventgridSystemTopic do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_system_topic('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_system_topic('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_system_topic', 'opt')
         expect(config).to have_key('identity')
@@ -92,6 +94,40 @@ RSpec.describe Pangea::Resources::AzureEventgridSystemTopic do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_system_topic', 'minimal')
         expect(config).not_to have_key('identity')
+      end
+      it 'includes source_arm_resource_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_system_topic('opt', required_attrs.merge(source_arm_resource_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_system_topic', 'opt')
+        expect(config).to have_key('source_arm_resource_id')
+      end
+
+      it 'omits source_arm_resource_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_system_topic('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_system_topic', 'minimal')
+        expect(config).not_to have_key('source_arm_resource_id')
+      end
+      it 'includes source_resource_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_system_topic('opt', required_attrs.merge(source_resource_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_system_topic', 'opt')
+        expect(config).to have_key('source_resource_id')
+      end
+
+      it 'omits source_resource_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_system_topic('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_system_topic', 'minimal')
+        expect(config).not_to have_key('source_resource_id')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer

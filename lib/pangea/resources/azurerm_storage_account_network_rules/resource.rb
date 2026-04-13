@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::StorageAccountNetworkRulesAttributes,
       outputs: { id: :id },
       map: [:default_action, :storage_account_id],
-      map_present: [:ip_rules, :private_link_access, :virtual_network_subnet_ids]
+      map_present: [:bypass, :ip_rules, :private_link_access, :virtual_network_subnet_ids]
   end
   module Azure
     include AzureStorageAccountNetworkRules

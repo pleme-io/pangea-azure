@@ -1,0 +1,8 @@
+name: azurerm_subnet_service_endpoint_storage_policy
+title: Manages a azurerm_subnet_service_endpoint_storage_policy resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

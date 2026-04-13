@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_log_analytics_linked_storage_account,
       attributes_class: Azure::Types::LogAnalyticsLinkedStorageAccountAttributes,
       outputs: { id: :id },
-      map: [:data_source_type, :resource_group_name, :storage_account_ids]
+      map: [:data_source_type, :resource_group_name, :storage_account_ids],
+      map_present: [:workspace_id, :workspace_resource_id]
   end
   module Azure
     include AzureLogAnalyticsLinkedStorageAccount

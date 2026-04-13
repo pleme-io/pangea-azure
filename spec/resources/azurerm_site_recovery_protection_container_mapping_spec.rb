@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryProtectionContainerMapping do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ automatic_update: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ automatic_update: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureSiteRecoveryProtectionContainerMapping do
       it 'includes automatic_update when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_site_recovery_protection_container_mapping('opt', required_attrs.merge(automatic_update: [{ 'key1' => 'val1' }]))
+        synth.azurerm_site_recovery_protection_container_mapping('opt', required_attrs.merge(automatic_update: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_site_recovery_protection_container_mapping', 'opt')
         expect(config).to have_key('automatic_update')

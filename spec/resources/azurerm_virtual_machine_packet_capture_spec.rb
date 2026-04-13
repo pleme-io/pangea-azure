@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureVirtualMachinePacketCapture do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { name: 'test-value', network_watcher_id: 'test-value', storage_location: [{ 'key1' => 'val1' }], virtual_machine_id: 'test-value' } }
+  let(:required_attrs) { { name: 'test-value', network_watcher_id: 'test-value', storage_location: { 'key1' => 'val1' }, virtual_machine_id: 'test-value' } }
 
   describe ':azurerm_virtual_machine_packet_capture' do
     context 'with required attributes only' do
@@ -139,7 +139,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachinePacketCapture do
         config = validate_resource_structure(result, 'azurerm_virtual_machine_packet_capture', 'typed')
         expect(config['name']).to be_a(String)
         expect(config['network_watcher_id']).to be_a(String)
-        expect(config['storage_location']).to be_a(Array)
+        expect(config['storage_location']).to be_a(Hash)
         expect(config['virtual_machine_id']).to be_a(String)
       end
     end
@@ -173,7 +173,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachinePacketCapture do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_virtual_machine_packet_capture,
     method: :azurerm_virtual_machine_packet_capture,
-    required_attrs: { name: 'test-value', network_watcher_id: 'test-value', storage_location: [{ 'key1' => 'val1' }], virtual_machine_id: 'test-value' },
+    required_attrs: { name: 'test-value', network_watcher_id: 'test-value', storage_location: { 'key1' => 'val1' }, virtual_machine_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

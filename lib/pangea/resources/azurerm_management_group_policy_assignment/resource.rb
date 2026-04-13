@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ManagementGroupPolicyAssignmentAttributes,
       outputs: { id: :id },
       map: [:management_group_id, :name, :policy_definition_id],
-      map_present: [:description, :display_name, :identity, :location, :non_compliance_message, :not_scopes, :overrides, :parameters, :resource_selectors],
+      map_present: [:description, :display_name, :identity, :location, :metadata, :non_compliance_message, :not_scopes, :overrides, :parameters, :resource_selectors],
       map_bool: [:enforce]
   end
   module Azure

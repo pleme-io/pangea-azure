@@ -54,6 +54,40 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorAzureSecurityCenter 
       end
     end
 
+    context 'with all attributes' do
+      let(:all_attrs) { required_attrs.merge({ subscription_id: 'test-value' }) }
+
+      it 'synthesizes with optional attributes' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_azure_security_center('full', all_attrs)
+        result = normalize_synthesis(synth.synthesis)
+
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_azure_security_center', 'full')
+        expect(config).to have_key('subscription_id')
+      end
+    end
+
+    context 'optional attributes' do
+      it 'includes subscription_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_azure_security_center('opt', required_attrs.merge(subscription_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_azure_security_center', 'opt')
+        expect(config).to have_key('subscription_id')
+      end
+
+      it 'omits subscription_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_azure_security_center('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_azure_security_center', 'minimal')
+        expect(config).not_to have_key('subscription_id')
+      end
+    end
+
     context 'attribute types' do
       it 'validates expected attribute types' do
         synth = create_synthesizer

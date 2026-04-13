@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::PrivateLinkServiceAttributes,
       outputs: { id: :id },
       map: [:location, :name, :nat_ip_configuration, :resource_group_name],
-      map_present: [:auto_approval_subscription_ids, :destination_ip_address, :fqdns, :load_balancer_frontend_ip_configuration_ids, :tags, :visibility_subscription_ids]
+      map_present: [:auto_approval_subscription_ids, :destination_ip_address, :fqdns, :load_balancer_frontend_ip_configuration_ids, :tags, :visibility_subscription_ids],
+      map_bool: [:enable_proxy_protocol, :proxy_protocol_enabled]
   end
   module Azure
     include AzurePrivateLinkService

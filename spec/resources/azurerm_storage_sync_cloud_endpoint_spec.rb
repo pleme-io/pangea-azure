@@ -54,6 +54,40 @@ RSpec.describe Pangea::Resources::AzureStorageSyncCloudEndpoint do
       end
     end
 
+    context 'with all attributes' do
+      let(:all_attrs) { required_attrs.merge({ storage_account_tenant_id: 'test-value' }) }
+
+      it 'synthesizes with optional attributes' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_sync_cloud_endpoint('full', all_attrs)
+        result = normalize_synthesis(synth.synthesis)
+
+        config = validate_resource_structure(result, 'azurerm_storage_sync_cloud_endpoint', 'full')
+        expect(config).to have_key('storage_account_tenant_id')
+      end
+    end
+
+    context 'optional attributes' do
+      it 'includes storage_account_tenant_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_sync_cloud_endpoint('opt', required_attrs.merge(storage_account_tenant_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_sync_cloud_endpoint', 'opt')
+        expect(config).to have_key('storage_account_tenant_id')
+      end
+
+      it 'omits storage_account_tenant_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_sync_cloud_endpoint('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_sync_cloud_endpoint', 'minimal')
+        expect(config).not_to have_key('storage_account_tenant_id')
+      end
+    end
+
     context 'attribute types' do
       it 'validates expected attribute types' do
         synth = create_synthesizer

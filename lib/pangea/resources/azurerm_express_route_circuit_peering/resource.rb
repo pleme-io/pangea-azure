@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ExpressRouteCircuitPeeringAttributes,
       outputs: { id: :id },
       map: [:express_route_circuit_name, :peering_type, :resource_group_name, :vlan_id],
-      map_present: [:ipv6, :microsoft_peering_config, :primary_peer_address_prefix, :route_filter_id, :secondary_peer_address_prefix, :shared_key],
+      map_present: [:ipv6, :microsoft_peering_config, :peer_asn, :primary_peer_address_prefix, :route_filter_id, :secondary_peer_address_prefix, :shared_key],
       map_bool: [:ipv4_enabled]
   end
   module Azure

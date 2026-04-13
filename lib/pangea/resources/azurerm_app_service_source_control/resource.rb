@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AppServiceSourceControlAttributes,
       outputs: { id: :id },
       map: [:app_id],
-      map_present: [:github_action_configuration],
+      map_present: [:branch, :github_action_configuration, :repo_url],
       map_bool: [:rollback_enabled, :use_local_git, :use_manual_integration, :use_mercurial]
   end
   module Azure

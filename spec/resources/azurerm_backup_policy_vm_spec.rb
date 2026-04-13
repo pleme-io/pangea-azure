@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { backup: [{ 'key1' => 'val1' }], name: 'test-value', recovery_vault_name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { backup: { 'key1' => 'val1' }, name: 'test-value', recovery_vault_name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_backup_policy_vm' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ instant_restore_resource_group: [{ 'key1' => 'val1' }], policy_type: 'test-value', retention_daily: [{ 'key1' => 'val1' }], retention_monthly: [{ 'key1' => 'val1' }], retention_weekly: [{ 'key1' => 'val1' }], retention_yearly: [{ 'key1' => 'val1' }], tiering_policy: [{ 'key1' => 'val1' }], timezone: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ instant_restore_resource_group: { 'key1' => 'val1' }, instant_restore_retention_days: 3.14, policy_type: 'test-value', retention_daily: { 'key1' => 'val1' }, retention_monthly: { 'key1' => 'val1' }, retention_weekly: { 'key1' => 'val1' }, retention_yearly: { 'key1' => 'val1' }, tiering_policy: { 'key1' => 'val1' }, timezone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -65,6 +65,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
 
         config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'full')
         expect(config).to have_key('instant_restore_resource_group')
+        expect(config).to have_key('instant_restore_retention_days')
         expect(config).to have_key('policy_type')
         expect(config).to have_key('retention_daily')
         expect(config).to have_key('retention_monthly')
@@ -79,7 +80,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
       it 'includes instant_restore_resource_group when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(instant_restore_resource_group: [{ 'key1' => 'val1' }]))
+        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(instant_restore_resource_group: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'opt')
         expect(config).to have_key('instant_restore_resource_group')
@@ -92,6 +93,23 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'minimal')
         expect(config).not_to have_key('instant_restore_resource_group')
+      end
+      it 'includes instant_restore_retention_days when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(instant_restore_retention_days: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'opt')
+        expect(config).to have_key('instant_restore_retention_days')
+      end
+
+      it 'omits instant_restore_retention_days when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_backup_policy_vm('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'minimal')
+        expect(config).not_to have_key('instant_restore_retention_days')
       end
       it 'includes policy_type when provided' do
         synth = create_synthesizer
@@ -113,7 +131,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
       it 'includes retention_daily when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(retention_daily: [{ 'key1' => 'val1' }]))
+        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(retention_daily: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'opt')
         expect(config).to have_key('retention_daily')
@@ -130,7 +148,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
       it 'includes retention_monthly when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(retention_monthly: [{ 'key1' => 'val1' }]))
+        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(retention_monthly: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'opt')
         expect(config).to have_key('retention_monthly')
@@ -147,7 +165,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
       it 'includes retention_weekly when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(retention_weekly: [{ 'key1' => 'val1' }]))
+        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(retention_weekly: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'opt')
         expect(config).to have_key('retention_weekly')
@@ -164,7 +182,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
       it 'includes retention_yearly when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(retention_yearly: [{ 'key1' => 'val1' }]))
+        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(retention_yearly: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'opt')
         expect(config).to have_key('retention_yearly')
@@ -181,7 +199,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
       it 'includes tiering_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(tiering_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_backup_policy_vm('opt', required_attrs.merge(tiering_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'opt')
         expect(config).to have_key('tiering_policy')
@@ -222,7 +240,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_backup_policy_vm', 'typed')
-        expect(config['backup']).to be_a(Array)
+        expect(config['backup']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['recovery_vault_name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -258,7 +276,7 @@ RSpec.describe Pangea::Resources::AzureBackupPolicyVm do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_backup_policy_vm,
     method: :azurerm_backup_policy_vm,
-    required_attrs: { backup: [{ 'key1' => 'val1' }], name: 'test-value', recovery_vault_name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { backup: { 'key1' => 'val1' }, name: 'test-value', recovery_vault_name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id, :instant_restore_retention_days],
     sensitive_fields: [],
     immutable_fields: [],

@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureRedhatOpenshiftCluster do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { api_server_profile: [{ 'key1' => 'val1' }], cluster_profile: [{ 'key1' => 'val1' }], ingress_profile: [{ 'key1' => 'val1' }], location: 'test-value', main_profile: [{ 'key1' => 'val1' }], name: 'test-value', network_profile: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', service_principal: [{ 'key1' => 'val1' }], worker_profile: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { api_server_profile: { 'key1' => 'val1' }, cluster_profile: { 'key1' => 'val1' }, ingress_profile: { 'key1' => 'val1' }, location: 'test-value', main_profile: { 'key1' => 'val1' }, name: 'test-value', network_profile: { 'key1' => 'val1' }, resource_group_name: 'test-value', service_principal: { 'key1' => 'val1' }, worker_profile: { 'key1' => 'val1' } } }
 
   describe ':azurerm_redhat_openshift_cluster' do
     context 'with required attributes only' do
@@ -96,16 +96,16 @@ RSpec.describe Pangea::Resources::AzureRedhatOpenshiftCluster do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_redhat_openshift_cluster', 'typed')
-        expect(config['api_server_profile']).to be_a(Array)
-        expect(config['cluster_profile']).to be_a(Array)
-        expect(config['ingress_profile']).to be_a(Array)
+        expect(config['api_server_profile']).to be_a(Hash)
+        expect(config['cluster_profile']).to be_a(Hash)
+        expect(config['ingress_profile']).to be_a(Hash)
         expect(config['location']).to be_a(String)
-        expect(config['main_profile']).to be_a(Array)
+        expect(config['main_profile']).to be_a(Hash)
         expect(config['name']).to be_a(String)
-        expect(config['network_profile']).to be_a(Array)
+        expect(config['network_profile']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['service_principal']).to be_a(Array)
-        expect(config['worker_profile']).to be_a(Array)
+        expect(config['service_principal']).to be_a(Hash)
+        expect(config['worker_profile']).to be_a(Hash)
       end
     end
 
@@ -138,7 +138,7 @@ RSpec.describe Pangea::Resources::AzureRedhatOpenshiftCluster do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_redhat_openshift_cluster,
     method: :azurerm_redhat_openshift_cluster,
-    required_attrs: { api_server_profile: [{ 'key1' => 'val1' }], cluster_profile: [{ 'key1' => 'val1' }], ingress_profile: [{ 'key1' => 'val1' }], location: 'test-value', main_profile: [{ 'key1' => 'val1' }], name: 'test-value', network_profile: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', service_principal: [{ 'key1' => 'val1' }], worker_profile: [{ 'key1' => 'val1' }] },
+    required_attrs: { api_server_profile: { 'key1' => 'val1' }, cluster_profile: { 'key1' => 'val1' }, ingress_profile: { 'key1' => 'val1' }, location: 'test-value', main_profile: { 'key1' => 'val1' }, name: 'test-value', network_profile: { 'key1' => 'val1' }, resource_group_name: 'test-value', service_principal: { 'key1' => 'val1' }, worker_profile: { 'key1' => 'val1' } },
     expected_outputs: [:id, :console_url],
     sensitive_fields: [],
     immutable_fields: [],

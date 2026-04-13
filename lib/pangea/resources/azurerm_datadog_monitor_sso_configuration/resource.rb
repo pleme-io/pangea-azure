@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::DatadogMonitorSsoConfigurationAttributes,
       outputs: { id: :id },
       map: [:datadog_monitor_id, :enterprise_application_id],
-      map_present: [:name]
+      map_present: [:name, :single_sign_on, :single_sign_on_enabled]
   end
   module Azure
     include AzureDatadogMonitorSsoConfiguration

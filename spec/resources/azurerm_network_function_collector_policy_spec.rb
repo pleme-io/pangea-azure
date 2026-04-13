@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureNetworkFunctionCollectorPolicy do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { ipfx_emission: [{ 'key1' => 'val1' }], ipfx_ingestion: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', traffic_collector_id: 'test-value' } }
+  let(:required_attrs) { { ipfx_emission: { 'key1' => 'val1' }, ipfx_ingestion: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', traffic_collector_id: 'test-value' } }
 
   describe ':azurerm_network_function_collector_policy' do
     context 'with required attributes only' do
@@ -83,8 +83,8 @@ RSpec.describe Pangea::Resources::AzureNetworkFunctionCollectorPolicy do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_network_function_collector_policy', 'typed')
-        expect(config['ipfx_emission']).to be_a(Array)
-        expect(config['ipfx_ingestion']).to be_a(Array)
+        expect(config['ipfx_emission']).to be_a(Hash)
+        expect(config['ipfx_ingestion']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['traffic_collector_id']).to be_a(String)
@@ -120,7 +120,7 @@ RSpec.describe Pangea::Resources::AzureNetworkFunctionCollectorPolicy do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_network_function_collector_policy,
     method: :azurerm_network_function_collector_policy,
-    required_attrs: { ipfx_emission: [{ 'key1' => 'val1' }], ipfx_ingestion: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', traffic_collector_id: 'test-value' },
+    required_attrs: { ipfx_emission: { 'key1' => 'val1' }, ipfx_ingestion: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', traffic_collector_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

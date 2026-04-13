@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureDataProtectionBackupInstanceKubernetesClu
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ backup_datasource_parameters: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ backup_datasource_parameters: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -72,7 +72,7 @@ RSpec.describe Pangea::Resources::AzureDataProtectionBackupInstanceKubernetesClu
       it 'includes backup_datasource_parameters when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_protection_backup_instance_kubernetes_cluster('opt', required_attrs.merge(backup_datasource_parameters: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_protection_backup_instance_kubernetes_cluster('opt', required_attrs.merge(backup_datasource_parameters: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_protection_backup_instance_kubernetes_cluster', 'opt')
         expect(config).to have_key('backup_datasource_parameters')

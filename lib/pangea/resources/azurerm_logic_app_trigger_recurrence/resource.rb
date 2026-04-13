@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::LogicAppTriggerRecurrenceAttributes,
       outputs: { id: :id },
       map: [:frequency, :interval, :logic_app_id, :name],
-      map_present: [:schedule, :start_time]
+      map_present: [:schedule, :start_time, :time_zone]
   end
   module Azure
     include AzureLogicAppTriggerRecurrence

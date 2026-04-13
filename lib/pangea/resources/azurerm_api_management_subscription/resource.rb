@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ApiManagementSubscriptionAttributes,
       outputs: { id: :id },
       map: [:api_management_name, :display_name, :resource_group_name],
-      map_present: [:api_id, :product_id, :state, :user_id],
+      map_present: [:api_id, :primary_key, :product_id, :secondary_key, :state, :subscription_id, :user_id],
       map_bool: [:allow_tracing]
   end
   module Azure

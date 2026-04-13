@@ -13,7 +13,8 @@ module Pangea::Resources
     define_resource :azurerm_app_service_slot_custom_hostname_binding,
       attributes_class: Azure::Types::AppServiceSlotCustomHostnameBindingAttributes,
       outputs: { id: :id },
-      map: [:app_service_slot_id, :hostname]
+      map: [:app_service_slot_id, :hostname],
+      map_present: [:ssl_state, :thumbprint]
   end
   module Azure
     include AzureAppServiceSlotCustomHostnameBinding

@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureMonitorAutoscaleSetting do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ enabled: true, notification: [{ 'key1' => 'val1' }], predictive: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ enabled: true, notification: { 'key1' => 'val1' }, predictive: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -79,7 +79,7 @@ RSpec.describe Pangea::Resources::AzureMonitorAutoscaleSetting do
       it 'includes notification when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_autoscale_setting('opt', required_attrs.merge(notification: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_autoscale_setting('opt', required_attrs.merge(notification: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_autoscale_setting', 'opt')
         expect(config).to have_key('notification')
@@ -96,7 +96,7 @@ RSpec.describe Pangea::Resources::AzureMonitorAutoscaleSetting do
       it 'includes predictive when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_autoscale_setting('opt', required_attrs.merge(predictive: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_autoscale_setting('opt', required_attrs.merge(predictive: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_autoscale_setting', 'opt')
         expect(config).to have_key('predictive')

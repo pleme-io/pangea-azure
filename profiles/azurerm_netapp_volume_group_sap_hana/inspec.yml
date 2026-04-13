@@ -1,0 +1,8 @@
+name: azurerm_netapp_volume_group_sap_hana
+title: Manages a azurerm_netapp_volume_group_sap_hana resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

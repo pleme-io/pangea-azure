@@ -71,7 +71,7 @@ RSpec.describe Pangea::Resources::AzureSentinelThreatIntelligenceIndicator do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ confidence: 3.14, created_by: 'test-value', description: 'test-value', external_reference: [{ 'key1' => 'val1' }], granular_marking: [{ 'key1' => 'val1' }], kill_chain_phase: [{ 'key1' => 'val1' }], language: 'test-value', object_marking_refs: ['test-value'], pattern_version: 'test-value', revoked: true, tags: ['test-value'], threat_types: ['test-value'], validate_until_utc: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ confidence: 3.14, created_by: 'test-value', description: 'test-value', extension: 'test-value', external_reference: [{ 'key1' => 'val1' }], granular_marking: [{ 'key1' => 'val1' }], kill_chain_phase: [{ 'key1' => 'val1' }], language: 'test-value', object_marking_refs: ['test-value'], pattern_version: 'test-value', revoked: true, tags: ['test-value'], threat_types: ['test-value'], validate_until_utc: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -83,6 +83,7 @@ RSpec.describe Pangea::Resources::AzureSentinelThreatIntelligenceIndicator do
         expect(config).to have_key('confidence')
         expect(config).to have_key('created_by')
         expect(config).to have_key('description')
+        expect(config).to have_key('extension')
         expect(config).to have_key('external_reference')
         expect(config).to have_key('granular_marking')
         expect(config).to have_key('kill_chain_phase')
@@ -147,6 +148,23 @@ RSpec.describe Pangea::Resources::AzureSentinelThreatIntelligenceIndicator do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_threat_intelligence_indicator', 'minimal')
         expect(config).not_to have_key('description')
+      end
+      it 'includes extension when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_threat_intelligence_indicator('opt', required_attrs.merge(extension: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_threat_intelligence_indicator', 'opt')
+        expect(config).to have_key('extension')
+      end
+
+      it 'omits extension when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_threat_intelligence_indicator('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_threat_intelligence_indicator', 'minimal')
+        expect(config).not_to have_key('extension')
       end
       it 'includes external_reference when provided' do
         synth = create_synthesizer

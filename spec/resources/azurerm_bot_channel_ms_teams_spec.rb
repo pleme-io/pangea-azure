@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureBotChannelMsTeams do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ deployment_environment: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ calling_enabled: true, calling_web_hook: 'test-value', deployment_environment: 'test-value', enable_calling: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,11 +68,48 @@ RSpec.describe Pangea::Resources::AzureBotChannelMsTeams do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', 'full')
+        expect(config).to have_key('calling_enabled')
+        expect(config).to have_key('calling_web_hook')
         expect(config).to have_key('deployment_environment')
+        expect(config).to have_key('enable_calling')
       end
     end
 
     context 'optional attributes' do
+      it 'includes calling_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_bot_channel_ms_teams('opt', required_attrs.merge(calling_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', 'opt')
+        expect(config).to have_key('calling_enabled')
+      end
+
+      it 'omits calling_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_bot_channel_ms_teams('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', 'minimal')
+        expect(config).not_to have_key('calling_enabled')
+      end
+      it 'includes calling_web_hook when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_bot_channel_ms_teams('opt', required_attrs.merge(calling_web_hook: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', 'opt')
+        expect(config).to have_key('calling_web_hook')
+      end
+
+      it 'omits calling_web_hook when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_bot_channel_ms_teams('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', 'minimal')
+        expect(config).not_to have_key('calling_web_hook')
+      end
       it 'includes deployment_environment when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -89,6 +126,48 @@ RSpec.describe Pangea::Resources::AzureBotChannelMsTeams do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', 'minimal')
         expect(config).not_to have_key('deployment_environment')
+      end
+      it 'includes enable_calling when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_bot_channel_ms_teams('opt', required_attrs.merge(enable_calling: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', 'opt')
+        expect(config).to have_key('enable_calling')
+      end
+
+      it 'omits enable_calling when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_bot_channel_ms_teams('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', 'minimal')
+        expect(config).not_to have_key('enable_calling')
+      end
+    end
+
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts calling_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(calling_enabled: val)
+          synth.azurerm_bot_channel_ms_teams("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', "bool_#{val}")
+          expect(config['calling_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts enable_calling=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enable_calling: val)
+          synth.azurerm_bot_channel_ms_teams("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_bot_channel_ms_teams', "bool_#{val}")
+          expect(config['enable_calling']).to eq(val)
+        end
       end
     end
 
@@ -139,5 +218,5 @@ RSpec.describe Pangea::Resources::AzureBotChannelMsTeams do
     expected_outputs: [:id, :calling_enabled, :calling_web_hook, :enable_calling],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:calling_enabled, :enable_calling]
 end

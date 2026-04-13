@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::VirtualNetworkAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name],
-      map_present: [:address_space, :bgp_community, :ddos_protection_plan, :edge_zone, :encryption, :flow_timeout_in_minutes, :ip_address_pool, :private_endpoint_vnet_policies, :tags]
+      map_present: [:address_space, :bgp_community, :ddos_protection_plan, :dns_servers, :edge_zone, :encryption, :flow_timeout_in_minutes, :ip_address_pool, :private_endpoint_vnet_policies, :subnet, :tags]
   end
   module Azure
     include AzureVirtualNetwork

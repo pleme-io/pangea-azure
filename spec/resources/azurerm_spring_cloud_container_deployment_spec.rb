@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudContainerDeployment do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ application_performance_monitoring_ids: ['test-value'], arguments: ['test-value'], commands: ['test-value'], environment_variables: { 'key1' => 'val1' }, instance_count: 3.14, language_framework: 'test-value', quota: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ addon_json: 'test-value', application_performance_monitoring_ids: ['test-value'], arguments: ['test-value'], commands: ['test-value'], environment_variables: { 'key1' => 'val1' }, instance_count: 3.14, language_framework: 'test-value', quota: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,6 +64,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudContainerDeployment do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_spring_cloud_container_deployment', 'full')
+        expect(config).to have_key('addon_json')
         expect(config).to have_key('application_performance_monitoring_ids')
         expect(config).to have_key('arguments')
         expect(config).to have_key('commands')
@@ -75,6 +76,23 @@ RSpec.describe Pangea::Resources::AzureSpringCloudContainerDeployment do
     end
 
     context 'optional attributes' do
+      it 'includes addon_json when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_container_deployment('opt', required_attrs.merge(addon_json: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_container_deployment', 'opt')
+        expect(config).to have_key('addon_json')
+      end
+
+      it 'omits addon_json when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_container_deployment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_container_deployment', 'minimal')
+        expect(config).not_to have_key('addon_json')
+      end
       it 'includes application_performance_monitoring_ids when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -180,7 +198,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudContainerDeployment do
       it 'includes quota when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_container_deployment('opt', required_attrs.merge(quota: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_container_deployment('opt', required_attrs.merge(quota: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_container_deployment', 'opt')
         expect(config).to have_key('quota')

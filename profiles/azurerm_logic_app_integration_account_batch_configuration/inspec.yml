@@ -1,0 +1,8 @@
+name: azurerm_logic_app_integration_account_batch_configuration
+title: Manages a azurerm_logic_app_integration_account_batch_configuration resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

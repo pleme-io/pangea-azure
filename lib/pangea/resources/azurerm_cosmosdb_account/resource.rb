@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::CosmosdbAccountAttributes,
       outputs: { id: :id },
       map: [:consistency_policy, :geo_location, :location, :name, :offer_type, :resource_group_name],
-      map_present: [:analytical_storage, :backup, :capabilities, :capacity, :cors_rule, :default_identity_type, :identity, :ip_range_filter, :key_vault_key_id, :kind, :managed_hsm_key_id, :minimal_tls_version, :network_acl_bypass_ids, :restore, :tags, :virtual_network_rule],
+      map_present: [:analytical_storage, :backup, :capabilities, :capacity, :cors_rule, :create_mode, :default_identity_type, :identity, :ip_range_filter, :key_vault_key_id, :kind, :managed_hsm_key_id, :minimal_tls_version, :mongo_server_version, :network_acl_bypass_ids, :restore, :tags, :virtual_network_rule],
       map_bool: [:access_key_metadata_writes_enabled, :analytical_storage_enabled, :automatic_failover_enabled, :burst_capacity_enabled, :free_tier_enabled, :is_virtual_network_filter_enabled, :local_authentication_disabled, :multiple_write_locations_enabled, :network_acl_bypass_for_azure_services, :partition_merge_enabled, :public_network_access_enabled]
   end
   module Azure

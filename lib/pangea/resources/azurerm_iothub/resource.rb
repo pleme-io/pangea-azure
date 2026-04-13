@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::IothubAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku],
-      map_present: [:cloud_to_device, :event_hub_partition_count, :event_hub_retention_in_days, :fallback_route, :file_upload, :identity, :min_tls_version, :network_rule_set, :tags],
+      map_present: [:cloud_to_device, :endpoint, :enrichment, :event_hub_partition_count, :event_hub_retention_in_days, :fallback_route, :file_upload, :identity, :min_tls_version, :network_rule_set, :route, :tags],
       map_bool: [:local_authentication_enabled, :public_network_access_enabled]
   end
   module Azure

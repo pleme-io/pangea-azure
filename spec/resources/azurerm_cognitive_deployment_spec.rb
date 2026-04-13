@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureCognitiveDeployment do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { cognitive_account_id: 'test-value', model: [{ 'key1' => 'val1' }], name: 'test-value', sku: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { cognitive_account_id: 'test-value', model: { 'key1' => 'val1' }, name: 'test-value', sku: { 'key1' => 'val1' } } }
 
   describe ':azurerm_cognitive_deployment' do
     context 'with required attributes only' do
@@ -134,9 +134,9 @@ RSpec.describe Pangea::Resources::AzureCognitiveDeployment do
 
         config = validate_resource_structure(result, 'azurerm_cognitive_deployment', 'typed')
         expect(config['cognitive_account_id']).to be_a(String)
-        expect(config['model']).to be_a(Array)
+        expect(config['model']).to be_a(Hash)
         expect(config['name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
       end
     end
 
@@ -169,7 +169,7 @@ RSpec.describe Pangea::Resources::AzureCognitiveDeployment do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_cognitive_deployment,
     method: :azurerm_cognitive_deployment,
-    required_attrs: { cognitive_account_id: 'test-value', model: [{ 'key1' => 'val1' }], name: 'test-value', sku: [{ 'key1' => 'val1' }] },
+    required_attrs: { cognitive_account_id: 'test-value', model: { 'key1' => 'val1' }, name: 'test-value', sku: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

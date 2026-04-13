@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementLogger do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ application_insights: [{ 'key1' => 'val1' }], buffered: true, description: 'test-value', eventhub: [{ 'key1' => 'val1' }], resource_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ application_insights: { 'key1' => 'val1' }, buffered: true, description: 'test-value', eventhub: { 'key1' => 'val1' }, resource_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementLogger do
       it 'includes application_insights when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_logger('opt', required_attrs.merge(application_insights: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_logger('opt', required_attrs.merge(application_insights: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_logger', 'opt')
         expect(config).to have_key('application_insights')
@@ -114,7 +114,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementLogger do
       it 'includes eventhub when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_logger('opt', required_attrs.merge(eventhub: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_logger('opt', required_attrs.merge(eventhub: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_logger', 'opt')
         expect(config).to have_key('eventhub')

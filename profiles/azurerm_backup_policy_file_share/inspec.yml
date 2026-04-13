@@ -1,0 +1,8 @@
+name: azurerm_backup_policy_file_share
+title: Manages a azurerm_backup_policy_file_share resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

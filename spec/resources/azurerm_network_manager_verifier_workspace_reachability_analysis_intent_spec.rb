@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureNetworkManagerVerifierWorkspaceReachabilityAnalysisIntent do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { destination_resource_id: 'test-value', ip_traffic: [{ 'key1' => 'val1' }], name: 'test-value', source_resource_id: 'test-value', verifier_workspace_id: 'test-value' } }
+  let(:required_attrs) { { destination_resource_id: 'test-value', ip_traffic: { 'key1' => 'val1' }, name: 'test-value', source_resource_id: 'test-value', verifier_workspace_id: 'test-value' } }
 
   describe ':azurerm_network_manager_verifier_workspace_reachability_analysis_intent' do
     context 'with required attributes only' do
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureNetworkManagerVerifierWorkspaceReachabili
 
         config = validate_resource_structure(result, 'azurerm_network_manager_verifier_workspace_reachability_analysis_intent', 'typed')
         expect(config['destination_resource_id']).to be_a(String)
-        expect(config['ip_traffic']).to be_a(Array)
+        expect(config['ip_traffic']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['source_resource_id']).to be_a(String)
         expect(config['verifier_workspace_id']).to be_a(String)
@@ -120,7 +120,7 @@ RSpec.describe Pangea::Resources::AzureNetworkManagerVerifierWorkspaceReachabili
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_network_manager_verifier_workspace_reachability_analysis_intent,
     method: :azurerm_network_manager_verifier_workspace_reachability_analysis_intent,
-    required_attrs: { destination_resource_id: 'test-value', ip_traffic: [{ 'key1' => 'val1' }], name: 'test-value', source_resource_id: 'test-value', verifier_workspace_id: 'test-value' },
+    required_attrs: { destination_resource_id: 'test-value', ip_traffic: { 'key1' => 'val1' }, name: 'test-value', source_resource_id: 'test-value', verifier_workspace_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

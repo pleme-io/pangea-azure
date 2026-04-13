@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureAiFoundry do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { identity: [{ 'key1' => 'val1' }], key_vault_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage_account_id: 'test-value' } }
+  let(:required_attrs) { { identity: { 'key1' => 'val1' }, key_vault_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage_account_id: 'test-value' } }
 
   describe ':azurerm_ai_foundry' do
     context 'with required attributes only' do
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureAiFoundry do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ application_insights_id: 'test-value', container_registry_id: 'test-value', description: 'test-value', encryption: [{ 'key1' => 'val1' }], friendly_name: 'test-value', managed_network: [{ 'key1' => 'val1' }], primary_user_assigned_identity: 'test-value', public_network_access: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ application_insights_id: 'test-value', container_registry_id: 'test-value', description: 'test-value', encryption: { 'key1' => 'val1' }, friendly_name: 'test-value', high_business_impact_enabled: true, managed_network: { 'key1' => 'val1' }, primary_user_assigned_identity: 'test-value', public_network_access: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -73,6 +73,7 @@ RSpec.describe Pangea::Resources::AzureAiFoundry do
         expect(config).to have_key('description')
         expect(config).to have_key('encryption')
         expect(config).to have_key('friendly_name')
+        expect(config).to have_key('high_business_impact_enabled')
         expect(config).to have_key('managed_network')
         expect(config).to have_key('primary_user_assigned_identity')
         expect(config).to have_key('public_network_access')
@@ -135,7 +136,7 @@ RSpec.describe Pangea::Resources::AzureAiFoundry do
       it 'includes encryption when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_ai_foundry('opt', required_attrs.merge(encryption: [{ 'key1' => 'val1' }]))
+        synth.azurerm_ai_foundry('opt', required_attrs.merge(encryption: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_ai_foundry', 'opt')
         expect(config).to have_key('encryption')
@@ -166,10 +167,27 @@ RSpec.describe Pangea::Resources::AzureAiFoundry do
         config = validate_resource_structure(result, 'azurerm_ai_foundry', 'minimal')
         expect(config).not_to have_key('friendly_name')
       end
+      it 'includes high_business_impact_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_ai_foundry('opt', required_attrs.merge(high_business_impact_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_ai_foundry', 'opt')
+        expect(config).to have_key('high_business_impact_enabled')
+      end
+
+      it 'omits high_business_impact_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_ai_foundry('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_ai_foundry', 'minimal')
+        expect(config).not_to have_key('high_business_impact_enabled')
+      end
       it 'includes managed_network when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_ai_foundry('opt', required_attrs.merge(managed_network: [{ 'key1' => 'val1' }]))
+        synth.azurerm_ai_foundry('opt', required_attrs.merge(managed_network: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_ai_foundry', 'opt')
         expect(config).to have_key('managed_network')
@@ -236,6 +254,20 @@ RSpec.describe Pangea::Resources::AzureAiFoundry do
       end
     end
 
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts high_business_impact_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(high_business_impact_enabled: val)
+          synth.azurerm_ai_foundry("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_ai_foundry', "bool_#{val}")
+          expect(config['high_business_impact_enabled']).to eq(val)
+        end
+      end
+    end
+
     context 'attribute types' do
       it 'validates expected attribute types' do
         synth = create_synthesizer
@@ -244,7 +276,7 @@ RSpec.describe Pangea::Resources::AzureAiFoundry do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_ai_foundry', 'typed')
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['key_vault_id']).to be_a(String)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
@@ -282,9 +314,9 @@ RSpec.describe Pangea::Resources::AzureAiFoundry do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_ai_foundry,
     method: :azurerm_ai_foundry,
-    required_attrs: { identity: [{ 'key1' => 'val1' }], key_vault_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage_account_id: 'test-value' },
+    required_attrs: { identity: { 'key1' => 'val1' }, key_vault_id: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', storage_account_id: 'test-value' },
     expected_outputs: [:id, :discovery_url, :high_business_impact_enabled, :workspace_id],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:high_business_impact_enabled]
 end

@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureRoleDefinition do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', permissions: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ assignable_scopes: ['test-value'], description: 'test-value', permissions: [{ 'key1' => 'val1' }], role_definition_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,12 +68,31 @@ RSpec.describe Pangea::Resources::AzureRoleDefinition do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_role_definition', 'full')
+        expect(config).to have_key('assignable_scopes')
         expect(config).to have_key('description')
         expect(config).to have_key('permissions')
+        expect(config).to have_key('role_definition_id')
       end
     end
 
     context 'optional attributes' do
+      it 'includes assignable_scopes when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_definition('opt', required_attrs.merge(assignable_scopes: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_definition', 'opt')
+        expect(config).to have_key('assignable_scopes')
+      end
+
+      it 'omits assignable_scopes when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_definition('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_definition', 'minimal')
+        expect(config).not_to have_key('assignable_scopes')
+      end
       it 'includes description when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -107,6 +126,23 @@ RSpec.describe Pangea::Resources::AzureRoleDefinition do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_role_definition', 'minimal')
         expect(config).not_to have_key('permissions')
+      end
+      it 'includes role_definition_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_definition('opt', required_attrs.merge(role_definition_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_definition', 'opt')
+        expect(config).to have_key('role_definition_id')
+      end
+
+      it 'omits role_definition_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_role_definition('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_role_definition', 'minimal')
+        expect(config).not_to have_key('role_definition_id')
       end
     end
 

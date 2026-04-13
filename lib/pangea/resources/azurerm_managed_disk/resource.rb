@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ManagedDiskAttributes,
       outputs: { id: :id },
       map: [:create_option, :location, :name, :resource_group_name, :storage_account_type],
-      map_present: [:disk_access_id, :disk_encryption_set_id, :edge_zone, :encryption_settings, :gallery_image_reference_id, :hyper_v_generation, :image_reference_id, :network_access_policy, :os_type, :secure_vm_disk_encryption_set_id, :security_type, :source_resource_id, :storage_account_id, :tags, :upload_size_bytes, :zone],
+      map_present: [:disk_access_id, :disk_encryption_set_id, :disk_iops_read_only, :disk_iops_read_write, :disk_mbps_read_only, :disk_mbps_read_write, :disk_size_gb, :edge_zone, :encryption_settings, :gallery_image_reference_id, :hyper_v_generation, :image_reference_id, :logical_sector_size, :max_shares, :network_access_policy, :os_type, :secure_vm_disk_encryption_set_id, :security_type, :source_resource_id, :source_uri, :storage_account_id, :tags, :tier, :upload_size_bytes, :zone],
       map_bool: [:on_demand_bursting_enabled, :optimized_frequent_attach_enabled, :performance_plus_enabled, :public_network_access_enabled, :trusted_launch_enabled]
   end
   module Azure

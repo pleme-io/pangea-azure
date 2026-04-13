@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorRoute do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ cache: [{ 'key1' => 'val1' }], cdn_frontdoor_custom_domain_ids: ['test-value'], cdn_frontdoor_origin_path: 'test-value', cdn_frontdoor_rule_set_ids: ['test-value'], enabled: true, forwarding_protocol: 'test-value', https_redirect_enabled: true, link_to_default_domain: true }) }
+      let(:all_attrs) { required_attrs.merge({ cache: { 'key1' => 'val1' }, cdn_frontdoor_custom_domain_ids: ['test-value'], cdn_frontdoor_origin_path: 'test-value', cdn_frontdoor_rule_set_ids: ['test-value'], enabled: true, forwarding_protocol: 'test-value', https_redirect_enabled: true, link_to_default_domain: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,7 +66,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorRoute do
       it 'includes cache when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cdn_frontdoor_route('opt', required_attrs.merge(cache: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cdn_frontdoor_route('opt', required_attrs.merge(cache: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_route', 'opt')
         expect(config).to have_key('cache')

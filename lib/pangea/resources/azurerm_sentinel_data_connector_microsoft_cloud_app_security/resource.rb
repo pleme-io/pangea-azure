@@ -14,6 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SentinelDataConnectorMicrosoftCloudAppSecurityAttributes,
       outputs: { id: :id },
       map: [:log_analytics_workspace_id, :name],
+      map_present: [:tenant_id],
       map_bool: [:alerts_enabled, :discovery_logs_enabled]
   end
   module Azure

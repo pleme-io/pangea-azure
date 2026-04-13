@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureNetworkManagerRoutingRule do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { destination: [{ 'key1' => 'val1' }], name: 'test-value', next_hop: [{ 'key1' => 'val1' }], rule_collection_id: 'test-value' } }
+  let(:required_attrs) { { destination: { 'key1' => 'val1' }, name: 'test-value', next_hop: { 'key1' => 'val1' }, rule_collection_id: 'test-value' } }
 
   describe ':azurerm_network_manager_routing_rule' do
     context 'with required attributes only' do
@@ -83,9 +83,9 @@ RSpec.describe Pangea::Resources::AzureNetworkManagerRoutingRule do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_network_manager_routing_rule', 'typed')
-        expect(config['destination']).to be_a(Array)
+        expect(config['destination']).to be_a(Hash)
         expect(config['name']).to be_a(String)
-        expect(config['next_hop']).to be_a(Array)
+        expect(config['next_hop']).to be_a(Hash)
         expect(config['rule_collection_id']).to be_a(String)
       end
     end
@@ -119,7 +119,7 @@ RSpec.describe Pangea::Resources::AzureNetworkManagerRoutingRule do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_network_manager_routing_rule,
     method: :azurerm_network_manager_routing_rule,
-    required_attrs: { destination: [{ 'key1' => 'val1' }], name: 'test-value', next_hop: [{ 'key1' => 'val1' }], rule_collection_id: 'test-value' },
+    required_attrs: { destination: { 'key1' => 'val1' }, name: 'test-value', next_hop: { 'key1' => 'val1' }, rule_collection_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

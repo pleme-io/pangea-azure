@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::CosmosdbPostgresqlClusterAttributes,
       outputs: { id: :id },
       map: [:location, :name, :node_count, :resource_group_name],
-      map_present: [:administrator_login_password, :coordinator_server_edition, :coordinator_storage_quota_in_mb, :coordinator_vcore_count, :maintenance_window, :node_server_edition, :point_in_time_in_utc, :preferred_primary_zone, :source_location, :source_resource_id, :tags],
-      map_bool: [:coordinator_public_ip_access_enabled, :ha_enabled, :node_public_ip_access_enabled]
+      map_present: [:administrator_login_password, :citus_version, :coordinator_server_edition, :coordinator_storage_quota_in_mb, :coordinator_vcore_count, :maintenance_window, :node_server_edition, :node_storage_quota_in_mb, :node_vcores, :point_in_time_in_utc, :preferred_primary_zone, :source_location, :source_resource_id, :sql_version, :tags],
+      map_bool: [:coordinator_public_ip_access_enabled, :ha_enabled, :node_public_ip_access_enabled, :shards_on_coordinator_enabled]
   end
   module Azure
     include AzureCosmosdbPostgresqlCluster

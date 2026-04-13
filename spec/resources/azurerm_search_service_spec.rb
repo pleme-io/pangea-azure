@@ -39,6 +39,7 @@ RSpec.describe Pangea::Resources::AzureSearchService do
 
         expect(ref.id).to eq("${azurerm_search_service.test.id}")
         expect(ref.customer_managed_key_encryption_compliance_status).to eq("${azurerm_search_service.test.customer_managed_key_encryption_compliance_status}")
+        expect(ref.endpoint).to eq("${azurerm_search_service.test.endpoint}")
         expect(ref.primary_key).to eq("${azurerm_search_service.test.primary_key}")
         expect(ref.query_keys).to eq("${azurerm_search_service.test.query_keys}")
         expect(ref.secondary_key).to eq("${azurerm_search_service.test.secondary_key}")
@@ -54,6 +55,7 @@ RSpec.describe Pangea::Resources::AzureSearchService do
 
         config = validate_resource_structure(result, 'azurerm_search_service', 'test')
         expect(config).not_to have_key('customer_managed_key_encryption_compliance_status')
+        expect(config).not_to have_key('endpoint')
         expect(config).not_to have_key('primary_key')
         expect(config).not_to have_key('query_keys')
         expect(config).not_to have_key('secondary_key')
@@ -61,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureSearchService do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ allowed_ips: ['test-value'], authentication_failure_mode: 'test-value', customer_managed_key_enforcement_enabled: true, hosting_mode: 'test-value', identity: [{ 'key1' => 'val1' }], local_authentication_enabled: true, network_rule_bypass_option: 'test-value', partition_count: 3.14, public_network_access_enabled: true, replica_count: 3.14, semantic_search_sku: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ allowed_ips: ['test-value'], authentication_failure_mode: 'test-value', customer_managed_key_enforcement_enabled: true, hosting_mode: 'test-value', identity: { 'key1' => 'val1' }, local_authentication_enabled: true, network_rule_bypass_option: 'test-value', partition_count: 3.14, public_network_access_enabled: true, replica_count: 3.14, semantic_search_sku: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -157,7 +159,7 @@ RSpec.describe Pangea::Resources::AzureSearchService do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_search_service('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_search_service('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_search_service', 'opt')
         expect(config).to have_key('identity')
@@ -381,7 +383,7 @@ RSpec.describe Pangea::Resources::AzureSearchService do
     resource_type: :azurerm_search_service,
     method: :azurerm_search_service,
     required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: 'test-value' },
-    expected_outputs: [:id, :customer_managed_key_encryption_compliance_status, :primary_key, :query_keys, :secondary_key],
+    expected_outputs: [:id, :customer_managed_key_encryption_compliance_status, :endpoint, :primary_key, :query_keys, :secondary_key],
     sensitive_fields: [:primary_key, :secondary_key],
     immutable_fields: [],
     boolean_fields: [:customer_managed_key_enforcement_enabled, :local_authentication_enabled, :public_network_access_enabled]

@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureCdnFrontdoorRule do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { actions: [{ 'key1' => 'val1' }], cdn_frontdoor_rule_set_id: 'test-value', name: 'test-value', order: 3.14 } }
+  let(:required_attrs) { { actions: { 'key1' => 'val1' }, cdn_frontdoor_rule_set_id: 'test-value', name: 'test-value', order: 3.14 } }
 
   describe ':azurerm_cdn_frontdoor_rule' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorRule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ behavior_on_match: 'test-value', conditions: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ behavior_on_match: 'test-value', conditions: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -90,7 +90,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorRule do
       it 'includes conditions when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cdn_frontdoor_rule('opt', required_attrs.merge(conditions: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cdn_frontdoor_rule('opt', required_attrs.merge(conditions: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_rule', 'opt')
         expect(config).to have_key('conditions')
@@ -114,7 +114,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorRule do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_cdn_frontdoor_rule', 'typed')
-        expect(config['actions']).to be_a(Array)
+        expect(config['actions']).to be_a(Hash)
         expect(config['cdn_frontdoor_rule_set_id']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['order']).to be_a(Float)
@@ -150,7 +150,7 @@ RSpec.describe Pangea::Resources::AzureCdnFrontdoorRule do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_cdn_frontdoor_rule,
     method: :azurerm_cdn_frontdoor_rule,
-    required_attrs: { actions: [{ 'key1' => 'val1' }], cdn_frontdoor_rule_set_id: 'test-value', name: 'test-value', order: 3.14 },
+    required_attrs: { actions: { 'key1' => 'val1' }, cdn_frontdoor_rule_set_id: 'test-value', name: 'test-value', order: 3.14 },
     expected_outputs: [:id, :cdn_frontdoor_rule_set_name],
     sensitive_fields: [],
     immutable_fields: [],

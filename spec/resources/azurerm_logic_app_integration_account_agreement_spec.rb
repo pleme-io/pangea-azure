@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureLogicAppIntegrationAccountAgreement do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { agreement_type: 'test-value', content: 'test-value', guest_identity: [{ 'key1' => 'val1' }], guest_partner_name: 'test-value', host_identity: [{ 'key1' => 'val1' }], host_partner_name: 'test-value', integration_account_name: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { agreement_type: 'test-value', content: 'test-value', guest_identity: { 'key1' => 'val1' }, guest_partner_name: 'test-value', host_identity: { 'key1' => 'val1' }, host_partner_name: 'test-value', integration_account_name: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_logic_app_integration_account_agreement' do
     context 'with required attributes only' do
@@ -85,9 +85,9 @@ RSpec.describe Pangea::Resources::AzureLogicAppIntegrationAccountAgreement do
         config = validate_resource_structure(result, 'azurerm_logic_app_integration_account_agreement', 'typed')
         expect(config['agreement_type']).to be_a(String)
         expect(config['content']).to be_a(String)
-        expect(config['guest_identity']).to be_a(Array)
+        expect(config['guest_identity']).to be_a(Hash)
         expect(config['guest_partner_name']).to be_a(String)
-        expect(config['host_identity']).to be_a(Array)
+        expect(config['host_identity']).to be_a(Hash)
         expect(config['host_partner_name']).to be_a(String)
         expect(config['integration_account_name']).to be_a(String)
         expect(config['name']).to be_a(String)
@@ -124,7 +124,7 @@ RSpec.describe Pangea::Resources::AzureLogicAppIntegrationAccountAgreement do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_logic_app_integration_account_agreement,
     method: :azurerm_logic_app_integration_account_agreement,
-    required_attrs: { agreement_type: 'test-value', content: 'test-value', guest_identity: [{ 'key1' => 'val1' }], guest_partner_name: 'test-value', host_identity: [{ 'key1' => 'val1' }], host_partner_name: 'test-value', integration_account_name: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { agreement_type: 'test-value', content: 'test-value', guest_identity: { 'key1' => 'val1' }, guest_partner_name: 'test-value', host_identity: { 'key1' => 'val1' }, host_partner_name: 'test-value', integration_account_name: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureFirewallPolicy do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_learn_private_ranges_enabled: true, base_policy_id: 'test-value', dns: [{ 'key1' => 'val1' }], explicit_proxy: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], insights: [{ 'key1' => 'val1' }], intrusion_detection: [{ 'key1' => 'val1' }], private_ip_ranges: ['test-value'], sku: 'test-value', sql_redirect_allowed: true, tags: { 'key1' => 'val1' }, threat_intelligence_allowlist: [{ 'key1' => 'val1' }], threat_intelligence_mode: 'test-value', tls_certificate: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ auto_learn_private_ranges_enabled: true, base_policy_id: 'test-value', dns: { 'key1' => 'val1' }, explicit_proxy: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, insights: { 'key1' => 'val1' }, intrusion_detection: { 'key1' => 'val1' }, private_ip_ranges: ['test-value'], sku: 'test-value', sql_redirect_allowed: true, tags: { 'key1' => 'val1' }, threat_intelligence_allowlist: { 'key1' => 'val1' }, threat_intelligence_mode: 'test-value', tls_certificate: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -123,7 +123,7 @@ RSpec.describe Pangea::Resources::AzureFirewallPolicy do
       it 'includes dns when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_firewall_policy('opt', required_attrs.merge(dns: [{ 'key1' => 'val1' }]))
+        synth.azurerm_firewall_policy('opt', required_attrs.merge(dns: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall_policy', 'opt')
         expect(config).to have_key('dns')
@@ -140,7 +140,7 @@ RSpec.describe Pangea::Resources::AzureFirewallPolicy do
       it 'includes explicit_proxy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_firewall_policy('opt', required_attrs.merge(explicit_proxy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_firewall_policy('opt', required_attrs.merge(explicit_proxy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall_policy', 'opt')
         expect(config).to have_key('explicit_proxy')
@@ -157,7 +157,7 @@ RSpec.describe Pangea::Resources::AzureFirewallPolicy do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_firewall_policy('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_firewall_policy('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall_policy', 'opt')
         expect(config).to have_key('identity')
@@ -174,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureFirewallPolicy do
       it 'includes insights when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_firewall_policy('opt', required_attrs.merge(insights: [{ 'key1' => 'val1' }]))
+        synth.azurerm_firewall_policy('opt', required_attrs.merge(insights: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall_policy', 'opt')
         expect(config).to have_key('insights')
@@ -191,7 +191,7 @@ RSpec.describe Pangea::Resources::AzureFirewallPolicy do
       it 'includes intrusion_detection when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_firewall_policy('opt', required_attrs.merge(intrusion_detection: [{ 'key1' => 'val1' }]))
+        synth.azurerm_firewall_policy('opt', required_attrs.merge(intrusion_detection: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall_policy', 'opt')
         expect(config).to have_key('intrusion_detection')
@@ -276,7 +276,7 @@ RSpec.describe Pangea::Resources::AzureFirewallPolicy do
       it 'includes threat_intelligence_allowlist when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_firewall_policy('opt', required_attrs.merge(threat_intelligence_allowlist: [{ 'key1' => 'val1' }]))
+        synth.azurerm_firewall_policy('opt', required_attrs.merge(threat_intelligence_allowlist: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall_policy', 'opt')
         expect(config).to have_key('threat_intelligence_allowlist')
@@ -310,7 +310,7 @@ RSpec.describe Pangea::Resources::AzureFirewallPolicy do
       it 'includes tls_certificate when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_firewall_policy('opt', required_attrs.merge(tls_certificate: [{ 'key1' => 'val1' }]))
+        synth.azurerm_firewall_policy('opt', required_attrs.merge(tls_certificate: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_firewall_policy', 'opt')
         expect(config).to have_key('tls_certificate')

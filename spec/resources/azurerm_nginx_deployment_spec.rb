@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureNginxDeployment do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_scale_profile: [{ 'key1' => 'val1' }], automatic_upgrade_channel: 'test-value', capacity: 3.14, diagnose_support_enabled: true, email: 'test-value', frontend_private: [{ 'key1' => 'val1' }], frontend_public: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], logging_storage_account: [{ 'key1' => 'val1' }], network_interface: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, web_application_firewall: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ auto_scale_profile: [{ 'key1' => 'val1' }], automatic_upgrade_channel: 'test-value', capacity: 3.14, diagnose_support_enabled: true, email: 'test-value', frontend_private: [{ 'key1' => 'val1' }], frontend_public: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, logging_storage_account: [{ 'key1' => 'val1' }], managed_resource_group: 'test-value', network_interface: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, web_application_firewall: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -79,6 +79,7 @@ RSpec.describe Pangea::Resources::AzureNginxDeployment do
         expect(config).to have_key('frontend_public')
         expect(config).to have_key('identity')
         expect(config).to have_key('logging_storage_account')
+        expect(config).to have_key('managed_resource_group')
         expect(config).to have_key('network_interface')
         expect(config).to have_key('tags')
         expect(config).to have_key('web_application_firewall')
@@ -191,7 +192,7 @@ RSpec.describe Pangea::Resources::AzureNginxDeployment do
       it 'includes frontend_public when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_nginx_deployment('opt', required_attrs.merge(frontend_public: [{ 'key1' => 'val1' }]))
+        synth.azurerm_nginx_deployment('opt', required_attrs.merge(frontend_public: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_nginx_deployment', 'opt')
         expect(config).to have_key('frontend_public')
@@ -208,7 +209,7 @@ RSpec.describe Pangea::Resources::AzureNginxDeployment do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_nginx_deployment('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_nginx_deployment('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_nginx_deployment', 'opt')
         expect(config).to have_key('identity')
@@ -238,6 +239,23 @@ RSpec.describe Pangea::Resources::AzureNginxDeployment do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_nginx_deployment', 'minimal')
         expect(config).not_to have_key('logging_storage_account')
+      end
+      it 'includes managed_resource_group when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_nginx_deployment('opt', required_attrs.merge(managed_resource_group: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_nginx_deployment', 'opt')
+        expect(config).to have_key('managed_resource_group')
+      end
+
+      it 'omits managed_resource_group when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_nginx_deployment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_nginx_deployment', 'minimal')
+        expect(config).not_to have_key('managed_resource_group')
       end
       it 'includes network_interface when provided' do
         synth = create_synthesizer
@@ -276,7 +294,7 @@ RSpec.describe Pangea::Resources::AzureNginxDeployment do
       it 'includes web_application_firewall when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_nginx_deployment('opt', required_attrs.merge(web_application_firewall: [{ 'key1' => 'val1' }]))
+        synth.azurerm_nginx_deployment('opt', required_attrs.merge(web_application_firewall: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_nginx_deployment', 'opt')
         expect(config).to have_key('web_application_firewall')

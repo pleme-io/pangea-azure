@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureNetworkProfile do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { container_network_interface: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { container_network_interface: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_network_profile' do
     context 'with required attributes only' do
@@ -96,7 +96,7 @@ RSpec.describe Pangea::Resources::AzureNetworkProfile do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_network_profile', 'typed')
-        expect(config['container_network_interface']).to be_a(Array)
+        expect(config['container_network_interface']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -132,7 +132,7 @@ RSpec.describe Pangea::Resources::AzureNetworkProfile do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_network_profile,
     method: :azurerm_network_profile,
-    required_attrs: { container_network_interface: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { container_network_interface: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id, :container_network_interface_ids],
     sensitive_fields: [],
     immutable_fields: [],

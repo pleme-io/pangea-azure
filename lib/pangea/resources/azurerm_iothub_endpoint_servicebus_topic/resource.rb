@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::IothubEndpointServicebusTopicAttributes,
       outputs: { id: :id },
       map: [:iothub_id, :name, :resource_group_name],
-      map_present: [:authentication_type, :connection_string, :endpoint_uri, :entity_path, :identity_id]
+      map_present: [:authentication_type, :connection_string, :endpoint_uri, :entity_path, :identity_id, :subscription_id]
   end
   module Azure
     include AzureIothubEndpointServicebusTopic

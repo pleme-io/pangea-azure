@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccountQueueProperties do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ cors_rule: [{ 'key1' => 'val1' }], hour_metrics: [{ 'key1' => 'val1' }], logging: [{ 'key1' => 'val1' }], minute_metrics: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ cors_rule: [{ 'key1' => 'val1' }], hour_metrics: { 'key1' => 'val1' }, logging: { 'key1' => 'val1' }, minute_metrics: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -79,7 +79,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccountQueueProperties do
       it 'includes hour_metrics when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account_queue_properties('opt', required_attrs.merge(hour_metrics: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account_queue_properties('opt', required_attrs.merge(hour_metrics: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account_queue_properties', 'opt')
         expect(config).to have_key('hour_metrics')
@@ -96,7 +96,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccountQueueProperties do
       it 'includes logging when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account_queue_properties('opt', required_attrs.merge(logging: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account_queue_properties('opt', required_attrs.merge(logging: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account_queue_properties', 'opt')
         expect(config).to have_key('logging')
@@ -113,7 +113,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccountQueueProperties do
       it 'includes minute_metrics when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_storage_account_queue_properties('opt', required_attrs.merge(minute_metrics: [{ 'key1' => 'val1' }]))
+        synth.azurerm_storage_account_queue_properties('opt', required_attrs.merge(minute_metrics: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account_queue_properties', 'opt')
         expect(config).to have_key('minute_metrics')

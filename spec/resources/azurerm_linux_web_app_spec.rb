@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureLinuxWebApp do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', service_plan_id: 'test-value', site_config: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', service_plan_id: 'test-value', site_config: { 'key1' => 'val1' } } }
 
   describe ':azurerm_linux_web_app' do
     context 'with required attributes only' do
@@ -75,7 +75,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: [{ 'key1' => 'val1' }], auth_settings_v2: [{ 'key1' => 'val1' }], backup: [{ 'key1' => 'val1' }], client_affinity_enabled: true, client_certificate_enabled: true, client_certificate_exclusion_paths: 'test-value', client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], enabled: true, ftp_publish_basic_authentication_enabled: true, https_only: true, identity: [{ 'key1' => 'val1' }], logs: [{ 'key1' => 'val1' }], public_network_access_enabled: true, sticky_settings: [{ 'key1' => 'val1' }], storage_account: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, virtual_network_backup_restore_enabled: true, virtual_network_subnet_id: 'test-value', vnet_image_pull_enabled: true, webdeploy_publish_basic_authentication_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: { 'key1' => 'val1' }, auth_settings_v2: { 'key1' => 'val1' }, backup: { 'key1' => 'val1' }, client_affinity_enabled: true, client_certificate_enabled: true, client_certificate_exclusion_paths: 'test-value', client_certificate_mode: 'test-value', connection_string: [{ 'key1' => 'val1' }], enabled: true, ftp_publish_basic_authentication_enabled: true, https_only: true, identity: { 'key1' => 'val1' }, key_vault_reference_identity_id: 'test-value', logs: { 'key1' => 'val1' }, public_network_access_enabled: true, sticky_settings: { 'key1' => 'val1' }, storage_account: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, virtual_network_backup_restore_enabled: true, virtual_network_subnet_id: 'test-value', vnet_image_pull_enabled: true, webdeploy_publish_basic_authentication_enabled: true, zip_deploy_file: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -97,6 +97,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
         expect(config).to have_key('ftp_publish_basic_authentication_enabled')
         expect(config).to have_key('https_only')
         expect(config).to have_key('identity')
+        expect(config).to have_key('key_vault_reference_identity_id')
         expect(config).to have_key('logs')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('sticky_settings')
@@ -106,6 +107,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
         expect(config).to have_key('virtual_network_subnet_id')
         expect(config).to have_key('vnet_image_pull_enabled')
         expect(config).to have_key('webdeploy_publish_basic_authentication_enabled')
+        expect(config).to have_key('zip_deploy_file')
       end
     end
 
@@ -130,7 +132,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
       it 'includes auth_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_web_app('opt', required_attrs.merge(auth_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_web_app('opt', required_attrs.merge(auth_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_web_app', 'opt')
         expect(config).to have_key('auth_settings')
@@ -147,7 +149,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
       it 'includes auth_settings_v2 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_web_app('opt', required_attrs.merge(auth_settings_v2: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_web_app('opt', required_attrs.merge(auth_settings_v2: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_web_app', 'opt')
         expect(config).to have_key('auth_settings_v2')
@@ -164,7 +166,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
       it 'includes backup when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_web_app('opt', required_attrs.merge(backup: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_web_app('opt', required_attrs.merge(backup: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_web_app', 'opt')
         expect(config).to have_key('backup')
@@ -317,7 +319,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_web_app('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_web_app('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_web_app', 'opt')
         expect(config).to have_key('identity')
@@ -331,10 +333,27 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
         config = validate_resource_structure(result, 'azurerm_linux_web_app', 'minimal')
         expect(config).not_to have_key('identity')
       end
+      it 'includes key_vault_reference_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_web_app('opt', required_attrs.merge(key_vault_reference_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_web_app', 'opt')
+        expect(config).to have_key('key_vault_reference_identity_id')
+      end
+
+      it 'omits key_vault_reference_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_web_app('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_web_app', 'minimal')
+        expect(config).not_to have_key('key_vault_reference_identity_id')
+      end
       it 'includes logs when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_web_app('opt', required_attrs.merge(logs: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_web_app('opt', required_attrs.merge(logs: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_web_app', 'opt')
         expect(config).to have_key('logs')
@@ -368,7 +387,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
       it 'includes sticky_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_linux_web_app('opt', required_attrs.merge(sticky_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_linux_web_app('opt', required_attrs.merge(sticky_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_web_app', 'opt')
         expect(config).to have_key('sticky_settings')
@@ -483,6 +502,23 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_linux_web_app', 'minimal')
         expect(config).not_to have_key('webdeploy_publish_basic_authentication_enabled')
+      end
+      it 'includes zip_deploy_file when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_web_app('opt', required_attrs.merge(zip_deploy_file: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_web_app', 'opt')
+        expect(config).to have_key('zip_deploy_file')
+      end
+
+      it 'omits zip_deploy_file when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_linux_web_app('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_linux_web_app', 'minimal')
+        expect(config).not_to have_key('zip_deploy_file')
       end
     end
 
@@ -608,7 +644,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['service_plan_id']).to be_a(String)
-        expect(config['site_config']).to be_a(Array)
+        expect(config['site_config']).to be_a(Hash)
       end
     end
 
@@ -641,7 +677,7 @@ RSpec.describe Pangea::Resources::AzureLinuxWebApp do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_linux_web_app,
     method: :azurerm_linux_web_app,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', service_plan_id: 'test-value', site_config: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', service_plan_id: 'test-value', site_config: { 'key1' => 'val1' } },
     expected_outputs: [:id, :custom_domain_verification_id, :default_hostname, :hosting_environment_id, :key_vault_reference_identity_id, :kind, :outbound_ip_address_list, :outbound_ip_addresses, :possible_outbound_ip_address_list, :possible_outbound_ip_addresses, :site_credential, :zip_deploy_file],
     sensitive_fields: [:custom_domain_verification_id, :site_credential],
     immutable_fields: [],

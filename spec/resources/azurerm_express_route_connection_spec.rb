@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureExpressRouteConnection do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ authorization_key: 'test-value', express_route_gateway_bypass_enabled: true, private_link_fast_path_enabled: true, routing: [{ 'key1' => 'val1' }], routing_weight: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ authorization_key: 'test-value', enable_internet_security: true, express_route_gateway_bypass_enabled: true, internet_security_enabled: true, private_link_fast_path_enabled: true, routing: { 'key1' => 'val1' }, routing_weight: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,7 +67,9 @@ RSpec.describe Pangea::Resources::AzureExpressRouteConnection do
 
         config = validate_resource_structure(result, 'azurerm_express_route_connection', 'full')
         expect(config).to have_key('authorization_key')
+        expect(config).to have_key('enable_internet_security')
         expect(config).to have_key('express_route_gateway_bypass_enabled')
+        expect(config).to have_key('internet_security_enabled')
         expect(config).to have_key('private_link_fast_path_enabled')
         expect(config).to have_key('routing')
         expect(config).to have_key('routing_weight')
@@ -92,6 +94,23 @@ RSpec.describe Pangea::Resources::AzureExpressRouteConnection do
         config = validate_resource_structure(result, 'azurerm_express_route_connection', 'minimal')
         expect(config).not_to have_key('authorization_key')
       end
+      it 'includes enable_internet_security when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_express_route_connection('opt', required_attrs.merge(enable_internet_security: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_express_route_connection', 'opt')
+        expect(config).to have_key('enable_internet_security')
+      end
+
+      it 'omits enable_internet_security when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_express_route_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_express_route_connection', 'minimal')
+        expect(config).not_to have_key('enable_internet_security')
+      end
       it 'includes express_route_gateway_bypass_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -108,6 +127,23 @@ RSpec.describe Pangea::Resources::AzureExpressRouteConnection do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_express_route_connection', 'minimal')
         expect(config).not_to have_key('express_route_gateway_bypass_enabled')
+      end
+      it 'includes internet_security_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_express_route_connection('opt', required_attrs.merge(internet_security_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_express_route_connection', 'opt')
+        expect(config).to have_key('internet_security_enabled')
+      end
+
+      it 'omits internet_security_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_express_route_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_express_route_connection', 'minimal')
+        expect(config).not_to have_key('internet_security_enabled')
       end
       it 'includes private_link_fast_path_enabled when provided' do
         synth = create_synthesizer
@@ -129,7 +165,7 @@ RSpec.describe Pangea::Resources::AzureExpressRouteConnection do
       it 'includes routing when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_express_route_connection('opt', required_attrs.merge(routing: [{ 'key1' => 'val1' }]))
+        synth.azurerm_express_route_connection('opt', required_attrs.merge(routing: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_express_route_connection', 'opt')
         expect(config).to have_key('routing')
@@ -164,6 +200,17 @@ RSpec.describe Pangea::Resources::AzureExpressRouteConnection do
 
     context 'boolean fields' do
       [true, false].each do |val|
+        it "accepts enable_internet_security=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enable_internet_security: val)
+          synth.azurerm_express_route_connection("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_express_route_connection', "bool_#{val}")
+          expect(config['enable_internet_security']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
         it "accepts express_route_gateway_bypass_enabled=#{val}" do
           synth = create_synthesizer
           synth.extend(described_class)
@@ -172,6 +219,17 @@ RSpec.describe Pangea::Resources::AzureExpressRouteConnection do
           result = normalize_synthesis(synth.synthesis)
           config = validate_resource_structure(result, 'azurerm_express_route_connection', "bool_#{val}")
           expect(config['express_route_gateway_bypass_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts internet_security_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(internet_security_enabled: val)
+          synth.azurerm_express_route_connection("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_express_route_connection', "bool_#{val}")
+          expect(config['internet_security_enabled']).to eq(val)
         end
       end
       [true, false].each do |val|
@@ -234,5 +292,5 @@ RSpec.describe Pangea::Resources::AzureExpressRouteConnection do
     expected_outputs: [:id, :enable_internet_security, :internet_security_enabled],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: [:express_route_gateway_bypass_enabled, :private_link_fast_path_enabled]
+    boolean_fields: [:enable_internet_security, :express_route_gateway_bypass_enabled, :internet_security_enabled, :private_link_fast_path_enabled]
 end

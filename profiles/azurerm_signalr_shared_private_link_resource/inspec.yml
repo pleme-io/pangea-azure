@@ -1,0 +1,8 @@
+name: azurerm_signalr_shared_private_link_resource
+title: Manages a azurerm_signalr_shared_private_link_resource resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

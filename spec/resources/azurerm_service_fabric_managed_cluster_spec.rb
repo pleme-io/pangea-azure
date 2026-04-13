@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricManagedCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ authentication: [{ 'key1' => 'val1' }], backup_service_enabled: true, custom_fabric_setting: [{ 'key1' => 'val1' }], dns_service_enabled: true, node_type: [{ 'key1' => 'val1' }], password: 'test-value', sku: 'test-value', subnet_id: 'test-value', tags: { 'key1' => 'val1' }, upgrade_wave: 'test-value', username: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ authentication: { 'key1' => 'val1' }, backup_service_enabled: true, custom_fabric_setting: [{ 'key1' => 'val1' }], dns_name: 'test-value', dns_service_enabled: true, node_type: [{ 'key1' => 'val1' }], password: 'test-value', sku: 'test-value', subnet_id: 'test-value', tags: { 'key1' => 'val1' }, upgrade_wave: 'test-value', username: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricManagedCluster do
         expect(config).to have_key('authentication')
         expect(config).to have_key('backup_service_enabled')
         expect(config).to have_key('custom_fabric_setting')
+        expect(config).to have_key('dns_name')
         expect(config).to have_key('dns_service_enabled')
         expect(config).to have_key('node_type')
         expect(config).to have_key('password')
@@ -82,7 +83,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricManagedCluster do
       it 'includes authentication when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_service_fabric_managed_cluster('opt', required_attrs.merge(authentication: [{ 'key1' => 'val1' }]))
+        synth.azurerm_service_fabric_managed_cluster('opt', required_attrs.merge(authentication: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_fabric_managed_cluster', 'opt')
         expect(config).to have_key('authentication')
@@ -129,6 +130,23 @@ RSpec.describe Pangea::Resources::AzureServiceFabricManagedCluster do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_fabric_managed_cluster', 'minimal')
         expect(config).not_to have_key('custom_fabric_setting')
+      end
+      it 'includes dns_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_service_fabric_managed_cluster('opt', required_attrs.merge(dns_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_service_fabric_managed_cluster', 'opt')
+        expect(config).to have_key('dns_name')
+      end
+
+      it 'omits dns_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_service_fabric_managed_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_service_fabric_managed_cluster', 'minimal')
+        expect(config).not_to have_key('dns_name')
       end
       it 'includes dns_service_enabled when provided' do
         synth = create_synthesizer

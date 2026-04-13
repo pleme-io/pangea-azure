@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::BotChannelMsTeamsAttributes,
       outputs: { id: :id },
       map: [:bot_name, :location, :resource_group_name],
-      map_present: [:deployment_environment]
+      map_present: [:calling_web_hook, :deployment_environment],
+      map_bool: [:calling_enabled, :enable_calling]
   end
   module Azure
     include AzureBotChannelMsTeams

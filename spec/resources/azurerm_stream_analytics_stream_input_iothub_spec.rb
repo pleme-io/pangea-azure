@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureStreamAnalyticsStreamInputIothub do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { endpoint: 'test-value', eventhub_consumer_group_name: 'test-value', iothub_namespace: 'test-value', name: 'test-value', resource_group_name: 'test-value', serialization: [{ 'key1' => 'val1' }], shared_access_policy_key: 'test-value', shared_access_policy_name: 'test-value', stream_analytics_job_name: 'test-value' } }
+  let(:required_attrs) { { endpoint: 'test-value', eventhub_consumer_group_name: 'test-value', iothub_namespace: 'test-value', name: 'test-value', resource_group_name: 'test-value', serialization: { 'key1' => 'val1' }, shared_access_policy_key: 'test-value', shared_access_policy_name: 'test-value', stream_analytics_job_name: 'test-value' } }
 
   describe ':azurerm_stream_analytics_stream_input_iothub' do
     context 'with required attributes only' do
@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsStreamInputIothub do
         expect(config['iothub_namespace']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['serialization']).to be_a(Array)
+        expect(config['serialization']).to be_a(Hash)
         expect(config['shared_access_policy_key']).to be_a(String)
         expect(config['shared_access_policy_name']).to be_a(String)
         expect(config['stream_analytics_job_name']).to be_a(String)
@@ -97,7 +97,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsStreamInputIothub do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_stream_analytics_stream_input_iothub,
     method: :azurerm_stream_analytics_stream_input_iothub,
-    required_attrs: { endpoint: 'test-value', eventhub_consumer_group_name: 'test-value', iothub_namespace: 'test-value', name: 'test-value', resource_group_name: 'test-value', serialization: [{ 'key1' => 'val1' }], shared_access_policy_key: 'test-value', shared_access_policy_name: 'test-value', stream_analytics_job_name: 'test-value' },
+    required_attrs: { endpoint: 'test-value', eventhub_consumer_group_name: 'test-value', iothub_namespace: 'test-value', name: 'test-value', resource_group_name: 'test-value', serialization: { 'key1' => 'val1' }, shared_access_policy_key: 'test-value', shared_access_policy_name: 'test-value', stream_analytics_job_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [:shared_access_policy_key],
     immutable_fields: [],

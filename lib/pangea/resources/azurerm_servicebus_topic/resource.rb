@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ServicebusTopicAttributes,
       outputs: { id: :id },
       map: [:name, :namespace_id],
-      map_present: [:auto_delete_on_idle, :default_message_ttl, :duplicate_detection_history_time_window, :status],
+      map_present: [:auto_delete_on_idle, :default_message_ttl, :duplicate_detection_history_time_window, :max_message_size_in_kilobytes, :max_size_in_megabytes, :status],
       map_bool: [:batched_operations_enabled, :express_enabled, :partitioning_enabled, :requires_duplicate_detection, :support_ordering]
   end
   module Azure

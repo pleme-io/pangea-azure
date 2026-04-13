@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::AppServiceAttributes,
       outputs: { id: :id },
       map: [:app_service_plan_id, :location, :name, :resource_group_name],
-      map_present: [:auth_settings, :backup, :connection_string, :identity, :logs, :site_config, :source_control, :storage_account, :tags],
+      map_present: [:app_settings, :auth_settings, :backup, :client_cert_mode, :connection_string, :identity, :key_vault_reference_identity_id, :logs, :site_config, :source_control, :storage_account, :tags],
       map_bool: [:client_affinity_enabled, :client_cert_enabled, :enabled, :https_only]
   end
   module Azure

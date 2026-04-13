@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureSignalrServiceNetworkAcl do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { default_action: 'test-value', public_network: [{ 'key1' => 'val1' }], signalr_service_id: 'test-value' } }
+  let(:required_attrs) { { default_action: 'test-value', public_network: { 'key1' => 'val1' }, signalr_service_id: 'test-value' } }
 
   describe ':azurerm_signalr_service_network_acl' do
     context 'with required attributes only' do
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureSignalrServiceNetworkAcl do
 
         config = validate_resource_structure(result, 'azurerm_signalr_service_network_acl', 'typed')
         expect(config['default_action']).to be_a(String)
-        expect(config['public_network']).to be_a(Array)
+        expect(config['public_network']).to be_a(Hash)
         expect(config['signalr_service_id']).to be_a(String)
       end
     end
@@ -118,7 +118,7 @@ RSpec.describe Pangea::Resources::AzureSignalrServiceNetworkAcl do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_signalr_service_network_acl,
     method: :azurerm_signalr_service_network_acl,
-    required_attrs: { default_action: 'test-value', public_network: [{ 'key1' => 'val1' }], signalr_service_id: 'test-value' },
+    required_attrs: { default_action: 'test-value', public_network: { 'key1' => 'val1' }, signalr_service_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

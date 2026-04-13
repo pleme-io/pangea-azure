@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryIntegrationRuntimeAzureSsis do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ catalog_info: [{ 'key1' => 'val1' }], copy_compute_scale: [{ 'key1' => 'val1' }], credential_name: 'test-value', custom_setup_script: [{ 'key1' => 'val1' }], description: 'test-value', edition: 'test-value', express_custom_setup: [{ 'key1' => 'val1' }], express_vnet_integration: [{ 'key1' => 'val1' }], license_type: 'test-value', max_parallel_executions_per_node: 3.14, number_of_nodes: 3.14, package_store: [{ 'key1' => 'val1' }], pipeline_external_compute_scale: [{ 'key1' => 'val1' }], proxy: [{ 'key1' => 'val1' }], vnet_integration: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ catalog_info: { 'key1' => 'val1' }, copy_compute_scale: { 'key1' => 'val1' }, credential_name: 'test-value', custom_setup_script: { 'key1' => 'val1' }, description: 'test-value', edition: 'test-value', express_custom_setup: { 'key1' => 'val1' }, express_vnet_integration: { 'key1' => 'val1' }, license_type: 'test-value', max_parallel_executions_per_node: 3.14, number_of_nodes: 3.14, package_store: [{ 'key1' => 'val1' }], pipeline_external_compute_scale: { 'key1' => 'val1' }, proxy: { 'key1' => 'val1' }, vnet_integration: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -73,7 +73,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryIntegrationRuntimeAzureSsis do
       it 'includes catalog_info when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(catalog_info: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(catalog_info: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_integration_runtime_azure_ssis', 'opt')
         expect(config).to have_key('catalog_info')
@@ -90,7 +90,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryIntegrationRuntimeAzureSsis do
       it 'includes copy_compute_scale when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(copy_compute_scale: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(copy_compute_scale: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_integration_runtime_azure_ssis', 'opt')
         expect(config).to have_key('copy_compute_scale')
@@ -124,7 +124,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryIntegrationRuntimeAzureSsis do
       it 'includes custom_setup_script when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(custom_setup_script: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(custom_setup_script: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_integration_runtime_azure_ssis', 'opt')
         expect(config).to have_key('custom_setup_script')
@@ -175,7 +175,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryIntegrationRuntimeAzureSsis do
       it 'includes express_custom_setup when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(express_custom_setup: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(express_custom_setup: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_integration_runtime_azure_ssis', 'opt')
         expect(config).to have_key('express_custom_setup')
@@ -192,7 +192,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryIntegrationRuntimeAzureSsis do
       it 'includes express_vnet_integration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(express_vnet_integration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(express_vnet_integration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_integration_runtime_azure_ssis', 'opt')
         expect(config).to have_key('express_vnet_integration')
@@ -277,7 +277,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryIntegrationRuntimeAzureSsis do
       it 'includes pipeline_external_compute_scale when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(pipeline_external_compute_scale: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(pipeline_external_compute_scale: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_integration_runtime_azure_ssis', 'opt')
         expect(config).to have_key('pipeline_external_compute_scale')
@@ -294,7 +294,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryIntegrationRuntimeAzureSsis do
       it 'includes proxy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(proxy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(proxy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_integration_runtime_azure_ssis', 'opt')
         expect(config).to have_key('proxy')
@@ -311,7 +311,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryIntegrationRuntimeAzureSsis do
       it 'includes vnet_integration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(vnet_integration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_integration_runtime_azure_ssis('opt', required_attrs.merge(vnet_integration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_integration_runtime_azure_ssis', 'opt')
         expect(config).to have_key('vnet_integration')

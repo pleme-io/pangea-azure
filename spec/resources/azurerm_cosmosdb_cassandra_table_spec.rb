@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureCosmosdbCassandraTable do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { cassandra_keyspace_id: 'test-value', name: 'test-value', schema: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { cassandra_keyspace_id: 'test-value', name: 'test-value', schema: { 'key1' => 'val1' } } }
 
   describe ':azurerm_cosmosdb_cassandra_table' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbCassandraTable do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ analytical_storage_ttl: 3.14, autoscale_settings: [{ 'key1' => 'val1' }], default_ttl: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ analytical_storage_ttl: 3.14, autoscale_settings: { 'key1' => 'val1' }, default_ttl: 3.14, throughput: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbCassandraTable do
         expect(config).to have_key('analytical_storage_ttl')
         expect(config).to have_key('autoscale_settings')
         expect(config).to have_key('default_ttl')
+        expect(config).to have_key('throughput')
       end
     end
 
@@ -91,7 +92,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbCassandraTable do
       it 'includes autoscale_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_cassandra_table('opt', required_attrs.merge(autoscale_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_cassandra_table('opt', required_attrs.merge(autoscale_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_cassandra_table', 'opt')
         expect(config).to have_key('autoscale_settings')
@@ -122,6 +123,23 @@ RSpec.describe Pangea::Resources::AzureCosmosdbCassandraTable do
         config = validate_resource_structure(result, 'azurerm_cosmosdb_cassandra_table', 'minimal')
         expect(config).not_to have_key('default_ttl')
       end
+      it 'includes throughput when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_cassandra_table('opt', required_attrs.merge(throughput: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_cassandra_table', 'opt')
+        expect(config).to have_key('throughput')
+      end
+
+      it 'omits throughput when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_cassandra_table('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_cassandra_table', 'minimal')
+        expect(config).not_to have_key('throughput')
+      end
     end
 
     context 'attribute types' do
@@ -134,7 +152,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbCassandraTable do
         config = validate_resource_structure(result, 'azurerm_cosmosdb_cassandra_table', 'typed')
         expect(config['cassandra_keyspace_id']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['schema']).to be_a(Array)
+        expect(config['schema']).to be_a(Hash)
       end
     end
 
@@ -167,7 +185,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbCassandraTable do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_cosmosdb_cassandra_table,
     method: :azurerm_cosmosdb_cassandra_table,
-    required_attrs: { cassandra_keyspace_id: 'test-value', name: 'test-value', schema: [{ 'key1' => 'val1' }] },
+    required_attrs: { cassandra_keyspace_id: 'test-value', name: 'test-value', schema: { 'key1' => 'val1' } },
     expected_outputs: [:id, :throughput],
     sensitive_fields: [],
     immutable_fields: [],

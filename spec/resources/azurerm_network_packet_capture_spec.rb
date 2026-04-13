@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureNetworkPacketCapture do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { name: 'test-value', network_watcher_name: 'test-value', resource_group_name: 'test-value', storage_location: [{ 'key1' => 'val1' }], target_resource_id: 'test-value' } }
+  let(:required_attrs) { { name: 'test-value', network_watcher_name: 'test-value', resource_group_name: 'test-value', storage_location: { 'key1' => 'val1' }, target_resource_id: 'test-value' } }
 
   describe ':azurerm_network_packet_capture' do
     context 'with required attributes only' do
@@ -140,7 +140,7 @@ RSpec.describe Pangea::Resources::AzureNetworkPacketCapture do
         expect(config['name']).to be_a(String)
         expect(config['network_watcher_name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['storage_location']).to be_a(Array)
+        expect(config['storage_location']).to be_a(Hash)
         expect(config['target_resource_id']).to be_a(String)
       end
     end
@@ -174,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureNetworkPacketCapture do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_network_packet_capture,
     method: :azurerm_network_packet_capture,
-    required_attrs: { name: 'test-value', network_watcher_name: 'test-value', resource_group_name: 'test-value', storage_location: [{ 'key1' => 'val1' }], target_resource_id: 'test-value' },
+    required_attrs: { name: 'test-value', network_watcher_name: 'test-value', resource_group_name: 'test-value', storage_location: { 'key1' => 'val1' }, target_resource_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

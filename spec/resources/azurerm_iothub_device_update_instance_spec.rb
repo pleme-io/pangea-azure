@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureIothubDeviceUpdateInstance do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ diagnostic_enabled: true, diagnostic_storage_account: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ diagnostic_enabled: true, diagnostic_storage_account: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -78,7 +78,7 @@ RSpec.describe Pangea::Resources::AzureIothubDeviceUpdateInstance do
       it 'includes diagnostic_storage_account when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_iothub_device_update_instance('opt', required_attrs.merge(diagnostic_storage_account: [{ 'key1' => 'val1' }]))
+        synth.azurerm_iothub_device_update_instance('opt', required_attrs.merge(diagnostic_storage_account: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iothub_device_update_instance', 'opt')
         expect(config).to have_key('diagnostic_storage_account')

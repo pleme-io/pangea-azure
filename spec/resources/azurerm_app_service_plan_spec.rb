@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureAppServicePlan do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } } }
 
   describe ':azurerm_app_service_plan' do
     context 'with required attributes only' do
@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureAppServicePlan do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ app_service_environment_id: 'test-value', is_xenon: true, kind: 'test-value', per_site_scaling: true, reserved: true, tags: { 'key1' => 'val1' }, zone_redundant: true }) }
+      let(:all_attrs) { required_attrs.merge({ app_service_environment_id: 'test-value', is_xenon: true, kind: 'test-value', maximum_elastic_worker_count: 3.14, per_site_scaling: true, reserved: true, tags: { 'key1' => 'val1' }, zone_redundant: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,6 +69,7 @@ RSpec.describe Pangea::Resources::AzureAppServicePlan do
         expect(config).to have_key('app_service_environment_id')
         expect(config).to have_key('is_xenon')
         expect(config).to have_key('kind')
+        expect(config).to have_key('maximum_elastic_worker_count')
         expect(config).to have_key('per_site_scaling')
         expect(config).to have_key('reserved')
         expect(config).to have_key('tags')
@@ -127,6 +128,23 @@ RSpec.describe Pangea::Resources::AzureAppServicePlan do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_plan', 'minimal')
         expect(config).not_to have_key('kind')
+      end
+      it 'includes maximum_elastic_worker_count when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_plan('opt', required_attrs.merge(maximum_elastic_worker_count: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_plan', 'opt')
+        expect(config).to have_key('maximum_elastic_worker_count')
+      end
+
+      it 'omits maximum_elastic_worker_count when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_plan('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_plan', 'minimal')
+        expect(config).not_to have_key('maximum_elastic_worker_count')
       end
       it 'includes per_site_scaling when provided' do
         synth = create_synthesizer
@@ -256,7 +274,7 @@ RSpec.describe Pangea::Resources::AzureAppServicePlan do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
       end
     end
 
@@ -289,7 +307,7 @@ RSpec.describe Pangea::Resources::AzureAppServicePlan do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_app_service_plan,
     method: :azurerm_app_service_plan,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } },
     expected_outputs: [:id, :maximum_elastic_worker_count, :maximum_number_of_workers],
     sensitive_fields: [],
     immutable_fields: [],

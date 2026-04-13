@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureLoadTest do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', encryption: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', encryption: { 'key1' => 'val1' }, identity: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -92,7 +92,7 @@ RSpec.describe Pangea::Resources::AzureLoadTest do
       it 'includes encryption when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_load_test('opt', required_attrs.merge(encryption: [{ 'key1' => 'val1' }]))
+        synth.azurerm_load_test('opt', required_attrs.merge(encryption: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_load_test', 'opt')
         expect(config).to have_key('encryption')
@@ -109,7 +109,7 @@ RSpec.describe Pangea::Resources::AzureLoadTest do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_load_test('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_load_test('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_load_test', 'opt')
         expect(config).to have_key('identity')

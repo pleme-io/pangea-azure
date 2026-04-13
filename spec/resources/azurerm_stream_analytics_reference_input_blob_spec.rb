@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureStreamAnalyticsReferenceInputBlob do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { date_format: 'test-value', name: 'test-value', path_pattern: 'test-value', resource_group_name: 'test-value', serialization: [{ 'key1' => 'val1' }], storage_account_name: 'test-value', storage_container_name: 'test-value', stream_analytics_job_name: 'test-value', time_format: 'test-value' } }
+  let(:required_attrs) { { date_format: 'test-value', name: 'test-value', path_pattern: 'test-value', resource_group_name: 'test-value', serialization: { 'key1' => 'val1' }, storage_account_name: 'test-value', storage_container_name: 'test-value', stream_analytics_job_name: 'test-value', time_format: 'test-value' } }
 
   describe ':azurerm_stream_analytics_reference_input_blob' do
     context 'with required attributes only' do
@@ -112,7 +112,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsReferenceInputBlob do
         expect(config['name']).to be_a(String)
         expect(config['path_pattern']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['serialization']).to be_a(Array)
+        expect(config['serialization']).to be_a(Hash)
         expect(config['storage_account_name']).to be_a(String)
         expect(config['storage_container_name']).to be_a(String)
         expect(config['stream_analytics_job_name']).to be_a(String)
@@ -149,7 +149,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsReferenceInputBlob do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_stream_analytics_reference_input_blob,
     method: :azurerm_stream_analytics_reference_input_blob,
-    required_attrs: { date_format: 'test-value', name: 'test-value', path_pattern: 'test-value', resource_group_name: 'test-value', serialization: [{ 'key1' => 'val1' }], storage_account_name: 'test-value', storage_container_name: 'test-value', stream_analytics_job_name: 'test-value', time_format: 'test-value' },
+    required_attrs: { date_format: 'test-value', name: 'test-value', path_pattern: 'test-value', resource_group_name: 'test-value', serialization: { 'key1' => 'val1' }, storage_account_name: 'test-value', storage_container_name: 'test-value', stream_analytics_job_name: 'test-value', time_format: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [:storage_account_key],
     immutable_fields: [],

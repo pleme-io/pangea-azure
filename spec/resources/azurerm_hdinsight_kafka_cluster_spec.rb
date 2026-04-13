@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { cluster_version: 'test-value', component_version: [{ 'key1' => 'val1' }], gateway: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', roles: [{ 'key1' => 'val1' }], tier: 'test-value' } }
+  let(:required_attrs) { { cluster_version: 'test-value', component_version: { 'key1' => 'val1' }, gateway: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', roles: { 'key1' => 'val1' }, tier: 'test-value' } }
 
   describe ':azurerm_hdinsight_kafka_cluster' do
     context 'with required attributes only' do
@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ compute_isolation: [{ 'key1' => 'val1' }], disk_encryption: [{ 'key1' => 'val1' }], encryption_in_transit_enabled: true, extension: [{ 'key1' => 'val1' }], metastores: [{ 'key1' => 'val1' }], monitor: [{ 'key1' => 'val1' }], network: [{ 'key1' => 'val1' }], private_link_configuration: [{ 'key1' => 'val1' }], rest_proxy: [{ 'key1' => 'val1' }], security_profile: [{ 'key1' => 'val1' }], storage_account: [{ 'key1' => 'val1' }], storage_account_gen2: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, tls_min_version: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ compute_isolation: { 'key1' => 'val1' }, disk_encryption: [{ 'key1' => 'val1' }], encryption_in_transit_enabled: true, extension: { 'key1' => 'val1' }, metastores: { 'key1' => 'val1' }, monitor: { 'key1' => 'val1' }, network: { 'key1' => 'val1' }, private_link_configuration: { 'key1' => 'val1' }, rest_proxy: { 'key1' => 'val1' }, security_profile: { 'key1' => 'val1' }, storage_account: [{ 'key1' => 'val1' }], storage_account_gen2: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, tls_min_version: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -89,7 +89,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
       it 'includes compute_isolation when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(compute_isolation: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(compute_isolation: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'opt')
         expect(config).to have_key('compute_isolation')
@@ -140,7 +140,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
       it 'includes extension when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(extension: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(extension: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'opt')
         expect(config).to have_key('extension')
@@ -157,7 +157,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
       it 'includes metastores when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(metastores: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(metastores: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'opt')
         expect(config).to have_key('metastores')
@@ -174,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
       it 'includes monitor when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(monitor: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(monitor: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'opt')
         expect(config).to have_key('monitor')
@@ -191,7 +191,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
       it 'includes network when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(network: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(network: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'opt')
         expect(config).to have_key('network')
@@ -208,7 +208,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
       it 'includes private_link_configuration when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(private_link_configuration: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(private_link_configuration: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'opt')
         expect(config).to have_key('private_link_configuration')
@@ -225,7 +225,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
       it 'includes rest_proxy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(rest_proxy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(rest_proxy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'opt')
         expect(config).to have_key('rest_proxy')
@@ -242,7 +242,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
       it 'includes security_profile when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(security_profile: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(security_profile: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'opt')
         expect(config).to have_key('security_profile')
@@ -276,7 +276,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
       it 'includes storage_account_gen2 when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(storage_account_gen2: [{ 'key1' => 'val1' }]))
+        synth.azurerm_hdinsight_kafka_cluster('opt', required_attrs.merge(storage_account_gen2: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'opt')
         expect(config).to have_key('storage_account_gen2')
@@ -349,12 +349,12 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
 
         config = validate_resource_structure(result, 'azurerm_hdinsight_kafka_cluster', 'typed')
         expect(config['cluster_version']).to be_a(String)
-        expect(config['component_version']).to be_a(Array)
-        expect(config['gateway']).to be_a(Array)
+        expect(config['component_version']).to be_a(Hash)
+        expect(config['gateway']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['roles']).to be_a(Array)
+        expect(config['roles']).to be_a(Hash)
         expect(config['tier']).to be_a(String)
       end
     end
@@ -388,7 +388,7 @@ RSpec.describe Pangea::Resources::AzureHdinsightKafkaCluster do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_hdinsight_kafka_cluster,
     method: :azurerm_hdinsight_kafka_cluster,
-    required_attrs: { cluster_version: 'test-value', component_version: [{ 'key1' => 'val1' }], gateway: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', roles: [{ 'key1' => 'val1' }], tier: 'test-value' },
+    required_attrs: { cluster_version: 'test-value', component_version: { 'key1' => 'val1' }, gateway: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', roles: { 'key1' => 'val1' }, tier: 'test-value' },
     expected_outputs: [:id, :https_endpoint, :kafka_rest_proxy_endpoint, :ssh_endpoint],
     sensitive_fields: [],
     immutable_fields: [],

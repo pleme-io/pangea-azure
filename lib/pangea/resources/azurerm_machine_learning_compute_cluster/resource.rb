@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::MachineLearningComputeClusterAttributes,
       outputs: { id: :id },
       map: [:location, :machine_learning_workspace_id, :name, :scale_settings, :vm_priority, :vm_size],
-      map_present: [:description, :identity, :ssh, :tags],
+      map_present: [:description, :identity, :ssh, :subnet_resource_id, :tags],
       map_bool: [:local_auth_enabled, :node_public_ip_enabled, :ssh_public_access_enabled]
   end
   module Azure

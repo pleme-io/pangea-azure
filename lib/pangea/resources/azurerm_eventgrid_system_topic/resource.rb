@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::EventgridSystemTopicAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :topic_type],
-      map_present: [:identity, :tags]
+      map_present: [:identity, :source_arm_resource_id, :source_resource_id, :tags]
   end
   module Azure
     include AzureEventgridSystemTopic

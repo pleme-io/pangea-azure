@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzurePrivateDnsZoneVirtualNetworkLink do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ registration_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ registration_enabled: true, resolution_policy: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -65,6 +65,7 @@ RSpec.describe Pangea::Resources::AzurePrivateDnsZoneVirtualNetworkLink do
 
         config = validate_resource_structure(result, 'azurerm_private_dns_zone_virtual_network_link', 'full')
         expect(config).to have_key('registration_enabled')
+        expect(config).to have_key('resolution_policy')
         expect(config).to have_key('tags')
       end
     end
@@ -86,6 +87,23 @@ RSpec.describe Pangea::Resources::AzurePrivateDnsZoneVirtualNetworkLink do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_private_dns_zone_virtual_network_link', 'minimal')
         expect(config).not_to have_key('registration_enabled')
+      end
+      it 'includes resolution_policy when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_private_dns_zone_virtual_network_link('opt', required_attrs.merge(resolution_policy: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_private_dns_zone_virtual_network_link', 'opt')
+        expect(config).to have_key('resolution_policy')
+      end
+
+      it 'omits resolution_policy when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_private_dns_zone_virtual_network_link('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_private_dns_zone_virtual_network_link', 'minimal')
+        expect(config).not_to have_key('resolution_policy')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer

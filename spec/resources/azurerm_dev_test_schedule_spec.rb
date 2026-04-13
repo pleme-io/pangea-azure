@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDevTestSchedule do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { lab_name: 'test-value', location: 'test-value', name: 'test-value', notification_settings: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', task_type: 'test-value', time_zone_id: 'test-value' } }
+  let(:required_attrs) { { lab_name: 'test-value', location: 'test-value', name: 'test-value', notification_settings: { 'key1' => 'val1' }, resource_group_name: 'test-value', task_type: 'test-value', time_zone_id: 'test-value' } }
 
   describe ':azurerm_dev_test_schedule' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDevTestSchedule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ daily_recurrence: [{ 'key1' => 'val1' }], hourly_recurrence: [{ 'key1' => 'val1' }], status: 'test-value', tags: { 'key1' => 'val1' }, weekly_recurrence: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ daily_recurrence: { 'key1' => 'val1' }, hourly_recurrence: { 'key1' => 'val1' }, status: 'test-value', tags: { 'key1' => 'val1' }, weekly_recurrence: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureDevTestSchedule do
       it 'includes daily_recurrence when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dev_test_schedule('opt', required_attrs.merge(daily_recurrence: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dev_test_schedule('opt', required_attrs.merge(daily_recurrence: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dev_test_schedule', 'opt')
         expect(config).to have_key('daily_recurrence')
@@ -80,7 +80,7 @@ RSpec.describe Pangea::Resources::AzureDevTestSchedule do
       it 'includes hourly_recurrence when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dev_test_schedule('opt', required_attrs.merge(hourly_recurrence: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dev_test_schedule('opt', required_attrs.merge(hourly_recurrence: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dev_test_schedule', 'opt')
         expect(config).to have_key('hourly_recurrence')
@@ -131,7 +131,7 @@ RSpec.describe Pangea::Resources::AzureDevTestSchedule do
       it 'includes weekly_recurrence when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dev_test_schedule('opt', required_attrs.merge(weekly_recurrence: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dev_test_schedule('opt', required_attrs.merge(weekly_recurrence: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dev_test_schedule', 'opt')
         expect(config).to have_key('weekly_recurrence')
@@ -158,7 +158,7 @@ RSpec.describe Pangea::Resources::AzureDevTestSchedule do
         expect(config['lab_name']).to be_a(String)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['notification_settings']).to be_a(Array)
+        expect(config['notification_settings']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['task_type']).to be_a(String)
         expect(config['time_zone_id']).to be_a(String)
@@ -194,7 +194,7 @@ RSpec.describe Pangea::Resources::AzureDevTestSchedule do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_dev_test_schedule,
     method: :azurerm_dev_test_schedule,
-    required_attrs: { lab_name: 'test-value', location: 'test-value', name: 'test-value', notification_settings: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', task_type: 'test-value', time_zone_id: 'test-value' },
+    required_attrs: { lab_name: 'test-value', location: 'test-value', name: 'test-value', notification_settings: { 'key1' => 'val1' }, resource_group_name: 'test-value', task_type: 'test-value', time_zone_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

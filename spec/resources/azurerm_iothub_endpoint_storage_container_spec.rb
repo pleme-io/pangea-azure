@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureIothubEndpointStorageContainer do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ authentication_type: 'test-value', batch_frequency_in_seconds: 3.14, connection_string: 'test-value', encoding: 'test-value', endpoint_uri: 'test-value', file_name_format: 'test-value', identity_id: 'test-value', max_chunk_size_in_bytes: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ authentication_type: 'test-value', batch_frequency_in_seconds: 3.14, connection_string: 'test-value', encoding: 'test-value', endpoint_uri: 'test-value', file_name_format: 'test-value', identity_id: 'test-value', max_chunk_size_in_bytes: 3.14, subscription_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -72,6 +72,7 @@ RSpec.describe Pangea::Resources::AzureIothubEndpointStorageContainer do
         expect(config).to have_key('file_name_format')
         expect(config).to have_key('identity_id')
         expect(config).to have_key('max_chunk_size_in_bytes')
+        expect(config).to have_key('subscription_id')
       end
     end
 
@@ -211,6 +212,23 @@ RSpec.describe Pangea::Resources::AzureIothubEndpointStorageContainer do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_iothub_endpoint_storage_container', 'minimal')
         expect(config).not_to have_key('max_chunk_size_in_bytes')
+      end
+      it 'includes subscription_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub_endpoint_storage_container('opt', required_attrs.merge(subscription_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub_endpoint_storage_container', 'opt')
+        expect(config).to have_key('subscription_id')
+      end
+
+      it 'omits subscription_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_iothub_endpoint_storage_container('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_iothub_endpoint_storage_container', 'minimal')
+        expect(config).not_to have_key('subscription_id')
       end
     end
 

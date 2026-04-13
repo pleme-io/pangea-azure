@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::MonitorMetricAlertAttributes,
       outputs: { id: :id },
       map: [:name, :resource_group_name, :scopes],
-      map_present: [:action, :application_insights_web_test_location_availability_criteria, :criteria, :description, :dynamic_criteria, :frequency, :severity, :tags, :window_size],
+      map_present: [:action, :application_insights_web_test_location_availability_criteria, :criteria, :description, :dynamic_criteria, :frequency, :severity, :tags, :target_resource_location, :target_resource_type, :window_size],
       map_bool: [:auto_mitigate, :enabled]
   end
   module Azure

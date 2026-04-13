@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SentinelDataConnectorThreatIntelligenceTaxiiAttributes,
       outputs: { id: :id },
       map: [:api_root_url, :collection_id, :display_name, :log_analytics_workspace_id, :name],
-      map_present: [:lookback_date, :password, :polling_frequency, :user_name]
+      map_present: [:lookback_date, :password, :polling_frequency, :tenant_id, :user_name]
   end
   module Azure
     include AzureSentinelDataConnectorThreatIntelligenceTaxii

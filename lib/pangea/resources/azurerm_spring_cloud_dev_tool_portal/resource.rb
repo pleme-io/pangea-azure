@@ -15,7 +15,7 @@ module Pangea::Resources
       outputs: { id: :id },
       map: [:name, :spring_cloud_service_id],
       map_present: [:sso],
-      map_bool: [:public_network_access_enabled]
+      map_bool: [:application_accelerator_enabled, :application_live_view_enabled, :public_network_access_enabled]
   end
   module Azure
     include AzureSpringCloudDevToolPortal

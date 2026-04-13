@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::OracleAutonomousDatabaseAttributes,
       outputs: { id: :id },
       map: [:admin_password, :backup_retention_period_in_days, :character_set, :compute_count, :compute_model, :data_storage_size_in_tbs, :db_version, :db_workload, :display_name, :license_model, :location, :name, :national_character_set, :resource_group_name],
-      map_present: [:allowed_ips, :long_term_backup_schedule, :subnet_id, :tags, :virtual_network_id],
+      map_present: [:allowed_ips, :customer_contacts, :long_term_backup_schedule, :subnet_id, :tags, :virtual_network_id],
       map_bool: [:auto_scaling_enabled, :auto_scaling_for_storage_enabled, :mtls_connection_required]
   end
   module Azure

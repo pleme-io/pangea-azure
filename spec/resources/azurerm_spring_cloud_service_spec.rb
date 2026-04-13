@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudService do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ build_agent_pool_size: 'test-value', config_server_git_setting: [{ 'key1' => 'val1' }], container_registry: [{ 'key1' => 'val1' }], default_build_service: [{ 'key1' => 'val1' }], log_stream_public_endpoint_enabled: true, managed_environment_id: 'test-value', marketplace: [{ 'key1' => 'val1' }], network: [{ 'key1' => 'val1' }], service_registry_enabled: true, sku_name: 'test-value', tags: { 'key1' => 'val1' }, trace: [{ 'key1' => 'val1' }], zone_redundant: true }) }
+      let(:all_attrs) { required_attrs.merge({ build_agent_pool_size: 'test-value', config_server_git_setting: { 'key1' => 'val1' }, container_registry: [{ 'key1' => 'val1' }], default_build_service: { 'key1' => 'val1' }, log_stream_public_endpoint_enabled: true, managed_environment_id: 'test-value', marketplace: { 'key1' => 'val1' }, network: { 'key1' => 'val1' }, service_registry_enabled: true, sku_name: 'test-value', sku_tier: 'test-value', tags: { 'key1' => 'val1' }, trace: { 'key1' => 'val1' }, zone_redundant: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -80,6 +80,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudService do
         expect(config).to have_key('network')
         expect(config).to have_key('service_registry_enabled')
         expect(config).to have_key('sku_name')
+        expect(config).to have_key('sku_tier')
         expect(config).to have_key('tags')
         expect(config).to have_key('trace')
         expect(config).to have_key('zone_redundant')
@@ -107,7 +108,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudService do
       it 'includes config_server_git_setting when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(config_server_git_setting: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(config_server_git_setting: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_service', 'opt')
         expect(config).to have_key('config_server_git_setting')
@@ -141,7 +142,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudService do
       it 'includes default_build_service when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(default_build_service: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(default_build_service: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_service', 'opt')
         expect(config).to have_key('default_build_service')
@@ -192,7 +193,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudService do
       it 'includes marketplace when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(marketplace: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(marketplace: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_service', 'opt')
         expect(config).to have_key('marketplace')
@@ -209,7 +210,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudService do
       it 'includes network when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(network: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(network: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_service', 'opt')
         expect(config).to have_key('network')
@@ -257,6 +258,23 @@ RSpec.describe Pangea::Resources::AzureSpringCloudService do
         config = validate_resource_structure(result, 'azurerm_spring_cloud_service', 'minimal')
         expect(config).not_to have_key('sku_name')
       end
+      it 'includes sku_tier when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(sku_tier: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_service', 'opt')
+        expect(config).to have_key('sku_tier')
+      end
+
+      it 'omits sku_tier when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_spring_cloud_service('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_spring_cloud_service', 'minimal')
+        expect(config).not_to have_key('sku_tier')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -277,7 +295,7 @@ RSpec.describe Pangea::Resources::AzureSpringCloudService do
       it 'includes trace when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(trace: [{ 'key1' => 'val1' }]))
+        synth.azurerm_spring_cloud_service('opt', required_attrs.merge(trace: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_spring_cloud_service', 'opt')
         expect(config).to have_key('trace')

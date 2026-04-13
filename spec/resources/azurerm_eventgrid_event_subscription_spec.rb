@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ advanced_filter: [{ 'key1' => 'val1' }], advanced_filtering_on_arrays_enabled: true, azure_function_endpoint: [{ 'key1' => 'val1' }], dead_letter_identity: [{ 'key1' => 'val1' }], delivery_identity: [{ 'key1' => 'val1' }], delivery_property: [{ 'key1' => 'val1' }], event_delivery_schema: 'test-value', expiration_time_utc: 'test-value', labels: ['test-value'], retry_policy: [{ 'key1' => 'val1' }], service_bus_queue_endpoint_id: 'test-value', service_bus_topic_endpoint_id: 'test-value', storage_blob_dead_letter_destination: [{ 'key1' => 'val1' }], storage_queue_endpoint: [{ 'key1' => 'val1' }], subject_filter: [{ 'key1' => 'val1' }], webhook_endpoint: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ advanced_filter: { 'key1' => 'val1' }, advanced_filtering_on_arrays_enabled: true, azure_function_endpoint: { 'key1' => 'val1' }, dead_letter_identity: { 'key1' => 'val1' }, delivery_identity: { 'key1' => 'val1' }, delivery_property: [{ 'key1' => 'val1' }], event_delivery_schema: 'test-value', eventhub_endpoint_id: 'test-value', expiration_time_utc: 'test-value', hybrid_connection_endpoint_id: 'test-value', included_event_types: ['test-value'], labels: ['test-value'], retry_policy: { 'key1' => 'val1' }, service_bus_queue_endpoint_id: 'test-value', service_bus_topic_endpoint_id: 'test-value', storage_blob_dead_letter_destination: { 'key1' => 'val1' }, storage_queue_endpoint: { 'key1' => 'val1' }, subject_filter: { 'key1' => 'val1' }, webhook_endpoint: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -75,7 +75,10 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
         expect(config).to have_key('delivery_identity')
         expect(config).to have_key('delivery_property')
         expect(config).to have_key('event_delivery_schema')
+        expect(config).to have_key('eventhub_endpoint_id')
         expect(config).to have_key('expiration_time_utc')
+        expect(config).to have_key('hybrid_connection_endpoint_id')
+        expect(config).to have_key('included_event_types')
         expect(config).to have_key('labels')
         expect(config).to have_key('retry_policy')
         expect(config).to have_key('service_bus_queue_endpoint_id')
@@ -91,7 +94,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
       it 'includes advanced_filter when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(advanced_filter: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(advanced_filter: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
         expect(config).to have_key('advanced_filter')
@@ -125,7 +128,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
       it 'includes azure_function_endpoint when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(azure_function_endpoint: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(azure_function_endpoint: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
         expect(config).to have_key('azure_function_endpoint')
@@ -142,7 +145,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
       it 'includes dead_letter_identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(dead_letter_identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(dead_letter_identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
         expect(config).to have_key('dead_letter_identity')
@@ -159,7 +162,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
       it 'includes delivery_identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(delivery_identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(delivery_identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
         expect(config).to have_key('delivery_identity')
@@ -207,6 +210,23 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'minimal')
         expect(config).not_to have_key('event_delivery_schema')
       end
+      it 'includes eventhub_endpoint_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(eventhub_endpoint_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
+        expect(config).to have_key('eventhub_endpoint_id')
+      end
+
+      it 'omits eventhub_endpoint_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_event_subscription('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'minimal')
+        expect(config).not_to have_key('eventhub_endpoint_id')
+      end
       it 'includes expiration_time_utc when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -223,6 +243,40 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'minimal')
         expect(config).not_to have_key('expiration_time_utc')
+      end
+      it 'includes hybrid_connection_endpoint_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(hybrid_connection_endpoint_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
+        expect(config).to have_key('hybrid_connection_endpoint_id')
+      end
+
+      it 'omits hybrid_connection_endpoint_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_event_subscription('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'minimal')
+        expect(config).not_to have_key('hybrid_connection_endpoint_id')
+      end
+      it 'includes included_event_types when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(included_event_types: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
+        expect(config).to have_key('included_event_types')
+      end
+
+      it 'omits included_event_types when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventgrid_event_subscription('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'minimal')
+        expect(config).not_to have_key('included_event_types')
       end
       it 'includes labels when provided' do
         synth = create_synthesizer
@@ -244,7 +298,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
       it 'includes retry_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(retry_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(retry_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
         expect(config).to have_key('retry_policy')
@@ -295,7 +349,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
       it 'includes storage_blob_dead_letter_destination when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(storage_blob_dead_letter_destination: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(storage_blob_dead_letter_destination: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
         expect(config).to have_key('storage_blob_dead_letter_destination')
@@ -312,7 +366,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
       it 'includes storage_queue_endpoint when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(storage_queue_endpoint: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(storage_queue_endpoint: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
         expect(config).to have_key('storage_queue_endpoint')
@@ -329,7 +383,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
       it 'includes subject_filter when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(subject_filter: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(subject_filter: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
         expect(config).to have_key('subject_filter')
@@ -346,7 +400,7 @@ RSpec.describe Pangea::Resources::AzureEventgridEventSubscription do
       it 'includes webhook_endpoint when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(webhook_endpoint: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventgrid_event_subscription('opt', required_attrs.merge(webhook_endpoint: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventgrid_event_subscription', 'opt')
         expect(config).to have_key('webhook_endpoint')

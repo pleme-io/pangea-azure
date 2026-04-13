@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureStorageShareDirectory do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ metadata: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ metadata: { 'key1' => 'val1' }, storage_share_id: 'test-value', storage_share_url: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,8 @@ RSpec.describe Pangea::Resources::AzureStorageShareDirectory do
 
         config = validate_resource_structure(result, 'azurerm_storage_share_directory', 'full')
         expect(config).to have_key('metadata')
+        expect(config).to have_key('storage_share_id')
+        expect(config).to have_key('storage_share_url')
       end
     end
 
@@ -87,6 +89,40 @@ RSpec.describe Pangea::Resources::AzureStorageShareDirectory do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_share_directory', 'minimal')
         expect(config).not_to have_key('metadata')
+      end
+      it 'includes storage_share_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_share_directory('opt', required_attrs.merge(storage_share_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_share_directory', 'opt')
+        expect(config).to have_key('storage_share_id')
+      end
+
+      it 'omits storage_share_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_share_directory('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_share_directory', 'minimal')
+        expect(config).not_to have_key('storage_share_id')
+      end
+      it 'includes storage_share_url when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_share_directory('opt', required_attrs.merge(storage_share_url: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_share_directory', 'opt')
+        expect(config).to have_key('storage_share_url')
+      end
+
+      it 'omits storage_share_url when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_share_directory('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_share_directory', 'minimal')
+        expect(config).not_to have_key('storage_share_url')
       end
     end
 

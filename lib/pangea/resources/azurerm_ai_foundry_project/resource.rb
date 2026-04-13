@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::AiFoundryProjectAttributes,
       outputs: { id: :id },
       map: [:ai_services_hub_id, :location, :name],
-      map_present: [:description, :friendly_name, :identity, :primary_user_assigned_identity, :tags]
+      map_present: [:description, :friendly_name, :identity, :primary_user_assigned_identity, :tags],
+      map_bool: [:high_business_impact_enabled]
   end
   module Azure
     include AzureAiFoundryProject

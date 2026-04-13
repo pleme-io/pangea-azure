@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureApplicationInsightsStandardWebTest do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { application_insights_id: 'test-value', geo_locations: ['test-value'], location: 'test-value', name: 'test-value', request: [{ 'key1' => 'val1' }], resource_group_name: 'test-value' } }
+  let(:required_attrs) { { application_insights_id: 'test-value', geo_locations: ['test-value'], location: 'test-value', name: 'test-value', request: { 'key1' => 'val1' }, resource_group_name: 'test-value' } }
 
   describe ':azurerm_application_insights_standard_web_test' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureApplicationInsightsStandardWebTest do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', enabled: true, frequency: 3.14, retry_enabled: true, tags: { 'key1' => 'val1' }, timeout: 3.14, validation_rules: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', enabled: true, frequency: 3.14, retry_enabled: true, tags: { 'key1' => 'val1' }, timeout: 3.14, validation_rules: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -180,7 +180,7 @@ RSpec.describe Pangea::Resources::AzureApplicationInsightsStandardWebTest do
       it 'includes validation_rules when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_application_insights_standard_web_test('opt', required_attrs.merge(validation_rules: [{ 'key1' => 'val1' }]))
+        synth.azurerm_application_insights_standard_web_test('opt', required_attrs.merge(validation_rules: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_application_insights_standard_web_test', 'opt')
         expect(config).to have_key('validation_rules')
@@ -233,7 +233,7 @@ RSpec.describe Pangea::Resources::AzureApplicationInsightsStandardWebTest do
         expect(config['geo_locations']).to be_a(Array)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
-        expect(config['request']).to be_a(Array)
+        expect(config['request']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
       end
     end
@@ -267,7 +267,7 @@ RSpec.describe Pangea::Resources::AzureApplicationInsightsStandardWebTest do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_application_insights_standard_web_test,
     method: :azurerm_application_insights_standard_web_test,
-    required_attrs: { application_insights_id: 'test-value', geo_locations: ['test-value'], location: 'test-value', name: 'test-value', request: [{ 'key1' => 'val1' }], resource_group_name: 'test-value' },
+    required_attrs: { application_insights_id: 'test-value', geo_locations: ['test-value'], location: 'test-value', name: 'test-value', request: { 'key1' => 'val1' }, resource_group_name: 'test-value' },
     expected_outputs: [:id, :synthetic_monitor_id],
     sensitive_fields: [],
     immutable_fields: [],

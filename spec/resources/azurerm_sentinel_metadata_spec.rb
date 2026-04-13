@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureSentinelMetadata do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ author: [{ 'key1' => 'val1' }], category: [{ 'key1' => 'val1' }], content_schema_version: 'test-value', custom_version: 'test-value', dependency: 'test-value', first_publish_date: 'test-value', icon_id: 'test-value', last_publish_date: 'test-value', preview_images: ['test-value'], preview_images_dark: ['test-value'], providers: ['test-value'], source: [{ 'key1' => 'val1' }], support: [{ 'key1' => 'val1' }], threat_analysis_tactics: ['test-value'], threat_analysis_techniques: ['test-value'], version: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ author: { 'key1' => 'val1' }, category: { 'key1' => 'val1' }, content_schema_version: 'test-value', custom_version: 'test-value', dependency: 'test-value', first_publish_date: 'test-value', icon_id: 'test-value', last_publish_date: 'test-value', preview_images: ['test-value'], preview_images_dark: ['test-value'], providers: ['test-value'], source: { 'key1' => 'val1' }, support: { 'key1' => 'val1' }, threat_analysis_tactics: ['test-value'], threat_analysis_techniques: ['test-value'], version: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,7 +74,7 @@ RSpec.describe Pangea::Resources::AzureSentinelMetadata do
       it 'includes author when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_sentinel_metadata('opt', required_attrs.merge(author: [{ 'key1' => 'val1' }]))
+        synth.azurerm_sentinel_metadata('opt', required_attrs.merge(author: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_metadata', 'opt')
         expect(config).to have_key('author')
@@ -91,7 +91,7 @@ RSpec.describe Pangea::Resources::AzureSentinelMetadata do
       it 'includes category when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_sentinel_metadata('opt', required_attrs.merge(category: [{ 'key1' => 'val1' }]))
+        synth.azurerm_sentinel_metadata('opt', required_attrs.merge(category: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_metadata', 'opt')
         expect(config).to have_key('category')
@@ -261,7 +261,7 @@ RSpec.describe Pangea::Resources::AzureSentinelMetadata do
       it 'includes source when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_sentinel_metadata('opt', required_attrs.merge(source: [{ 'key1' => 'val1' }]))
+        synth.azurerm_sentinel_metadata('opt', required_attrs.merge(source: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_metadata', 'opt')
         expect(config).to have_key('source')
@@ -278,7 +278,7 @@ RSpec.describe Pangea::Resources::AzureSentinelMetadata do
       it 'includes support when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_sentinel_metadata('opt', required_attrs.merge(support: [{ 'key1' => 'val1' }]))
+        synth.azurerm_sentinel_metadata('opt', required_attrs.merge(support: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_metadata', 'opt')
         expect(config).to have_key('support')

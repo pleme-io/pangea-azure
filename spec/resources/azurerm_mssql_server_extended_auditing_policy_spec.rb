@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureMssqlServerExtendedAuditingPolicy do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ enabled: true, log_monitoring_enabled: true, predicate_expression: 'test-value', retention_in_days: 3.14, storage_account_access_key: 'test-value', storage_account_access_key_is_secondary: true, storage_account_subscription_id: 'test-value', storage_endpoint: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ audit_actions_and_groups: ['test-value'], enabled: true, log_monitoring_enabled: true, predicate_expression: 'test-value', retention_in_days: 3.14, storage_account_access_key: 'test-value', storage_account_access_key_is_secondary: true, storage_account_subscription_id: 'test-value', storage_endpoint: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,6 +64,7 @@ RSpec.describe Pangea::Resources::AzureMssqlServerExtendedAuditingPolicy do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_mssql_server_extended_auditing_policy', 'full')
+        expect(config).to have_key('audit_actions_and_groups')
         expect(config).to have_key('enabled')
         expect(config).to have_key('log_monitoring_enabled')
         expect(config).to have_key('predicate_expression')
@@ -76,6 +77,23 @@ RSpec.describe Pangea::Resources::AzureMssqlServerExtendedAuditingPolicy do
     end
 
     context 'optional attributes' do
+      it 'includes audit_actions_and_groups when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_server_extended_auditing_policy('opt', required_attrs.merge(audit_actions_and_groups: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_server_extended_auditing_policy', 'opt')
+        expect(config).to have_key('audit_actions_and_groups')
+      end
+
+      it 'omits audit_actions_and_groups when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_mssql_server_extended_auditing_policy('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_mssql_server_extended_auditing_policy', 'minimal')
+        expect(config).not_to have_key('audit_actions_and_groups')
+      end
       it 'includes enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

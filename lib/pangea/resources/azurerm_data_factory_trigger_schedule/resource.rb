@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::DataFactoryTriggerScheduleAttributes,
       outputs: { id: :id },
       map: [:data_factory_id, :name],
-      map_present: [:annotations, :description, :end_time, :frequency, :interval, :pipeline, :schedule, :time_zone],
+      map_present: [:annotations, :description, :end_time, :frequency, :interval, :pipeline, :pipeline_name, :pipeline_parameters, :schedule, :start_time, :time_zone],
       map_bool: [:activated]
   end
   module Azure

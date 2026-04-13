@@ -65,7 +65,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistry do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ admin_enabled: true, anonymous_pull_enabled: true, data_endpoint_enabled: true, export_policy_enabled: true, georeplications: [{ 'key1' => 'val1' }], identity: [{ 'key1' => 'val1' }], network_rule_bypass_option: 'test-value', public_network_access_enabled: true, quarantine_policy_enabled: true, retention_policy_in_days: 3.14, tags: { 'key1' => 'val1' }, trust_policy_enabled: true, zone_redundancy_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ admin_enabled: true, anonymous_pull_enabled: true, data_endpoint_enabled: true, encryption: [{ 'key1' => 'val1' }], export_policy_enabled: true, georeplications: [{ 'key1' => 'val1' }], identity: { 'key1' => 'val1' }, network_rule_bypass_option: 'test-value', network_rule_set: [{ 'key1' => 'val1' }], public_network_access_enabled: true, quarantine_policy_enabled: true, retention_policy_in_days: 3.14, tags: { 'key1' => 'val1' }, trust_policy_enabled: true, zone_redundancy_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -77,10 +77,12 @@ RSpec.describe Pangea::Resources::AzureContainerRegistry do
         expect(config).to have_key('admin_enabled')
         expect(config).to have_key('anonymous_pull_enabled')
         expect(config).to have_key('data_endpoint_enabled')
+        expect(config).to have_key('encryption')
         expect(config).to have_key('export_policy_enabled')
         expect(config).to have_key('georeplications')
         expect(config).to have_key('identity')
         expect(config).to have_key('network_rule_bypass_option')
+        expect(config).to have_key('network_rule_set')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('quarantine_policy_enabled')
         expect(config).to have_key('retention_policy_in_days')
@@ -142,6 +144,23 @@ RSpec.describe Pangea::Resources::AzureContainerRegistry do
         config = validate_resource_structure(result, 'azurerm_container_registry', 'minimal')
         expect(config).not_to have_key('data_endpoint_enabled')
       end
+      it 'includes encryption when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_registry('opt', required_attrs.merge(encryption: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_registry', 'opt')
+        expect(config).to have_key('encryption')
+      end
+
+      it 'omits encryption when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_registry('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_registry', 'minimal')
+        expect(config).not_to have_key('encryption')
+      end
       it 'includes export_policy_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -179,7 +198,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistry do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_container_registry('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_container_registry('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry', 'opt')
         expect(config).to have_key('identity')
@@ -209,6 +228,23 @@ RSpec.describe Pangea::Resources::AzureContainerRegistry do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_container_registry', 'minimal')
         expect(config).not_to have_key('network_rule_bypass_option')
+      end
+      it 'includes network_rule_set when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_registry('opt', required_attrs.merge(network_rule_set: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_registry', 'opt')
+        expect(config).to have_key('network_rule_set')
+      end
+
+      it 'omits network_rule_set when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_container_registry('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_container_registry', 'minimal')
+        expect(config).not_to have_key('network_rule_set')
       end
       it 'includes public_network_access_enabled when provided' do
         synth = create_synthesizer

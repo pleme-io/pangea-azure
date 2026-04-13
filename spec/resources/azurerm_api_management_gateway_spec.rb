@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureApiManagementGateway do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { api_management_id: 'test-value', location_data: [{ 'key1' => 'val1' }], name: 'test-value' } }
+  let(:required_attrs) { { api_management_id: 'test-value', location_data: { 'key1' => 'val1' }, name: 'test-value' } }
 
   describe ':azurerm_api_management_gateway' do
     context 'with required attributes only' do
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementGateway do
 
         config = validate_resource_structure(result, 'azurerm_api_management_gateway', 'typed')
         expect(config['api_management_id']).to be_a(String)
-        expect(config['location_data']).to be_a(Array)
+        expect(config['location_data']).to be_a(Hash)
         expect(config['name']).to be_a(String)
       end
     end
@@ -118,7 +118,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementGateway do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_api_management_gateway,
     method: :azurerm_api_management_gateway,
-    required_attrs: { api_management_id: 'test-value', location_data: [{ 'key1' => 'val1' }], name: 'test-value' },
+    required_attrs: { api_management_id: 'test-value', location_data: { 'key1' => 'val1' }, name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

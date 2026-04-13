@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::PimActiveRoleAssignmentAttributes,
       outputs: { id: :id },
       map: [:principal_id, :role_definition_id, :scope],
-      map_present: [:schedule, :ticket]
+      map_present: [:justification, :schedule, :ticket]
   end
   module Azure
     include AzurePimActiveRoleAssignment

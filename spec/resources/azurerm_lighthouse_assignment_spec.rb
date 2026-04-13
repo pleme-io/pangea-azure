@@ -54,6 +54,40 @@ RSpec.describe Pangea::Resources::AzureLighthouseAssignment do
       end
     end
 
+    context 'with all attributes' do
+      let(:all_attrs) { required_attrs.merge({ name: 'test-value' }) }
+
+      it 'synthesizes with optional attributes' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lighthouse_assignment('full', all_attrs)
+        result = normalize_synthesis(synth.synthesis)
+
+        config = validate_resource_structure(result, 'azurerm_lighthouse_assignment', 'full')
+        expect(config).to have_key('name')
+      end
+    end
+
+    context 'optional attributes' do
+      it 'includes name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lighthouse_assignment('opt', required_attrs.merge(name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lighthouse_assignment', 'opt')
+        expect(config).to have_key('name')
+      end
+
+      it 'omits name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lighthouse_assignment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lighthouse_assignment', 'minimal')
+        expect(config).not_to have_key('name')
+      end
+    end
+
     context 'attribute types' do
       it 'validates expected attribute types' do
         synth = create_synthesizer

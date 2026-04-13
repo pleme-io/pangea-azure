@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::KustoAttachedDatabaseConfigurationAttributes,
       outputs: { id: :id },
       map: [:cluster_name, :database_name, :location, :name, :resource_group_name],
-      map_present: [:default_principal_modification_kind, :sharing]
+      map_present: [:cluster_id, :cluster_resource_id, :database_name_override, :database_name_prefix, :default_principal_modification_kind, :sharing]
   end
   module Azure
     include AzureKustoAttachedDatabaseConfiguration

@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureStorageContainer do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ container_access_type: 'test-value', encryption_scope_override_enabled: true, storage_account_id: 'test-value', storage_account_name: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ container_access_type: 'test-value', default_encryption_scope: 'test-value', encryption_scope_override_enabled: true, metadata: { 'key1' => 'val1' }, storage_account_id: 'test-value', storage_account_name: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -73,7 +73,9 @@ RSpec.describe Pangea::Resources::AzureStorageContainer do
 
         config = validate_resource_structure(result, 'azurerm_storage_container', 'full')
         expect(config).to have_key('container_access_type')
+        expect(config).to have_key('default_encryption_scope')
         expect(config).to have_key('encryption_scope_override_enabled')
+        expect(config).to have_key('metadata')
         expect(config).to have_key('storage_account_id')
         expect(config).to have_key('storage_account_name')
       end
@@ -97,6 +99,23 @@ RSpec.describe Pangea::Resources::AzureStorageContainer do
         config = validate_resource_structure(result, 'azurerm_storage_container', 'minimal')
         expect(config).not_to have_key('container_access_type')
       end
+      it 'includes default_encryption_scope when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_container('opt', required_attrs.merge(default_encryption_scope: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_container', 'opt')
+        expect(config).to have_key('default_encryption_scope')
+      end
+
+      it 'omits default_encryption_scope when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_container('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_container', 'minimal')
+        expect(config).not_to have_key('default_encryption_scope')
+      end
       it 'includes encryption_scope_override_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -113,6 +132,23 @@ RSpec.describe Pangea::Resources::AzureStorageContainer do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_container', 'minimal')
         expect(config).not_to have_key('encryption_scope_override_enabled')
+      end
+      it 'includes metadata when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_container('opt', required_attrs.merge(metadata: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_container', 'opt')
+        expect(config).to have_key('metadata')
+      end
+
+      it 'omits metadata when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_container('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_container', 'minimal')
+        expect(config).not_to have_key('metadata')
       end
       it 'includes storage_account_id when provided' do
         synth = create_synthesizer

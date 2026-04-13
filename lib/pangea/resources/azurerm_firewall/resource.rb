@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::FirewallAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku_name, :sku_tier],
-      map_present: [:dns_servers, :firewall_policy_id, :ip_configuration, :management_ip_configuration, :private_ip_ranges, :tags, :virtual_hub, :zones]
+      map_present: [:dns_servers, :firewall_policy_id, :ip_configuration, :management_ip_configuration, :private_ip_ranges, :tags, :threat_intel_mode, :virtual_hub, :zones],
+      map_bool: [:dns_proxy_enabled]
   end
   module Azure
     include AzureFirewall

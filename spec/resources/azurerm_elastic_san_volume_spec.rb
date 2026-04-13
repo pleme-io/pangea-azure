@@ -61,7 +61,7 @@ RSpec.describe Pangea::Resources::AzureElasticSanVolume do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ create_source: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ create_source: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -78,7 +78,7 @@ RSpec.describe Pangea::Resources::AzureElasticSanVolume do
       it 'includes create_source when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_elastic_san_volume('opt', required_attrs.merge(create_source: [{ 'key1' => 'val1' }]))
+        synth.azurerm_elastic_san_volume('opt', required_attrs.merge(create_source: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_elastic_san_volume', 'opt')
         expect(config).to have_key('create_source')

@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::LogAnalyticsLinkedServiceAttributes,
       outputs: { id: :id },
       map: [:resource_group_name, :workspace_id],
-      map_present: [:write_access_id]
+      map_present: [:read_access_id, :write_access_id]
   end
   module Azure
     include AzureLogAnalyticsLinkedService

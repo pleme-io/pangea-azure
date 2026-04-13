@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::SynapseSparkPoolAttributes,
       outputs: { id: :id },
       map: [:name, :node_size, :node_size_family, :spark_version, :synapse_workspace_id],
-      map_present: [:auto_pause, :auto_scale, :cache_size, :library_requirement, :max_executors, :min_executors, :spark_config, :spark_events_folder, :spark_log_folder, :tags],
+      map_present: [:auto_pause, :auto_scale, :cache_size, :library_requirement, :max_executors, :min_executors, :node_count, :spark_config, :spark_events_folder, :spark_log_folder, :tags],
       map_bool: [:compute_isolation_enabled, :dynamic_executor_allocation_enabled, :session_level_packages_enabled]
   end
   module Azure

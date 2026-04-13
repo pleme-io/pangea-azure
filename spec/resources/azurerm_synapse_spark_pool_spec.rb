@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSynapseSparkPool do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_pause: [{ 'key1' => 'val1' }], auto_scale: [{ 'key1' => 'val1' }], cache_size: 3.14, compute_isolation_enabled: true, dynamic_executor_allocation_enabled: true, library_requirement: [{ 'key1' => 'val1' }], max_executors: 3.14, min_executors: 3.14, session_level_packages_enabled: true, spark_config: [{ 'key1' => 'val1' }], spark_events_folder: 'test-value', spark_log_folder: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ auto_pause: { 'key1' => 'val1' }, auto_scale: { 'key1' => 'val1' }, cache_size: 3.14, compute_isolation_enabled: true, dynamic_executor_allocation_enabled: true, library_requirement: { 'key1' => 'val1' }, max_executors: 3.14, min_executors: 3.14, node_count: 3.14, session_level_packages_enabled: true, spark_config: { 'key1' => 'val1' }, spark_events_folder: 'test-value', spark_log_folder: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -72,6 +72,7 @@ RSpec.describe Pangea::Resources::AzureSynapseSparkPool do
         expect(config).to have_key('library_requirement')
         expect(config).to have_key('max_executors')
         expect(config).to have_key('min_executors')
+        expect(config).to have_key('node_count')
         expect(config).to have_key('session_level_packages_enabled')
         expect(config).to have_key('spark_config')
         expect(config).to have_key('spark_events_folder')
@@ -84,7 +85,7 @@ RSpec.describe Pangea::Resources::AzureSynapseSparkPool do
       it 'includes auto_pause when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_synapse_spark_pool('opt', required_attrs.merge(auto_pause: [{ 'key1' => 'val1' }]))
+        synth.azurerm_synapse_spark_pool('opt', required_attrs.merge(auto_pause: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_spark_pool', 'opt')
         expect(config).to have_key('auto_pause')
@@ -101,7 +102,7 @@ RSpec.describe Pangea::Resources::AzureSynapseSparkPool do
       it 'includes auto_scale when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_synapse_spark_pool('opt', required_attrs.merge(auto_scale: [{ 'key1' => 'val1' }]))
+        synth.azurerm_synapse_spark_pool('opt', required_attrs.merge(auto_scale: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_spark_pool', 'opt')
         expect(config).to have_key('auto_scale')
@@ -169,7 +170,7 @@ RSpec.describe Pangea::Resources::AzureSynapseSparkPool do
       it 'includes library_requirement when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_synapse_spark_pool('opt', required_attrs.merge(library_requirement: [{ 'key1' => 'val1' }]))
+        synth.azurerm_synapse_spark_pool('opt', required_attrs.merge(library_requirement: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_spark_pool', 'opt')
         expect(config).to have_key('library_requirement')
@@ -217,6 +218,23 @@ RSpec.describe Pangea::Resources::AzureSynapseSparkPool do
         config = validate_resource_structure(result, 'azurerm_synapse_spark_pool', 'minimal')
         expect(config).not_to have_key('min_executors')
       end
+      it 'includes node_count when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_synapse_spark_pool('opt', required_attrs.merge(node_count: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_synapse_spark_pool', 'opt')
+        expect(config).to have_key('node_count')
+      end
+
+      it 'omits node_count when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_synapse_spark_pool('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_synapse_spark_pool', 'minimal')
+        expect(config).not_to have_key('node_count')
+      end
       it 'includes session_level_packages_enabled when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -237,7 +255,7 @@ RSpec.describe Pangea::Resources::AzureSynapseSparkPool do
       it 'includes spark_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_synapse_spark_pool('opt', required_attrs.merge(spark_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_synapse_spark_pool('opt', required_attrs.merge(spark_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_synapse_spark_pool', 'opt')
         expect(config).to have_key('spark_config')

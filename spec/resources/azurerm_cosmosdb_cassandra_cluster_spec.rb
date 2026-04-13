@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbCassandraCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ authentication_method: 'test-value', client_certificate_pems: ['test-value'], external_gossip_certificate_pems: ['test-value'], external_seed_node_ip_addresses: ['test-value'], hours_between_backups: 3.14, identity: [{ 'key1' => 'val1' }], repair_enabled: true, tags: { 'key1' => 'val1' }, version: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ authentication_method: 'test-value', client_certificate_pems: ['test-value'], external_gossip_certificate_pems: ['test-value'], external_seed_node_ip_addresses: ['test-value'], hours_between_backups: 3.14, identity: { 'key1' => 'val1' }, repair_enabled: true, tags: { 'key1' => 'val1' }, version: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -152,7 +152,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbCassandraCluster do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_cosmosdb_cassandra_cluster('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_cosmosdb_cassandra_cluster('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cosmosdb_cassandra_cluster', 'opt')
         expect(config).to have_key('identity')

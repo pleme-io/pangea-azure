@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', network_profile: [{ 'key1' => 'val1' }], os_profile: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }], storage_profile_os_disk: [{ 'key1' => 'val1' }], upgrade_policy_mode: 'test-value' } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', network_profile: [{ 'key1' => 'val1' }], os_profile: { 'key1' => 'val1' }, resource_group_name: 'test-value', sku: { 'key1' => 'val1' }, storage_profile_os_disk: { 'key1' => 'val1' }, upgrade_policy_mode: 'test-value' } }
 
   describe ':azurerm_virtual_machine_scale_set' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ automatic_os_upgrade: true, boot_diagnostics: [{ 'key1' => 'val1' }], eviction_policy: 'test-value', extension: [{ 'key1' => 'val1' }], health_probe_id: 'test-value', identity: [{ 'key1' => 'val1' }], os_profile_linux_config: [{ 'key1' => 'val1' }], os_profile_secrets: [{ 'key1' => 'val1' }], os_profile_windows_config: [{ 'key1' => 'val1' }], overprovision: true, plan: [{ 'key1' => 'val1' }], priority: 'test-value', proximity_placement_group_id: 'test-value', rolling_upgrade_policy: [{ 'key1' => 'val1' }], single_placement_group: true, storage_profile_data_disk: [{ 'key1' => 'val1' }], storage_profile_image_reference: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' }, zones: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ automatic_os_upgrade: true, boot_diagnostics: { 'key1' => 'val1' }, eviction_policy: 'test-value', extension: [{ 'key1' => 'val1' }], health_probe_id: 'test-value', identity: { 'key1' => 'val1' }, license_type: 'test-value', os_profile_linux_config: { 'key1' => 'val1' }, os_profile_secrets: [{ 'key1' => 'val1' }], os_profile_windows_config: { 'key1' => 'val1' }, overprovision: true, plan: { 'key1' => 'val1' }, priority: 'test-value', proximity_placement_group_id: 'test-value', rolling_upgrade_policy: { 'key1' => 'val1' }, single_placement_group: true, storage_profile_data_disk: [{ 'key1' => 'val1' }], storage_profile_image_reference: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' }, zones: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,6 +70,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
         expect(config).to have_key('extension')
         expect(config).to have_key('health_probe_id')
         expect(config).to have_key('identity')
+        expect(config).to have_key('license_type')
         expect(config).to have_key('os_profile_linux_config')
         expect(config).to have_key('os_profile_secrets')
         expect(config).to have_key('os_profile_windows_config')
@@ -107,7 +108,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
       it 'includes boot_diagnostics when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(boot_diagnostics: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(boot_diagnostics: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('boot_diagnostics')
@@ -175,7 +176,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('identity')
@@ -189,10 +190,27 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'minimal')
         expect(config).not_to have_key('identity')
       end
+      it 'includes license_type when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(license_type: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'opt')
+        expect(config).to have_key('license_type')
+      end
+
+      it 'omits license_type when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_machine_scale_set('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'minimal')
+        expect(config).not_to have_key('license_type')
+      end
       it 'includes os_profile_linux_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(os_profile_linux_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(os_profile_linux_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('os_profile_linux_config')
@@ -226,7 +244,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
       it 'includes os_profile_windows_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(os_profile_windows_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(os_profile_windows_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('os_profile_windows_config')
@@ -260,7 +278,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
       it 'includes plan when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(plan: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(plan: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('plan')
@@ -311,7 +329,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
       it 'includes rolling_upgrade_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(rolling_upgrade_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(rolling_upgrade_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('rolling_upgrade_policy')
@@ -362,7 +380,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
       it 'includes storage_profile_image_reference when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(storage_profile_image_reference: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_scale_set('opt', required_attrs.merge(storage_profile_image_reference: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set', 'opt')
         expect(config).to have_key('storage_profile_image_reference')
@@ -459,10 +477,10 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['network_profile']).to be_a(Array)
-        expect(config['os_profile']).to be_a(Array)
+        expect(config['os_profile']).to be_a(Hash)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
-        expect(config['storage_profile_os_disk']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
+        expect(config['storage_profile_os_disk']).to be_a(Hash)
         expect(config['upgrade_policy_mode']).to be_a(String)
       end
     end
@@ -496,7 +514,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSet do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_virtual_machine_scale_set,
     method: :azurerm_virtual_machine_scale_set,
-    required_attrs: { location: 'test-value', name: 'test-value', network_profile: [{ 'key1' => 'val1' }], os_profile: [{ 'key1' => 'val1' }], resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }], storage_profile_os_disk: [{ 'key1' => 'val1' }], upgrade_policy_mode: 'test-value' },
+    required_attrs: { location: 'test-value', name: 'test-value', network_profile: [{ 'key1' => 'val1' }], os_profile: { 'key1' => 'val1' }, resource_group_name: 'test-value', sku: { 'key1' => 'val1' }, storage_profile_os_disk: { 'key1' => 'val1' }, upgrade_policy_mode: 'test-value' },
     expected_outputs: [:id, :license_type],
     sensitive_fields: [],
     immutable_fields: [],

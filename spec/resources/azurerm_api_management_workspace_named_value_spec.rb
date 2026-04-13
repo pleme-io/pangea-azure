@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementWorkspaceNamedValue do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ secret: true, tags: ['test-value'], value: 'test-value', value_from_key_vault: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ secret: true, tags: ['test-value'], value: 'test-value', value_from_key_vault: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -113,7 +113,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementWorkspaceNamedValue do
       it 'includes value_from_key_vault when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_api_management_workspace_named_value('opt', required_attrs.merge(value_from_key_vault: [{ 'key1' => 'val1' }]))
+        synth.azurerm_api_management_workspace_named_value('opt', required_attrs.merge(value_from_key_vault: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_api_management_workspace_named_value', 'opt')
         expect(config).to have_key('value_from_key_vault')

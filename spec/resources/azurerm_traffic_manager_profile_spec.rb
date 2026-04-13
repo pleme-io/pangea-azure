@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureTrafficManagerProfile do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { dns_config: [{ 'key1' => 'val1' }], monitor_config: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value', traffic_routing_method: 'test-value' } }
+  let(:required_attrs) { { dns_config: { 'key1' => 'val1' }, monitor_config: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value', traffic_routing_method: 'test-value' } }
 
   describe ':azurerm_traffic_manager_profile' do
     context 'with required attributes only' do
@@ -164,8 +164,8 @@ RSpec.describe Pangea::Resources::AzureTrafficManagerProfile do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_traffic_manager_profile', 'typed')
-        expect(config['dns_config']).to be_a(Array)
-        expect(config['monitor_config']).to be_a(Array)
+        expect(config['dns_config']).to be_a(Hash)
+        expect(config['monitor_config']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['traffic_routing_method']).to be_a(String)
@@ -201,7 +201,7 @@ RSpec.describe Pangea::Resources::AzureTrafficManagerProfile do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_traffic_manager_profile,
     method: :azurerm_traffic_manager_profile,
-    required_attrs: { dns_config: [{ 'key1' => 'val1' }], monitor_config: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value', traffic_routing_method: 'test-value' },
+    required_attrs: { dns_config: { 'key1' => 'val1' }, monitor_config: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value', traffic_routing_method: 'test-value' },
     expected_outputs: [:id, :fqdn],
     sensitive_fields: [],
     immutable_fields: [],

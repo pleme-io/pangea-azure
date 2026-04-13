@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::CosmosdbMongoDatabaseAttributes,
       outputs: { id: :id },
       map: [:account_name, :name, :resource_group_name],
-      map_present: [:autoscale_settings]
+      map_present: [:autoscale_settings, :throughput]
   end
   module Azure
     include AzureCosmosdbMongoDatabase

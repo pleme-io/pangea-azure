@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::LighthouseDefinitionAttributes,
       outputs: { id: :id },
       map: [:authorization, :managing_tenant_id, :name, :scope],
-      map_present: [:description, :eligible_authorization, :plan]
+      map_present: [:description, :eligible_authorization, :lighthouse_definition_id, :plan]
   end
   module Azure
     include AzureLighthouseDefinition

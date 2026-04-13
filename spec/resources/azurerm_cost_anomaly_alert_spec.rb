@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureCostAnomalyAlert do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ message: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ message: 'test-value', notification_email: 'test-value', subscription_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -67,6 +67,8 @@ RSpec.describe Pangea::Resources::AzureCostAnomalyAlert do
 
         config = validate_resource_structure(result, 'azurerm_cost_anomaly_alert', 'full')
         expect(config).to have_key('message')
+        expect(config).to have_key('notification_email')
+        expect(config).to have_key('subscription_id')
       end
     end
 
@@ -87,6 +89,40 @@ RSpec.describe Pangea::Resources::AzureCostAnomalyAlert do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_cost_anomaly_alert', 'minimal')
         expect(config).not_to have_key('message')
+      end
+      it 'includes notification_email when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cost_anomaly_alert('opt', required_attrs.merge(notification_email: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cost_anomaly_alert', 'opt')
+        expect(config).to have_key('notification_email')
+      end
+
+      it 'omits notification_email when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cost_anomaly_alert('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cost_anomaly_alert', 'minimal')
+        expect(config).not_to have_key('notification_email')
+      end
+      it 'includes subscription_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cost_anomaly_alert('opt', required_attrs.merge(subscription_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cost_anomaly_alert', 'opt')
+        expect(config).to have_key('subscription_id')
+      end
+
+      it 'omits subscription_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cost_anomaly_alert('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cost_anomaly_alert', 'minimal')
+        expect(config).not_to have_key('subscription_id')
       end
     end
 

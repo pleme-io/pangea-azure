@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::KustoIothubDataConnectionAttributes,
       outputs: { id: :id },
       map: [:cluster_name, :consumer_group, :database_name, :iothub_id, :location, :name, :resource_group_name, :shared_access_policy_name],
-      map_present: [:data_format, :database_routing_type, :event_system_properties, :mapping_rule_name, :table_name]
+      map_present: [:data_format, :database_routing_type, :event_system_properties, :mapping_rule_name, :retrieval_start_date, :table_name]
   end
   module Azure
     include AzureKustoIothubDataConnection

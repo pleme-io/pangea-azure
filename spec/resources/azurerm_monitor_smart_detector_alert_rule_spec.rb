@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMonitorSmartDetectorAlertRule do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { action_group: [{ 'key1' => 'val1' }], detector_type: 'test-value', frequency: 'test-value', name: 'test-value', resource_group_name: 'test-value', scope_resource_ids: ['test-value'], severity: 'test-value' } }
+  let(:required_attrs) { { action_group: { 'key1' => 'val1' }, detector_type: 'test-value', frequency: 'test-value', name: 'test-value', resource_group_name: 'test-value', scope_resource_ids: ['test-value'], severity: 'test-value' } }
 
   describe ':azurerm_monitor_smart_detector_alert_rule' do
     context 'with required attributes only' do
@@ -151,7 +151,7 @@ RSpec.describe Pangea::Resources::AzureMonitorSmartDetectorAlertRule do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_monitor_smart_detector_alert_rule', 'typed')
-        expect(config['action_group']).to be_a(Array)
+        expect(config['action_group']).to be_a(Hash)
         expect(config['detector_type']).to be_a(String)
         expect(config['frequency']).to be_a(String)
         expect(config['name']).to be_a(String)
@@ -190,7 +190,7 @@ RSpec.describe Pangea::Resources::AzureMonitorSmartDetectorAlertRule do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_monitor_smart_detector_alert_rule,
     method: :azurerm_monitor_smart_detector_alert_rule,
-    required_attrs: { action_group: [{ 'key1' => 'val1' }], detector_type: 'test-value', frequency: 'test-value', name: 'test-value', resource_group_name: 'test-value', scope_resource_ids: ['test-value'], severity: 'test-value' },
+    required_attrs: { action_group: { 'key1' => 'val1' }, detector_type: 'test-value', frequency: 'test-value', name: 'test-value', resource_group_name: 'test-value', scope_resource_ids: ['test-value'], severity: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

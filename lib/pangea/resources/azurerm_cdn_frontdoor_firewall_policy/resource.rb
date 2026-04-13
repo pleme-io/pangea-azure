@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::CdnFrontdoorFirewallPolicyAttributes,
       outputs: { id: :id },
       map: [:mode, :name, :resource_group_name, :sku_name],
-      map_present: [:custom_block_response_body, :custom_block_response_status_code, :custom_rule, :log_scrubbing, :managed_rule, :redirect_url, :tags],
+      map_present: [:captcha_cookie_expiration_in_minutes, :custom_block_response_body, :custom_block_response_status_code, :custom_rule, :js_challenge_cookie_expiration_in_minutes, :log_scrubbing, :managed_rule, :redirect_url, :tags],
       map_bool: [:enabled, :request_body_check_enabled]
   end
   module Azure

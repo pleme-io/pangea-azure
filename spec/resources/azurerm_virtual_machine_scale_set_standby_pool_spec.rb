@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSetStandbyPool do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { attached_virtual_machine_scale_set_id: 'test-value', elasticity_profile: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', virtual_machine_state: 'test-value' } }
+  let(:required_attrs) { { attached_virtual_machine_scale_set_id: 'test-value', elasticity_profile: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', virtual_machine_state: 'test-value' } }
 
   describe ':azurerm_virtual_machine_scale_set_standby_pool' do
     context 'with required attributes only' do
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSetStandbyPool do
 
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set_standby_pool', 'typed')
         expect(config['attached_virtual_machine_scale_set_id']).to be_a(String)
-        expect(config['elasticity_profile']).to be_a(Array)
+        expect(config['elasticity_profile']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -121,7 +121,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSetStandbyPool do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_virtual_machine_scale_set_standby_pool,
     method: :azurerm_virtual_machine_scale_set_standby_pool,
-    required_attrs: { attached_virtual_machine_scale_set_id: 'test-value', elasticity_profile: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', virtual_machine_state: 'test-value' },
+    required_attrs: { attached_virtual_machine_scale_set_id: 'test-value', elasticity_profile: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', virtual_machine_state: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

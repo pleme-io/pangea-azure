@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureLbRule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ backend_address_pool_ids: ['test-value'], disable_outbound_snat: true, idle_timeout_in_minutes: 3.14, load_distribution: 'test-value', probe_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ backend_address_pool_ids: ['test-value'], disable_outbound_snat: true, enable_floating_ip: true, enable_tcp_reset: true, floating_ip_enabled: true, idle_timeout_in_minutes: 3.14, load_distribution: 'test-value', probe_id: 'test-value', tcp_reset_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,9 +74,13 @@ RSpec.describe Pangea::Resources::AzureLbRule do
         config = validate_resource_structure(result, 'azurerm_lb_rule', 'full')
         expect(config).to have_key('backend_address_pool_ids')
         expect(config).to have_key('disable_outbound_snat')
+        expect(config).to have_key('enable_floating_ip')
+        expect(config).to have_key('enable_tcp_reset')
+        expect(config).to have_key('floating_ip_enabled')
         expect(config).to have_key('idle_timeout_in_minutes')
         expect(config).to have_key('load_distribution')
         expect(config).to have_key('probe_id')
+        expect(config).to have_key('tcp_reset_enabled')
       end
     end
 
@@ -114,6 +118,57 @@ RSpec.describe Pangea::Resources::AzureLbRule do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_lb_rule', 'minimal')
         expect(config).not_to have_key('disable_outbound_snat')
+      end
+      it 'includes enable_floating_ip when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb_rule('opt', required_attrs.merge(enable_floating_ip: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb_rule', 'opt')
+        expect(config).to have_key('enable_floating_ip')
+      end
+
+      it 'omits enable_floating_ip when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb_rule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb_rule', 'minimal')
+        expect(config).not_to have_key('enable_floating_ip')
+      end
+      it 'includes enable_tcp_reset when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb_rule('opt', required_attrs.merge(enable_tcp_reset: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb_rule', 'opt')
+        expect(config).to have_key('enable_tcp_reset')
+      end
+
+      it 'omits enable_tcp_reset when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb_rule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb_rule', 'minimal')
+        expect(config).not_to have_key('enable_tcp_reset')
+      end
+      it 'includes floating_ip_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb_rule('opt', required_attrs.merge(floating_ip_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb_rule', 'opt')
+        expect(config).to have_key('floating_ip_enabled')
+      end
+
+      it 'omits floating_ip_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb_rule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb_rule', 'minimal')
+        expect(config).not_to have_key('floating_ip_enabled')
       end
       it 'includes idle_timeout_in_minutes when provided' do
         synth = create_synthesizer
@@ -166,6 +221,23 @@ RSpec.describe Pangea::Resources::AzureLbRule do
         config = validate_resource_structure(result, 'azurerm_lb_rule', 'minimal')
         expect(config).not_to have_key('probe_id')
       end
+      it 'includes tcp_reset_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb_rule('opt', required_attrs.merge(tcp_reset_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb_rule', 'opt')
+        expect(config).to have_key('tcp_reset_enabled')
+      end
+
+      it 'omits tcp_reset_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_lb_rule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_lb_rule', 'minimal')
+        expect(config).not_to have_key('tcp_reset_enabled')
+      end
     end
 
     context 'boolean fields' do
@@ -178,6 +250,50 @@ RSpec.describe Pangea::Resources::AzureLbRule do
           result = normalize_synthesis(synth.synthesis)
           config = validate_resource_structure(result, 'azurerm_lb_rule', "bool_#{val}")
           expect(config['disable_outbound_snat']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts enable_floating_ip=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enable_floating_ip: val)
+          synth.azurerm_lb_rule("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_lb_rule', "bool_#{val}")
+          expect(config['enable_floating_ip']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts enable_tcp_reset=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enable_tcp_reset: val)
+          synth.azurerm_lb_rule("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_lb_rule', "bool_#{val}")
+          expect(config['enable_tcp_reset']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts floating_ip_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(floating_ip_enabled: val)
+          synth.azurerm_lb_rule("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_lb_rule', "bool_#{val}")
+          expect(config['floating_ip_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts tcp_reset_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(tcp_reset_enabled: val)
+          synth.azurerm_lb_rule("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_lb_rule', "bool_#{val}")
+          expect(config['tcp_reset_enabled']).to eq(val)
         end
       end
     end
@@ -232,5 +348,5 @@ RSpec.describe Pangea::Resources::AzureLbRule do
     expected_outputs: [:id, :enable_floating_ip, :enable_tcp_reset, :floating_ip_enabled, :frontend_ip_configuration_id, :tcp_reset_enabled],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: [:disable_outbound_snat]
+    boolean_fields: [:disable_outbound_snat, :enable_floating_ip, :enable_tcp_reset, :floating_ip_enabled, :tcp_reset_enabled]
 end

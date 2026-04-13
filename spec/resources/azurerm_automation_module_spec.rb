@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureAutomationModule do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { automation_account_name: 'test-value', module_link: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { automation_account_name: 'test-value', module_link: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_automation_module' do
     context 'with required attributes only' do
@@ -50,7 +50,7 @@ RSpec.describe Pangea::Resources::AzureAutomationModule do
 
         config = validate_resource_structure(result, 'azurerm_automation_module', 'typed')
         expect(config['automation_account_name']).to be_a(String)
-        expect(config['module_link']).to be_a(Array)
+        expect(config['module_link']).to be_a(Hash)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
       end
@@ -85,7 +85,7 @@ RSpec.describe Pangea::Resources::AzureAutomationModule do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_automation_module,
     method: :azurerm_automation_module,
-    required_attrs: { automation_account_name: 'test-value', module_link: [{ 'key1' => 'val1' }], name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { automation_account_name: 'test-value', module_link: { 'key1' => 'val1' }, name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

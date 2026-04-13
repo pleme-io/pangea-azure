@@ -14,8 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::MssqlManagedInstanceAttributes,
       outputs: { id: :id },
       map: [:license_type, :location, :name, :resource_group_name, :sku_name, :storage_size_in_gb, :subnet_id, :vcores],
-      map_present: [:administrator_login_password, :azure_active_directory_administrator, :collation, :database_format, :dns_zone_partner_id, :hybrid_secondary_usage, :identity, :maintenance_configuration_name, :minimum_tls_version, :service_principal_type, :storage_account_type, :tags, :timezone_id],
-      map_bool: [:public_data_endpoint_enabled, :zone_redundant_enabled]
+      map_present: [:administrator_login, :administrator_login_password, :azure_active_directory_administrator, :collation, :database_format, :dns_zone_partner_id, :hybrid_secondary_usage, :identity, :maintenance_configuration_name, :minimum_tls_version, :proxy_override, :service_principal_type, :storage_account_type, :tags, :timezone_id],
+      map_bool: [:general_purpose_v2_enabled, :public_data_endpoint_enabled, :zone_redundant_enabled]
   end
   module Azure
     include AzureMssqlManagedInstance

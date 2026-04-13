@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::TrafficManagerNestedEndpointAttributes,
       outputs: { id: :id },
       map: [:minimum_child_endpoints, :name, :profile_id, :target_resource_id],
-      map_present: [:custom_header, :geo_mappings, :minimum_required_child_endpoints_ipv4, :minimum_required_child_endpoints_ipv6, :subnet, :weight],
+      map_present: [:custom_header, :endpoint_location, :geo_mappings, :minimum_required_child_endpoints_ipv4, :minimum_required_child_endpoints_ipv6, :priority, :subnet, :weight],
       map_bool: [:enabled]
   end
   module Azure

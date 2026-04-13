@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureApiManagementProductPolicy do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ xml_link: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ xml_content: 'test-value', xml_link: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,11 +64,29 @@ RSpec.describe Pangea::Resources::AzureApiManagementProductPolicy do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_api_management_product_policy', 'full')
+        expect(config).to have_key('xml_content')
         expect(config).to have_key('xml_link')
       end
     end
 
     context 'optional attributes' do
+      it 'includes xml_content when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_product_policy('opt', required_attrs.merge(xml_content: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_product_policy', 'opt')
+        expect(config).to have_key('xml_content')
+      end
+
+      it 'omits xml_content when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_api_management_product_policy('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_api_management_product_policy', 'minimal')
+        expect(config).not_to have_key('xml_content')
+      end
       it 'includes xml_link when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

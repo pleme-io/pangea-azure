@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::MssqlServerExtendedAuditingPolicyAttributes,
       outputs: { id: :id },
       map: [:server_id],
-      map_present: [:predicate_expression, :retention_in_days, :storage_account_access_key, :storage_account_subscription_id, :storage_endpoint],
+      map_present: [:audit_actions_and_groups, :predicate_expression, :retention_in_days, :storage_account_access_key, :storage_account_subscription_id, :storage_endpoint],
       map_bool: [:enabled, :log_monitoring_enabled, :storage_account_access_key_is_secondary]
   end
   module Azure

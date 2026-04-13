@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureAutomationPowershell72Module do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { automation_account_id: 'test-value', module_link: [{ 'key1' => 'val1' }], name: 'test-value' } }
+  let(:required_attrs) { { automation_account_id: 'test-value', module_link: { 'key1' => 'val1' }, name: 'test-value' } }
 
   describe ':azurerm_automation_powershell72_module' do
     context 'with required attributes only' do
@@ -84,7 +84,7 @@ RSpec.describe Pangea::Resources::AzureAutomationPowershell72Module do
 
         config = validate_resource_structure(result, 'azurerm_automation_powershell72_module', 'typed')
         expect(config['automation_account_id']).to be_a(String)
-        expect(config['module_link']).to be_a(Array)
+        expect(config['module_link']).to be_a(Hash)
         expect(config['name']).to be_a(String)
       end
     end
@@ -118,7 +118,7 @@ RSpec.describe Pangea::Resources::AzureAutomationPowershell72Module do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_automation_powershell72_module,
     method: :azurerm_automation_powershell72_module,
-    required_attrs: { automation_account_id: 'test-value', module_link: [{ 'key1' => 'val1' }], name: 'test-value' },
+    required_attrs: { automation_account_id: 'test-value', module_link: { 'key1' => 'val1' }, name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

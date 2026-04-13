@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::MssqlElasticpoolAttributes,
       outputs: { id: :id },
       map: [:location, :name, :per_database_settings, :resource_group_name, :server_name, :sku],
-      map_present: [:maintenance_configuration_name, :tags],
+      map_present: [:enclave_type, :high_availability_replica_count, :license_type, :maintenance_configuration_name, :max_size_bytes, :max_size_gb, :tags],
       map_bool: [:zone_redundant]
   end
   module Azure

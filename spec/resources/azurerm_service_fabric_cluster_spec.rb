@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricCluster do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ add_on_features: ['test-value'], azure_active_directory: [{ 'key1' => 'val1' }], certificate: [{ 'key1' => 'val1' }], certificate_common_names: [{ 'key1' => 'val1' }], client_certificate_common_name: [{ 'key1' => 'val1' }], client_certificate_thumbprint: [{ 'key1' => 'val1' }], diagnostics_config: [{ 'key1' => 'val1' }], fabric_settings: [{ 'key1' => 'val1' }], reverse_proxy_certificate: [{ 'key1' => 'val1' }], reverse_proxy_certificate_common_names: [{ 'key1' => 'val1' }], service_fabric_zonal_upgrade_mode: 'test-value', tags: { 'key1' => 'val1' }, upgrade_policy: [{ 'key1' => 'val1' }], vmss_zonal_upgrade_mode: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ add_on_features: ['test-value'], azure_active_directory: { 'key1' => 'val1' }, certificate: { 'key1' => 'val1' }, certificate_common_names: { 'key1' => 'val1' }, client_certificate_common_name: [{ 'key1' => 'val1' }], client_certificate_thumbprint: [{ 'key1' => 'val1' }], cluster_code_version: 'test-value', diagnostics_config: { 'key1' => 'val1' }, fabric_settings: [{ 'key1' => 'val1' }], reverse_proxy_certificate: { 'key1' => 'val1' }, reverse_proxy_certificate_common_names: { 'key1' => 'val1' }, service_fabric_zonal_upgrade_mode: 'test-value', tags: { 'key1' => 'val1' }, upgrade_policy: { 'key1' => 'val1' }, vmss_zonal_upgrade_mode: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -72,6 +72,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricCluster do
         expect(config).to have_key('certificate_common_names')
         expect(config).to have_key('client_certificate_common_name')
         expect(config).to have_key('client_certificate_thumbprint')
+        expect(config).to have_key('cluster_code_version')
         expect(config).to have_key('diagnostics_config')
         expect(config).to have_key('fabric_settings')
         expect(config).to have_key('reverse_proxy_certificate')
@@ -104,7 +105,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricCluster do
       it 'includes azure_active_directory when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(azure_active_directory: [{ 'key1' => 'val1' }]))
+        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(azure_active_directory: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'opt')
         expect(config).to have_key('azure_active_directory')
@@ -121,7 +122,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricCluster do
       it 'includes certificate when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(certificate: [{ 'key1' => 'val1' }]))
+        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(certificate: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'opt')
         expect(config).to have_key('certificate')
@@ -138,7 +139,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricCluster do
       it 'includes certificate_common_names when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(certificate_common_names: [{ 'key1' => 'val1' }]))
+        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(certificate_common_names: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'opt')
         expect(config).to have_key('certificate_common_names')
@@ -186,10 +187,27 @@ RSpec.describe Pangea::Resources::AzureServiceFabricCluster do
         config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'minimal')
         expect(config).not_to have_key('client_certificate_thumbprint')
       end
+      it 'includes cluster_code_version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(cluster_code_version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'opt')
+        expect(config).to have_key('cluster_code_version')
+      end
+
+      it 'omits cluster_code_version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_service_fabric_cluster('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'minimal')
+        expect(config).not_to have_key('cluster_code_version')
+      end
       it 'includes diagnostics_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(diagnostics_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(diagnostics_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'opt')
         expect(config).to have_key('diagnostics_config')
@@ -223,7 +241,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricCluster do
       it 'includes reverse_proxy_certificate when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(reverse_proxy_certificate: [{ 'key1' => 'val1' }]))
+        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(reverse_proxy_certificate: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'opt')
         expect(config).to have_key('reverse_proxy_certificate')
@@ -240,7 +258,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricCluster do
       it 'includes reverse_proxy_certificate_common_names when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(reverse_proxy_certificate_common_names: [{ 'key1' => 'val1' }]))
+        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(reverse_proxy_certificate_common_names: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'opt')
         expect(config).to have_key('reverse_proxy_certificate_common_names')
@@ -291,7 +309,7 @@ RSpec.describe Pangea::Resources::AzureServiceFabricCluster do
       it 'includes upgrade_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(upgrade_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_service_fabric_cluster('opt', required_attrs.merge(upgrade_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_service_fabric_cluster', 'opt')
         expect(config).to have_key('upgrade_policy')

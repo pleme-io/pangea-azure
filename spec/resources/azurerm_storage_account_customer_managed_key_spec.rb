@@ -65,7 +65,7 @@ RSpec.describe Pangea::Resources::AzureStorageAccountCustomerManagedKey do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ federated_identity_client_id: 'test-value', user_assigned_identity_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ federated_identity_client_id: 'test-value', key_name: 'test-value', key_vault_id: 'test-value', key_vault_key_id: 'test-value', key_vault_uri: 'test-value', key_version: 'test-value', managed_hsm_key_id: 'test-value', user_assigned_identity_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -75,6 +75,12 @@ RSpec.describe Pangea::Resources::AzureStorageAccountCustomerManagedKey do
 
         config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'full')
         expect(config).to have_key('federated_identity_client_id')
+        expect(config).to have_key('key_name')
+        expect(config).to have_key('key_vault_id')
+        expect(config).to have_key('key_vault_key_id')
+        expect(config).to have_key('key_vault_uri')
+        expect(config).to have_key('key_version')
+        expect(config).to have_key('managed_hsm_key_id')
         expect(config).to have_key('user_assigned_identity_id')
       end
     end
@@ -96,6 +102,108 @@ RSpec.describe Pangea::Resources::AzureStorageAccountCustomerManagedKey do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'minimal')
         expect(config).not_to have_key('federated_identity_client_id')
+      end
+      it 'includes key_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('opt', required_attrs.merge(key_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'opt')
+        expect(config).to have_key('key_name')
+      end
+
+      it 'omits key_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'minimal')
+        expect(config).not_to have_key('key_name')
+      end
+      it 'includes key_vault_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('opt', required_attrs.merge(key_vault_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'opt')
+        expect(config).to have_key('key_vault_id')
+      end
+
+      it 'omits key_vault_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'minimal')
+        expect(config).not_to have_key('key_vault_id')
+      end
+      it 'includes key_vault_key_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('opt', required_attrs.merge(key_vault_key_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'opt')
+        expect(config).to have_key('key_vault_key_id')
+      end
+
+      it 'omits key_vault_key_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'minimal')
+        expect(config).not_to have_key('key_vault_key_id')
+      end
+      it 'includes key_vault_uri when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('opt', required_attrs.merge(key_vault_uri: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'opt')
+        expect(config).to have_key('key_vault_uri')
+      end
+
+      it 'omits key_vault_uri when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'minimal')
+        expect(config).not_to have_key('key_vault_uri')
+      end
+      it 'includes key_version when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('opt', required_attrs.merge(key_version: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'opt')
+        expect(config).to have_key('key_version')
+      end
+
+      it 'omits key_version when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'minimal')
+        expect(config).not_to have_key('key_version')
+      end
+      it 'includes managed_hsm_key_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('opt', required_attrs.merge(managed_hsm_key_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'opt')
+        expect(config).to have_key('managed_hsm_key_id')
+      end
+
+      it 'omits managed_hsm_key_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_account_customer_managed_key('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_account_customer_managed_key', 'minimal')
+        expect(config).not_to have_key('managed_hsm_key_id')
       end
       it 'includes user_assigned_identity_id when provided' do
         synth = create_synthesizer

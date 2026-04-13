@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureMonitorScheduledQueryRulesAlertV2 do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ action: [{ 'key1' => 'val1' }], auto_mitigation_enabled: true, description: 'test-value', display_name: 'test-value', enabled: true, identity: [{ 'key1' => 'val1' }], mute_actions_after_alert_duration: 'test-value', query_time_range_override: 'test-value', skip_query_validation: true, tags: { 'key1' => 'val1' }, target_resource_types: ['test-value'], workspace_alerts_storage_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ action: { 'key1' => 'val1' }, auto_mitigation_enabled: true, description: 'test-value', display_name: 'test-value', enabled: true, identity: { 'key1' => 'val1' }, mute_actions_after_alert_duration: 'test-value', query_time_range_override: 'test-value', skip_query_validation: true, tags: { 'key1' => 'val1' }, target_resource_types: ['test-value'], workspace_alerts_storage_enabled: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -87,7 +87,7 @@ RSpec.describe Pangea::Resources::AzureMonitorScheduledQueryRulesAlertV2 do
       it 'includes action when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_scheduled_query_rules_alert_v2('opt', required_attrs.merge(action: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_scheduled_query_rules_alert_v2('opt', required_attrs.merge(action: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_scheduled_query_rules_alert_v2', 'opt')
         expect(config).to have_key('action')
@@ -172,7 +172,7 @@ RSpec.describe Pangea::Resources::AzureMonitorScheduledQueryRulesAlertV2 do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_monitor_scheduled_query_rules_alert_v2('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_monitor_scheduled_query_rules_alert_v2('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_monitor_scheduled_query_rules_alert_v2', 'opt')
         expect(config).to have_key('identity')

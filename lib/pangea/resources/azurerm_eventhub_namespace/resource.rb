@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::EventhubNamespaceAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku],
-      map_present: [:capacity, :dedicated_cluster_id, :identity, :maximum_throughput_units, :minimum_tls_version, :tags],
+      map_present: [:capacity, :dedicated_cluster_id, :identity, :maximum_throughput_units, :minimum_tls_version, :network_rulesets, :tags],
       map_bool: [:auto_inflate_enabled, :local_authentication_enabled, :public_network_access_enabled]
   end
   module Azure

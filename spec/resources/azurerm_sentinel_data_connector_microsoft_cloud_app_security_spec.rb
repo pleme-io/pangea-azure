@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorMicrosoftCloudAppSec
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ alerts_enabled: true, discovery_logs_enabled: true }) }
+      let(:all_attrs) { required_attrs.merge({ alerts_enabled: true, discovery_logs_enabled: true, tenant_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,6 +66,7 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorMicrosoftCloudAppSec
         config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_microsoft_cloud_app_security', 'full')
         expect(config).to have_key('alerts_enabled')
         expect(config).to have_key('discovery_logs_enabled')
+        expect(config).to have_key('tenant_id')
       end
     end
 
@@ -103,6 +104,23 @@ RSpec.describe Pangea::Resources::AzureSentinelDataConnectorMicrosoftCloudAppSec
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_microsoft_cloud_app_security', 'minimal')
         expect(config).not_to have_key('discovery_logs_enabled')
+      end
+      it 'includes tenant_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_microsoft_cloud_app_security('opt', required_attrs.merge(tenant_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_microsoft_cloud_app_security', 'opt')
+        expect(config).to have_key('tenant_id')
+      end
+
+      it 'omits tenant_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_sentinel_data_connector_microsoft_cloud_app_security('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_sentinel_data_connector_microsoft_cloud_app_security', 'minimal')
+        expect(config).not_to have_key('tenant_id')
       end
     end
 

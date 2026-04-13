@@ -75,7 +75,7 @@ RSpec.describe Pangea::Resources::AzureKeyVaultKey do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ expiration_date: 'test-value', key_size: 3.14, not_before_date: 'test-value', rotation_policy: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ curve: 'test-value', expiration_date: 'test-value', key_size: 3.14, not_before_date: 'test-value', rotation_policy: { 'key1' => 'val1' }, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -84,6 +84,7 @@ RSpec.describe Pangea::Resources::AzureKeyVaultKey do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_key_vault_key', 'full')
+        expect(config).to have_key('curve')
         expect(config).to have_key('expiration_date')
         expect(config).to have_key('key_size')
         expect(config).to have_key('not_before_date')
@@ -93,6 +94,23 @@ RSpec.describe Pangea::Resources::AzureKeyVaultKey do
     end
 
     context 'optional attributes' do
+      it 'includes curve when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_key_vault_key('opt', required_attrs.merge(curve: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_key_vault_key', 'opt')
+        expect(config).to have_key('curve')
+      end
+
+      it 'omits curve when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_key_vault_key('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_key_vault_key', 'minimal')
+        expect(config).not_to have_key('curve')
+      end
       it 'includes expiration_date when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -147,7 +165,7 @@ RSpec.describe Pangea::Resources::AzureKeyVaultKey do
       it 'includes rotation_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_key_vault_key('opt', required_attrs.merge(rotation_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_key_vault_key('opt', required_attrs.merge(rotation_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_key_vault_key', 'opt')
         expect(config).to have_key('rotation_policy')

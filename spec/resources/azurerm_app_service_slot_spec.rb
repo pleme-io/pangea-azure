@@ -63,7 +63,7 @@ RSpec.describe Pangea::Resources::AzureAppServiceSlot do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auth_settings: [{ 'key1' => 'val1' }], connection_string: [{ 'key1' => 'val1' }], enabled: true, https_only: true, identity: [{ 'key1' => 'val1' }], logs: [{ 'key1' => 'val1' }], site_config: [{ 'key1' => 'val1' }], storage_account: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ app_settings: { 'key1' => 'val1' }, auth_settings: { 'key1' => 'val1' }, client_affinity_enabled: true, connection_string: [{ 'key1' => 'val1' }], enabled: true, https_only: true, identity: { 'key1' => 'val1' }, key_vault_reference_identity_id: 'test-value', logs: { 'key1' => 'val1' }, site_config: { 'key1' => 'val1' }, storage_account: [{ 'key1' => 'val1' }], tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -72,11 +72,14 @@ RSpec.describe Pangea::Resources::AzureAppServiceSlot do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_app_service_slot', 'full')
+        expect(config).to have_key('app_settings')
         expect(config).to have_key('auth_settings')
+        expect(config).to have_key('client_affinity_enabled')
         expect(config).to have_key('connection_string')
         expect(config).to have_key('enabled')
         expect(config).to have_key('https_only')
         expect(config).to have_key('identity')
+        expect(config).to have_key('key_vault_reference_identity_id')
         expect(config).to have_key('logs')
         expect(config).to have_key('site_config')
         expect(config).to have_key('storage_account')
@@ -85,10 +88,27 @@ RSpec.describe Pangea::Resources::AzureAppServiceSlot do
     end
 
     context 'optional attributes' do
+      it 'includes app_settings when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_slot('opt', required_attrs.merge(app_settings: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_slot', 'opt')
+        expect(config).to have_key('app_settings')
+      end
+
+      it 'omits app_settings when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_slot('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_slot', 'minimal')
+        expect(config).not_to have_key('app_settings')
+      end
       it 'includes auth_settings when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service_slot('opt', required_attrs.merge(auth_settings: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service_slot('opt', required_attrs.merge(auth_settings: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_slot', 'opt')
         expect(config).to have_key('auth_settings')
@@ -101,6 +121,23 @@ RSpec.describe Pangea::Resources::AzureAppServiceSlot do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_slot', 'minimal')
         expect(config).not_to have_key('auth_settings')
+      end
+      it 'includes client_affinity_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_slot('opt', required_attrs.merge(client_affinity_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_slot', 'opt')
+        expect(config).to have_key('client_affinity_enabled')
+      end
+
+      it 'omits client_affinity_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_slot('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_slot', 'minimal')
+        expect(config).not_to have_key('client_affinity_enabled')
       end
       it 'includes connection_string when provided' do
         synth = create_synthesizer
@@ -156,7 +193,7 @@ RSpec.describe Pangea::Resources::AzureAppServiceSlot do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service_slot('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service_slot('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_slot', 'opt')
         expect(config).to have_key('identity')
@@ -170,10 +207,27 @@ RSpec.describe Pangea::Resources::AzureAppServiceSlot do
         config = validate_resource_structure(result, 'azurerm_app_service_slot', 'minimal')
         expect(config).not_to have_key('identity')
       end
+      it 'includes key_vault_reference_identity_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_slot('opt', required_attrs.merge(key_vault_reference_identity_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_slot', 'opt')
+        expect(config).to have_key('key_vault_reference_identity_id')
+      end
+
+      it 'omits key_vault_reference_identity_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_slot('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_slot', 'minimal')
+        expect(config).not_to have_key('key_vault_reference_identity_id')
+      end
       it 'includes logs when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service_slot('opt', required_attrs.merge(logs: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service_slot('opt', required_attrs.merge(logs: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_slot', 'opt')
         expect(config).to have_key('logs')
@@ -190,7 +244,7 @@ RSpec.describe Pangea::Resources::AzureAppServiceSlot do
       it 'includes site_config when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_app_service_slot('opt', required_attrs.merge(site_config: [{ 'key1' => 'val1' }]))
+        synth.azurerm_app_service_slot('opt', required_attrs.merge(site_config: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_app_service_slot', 'opt')
         expect(config).to have_key('site_config')
@@ -241,6 +295,17 @@ RSpec.describe Pangea::Resources::AzureAppServiceSlot do
     end
 
     context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts client_affinity_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(client_affinity_enabled: val)
+          synth.azurerm_app_service_slot("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_app_service_slot', "bool_#{val}")
+          expect(config['client_affinity_enabled']).to eq(val)
+        end
+      end
       [true, false].each do |val|
         it "accepts enabled=#{val}" do
           synth = create_synthesizer
@@ -314,5 +379,5 @@ RSpec.describe Pangea::Resources::AzureAppServiceSlot do
     expected_outputs: [:id, :app_settings, :client_affinity_enabled, :default_site_hostname, :key_vault_reference_identity_id, :site_credential],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: [:enabled, :https_only]
+    boolean_fields: [:client_affinity_enabled, :enabled, :https_only]
 end

@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureMonitorActivityLogAlert do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { criteria: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', scopes: ['test-value'] } }
+  let(:required_attrs) { { criteria: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', scopes: ['test-value'] } }
 
   describe ':azurerm_monitor_activity_log_alert' do
     context 'with required attributes only' do
@@ -151,7 +151,7 @@ RSpec.describe Pangea::Resources::AzureMonitorActivityLogAlert do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_monitor_activity_log_alert', 'typed')
-        expect(config['criteria']).to be_a(Array)
+        expect(config['criteria']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -188,7 +188,7 @@ RSpec.describe Pangea::Resources::AzureMonitorActivityLogAlert do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_monitor_activity_log_alert,
     method: :azurerm_monitor_activity_log_alert,
-    required_attrs: { criteria: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', scopes: ['test-value'] },
+    required_attrs: { criteria: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', scopes: ['test-value'] },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

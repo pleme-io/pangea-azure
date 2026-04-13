@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDynatraceTagRules do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ log_rule: [{ 'key1' => 'val1' }], metric_rule: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ log_rule: { 'key1' => 'val1' }, metric_rule: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -60,7 +60,7 @@ RSpec.describe Pangea::Resources::AzureDynatraceTagRules do
       it 'includes log_rule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dynatrace_tag_rules('opt', required_attrs.merge(log_rule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dynatrace_tag_rules('opt', required_attrs.merge(log_rule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dynatrace_tag_rules', 'opt')
         expect(config).to have_key('log_rule')
@@ -77,7 +77,7 @@ RSpec.describe Pangea::Resources::AzureDynatraceTagRules do
       it 'includes metric_rule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dynatrace_tag_rules('opt', required_attrs.merge(metric_rule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dynatrace_tag_rules('opt', required_attrs.merge(metric_rule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dynatrace_tag_rules', 'opt')
         expect(config).to have_key('metric_rule')

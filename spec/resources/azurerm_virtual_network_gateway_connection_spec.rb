@@ -67,7 +67,7 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ authorization_key: 'test-value', connection_mode: 'test-value', custom_bgp_addresses: [{ 'key1' => 'val1' }], dpd_timeout_seconds: 3.14, egress_nat_rule_ids: ['test-value'], express_route_circuit_id: 'test-value', ingress_nat_rule_ids: ['test-value'], ipsec_policy: [{ 'key1' => 'val1' }], local_azure_ip_address_enabled: true, local_network_gateway_id: 'test-value', peer_virtual_network_gateway_id: 'test-value', private_link_fast_path_enabled: true, tags: { 'key1' => 'val1' }, traffic_selector_policy: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ authorization_key: 'test-value', bgp_enabled: true, connection_mode: 'test-value', connection_protocol: 'test-value', custom_bgp_addresses: { 'key1' => 'val1' }, dpd_timeout_seconds: 3.14, egress_nat_rule_ids: ['test-value'], enable_bgp: true, express_route_circuit_id: 'test-value', express_route_gateway_bypass: true, ingress_nat_rule_ids: ['test-value'], ipsec_policy: { 'key1' => 'val1' }, local_azure_ip_address_enabled: true, local_network_gateway_id: 'test-value', peer_virtual_network_gateway_id: 'test-value', private_link_fast_path_enabled: true, routing_weight: 3.14, shared_key: 'test-value', tags: { 'key1' => 'val1' }, traffic_selector_policy: [{ 'key1' => 'val1' }], use_policy_based_traffic_selectors: true }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -77,19 +77,26 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
 
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'full')
         expect(config).to have_key('authorization_key')
+        expect(config).to have_key('bgp_enabled')
         expect(config).to have_key('connection_mode')
+        expect(config).to have_key('connection_protocol')
         expect(config).to have_key('custom_bgp_addresses')
         expect(config).to have_key('dpd_timeout_seconds')
         expect(config).to have_key('egress_nat_rule_ids')
+        expect(config).to have_key('enable_bgp')
         expect(config).to have_key('express_route_circuit_id')
+        expect(config).to have_key('express_route_gateway_bypass')
         expect(config).to have_key('ingress_nat_rule_ids')
         expect(config).to have_key('ipsec_policy')
         expect(config).to have_key('local_azure_ip_address_enabled')
         expect(config).to have_key('local_network_gateway_id')
         expect(config).to have_key('peer_virtual_network_gateway_id')
         expect(config).to have_key('private_link_fast_path_enabled')
+        expect(config).to have_key('routing_weight')
+        expect(config).to have_key('shared_key')
         expect(config).to have_key('tags')
         expect(config).to have_key('traffic_selector_policy')
+        expect(config).to have_key('use_policy_based_traffic_selectors')
       end
     end
 
@@ -111,6 +118,23 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
         expect(config).not_to have_key('authorization_key')
       end
+      it 'includes bgp_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(bgp_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'opt')
+        expect(config).to have_key('bgp_enabled')
+      end
+
+      it 'omits bgp_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
+        expect(config).not_to have_key('bgp_enabled')
+      end
       it 'includes connection_mode when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -128,10 +152,27 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
         expect(config).not_to have_key('connection_mode')
       end
+      it 'includes connection_protocol when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(connection_protocol: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'opt')
+        expect(config).to have_key('connection_protocol')
+      end
+
+      it 'omits connection_protocol when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
+        expect(config).not_to have_key('connection_protocol')
+      end
       it 'includes custom_bgp_addresses when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(custom_bgp_addresses: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(custom_bgp_addresses: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'opt')
         expect(config).to have_key('custom_bgp_addresses')
@@ -179,6 +220,23 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
         expect(config).not_to have_key('egress_nat_rule_ids')
       end
+      it 'includes enable_bgp when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(enable_bgp: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'opt')
+        expect(config).to have_key('enable_bgp')
+      end
+
+      it 'omits enable_bgp when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
+        expect(config).not_to have_key('enable_bgp')
+      end
       it 'includes express_route_circuit_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -195,6 +253,23 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
         expect(config).not_to have_key('express_route_circuit_id')
+      end
+      it 'includes express_route_gateway_bypass when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(express_route_gateway_bypass: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'opt')
+        expect(config).to have_key('express_route_gateway_bypass')
+      end
+
+      it 'omits express_route_gateway_bypass when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
+        expect(config).not_to have_key('express_route_gateway_bypass')
       end
       it 'includes ingress_nat_rule_ids when provided' do
         synth = create_synthesizer
@@ -216,7 +291,7 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
       it 'includes ipsec_policy when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(ipsec_policy: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(ipsec_policy: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'opt')
         expect(config).to have_key('ipsec_policy')
@@ -298,6 +373,40 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
         expect(config).not_to have_key('private_link_fast_path_enabled')
       end
+      it 'includes routing_weight when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(routing_weight: 3.14))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'opt')
+        expect(config).to have_key('routing_weight')
+      end
+
+      it 'omits routing_weight when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
+        expect(config).not_to have_key('routing_weight')
+      end
+      it 'includes shared_key when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(shared_key: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'opt')
+        expect(config).to have_key('shared_key')
+      end
+
+      it 'omits shared_key when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
+        expect(config).not_to have_key('shared_key')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -332,6 +441,23 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
         config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
         expect(config).not_to have_key('traffic_selector_policy')
       end
+      it 'includes use_policy_based_traffic_selectors when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('opt', required_attrs.merge(use_policy_based_traffic_selectors: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'opt')
+        expect(config).to have_key('use_policy_based_traffic_selectors')
+      end
+
+      it 'omits use_policy_based_traffic_selectors when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_virtual_network_gateway_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', 'minimal')
+        expect(config).not_to have_key('use_policy_based_traffic_selectors')
+      end
     end
 
     context 'sensitive fields' do
@@ -343,6 +469,39 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
     end
 
     context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts bgp_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(bgp_enabled: val)
+          synth.azurerm_virtual_network_gateway_connection("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', "bool_#{val}")
+          expect(config['bgp_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts enable_bgp=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enable_bgp: val)
+          synth.azurerm_virtual_network_gateway_connection("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', "bool_#{val}")
+          expect(config['enable_bgp']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts express_route_gateway_bypass=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(express_route_gateway_bypass: val)
+          synth.azurerm_virtual_network_gateway_connection("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', "bool_#{val}")
+          expect(config['express_route_gateway_bypass']).to eq(val)
+        end
+      end
       [true, false].each do |val|
         it "accepts local_azure_ip_address_enabled=#{val}" do
           synth = create_synthesizer
@@ -363,6 +522,17 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
           result = normalize_synthesis(synth.synthesis)
           config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', "bool_#{val}")
           expect(config['private_link_fast_path_enabled']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts use_policy_based_traffic_selectors=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(use_policy_based_traffic_selectors: val)
+          synth.azurerm_virtual_network_gateway_connection("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_virtual_network_gateway_connection', "bool_#{val}")
+          expect(config['use_policy_based_traffic_selectors']).to eq(val)
         end
       end
     end
@@ -416,5 +586,5 @@ RSpec.describe Pangea::Resources::AzureVirtualNetworkGatewayConnection do
     expected_outputs: [:id, :bgp_enabled, :connection_protocol, :enable_bgp, :express_route_gateway_bypass, :routing_weight, :shared_key, :use_policy_based_traffic_selectors],
     sensitive_fields: [:authorization_key, :shared_key],
     immutable_fields: [],
-    boolean_fields: [:local_azure_ip_address_enabled, :private_link_fast_path_enabled]
+    boolean_fields: [:bgp_enabled, :enable_bgp, :express_route_gateway_bypass, :local_azure_ip_address_enabled, :private_link_fast_path_enabled, :use_policy_based_traffic_selectors]
 end

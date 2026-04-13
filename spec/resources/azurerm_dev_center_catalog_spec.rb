@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDevCenterCatalog do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ catalog_adogit: [{ 'key1' => 'val1' }], catalog_github: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ catalog_adogit: { 'key1' => 'val1' }, catalog_github: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -60,7 +60,7 @@ RSpec.describe Pangea::Resources::AzureDevCenterCatalog do
       it 'includes catalog_adogit when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dev_center_catalog('opt', required_attrs.merge(catalog_adogit: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dev_center_catalog('opt', required_attrs.merge(catalog_adogit: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dev_center_catalog', 'opt')
         expect(config).to have_key('catalog_adogit')
@@ -77,7 +77,7 @@ RSpec.describe Pangea::Resources::AzureDevCenterCatalog do
       it 'includes catalog_github when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_dev_center_catalog('opt', required_attrs.merge(catalog_github: [{ 'key1' => 'val1' }]))
+        synth.azurerm_dev_center_catalog('opt', required_attrs.merge(catalog_github: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_dev_center_catalog', 'opt')
         expect(config).to have_key('catalog_github')

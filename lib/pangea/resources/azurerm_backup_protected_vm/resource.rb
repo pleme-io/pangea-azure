@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::BackupProtectedVmAttributes,
       outputs: { id: :id },
       map: [:recovery_vault_name, :resource_group_name],
-      map_present: [:backup_policy_id, :exclude_disk_luns, :include_disk_luns]
+      map_present: [:backup_policy_id, :exclude_disk_luns, :include_disk_luns, :protection_state, :source_vm_id]
   end
   module Azure
     include AzureBackupProtectedVm

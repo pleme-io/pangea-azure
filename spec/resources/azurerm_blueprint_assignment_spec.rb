@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureBlueprintAssignment do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', target_subscription_id: 'test-value', version_id: 'test-value' } }
+  let(:required_attrs) { { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', target_subscription_id: 'test-value', version_id: 'test-value' } }
 
   describe ':azurerm_blueprint_assignment' do
     context 'with required attributes only' do
@@ -174,7 +174,7 @@ RSpec.describe Pangea::Resources::AzureBlueprintAssignment do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_blueprint_assignment', 'typed')
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['target_subscription_id']).to be_a(String)
@@ -211,7 +211,7 @@ RSpec.describe Pangea::Resources::AzureBlueprintAssignment do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_blueprint_assignment,
     method: :azurerm_blueprint_assignment,
-    required_attrs: { identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', target_subscription_id: 'test-value', version_id: 'test-value' },
+    required_attrs: { identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', target_subscription_id: 'test-value', version_id: 'test-value' },
     expected_outputs: [:id, :blueprint_name, :description, :display_name, :type],
     sensitive_fields: [],
     immutable_fields: [],

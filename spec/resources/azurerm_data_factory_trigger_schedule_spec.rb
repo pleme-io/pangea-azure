@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryTriggerSchedule do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ activated: true, annotations: ['test-value'], description: 'test-value', end_time: 'test-value', frequency: 'test-value', interval: 3.14, pipeline: [{ 'key1' => 'val1' }], schedule: [{ 'key1' => 'val1' }], time_zone: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ activated: true, annotations: ['test-value'], description: 'test-value', end_time: 'test-value', frequency: 'test-value', interval: 3.14, pipeline: [{ 'key1' => 'val1' }], pipeline_name: 'test-value', pipeline_parameters: { 'key1' => 'val1' }, schedule: { 'key1' => 'val1' }, start_time: 'test-value', time_zone: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -75,7 +75,10 @@ RSpec.describe Pangea::Resources::AzureDataFactoryTriggerSchedule do
         expect(config).to have_key('frequency')
         expect(config).to have_key('interval')
         expect(config).to have_key('pipeline')
+        expect(config).to have_key('pipeline_name')
+        expect(config).to have_key('pipeline_parameters')
         expect(config).to have_key('schedule')
+        expect(config).to have_key('start_time')
         expect(config).to have_key('time_zone')
       end
     end
@@ -200,10 +203,44 @@ RSpec.describe Pangea::Resources::AzureDataFactoryTriggerSchedule do
         config = validate_resource_structure(result, 'azurerm_data_factory_trigger_schedule', 'minimal')
         expect(config).not_to have_key('pipeline')
       end
+      it 'includes pipeline_name when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_trigger_schedule('opt', required_attrs.merge(pipeline_name: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_trigger_schedule', 'opt')
+        expect(config).to have_key('pipeline_name')
+      end
+
+      it 'omits pipeline_name when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_trigger_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_trigger_schedule', 'minimal')
+        expect(config).not_to have_key('pipeline_name')
+      end
+      it 'includes pipeline_parameters when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_trigger_schedule('opt', required_attrs.merge(pipeline_parameters: { 'key1' => 'val1' }))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_trigger_schedule', 'opt')
+        expect(config).to have_key('pipeline_parameters')
+      end
+
+      it 'omits pipeline_parameters when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_trigger_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_trigger_schedule', 'minimal')
+        expect(config).not_to have_key('pipeline_parameters')
+      end
       it 'includes schedule when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_trigger_schedule('opt', required_attrs.merge(schedule: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_trigger_schedule('opt', required_attrs.merge(schedule: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_trigger_schedule', 'opt')
         expect(config).to have_key('schedule')
@@ -216,6 +253,23 @@ RSpec.describe Pangea::Resources::AzureDataFactoryTriggerSchedule do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_trigger_schedule', 'minimal')
         expect(config).not_to have_key('schedule')
+      end
+      it 'includes start_time when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_trigger_schedule('opt', required_attrs.merge(start_time: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_trigger_schedule', 'opt')
+        expect(config).to have_key('start_time')
+      end
+
+      it 'omits start_time when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_data_factory_trigger_schedule('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_data_factory_trigger_schedule', 'minimal')
+        expect(config).not_to have_key('start_time')
       end
       it 'includes time_zone when provided' do
         synth = create_synthesizer

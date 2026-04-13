@@ -1,0 +1,8 @@
+name: azurerm_bot_channel_web_chat
+title: Manages a azurerm_bot_channel_web_chat resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

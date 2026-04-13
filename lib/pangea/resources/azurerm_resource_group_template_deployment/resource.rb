@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ResourceGroupTemplateDeploymentAttributes,
       outputs: { id: :id },
       map: [:deployment_mode, :name, :resource_group_name],
-      map_present: [:debug_level, :tags, :template_spec_version_id]
+      map_present: [:debug_level, :parameters_content, :tags, :template_content, :template_spec_version_id]
   end
   module Azure
     include AzureResourceGroupTemplateDeployment

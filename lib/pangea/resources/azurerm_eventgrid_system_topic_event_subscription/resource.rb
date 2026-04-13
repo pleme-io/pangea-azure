@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::EventgridSystemTopicEventSubscriptionAttributes,
       outputs: { id: :id },
       map: [:name, :resource_group_name, :system_topic],
-      map_present: [:advanced_filter, :azure_function_endpoint, :dead_letter_identity, :delivery_identity, :delivery_property, :event_delivery_schema, :expiration_time_utc, :labels, :retry_policy, :service_bus_queue_endpoint_id, :service_bus_topic_endpoint_id, :storage_blob_dead_letter_destination, :storage_queue_endpoint, :subject_filter, :webhook_endpoint],
+      map_present: [:advanced_filter, :azure_function_endpoint, :dead_letter_identity, :delivery_identity, :delivery_property, :event_delivery_schema, :eventhub_endpoint_id, :expiration_time_utc, :hybrid_connection_endpoint_id, :included_event_types, :labels, :retry_policy, :service_bus_queue_endpoint_id, :service_bus_topic_endpoint_id, :storage_blob_dead_letter_destination, :storage_queue_endpoint, :subject_filter, :webhook_endpoint],
       map_bool: [:advanced_filtering_on_arrays_enabled]
   end
   module Azure

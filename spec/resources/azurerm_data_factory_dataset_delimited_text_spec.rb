@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryDatasetDelimitedText do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], azure_blob_fs_location: [{ 'key1' => 'val1' }], azure_blob_storage_location: [{ 'key1' => 'val1' }], column_delimiter: 'test-value', compression_codec: 'test-value', compression_level: 'test-value', description: 'test-value', encoding: 'test-value', escape_character: 'test-value', first_row_as_header: true, folder: 'test-value', http_server_location: [{ 'key1' => 'val1' }], null_value: 'test-value', parameters: { 'key1' => 'val1' }, quote_character: 'test-value', row_delimiter: 'test-value', schema_column: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ additional_properties: { 'key1' => 'val1' }, annotations: ['test-value'], azure_blob_fs_location: { 'key1' => 'val1' }, azure_blob_storage_location: { 'key1' => 'val1' }, column_delimiter: 'test-value', compression_codec: 'test-value', compression_level: 'test-value', description: 'test-value', encoding: 'test-value', escape_character: 'test-value', first_row_as_header: true, folder: 'test-value', http_server_location: { 'key1' => 'val1' }, null_value: 'test-value', parameters: { 'key1' => 'val1' }, quote_character: 'test-value', row_delimiter: 'test-value', schema_column: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -110,7 +110,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryDatasetDelimitedText do
       it 'includes azure_blob_fs_location when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_dataset_delimited_text('opt', required_attrs.merge(azure_blob_fs_location: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_dataset_delimited_text('opt', required_attrs.merge(azure_blob_fs_location: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_dataset_delimited_text', 'opt')
         expect(config).to have_key('azure_blob_fs_location')
@@ -127,7 +127,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryDatasetDelimitedText do
       it 'includes azure_blob_storage_location when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_dataset_delimited_text('opt', required_attrs.merge(azure_blob_storage_location: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_dataset_delimited_text('opt', required_attrs.merge(azure_blob_storage_location: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_dataset_delimited_text', 'opt')
         expect(config).to have_key('azure_blob_storage_location')
@@ -280,7 +280,7 @@ RSpec.describe Pangea::Resources::AzureDataFactoryDatasetDelimitedText do
       it 'includes http_server_location when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_data_factory_dataset_delimited_text('opt', required_attrs.merge(http_server_location: [{ 'key1' => 'val1' }]))
+        synth.azurerm_data_factory_dataset_delimited_text('opt', required_attrs.merge(http_server_location: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_data_factory_dataset_delimited_text', 'opt')
         expect(config).to have_key('http_server_location')

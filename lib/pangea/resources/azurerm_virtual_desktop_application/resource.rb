@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::VirtualDesktopApplicationAttributes,
       outputs: { id: :id },
       map: [:application_group_id, :command_line_argument_policy, :name, :path],
-      map_present: [:command_line_arguments, :description, :icon_index],
+      map_present: [:command_line_arguments, :description, :friendly_name, :icon_index, :icon_path],
       map_bool: [:show_in_portal]
   end
   module Azure

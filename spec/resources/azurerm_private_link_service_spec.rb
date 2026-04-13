@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzurePrivateLinkService do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_approval_subscription_ids: ['test-value'], destination_ip_address: 'test-value', fqdns: ['test-value'], load_balancer_frontend_ip_configuration_ids: ['test-value'], tags: { 'key1' => 'val1' }, visibility_subscription_ids: ['test-value'] }) }
+      let(:all_attrs) { required_attrs.merge({ auto_approval_subscription_ids: ['test-value'], destination_ip_address: 'test-value', enable_proxy_protocol: true, fqdns: ['test-value'], load_balancer_frontend_ip_configuration_ids: ['test-value'], proxy_protocol_enabled: true, tags: { 'key1' => 'val1' }, visibility_subscription_ids: ['test-value'] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -70,8 +70,10 @@ RSpec.describe Pangea::Resources::AzurePrivateLinkService do
         config = validate_resource_structure(result, 'azurerm_private_link_service', 'full')
         expect(config).to have_key('auto_approval_subscription_ids')
         expect(config).to have_key('destination_ip_address')
+        expect(config).to have_key('enable_proxy_protocol')
         expect(config).to have_key('fqdns')
         expect(config).to have_key('load_balancer_frontend_ip_configuration_ids')
+        expect(config).to have_key('proxy_protocol_enabled')
         expect(config).to have_key('tags')
         expect(config).to have_key('visibility_subscription_ids')
       end
@@ -112,6 +114,23 @@ RSpec.describe Pangea::Resources::AzurePrivateLinkService do
         config = validate_resource_structure(result, 'azurerm_private_link_service', 'minimal')
         expect(config).not_to have_key('destination_ip_address')
       end
+      it 'includes enable_proxy_protocol when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_private_link_service('opt', required_attrs.merge(enable_proxy_protocol: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_private_link_service', 'opt')
+        expect(config).to have_key('enable_proxy_protocol')
+      end
+
+      it 'omits enable_proxy_protocol when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_private_link_service('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_private_link_service', 'minimal')
+        expect(config).not_to have_key('enable_proxy_protocol')
+      end
       it 'includes fqdns when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -146,6 +165,23 @@ RSpec.describe Pangea::Resources::AzurePrivateLinkService do
         config = validate_resource_structure(result, 'azurerm_private_link_service', 'minimal')
         expect(config).not_to have_key('load_balancer_frontend_ip_configuration_ids')
       end
+      it 'includes proxy_protocol_enabled when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_private_link_service('opt', required_attrs.merge(proxy_protocol_enabled: true))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_private_link_service', 'opt')
+        expect(config).to have_key('proxy_protocol_enabled')
+      end
+
+      it 'omits proxy_protocol_enabled when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_private_link_service('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_private_link_service', 'minimal')
+        expect(config).not_to have_key('proxy_protocol_enabled')
+      end
       it 'includes tags when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -179,6 +215,31 @@ RSpec.describe Pangea::Resources::AzurePrivateLinkService do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_private_link_service', 'minimal')
         expect(config).not_to have_key('visibility_subscription_ids')
+      end
+    end
+
+    context 'boolean fields' do
+      [true, false].each do |val|
+        it "accepts enable_proxy_protocol=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(enable_proxy_protocol: val)
+          synth.azurerm_private_link_service("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_private_link_service', "bool_#{val}")
+          expect(config['enable_proxy_protocol']).to eq(val)
+        end
+      end
+      [true, false].each do |val|
+        it "accepts proxy_protocol_enabled=#{val}" do
+          synth = create_synthesizer
+          synth.extend(described_class)
+          attrs = required_attrs.merge(proxy_protocol_enabled: val)
+          synth.azurerm_private_link_service("bool_#{val}", attrs)
+          result = normalize_synthesis(synth.synthesis)
+          config = validate_resource_structure(result, 'azurerm_private_link_service', "bool_#{val}")
+          expect(config['proxy_protocol_enabled']).to eq(val)
+        end
       end
     end
 
@@ -230,5 +291,5 @@ RSpec.describe Pangea::Resources::AzurePrivateLinkService do
     expected_outputs: [:id, :alias, :enable_proxy_protocol, :proxy_protocol_enabled],
     sensitive_fields: [],
     immutable_fields: [],
-    boolean_fields: []
+    boolean_fields: [:enable_proxy_protocol, :proxy_protocol_enabled]
 end

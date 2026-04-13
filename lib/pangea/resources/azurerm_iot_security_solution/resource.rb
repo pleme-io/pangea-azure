@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::IotSecuritySolutionAttributes,
       outputs: { id: :id },
       map: [:display_name, :iothub_ids, :location, :name, :resource_group_name],
-      map_present: [:additional_workspace, :disabled_data_sources, :events_to_export, :log_analytics_workspace_id, :recommendations_enabled, :tags],
+      map_present: [:additional_workspace, :disabled_data_sources, :events_to_export, :log_analytics_workspace_id, :query_for_resources, :query_subscription_ids, :recommendations_enabled, :tags],
       map_bool: [:enabled, :log_unmasked_ips_enabled]
   end
   module Azure

@@ -67,7 +67,7 @@ RSpec.describe Pangea::Resources::AzureEventhubNamespace do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_inflate_enabled: true, capacity: 3.14, dedicated_cluster_id: 'test-value', identity: [{ 'key1' => 'val1' }], local_authentication_enabled: true, maximum_throughput_units: 3.14, minimum_tls_version: 'test-value', public_network_access_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ auto_inflate_enabled: true, capacity: 3.14, dedicated_cluster_id: 'test-value', identity: { 'key1' => 'val1' }, local_authentication_enabled: true, maximum_throughput_units: 3.14, minimum_tls_version: 'test-value', network_rulesets: [{ 'key1' => 'val1' }], public_network_access_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -83,6 +83,7 @@ RSpec.describe Pangea::Resources::AzureEventhubNamespace do
         expect(config).to have_key('local_authentication_enabled')
         expect(config).to have_key('maximum_throughput_units')
         expect(config).to have_key('minimum_tls_version')
+        expect(config).to have_key('network_rulesets')
         expect(config).to have_key('public_network_access_enabled')
         expect(config).to have_key('tags')
       end
@@ -143,7 +144,7 @@ RSpec.describe Pangea::Resources::AzureEventhubNamespace do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_eventhub_namespace('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_eventhub_namespace('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventhub_namespace', 'opt')
         expect(config).to have_key('identity')
@@ -207,6 +208,23 @@ RSpec.describe Pangea::Resources::AzureEventhubNamespace do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_eventhub_namespace', 'minimal')
         expect(config).not_to have_key('minimum_tls_version')
+      end
+      it 'includes network_rulesets when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub_namespace('opt', required_attrs.merge(network_rulesets: [{ 'key1' => 'val1' }]))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub_namespace', 'opt')
+        expect(config).to have_key('network_rulesets')
+      end
+
+      it 'omits network_rulesets when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_eventhub_namespace('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_eventhub_namespace', 'minimal')
+        expect(config).not_to have_key('network_rulesets')
       end
       it 'includes public_network_access_enabled when provided' do
         synth = create_synthesizer

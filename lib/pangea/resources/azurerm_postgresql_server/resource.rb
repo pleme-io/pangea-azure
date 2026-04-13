@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::PostgresqlServerAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku_name, :version],
-      map_present: [:administrator_login_password, :administrator_login_password_wo, :administrator_login_password_wo_version, :create_mode, :creation_source_server_id, :identity, :restore_point_in_time, :ssl_minimal_tls_version_enforced, :tags, :threat_detection_policy],
+      map_present: [:administrator_login, :administrator_login_password, :administrator_login_password_wo, :administrator_login_password_wo_version, :backup_retention_days, :create_mode, :creation_source_server_id, :identity, :restore_point_in_time, :ssl_minimal_tls_version_enforced, :storage_mb, :tags, :threat_detection_policy],
       map_bool: [:ssl_enforcement_enabled, :auto_grow_enabled, :geo_redundant_backup_enabled, :infrastructure_encryption_enabled, :public_network_access_enabled]
   end
   module Azure

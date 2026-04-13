@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ManagementGroupPolicyExemptionAttributes,
       outputs: { id: :id },
       map: [:exemption_category, :management_group_id, :name, :policy_assignment_id],
-      map_present: [:description, :display_name, :expires_on, :policy_definition_reference_ids]
+      map_present: [:description, :display_name, :expires_on, :metadata, :policy_definition_reference_ids]
   end
   module Azure
     include AzureManagementGroupPolicyExemption

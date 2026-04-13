@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureWebPubsubNetworkAcl do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { public_network: [{ 'key1' => 'val1' }], web_pubsub_id: 'test-value' } }
+  let(:required_attrs) { { public_network: { 'key1' => 'val1' }, web_pubsub_id: 'test-value' } }
 
   describe ':azurerm_web_pubsub_network_acl' do
     context 'with required attributes only' do
@@ -101,7 +101,7 @@ RSpec.describe Pangea::Resources::AzureWebPubsubNetworkAcl do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_web_pubsub_network_acl', 'typed')
-        expect(config['public_network']).to be_a(Array)
+        expect(config['public_network']).to be_a(Hash)
         expect(config['web_pubsub_id']).to be_a(String)
       end
     end
@@ -135,7 +135,7 @@ RSpec.describe Pangea::Resources::AzureWebPubsubNetworkAcl do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_web_pubsub_network_acl,
     method: :azurerm_web_pubsub_network_acl,
-    required_attrs: { public_network: [{ 'key1' => 'val1' }], web_pubsub_id: 'test-value' },
+    required_attrs: { public_network: { 'key1' => 'val1' }, web_pubsub_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

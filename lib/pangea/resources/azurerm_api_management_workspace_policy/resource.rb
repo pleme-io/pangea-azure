@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ApiManagementWorkspacePolicyAttributes,
       outputs: { id: :id },
       map: [:api_management_workspace_id],
-      map_present: [:xml_link]
+      map_present: [:xml_content, :xml_link]
   end
   module Azure
     include AzureApiManagementWorkspacePolicy

@@ -1,0 +1,8 @@
+name: azurerm_oracle_autonomous_database_clone_from_database
+title: Manages a azurerm_oracle_autonomous_database_clone_from_database resource
+version: 0.1.0
+supports:
+  - platform: azurerm
+depends:
+  - name: inspec-azurerm
+    url: https://github.com/pleme-io/inspec-azurerm

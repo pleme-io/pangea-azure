@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ResourcePolicyExemptionAttributes,
       outputs: { id: :id },
       map: [:exemption_category, :name, :policy_assignment_id, :resource_id],
-      map_present: [:description, :display_name, :expires_on, :policy_definition_reference_ids]
+      map_present: [:description, :display_name, :expires_on, :metadata, :policy_definition_reference_ids]
   end
   module Azure
     include AzureResourcePolicyExemption

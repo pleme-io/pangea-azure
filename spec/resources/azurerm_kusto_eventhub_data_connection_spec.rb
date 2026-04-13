@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureKustoEventhubDataConnection do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ compression: 'test-value', data_format: 'test-value', database_routing_type: 'test-value', identity_id: 'test-value', mapping_rule_name: 'test-value', table_name: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ compression: 'test-value', data_format: 'test-value', database_routing_type: 'test-value', event_system_properties: ['test-value'], identity_id: 'test-value', mapping_rule_name: 'test-value', retrieval_start_date: 'test-value', table_name: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,8 +69,10 @@ RSpec.describe Pangea::Resources::AzureKustoEventhubDataConnection do
         expect(config).to have_key('compression')
         expect(config).to have_key('data_format')
         expect(config).to have_key('database_routing_type')
+        expect(config).to have_key('event_system_properties')
         expect(config).to have_key('identity_id')
         expect(config).to have_key('mapping_rule_name')
+        expect(config).to have_key('retrieval_start_date')
         expect(config).to have_key('table_name')
       end
     end
@@ -127,6 +129,23 @@ RSpec.describe Pangea::Resources::AzureKustoEventhubDataConnection do
         config = validate_resource_structure(result, 'azurerm_kusto_eventhub_data_connection', 'minimal')
         expect(config).not_to have_key('database_routing_type')
       end
+      it 'includes event_system_properties when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventhub_data_connection('opt', required_attrs.merge(event_system_properties: ['test-value']))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventhub_data_connection', 'opt')
+        expect(config).to have_key('event_system_properties')
+      end
+
+      it 'omits event_system_properties when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventhub_data_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventhub_data_connection', 'minimal')
+        expect(config).not_to have_key('event_system_properties')
+      end
       it 'includes identity_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -160,6 +179,23 @@ RSpec.describe Pangea::Resources::AzureKustoEventhubDataConnection do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_kusto_eventhub_data_connection', 'minimal')
         expect(config).not_to have_key('mapping_rule_name')
+      end
+      it 'includes retrieval_start_date when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventhub_data_connection('opt', required_attrs.merge(retrieval_start_date: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventhub_data_connection', 'opt')
+        expect(config).to have_key('retrieval_start_date')
+      end
+
+      it 'omits retrieval_start_date when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_kusto_eventhub_data_connection('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_kusto_eventhub_data_connection', 'minimal')
+        expect(config).not_to have_key('retrieval_start_date')
       end
       it 'includes table_name when provided' do
         synth = create_synthesizer

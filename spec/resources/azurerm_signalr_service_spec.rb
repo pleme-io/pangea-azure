@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureSignalrService do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } } }
 
   describe ':azurerm_signalr_service' do
     context 'with required attributes only' do
@@ -69,7 +69,7 @@ RSpec.describe Pangea::Resources::AzureSignalrService do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ aad_auth_enabled: true, connectivity_logs_enabled: true, cors: [{ 'key1' => 'val1' }], http_request_logs_enabled: true, identity: [{ 'key1' => 'val1' }], live_trace: [{ 'key1' => 'val1' }], live_trace_enabled: true, local_auth_enabled: true, messaging_logs_enabled: true, public_network_access_enabled: true, serverless_connection_timeout_in_seconds: 3.14, service_mode: 'test-value', tags: { 'key1' => 'val1' }, tls_client_cert_enabled: true, upstream_endpoint: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ aad_auth_enabled: true, connectivity_logs_enabled: true, cors: [{ 'key1' => 'val1' }], http_request_logs_enabled: true, identity: { 'key1' => 'val1' }, live_trace: { 'key1' => 'val1' }, live_trace_enabled: true, local_auth_enabled: true, messaging_logs_enabled: true, public_network_access_enabled: true, serverless_connection_timeout_in_seconds: 3.14, service_mode: 'test-value', tags: { 'key1' => 'val1' }, tls_client_cert_enabled: true, upstream_endpoint: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -168,7 +168,7 @@ RSpec.describe Pangea::Resources::AzureSignalrService do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_signalr_service('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_signalr_service('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_signalr_service', 'opt')
         expect(config).to have_key('identity')
@@ -185,7 +185,7 @@ RSpec.describe Pangea::Resources::AzureSignalrService do
       it 'includes live_trace when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_signalr_service('opt', required_attrs.merge(live_trace: [{ 'key1' => 'val1' }]))
+        synth.azurerm_signalr_service('opt', required_attrs.merge(live_trace: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_signalr_service', 'opt')
         expect(config).to have_key('live_trace')
@@ -466,7 +466,7 @@ RSpec.describe Pangea::Resources::AzureSignalrService do
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
-        expect(config['sku']).to be_a(Array)
+        expect(config['sku']).to be_a(Hash)
       end
     end
 
@@ -499,7 +499,7 @@ RSpec.describe Pangea::Resources::AzureSignalrService do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_signalr_service,
     method: :azurerm_signalr_service,
-    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: [{ 'key1' => 'val1' }] },
+    required_attrs: { location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku: { 'key1' => 'val1' } },
     expected_outputs: [:id, :hostname, :ip_address, :primary_access_key, :primary_connection_string, :public_port, :secondary_access_key, :secondary_connection_string, :server_port],
     sensitive_fields: [:primary_access_key, :primary_connection_string, :secondary_access_key, :secondary_connection_string],
     immutable_fields: [],

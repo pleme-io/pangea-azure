@@ -58,6 +58,58 @@ RSpec.describe Pangea::Resources::AzureAppServiceCustomHostnameBinding do
       end
     end
 
+    context 'with all attributes' do
+      let(:all_attrs) { required_attrs.merge({ ssl_state: 'test-value', thumbprint: 'test-value' }) }
+
+      it 'synthesizes with optional attributes' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_custom_hostname_binding('full', all_attrs)
+        result = normalize_synthesis(synth.synthesis)
+
+        config = validate_resource_structure(result, 'azurerm_app_service_custom_hostname_binding', 'full')
+        expect(config).to have_key('ssl_state')
+        expect(config).to have_key('thumbprint')
+      end
+    end
+
+    context 'optional attributes' do
+      it 'includes ssl_state when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_custom_hostname_binding('opt', required_attrs.merge(ssl_state: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_custom_hostname_binding', 'opt')
+        expect(config).to have_key('ssl_state')
+      end
+
+      it 'omits ssl_state when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_custom_hostname_binding('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_custom_hostname_binding', 'minimal')
+        expect(config).not_to have_key('ssl_state')
+      end
+      it 'includes thumbprint when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_custom_hostname_binding('opt', required_attrs.merge(thumbprint: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_custom_hostname_binding', 'opt')
+        expect(config).to have_key('thumbprint')
+      end
+
+      it 'omits thumbprint when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_app_service_custom_hostname_binding('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_app_service_custom_hostname_binding', 'minimal')
+        expect(config).not_to have_key('thumbprint')
+      end
+    end
+
     context 'attribute types' do
       it 'validates expected attribute types' do
         synth = create_synthesizer

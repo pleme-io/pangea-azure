@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::ContainerRegistryAttributes,
       outputs: { id: :id },
       map: [:location, :name, :resource_group_name, :sku],
-      map_present: [:georeplications, :identity, :network_rule_bypass_option, :retention_policy_in_days, :tags],
+      map_present: [:encryption, :georeplications, :identity, :network_rule_bypass_option, :network_rule_set, :retention_policy_in_days, :tags],
       map_bool: [:admin_enabled, :anonymous_pull_enabled, :data_endpoint_enabled, :export_policy_enabled, :public_network_access_enabled, :quarantine_policy_enabled, :trust_policy_enabled, :zone_redundancy_enabled]
   end
   module Azure

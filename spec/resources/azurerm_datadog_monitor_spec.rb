@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDatadogMonitor do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { datadog_organization: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku_name: 'test-value', user: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { datadog_organization: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku_name: 'test-value', user: { 'key1' => 'val1' } } }
 
   describe ':azurerm_datadog_monitor' do
     context 'with required attributes only' do
@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureDatadogMonitor do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ identity: [{ 'key1' => 'val1' }], monitoring_enabled: true, tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ identity: { 'key1' => 'val1' }, monitoring_enabled: true, tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -74,7 +74,7 @@ RSpec.describe Pangea::Resources::AzureDatadogMonitor do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_datadog_monitor('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_datadog_monitor('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_datadog_monitor', 'opt')
         expect(config).to have_key('identity')
@@ -146,12 +146,12 @@ RSpec.describe Pangea::Resources::AzureDatadogMonitor do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_datadog_monitor', 'typed')
-        expect(config['datadog_organization']).to be_a(Array)
+        expect(config['datadog_organization']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
         expect(config['sku_name']).to be_a(String)
-        expect(config['user']).to be_a(Array)
+        expect(config['user']).to be_a(Hash)
       end
     end
 
@@ -184,7 +184,7 @@ RSpec.describe Pangea::Resources::AzureDatadogMonitor do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_datadog_monitor,
     method: :azurerm_datadog_monitor,
-    required_attrs: { datadog_organization: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku_name: 'test-value', user: [{ 'key1' => 'val1' }] },
+    required_attrs: { datadog_organization: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sku_name: 'test-value', user: { 'key1' => 'val1' } },
     expected_outputs: [:id, :marketplace_subscription_status],
     sensitive_fields: [],
     immutable_fields: [],

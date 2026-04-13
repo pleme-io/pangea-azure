@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureStorageDataLakeGen2Filesystem do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ ace: [{ 'key1' => 'val1' }], properties: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ ace: [{ 'key1' => 'val1' }], default_encryption_scope: 'test-value', group: 'test-value', owner: 'test-value', properties: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,6 +69,9 @@ RSpec.describe Pangea::Resources::AzureStorageDataLakeGen2Filesystem do
 
         config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_filesystem', 'full')
         expect(config).to have_key('ace')
+        expect(config).to have_key('default_encryption_scope')
+        expect(config).to have_key('group')
+        expect(config).to have_key('owner')
         expect(config).to have_key('properties')
       end
     end
@@ -90,6 +93,57 @@ RSpec.describe Pangea::Resources::AzureStorageDataLakeGen2Filesystem do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_filesystem', 'minimal')
         expect(config).not_to have_key('ace')
+      end
+      it 'includes default_encryption_scope when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_filesystem('opt', required_attrs.merge(default_encryption_scope: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_filesystem', 'opt')
+        expect(config).to have_key('default_encryption_scope')
+      end
+
+      it 'omits default_encryption_scope when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_filesystem('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_filesystem', 'minimal')
+        expect(config).not_to have_key('default_encryption_scope')
+      end
+      it 'includes group when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_filesystem('opt', required_attrs.merge(group: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_filesystem', 'opt')
+        expect(config).to have_key('group')
+      end
+
+      it 'omits group when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_filesystem('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_filesystem', 'minimal')
+        expect(config).not_to have_key('group')
+      end
+      it 'includes owner when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_filesystem('opt', required_attrs.merge(owner: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_filesystem', 'opt')
+        expect(config).to have_key('owner')
+      end
+
+      it 'omits owner when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_storage_data_lake_gen2_filesystem('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_storage_data_lake_gen2_filesystem', 'minimal')
+        expect(config).not_to have_key('owner')
       end
       it 'includes properties when provided' do
         synth = create_synthesizer

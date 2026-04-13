@@ -57,7 +57,7 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsLinkedService do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ write_access_id: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ read_access_id: 'test-value', write_access_id: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -66,11 +66,29 @@ RSpec.describe Pangea::Resources::AzureLogAnalyticsLinkedService do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_log_analytics_linked_service', 'full')
+        expect(config).to have_key('read_access_id')
         expect(config).to have_key('write_access_id')
       end
     end
 
     context 'optional attributes' do
+      it 'includes read_access_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_linked_service('opt', required_attrs.merge(read_access_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_linked_service', 'opt')
+        expect(config).to have_key('read_access_id')
+      end
+
+      it 'omits read_access_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_log_analytics_linked_service('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_log_analytics_linked_service', 'minimal')
+        expect(config).not_to have_key('read_access_id')
+      end
       it 'includes write_access_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

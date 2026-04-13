@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSetPacketCapture do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { name: 'test-value', network_watcher_id: 'test-value', storage_location: [{ 'key1' => 'val1' }], virtual_machine_scale_set_id: 'test-value' } }
+  let(:required_attrs) { { name: 'test-value', network_watcher_id: 'test-value', storage_location: { 'key1' => 'val1' }, virtual_machine_scale_set_id: 'test-value' } }
 
   describe ':azurerm_virtual_machine_scale_set_packet_capture' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSetPacketCapture do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ filter: [{ 'key1' => 'val1' }], machine_scope: [{ 'key1' => 'val1' }], maximum_bytes_per_packet: 3.14, maximum_bytes_per_session: 3.14, maximum_capture_duration_in_seconds: 3.14 }) }
+      let(:all_attrs) { required_attrs.merge({ filter: [{ 'key1' => 'val1' }], machine_scope: { 'key1' => 'val1' }, maximum_bytes_per_packet: 3.14, maximum_bytes_per_session: 3.14, maximum_capture_duration_in_seconds: 3.14 }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -80,7 +80,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSetPacketCapture do
       it 'includes machine_scope when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_virtual_machine_scale_set_packet_capture('opt', required_attrs.merge(machine_scope: [{ 'key1' => 'val1' }]))
+        synth.azurerm_virtual_machine_scale_set_packet_capture('opt', required_attrs.merge(machine_scope: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set_packet_capture', 'opt')
         expect(config).to have_key('machine_scope')
@@ -157,7 +157,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSetPacketCapture do
         config = validate_resource_structure(result, 'azurerm_virtual_machine_scale_set_packet_capture', 'typed')
         expect(config['name']).to be_a(String)
         expect(config['network_watcher_id']).to be_a(String)
-        expect(config['storage_location']).to be_a(Array)
+        expect(config['storage_location']).to be_a(Hash)
         expect(config['virtual_machine_scale_set_id']).to be_a(String)
       end
     end
@@ -191,7 +191,7 @@ RSpec.describe Pangea::Resources::AzureVirtualMachineScaleSetPacketCapture do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_virtual_machine_scale_set_packet_capture,
     method: :azurerm_virtual_machine_scale_set_packet_capture,
-    required_attrs: { name: 'test-value', network_watcher_id: 'test-value', storage_location: [{ 'key1' => 'val1' }], virtual_machine_scale_set_id: 'test-value' },
+    required_attrs: { name: 'test-value', network_watcher_id: 'test-value', storage_location: { 'key1' => 'val1' }, virtual_machine_scale_set_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

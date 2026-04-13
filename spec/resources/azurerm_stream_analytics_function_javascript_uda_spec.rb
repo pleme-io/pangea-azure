@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureStreamAnalyticsFunctionJavascriptUda do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { input: [{ 'key1' => 'val1' }], name: 'test-value', output: [{ 'key1' => 'val1' }], script: 'test-value', stream_analytics_job_id: 'test-value' } }
+  let(:required_attrs) { { input: [{ 'key1' => 'val1' }], name: 'test-value', output: { 'key1' => 'val1' }, script: 'test-value', stream_analytics_job_id: 'test-value' } }
 
   describe ':azurerm_stream_analytics_function_javascript_uda' do
     context 'with required attributes only' do
@@ -51,7 +51,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsFunctionJavascriptUda do
         config = validate_resource_structure(result, 'azurerm_stream_analytics_function_javascript_uda', 'typed')
         expect(config['input']).to be_a(Array)
         expect(config['name']).to be_a(String)
-        expect(config['output']).to be_a(Array)
+        expect(config['output']).to be_a(Hash)
         expect(config['script']).to be_a(String)
         expect(config['stream_analytics_job_id']).to be_a(String)
       end
@@ -86,7 +86,7 @@ RSpec.describe Pangea::Resources::AzureStreamAnalyticsFunctionJavascriptUda do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_stream_analytics_function_javascript_uda,
     method: :azurerm_stream_analytics_function_javascript_uda,
-    required_attrs: { input: [{ 'key1' => 'val1' }], name: 'test-value', output: [{ 'key1' => 'val1' }], script: 'test-value', stream_analytics_job_id: 'test-value' },
+    required_attrs: { input: [{ 'key1' => 'val1' }], name: 'test-value', output: { 'key1' => 'val1' }, script: 'test-value', stream_analytics_job_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

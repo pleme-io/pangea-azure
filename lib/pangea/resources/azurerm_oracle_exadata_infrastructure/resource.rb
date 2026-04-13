@@ -14,7 +14,7 @@ module Pangea::Resources
       attributes_class: Azure::Types::OracleExadataInfrastructureAttributes,
       outputs: { id: :id },
       map: [:compute_count, :display_name, :location, :name, :resource_group_name, :shape, :storage_count, :zones],
-      map_present: [:maintenance_window, :tags]
+      map_present: [:customer_contacts, :database_server_type, :maintenance_window, :storage_server_type, :tags]
   end
   module Azure
     include AzureOracleExadataInfrastructure

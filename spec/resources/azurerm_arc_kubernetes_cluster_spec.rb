@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureArcKubernetesCluster do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { agent_public_key_certificate: 'test-value', identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
+  let(:required_attrs) { { agent_public_key_certificate: 'test-value', identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' } }
 
   describe ':azurerm_arc_kubernetes_cluster' do
     context 'with required attributes only' do
@@ -109,7 +109,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesCluster do
 
         config = validate_resource_structure(result, 'azurerm_arc_kubernetes_cluster', 'typed')
         expect(config['agent_public_key_certificate']).to be_a(String)
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['location']).to be_a(String)
         expect(config['name']).to be_a(String)
         expect(config['resource_group_name']).to be_a(String)
@@ -145,7 +145,7 @@ RSpec.describe Pangea::Resources::AzureArcKubernetesCluster do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_arc_kubernetes_cluster,
     method: :azurerm_arc_kubernetes_cluster,
-    required_attrs: { agent_public_key_certificate: 'test-value', identity: [{ 'key1' => 'val1' }], location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
+    required_attrs: { agent_public_key_certificate: 'test-value', identity: { 'key1' => 'val1' }, location: 'test-value', name: 'test-value', resource_group_name: 'test-value' },
     expected_outputs: [:id, :agent_version, :distribution, :infrastructure, :kubernetes_version, :offering, :total_core_count, :total_node_count],
     sensitive_fields: [],
     immutable_fields: [],

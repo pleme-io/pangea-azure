@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureWorkloadsSapSingleNodeVirtualInstance do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { app_location: 'test-value', environment: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sap_fqdn: 'test-value', sap_product: 'test-value', single_server_configuration: [{ 'key1' => 'val1' }] } }
+  let(:required_attrs) { { app_location: 'test-value', environment: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sap_fqdn: 'test-value', sap_product: 'test-value', single_server_configuration: { 'key1' => 'val1' } } }
 
   describe ':azurerm_workloads_sap_single_node_virtual_instance' do
     context 'with required attributes only' do
@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureWorkloadsSapSingleNodeVirtualInstance do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ identity: [{ 'key1' => 'val1' }], managed_resource_group_name: 'test-value', managed_resources_network_access_type: 'test-value', tags: { 'key1' => 'val1' } }) }
+      let(:all_attrs) { required_attrs.merge({ identity: { 'key1' => 'val1' }, managed_resource_group_name: 'test-value', managed_resources_network_access_type: 'test-value', tags: { 'key1' => 'val1' } }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -62,7 +62,7 @@ RSpec.describe Pangea::Resources::AzureWorkloadsSapSingleNodeVirtualInstance do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_workloads_sap_single_node_virtual_instance('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_workloads_sap_single_node_virtual_instance('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_workloads_sap_single_node_virtual_instance', 'opt')
         expect(config).to have_key('identity')
@@ -144,7 +144,7 @@ RSpec.describe Pangea::Resources::AzureWorkloadsSapSingleNodeVirtualInstance do
         expect(config['resource_group_name']).to be_a(String)
         expect(config['sap_fqdn']).to be_a(String)
         expect(config['sap_product']).to be_a(String)
-        expect(config['single_server_configuration']).to be_a(Array)
+        expect(config['single_server_configuration']).to be_a(Hash)
       end
     end
 
@@ -177,7 +177,7 @@ RSpec.describe Pangea::Resources::AzureWorkloadsSapSingleNodeVirtualInstance do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_workloads_sap_single_node_virtual_instance,
     method: :azurerm_workloads_sap_single_node_virtual_instance,
-    required_attrs: { app_location: 'test-value', environment: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sap_fqdn: 'test-value', sap_product: 'test-value', single_server_configuration: [{ 'key1' => 'val1' }] },
+    required_attrs: { app_location: 'test-value', environment: 'test-value', location: 'test-value', name: 'test-value', resource_group_name: 'test-value', sap_fqdn: 'test-value', sap_product: 'test-value', single_server_configuration: { 'key1' => 'val1' } },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

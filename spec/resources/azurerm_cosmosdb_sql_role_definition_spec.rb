@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureCosmosdbSqlRoleDefinition do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ type: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ role_definition_id: 'test-value', type: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -64,11 +64,29 @@ RSpec.describe Pangea::Resources::AzureCosmosdbSqlRoleDefinition do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_cosmosdb_sql_role_definition', 'full')
+        expect(config).to have_key('role_definition_id')
         expect(config).to have_key('type')
       end
     end
 
     context 'optional attributes' do
+      it 'includes role_definition_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_sql_role_definition('opt', required_attrs.merge(role_definition_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_sql_role_definition', 'opt')
+        expect(config).to have_key('role_definition_id')
+      end
+
+      it 'omits role_definition_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_cosmosdb_sql_role_definition('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_cosmosdb_sql_role_definition', 'minimal')
+        expect(config).not_to have_key('role_definition_id')
+      end
       it 'includes type when provided' do
         synth = create_synthesizer
         synth.extend(described_class)

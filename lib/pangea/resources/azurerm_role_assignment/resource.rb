@@ -14,7 +14,8 @@ module Pangea::Resources
       attributes_class: Azure::Types::RoleAssignmentAttributes,
       outputs: { id: :id },
       map: [:principal_id, :scope],
-      map_present: [:condition, :delegated_managed_identity_resource_id, :description]
+      map_present: [:condition, :condition_version, :delegated_managed_identity_resource_id, :description, :name, :principal_type, :role_definition_id, :role_definition_name],
+      map_bool: [:skip_service_principal_aad_check]
   end
   module Azure
     include AzureRoleAssignment

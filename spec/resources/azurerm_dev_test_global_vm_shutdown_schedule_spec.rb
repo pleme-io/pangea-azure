@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureDevTestGlobalVmShutdownSchedule do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { daily_recurrence_time: 'test-value', location: 'test-value', notification_settings: [{ 'key1' => 'val1' }], timezone: 'test-value', virtual_machine_id: 'test-value' } }
+  let(:required_attrs) { { daily_recurrence_time: 'test-value', location: 'test-value', notification_settings: { 'key1' => 'val1' }, timezone: 'test-value', virtual_machine_id: 'test-value' } }
 
   describe ':azurerm_dev_test_global_vm_shutdown_schedule' do
     context 'with required attributes only' do
@@ -117,7 +117,7 @@ RSpec.describe Pangea::Resources::AzureDevTestGlobalVmShutdownSchedule do
         config = validate_resource_structure(result, 'azurerm_dev_test_global_vm_shutdown_schedule', 'typed')
         expect(config['daily_recurrence_time']).to be_a(String)
         expect(config['location']).to be_a(String)
-        expect(config['notification_settings']).to be_a(Array)
+        expect(config['notification_settings']).to be_a(Hash)
         expect(config['timezone']).to be_a(String)
         expect(config['virtual_machine_id']).to be_a(String)
       end
@@ -152,7 +152,7 @@ RSpec.describe Pangea::Resources::AzureDevTestGlobalVmShutdownSchedule do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_dev_test_global_vm_shutdown_schedule,
     method: :azurerm_dev_test_global_vm_shutdown_schedule,
-    required_attrs: { daily_recurrence_time: 'test-value', location: 'test-value', notification_settings: [{ 'key1' => 'val1' }], timezone: 'test-value', virtual_machine_id: 'test-value' },
+    required_attrs: { daily_recurrence_time: 'test-value', location: 'test-value', notification_settings: { 'key1' => 'val1' }, timezone: 'test-value', virtual_machine_id: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

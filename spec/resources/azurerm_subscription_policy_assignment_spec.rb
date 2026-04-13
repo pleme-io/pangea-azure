@@ -55,7 +55,7 @@ RSpec.describe Pangea::Resources::AzureSubscriptionPolicyAssignment do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ description: 'test-value', display_name: 'test-value', enforce: true, identity: [{ 'key1' => 'val1' }], location: 'test-value', non_compliance_message: [{ 'key1' => 'val1' }], not_scopes: ['test-value'], overrides: [{ 'key1' => 'val1' }], parameters: 'test-value', resource_selectors: [{ 'key1' => 'val1' }] }) }
+      let(:all_attrs) { required_attrs.merge({ description: 'test-value', display_name: 'test-value', enforce: true, identity: { 'key1' => 'val1' }, location: 'test-value', metadata: 'test-value', non_compliance_message: [{ 'key1' => 'val1' }], not_scopes: ['test-value'], overrides: [{ 'key1' => 'val1' }], parameters: 'test-value', resource_selectors: [{ 'key1' => 'val1' }] }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -69,6 +69,7 @@ RSpec.describe Pangea::Resources::AzureSubscriptionPolicyAssignment do
         expect(config).to have_key('enforce')
         expect(config).to have_key('identity')
         expect(config).to have_key('location')
+        expect(config).to have_key('metadata')
         expect(config).to have_key('non_compliance_message')
         expect(config).to have_key('not_scopes')
         expect(config).to have_key('overrides')
@@ -132,7 +133,7 @@ RSpec.describe Pangea::Resources::AzureSubscriptionPolicyAssignment do
       it 'includes identity when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_subscription_policy_assignment('opt', required_attrs.merge(identity: [{ 'key1' => 'val1' }]))
+        synth.azurerm_subscription_policy_assignment('opt', required_attrs.merge(identity: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_subscription_policy_assignment', 'opt')
         expect(config).to have_key('identity')
@@ -162,6 +163,23 @@ RSpec.describe Pangea::Resources::AzureSubscriptionPolicyAssignment do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_subscription_policy_assignment', 'minimal')
         expect(config).not_to have_key('location')
+      end
+      it 'includes metadata when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_subscription_policy_assignment('opt', required_attrs.merge(metadata: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_subscription_policy_assignment', 'opt')
+        expect(config).to have_key('metadata')
+      end
+
+      it 'omits metadata when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_subscription_policy_assignment('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_subscription_policy_assignment', 'minimal')
+        expect(config).not_to have_key('metadata')
       end
       it 'includes non_compliance_message when provided' do
         synth = create_synthesizer

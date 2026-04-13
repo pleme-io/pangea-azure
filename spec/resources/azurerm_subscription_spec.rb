@@ -59,7 +59,7 @@ RSpec.describe Pangea::Resources::AzureSubscription do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ billing_scope_id: 'test-value', tags: { 'key1' => 'val1' }, workload: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ alias: 'test-value', billing_scope_id: 'test-value', subscription_id: 'test-value', tags: { 'key1' => 'val1' }, workload: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -68,13 +68,32 @@ RSpec.describe Pangea::Resources::AzureSubscription do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_subscription', 'full')
+        expect(config).to have_key('alias')
         expect(config).to have_key('billing_scope_id')
+        expect(config).to have_key('subscription_id')
         expect(config).to have_key('tags')
         expect(config).to have_key('workload')
       end
     end
 
     context 'optional attributes' do
+      it 'includes alias when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_subscription('opt', required_attrs.merge(alias: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_subscription', 'opt')
+        expect(config).to have_key('alias')
+      end
+
+      it 'omits alias when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_subscription('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_subscription', 'minimal')
+        expect(config).not_to have_key('alias')
+      end
       it 'includes billing_scope_id when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
@@ -91,6 +110,23 @@ RSpec.describe Pangea::Resources::AzureSubscription do
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_subscription', 'minimal')
         expect(config).not_to have_key('billing_scope_id')
+      end
+      it 'includes subscription_id when provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_subscription('opt', required_attrs.merge(subscription_id: 'test-value'))
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_subscription', 'opt')
+        expect(config).to have_key('subscription_id')
+      end
+
+      it 'omits subscription_id when not provided' do
+        synth = create_synthesizer
+        synth.extend(described_class)
+        synth.azurerm_subscription('minimal', required_attrs)
+        result = normalize_synthesis(synth.synthesis)
+        config = validate_resource_structure(result, 'azurerm_subscription', 'minimal')
+        expect(config).not_to have_key('subscription_id')
       end
       it 'includes tags when provided' do
         synth = create_synthesizer

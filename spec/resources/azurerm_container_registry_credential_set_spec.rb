@@ -8,7 +8,7 @@ require 'spec_helper'
 RSpec.describe Pangea::Resources::AzureContainerRegistryCredentialSet do
   include Pangea::Testing::SynthesisTestHelpers
 
-  let(:required_attrs) { { authentication_credentials: [{ 'key1' => 'val1' }], container_registry_id: 'test-value', identity: [{ 'key1' => 'val1' }], login_server: 'test-value', name: 'test-value' } }
+  let(:required_attrs) { { authentication_credentials: { 'key1' => 'val1' }, container_registry_id: 'test-value', identity: { 'key1' => 'val1' }, login_server: 'test-value', name: 'test-value' } }
 
   describe ':azurerm_container_registry_credential_set' do
     context 'with required attributes only' do
@@ -49,9 +49,9 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryCredentialSet do
         result = normalize_synthesis(synth.synthesis)
 
         config = validate_resource_structure(result, 'azurerm_container_registry_credential_set', 'typed')
-        expect(config['authentication_credentials']).to be_a(Array)
+        expect(config['authentication_credentials']).to be_a(Hash)
         expect(config['container_registry_id']).to be_a(String)
-        expect(config['identity']).to be_a(Array)
+        expect(config['identity']).to be_a(Hash)
         expect(config['login_server']).to be_a(String)
         expect(config['name']).to be_a(String)
       end
@@ -86,7 +86,7 @@ RSpec.describe Pangea::Resources::AzureContainerRegistryCredentialSet do
   it_behaves_like 'a generated pangea resource',
     resource_type: :azurerm_container_registry_credential_set,
     method: :azurerm_container_registry_credential_set,
-    required_attrs: { authentication_credentials: [{ 'key1' => 'val1' }], container_registry_id: 'test-value', identity: [{ 'key1' => 'val1' }], login_server: 'test-value', name: 'test-value' },
+    required_attrs: { authentication_credentials: { 'key1' => 'val1' }, container_registry_id: 'test-value', identity: { 'key1' => 'val1' }, login_server: 'test-value', name: 'test-value' },
     expected_outputs: [:id],
     sensitive_fields: [],
     immutable_fields: [],

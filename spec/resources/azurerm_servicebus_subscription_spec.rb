@@ -42,7 +42,7 @@ RSpec.describe Pangea::Resources::AzureServicebusSubscription do
     end
 
     context 'with all attributes' do
-      let(:all_attrs) { required_attrs.merge({ auto_delete_on_idle: 'test-value', batched_operations_enabled: true, client_scoped_subscription: [{ 'key1' => 'val1' }], client_scoped_subscription_enabled: true, dead_lettering_on_filter_evaluation_error: true, dead_lettering_on_message_expiration: true, default_message_ttl: 'test-value', forward_dead_lettered_messages_to: 'test-value', forward_to: 'test-value', lock_duration: 'test-value', requires_session: true, status: 'test-value' }) }
+      let(:all_attrs) { required_attrs.merge({ auto_delete_on_idle: 'test-value', batched_operations_enabled: true, client_scoped_subscription: { 'key1' => 'val1' }, client_scoped_subscription_enabled: true, dead_lettering_on_filter_evaluation_error: true, dead_lettering_on_message_expiration: true, default_message_ttl: 'test-value', forward_dead_lettered_messages_to: 'test-value', forward_to: 'test-value', lock_duration: 'test-value', requires_session: true, status: 'test-value' }) }
 
       it 'synthesizes with optional attributes' do
         synth = create_synthesizer
@@ -104,7 +104,7 @@ RSpec.describe Pangea::Resources::AzureServicebusSubscription do
       it 'includes client_scoped_subscription when provided' do
         synth = create_synthesizer
         synth.extend(described_class)
-        synth.azurerm_servicebus_subscription('opt', required_attrs.merge(client_scoped_subscription: [{ 'key1' => 'val1' }]))
+        synth.azurerm_servicebus_subscription('opt', required_attrs.merge(client_scoped_subscription: { 'key1' => 'val1' }))
         result = normalize_synthesis(synth.synthesis)
         config = validate_resource_structure(result, 'azurerm_servicebus_subscription', 'opt')
         expect(config).to have_key('client_scoped_subscription')
